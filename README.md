@@ -1,4 +1,4 @@
 odessa-today
 ============
 
-Android client for 
+Android client for http://today.od.ua/
