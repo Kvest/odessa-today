@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import com.kvest.odessatoday.R;
 
-public class MyActivity extends Activity {
+public class MyActivity extends TodayBaseActivity {
     /**
      * Called when the activity is first created.
      */
