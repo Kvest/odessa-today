@@ -14,6 +14,8 @@ public class TodayProviderContract {
     public static final String CONTENT_AUTHORITY = "com.kvest.odessatoday";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
+    public static final String FILMS_PATH = "films";
+
     interface Tables {
         interface Films {
             String TABLE_NAME = "films";
