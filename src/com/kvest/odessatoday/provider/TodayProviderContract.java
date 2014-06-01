@@ -16,7 +16,7 @@ public class TodayProviderContract {
 
     public static final String FILMS_PATH = "films";
 
-    interface Tables {
+    public interface Tables {
         interface Films {
             String TABLE_NAME = "films";
 
@@ -33,7 +33,7 @@ public class TodayProviderContract {
                 String VIDEO = "video";
                 String GENRE = "genre";
                 String RATING = "rating";
-                String COMMENTS_CONT = "commentscount";
+                String COMMENTS_COUNT = "comments_count";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
@@ -50,7 +50,7 @@ public class TodayProviderContract {
                     + Columns.VIDEO + " TEXT, "
                     + Columns.GENRE + " TEXT, "
                     + Columns.RATING + " INTEGER, "
-                    + Columns.COMMENTS_CONT + " INTEGER, "
+                    + Columns.COMMENTS_COUNT + " INTEGER, "
                     + "UNIQUE (" + Columns.FILM_ID + ") ON CONFLICT REPLACE)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
