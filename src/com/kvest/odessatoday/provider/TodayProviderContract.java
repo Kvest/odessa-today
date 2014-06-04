@@ -22,7 +22,6 @@ public class TodayProviderContract {
 
             interface Columns extends BaseColumns {
                 String FILM_ID = "film_id";
-                String DATE = "date";
                 String NAME = "name";
                 String COUNTRY = "country";
                 String YEAR = "year";
@@ -39,7 +38,6 @@ public class TodayProviderContract {
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
                     + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Columns.FILM_ID + " INTEGER,"
-                    + Columns.DATE + " INTEGER,"
                     + Columns.NAME + " TEXT,"
                     + Columns.COUNTRY + " TEXT,"
                     + Columns.YEAR + " INTEGER,"
