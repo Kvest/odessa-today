@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 /**
@@ -22,12 +24,16 @@ public class TodayProvider extends ContentProvider {
 
     private static final int FILM_LIST_URI_INDICATOR = 1;
     private static final int FILM_ITEM_URI_INDICATOR = 2;
+    private static final int TIMETABLE_LIST_URI_INDICATOR = 3;
+    private static final int TIMETABLE_ITEM_URI_INDICATOR = 4;
 
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH, FILM_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/#", FILM_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, TIMETABLES_PATH, TIMETABLE_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, TIMETABLES_PATH + "/#", TIMETABLE_ITEM_URI_INDICATOR);
     }
 
     @Override
@@ -44,10 +50,16 @@ public class TodayProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case FILM_LIST_URI_INDICATOR :
-                return queryFullTable(getContext(), Tables.Films.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
+                return queryFullTable( Tables.Films.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
             case FILM_ITEM_URI_INDICATOR :
-                return queryFullTable(getContext(), Tables.Films.TABLE_NAME , uri, projection,
+                return queryFullTable(Tables.Films.TABLE_NAME , uri, projection,
                         Tables.Films.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null), sortOrder);
+            case TIMETABLE_LIST_URI_INDICATOR :
+                return queryFullTable(Tables.FilmsTimetable.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
+            case TIMETABLE_ITEM_URI_INDICATOR :
+                return queryFullTable(Tables.FilmsTimetable.TABLE_NAME , uri, projection,
+                        Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
         }
 
@@ -58,7 +70,9 @@ public class TodayProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         switch (uriMatcher.match(uri)) {
             case FILM_LIST_URI_INDICATOR :
-                return simpleInsert(getContext(), Tables.Films.TABLE_NAME, uri, values);
+                return simpleInsert(Tables.Films.TABLE_NAME, uri, values);
+            case TIMETABLE_LIST_URI_INDICATOR :
+                return simpleInsert(Tables.FilmsTimetable.TABLE_NAME, uri, values);
         }
         throw new IllegalArgumentException("Unknown uri for insert : " + uri);
     }
@@ -69,10 +83,16 @@ public class TodayProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case FILM_LIST_URI_INDICATOR :
-                return simpleDelete(getContext(), Tables.Films.TABLE_NAME, uri, selection, selectionArgs);
+                return simpleDelete(Tables.Films.TABLE_NAME, uri, selection, selectionArgs);
             case FILM_ITEM_URI_INDICATOR :
-                return simpleDelete(getContext(), Tables.Films.TABLE_NAME, uri,
+                return simpleDelete(Tables.Films.TABLE_NAME, uri,
                         Tables.Films.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case TIMETABLE_LIST_URI_INDICATOR :
+                return simpleDelete(Tables.FilmsTimetable.TABLE_NAME, uri, selection, selectionArgs);
+            case TIMETABLE_ITEM_URI_INDICATOR :
+                return simpleDelete(Tables.FilmsTimetable.TABLE_NAME, uri,
+                        Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 
@@ -85,10 +105,16 @@ public class TodayProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case FILM_LIST_URI_INDICATOR :
-                return simpleUpdate(getContext(), Tables.Films.TABLE_NAME, uri, values, selection, selectionArgs);
+                return simpleUpdate(Tables.Films.TABLE_NAME, uri, values, selection, selectionArgs);
             case FILM_ITEM_URI_INDICATOR :
-                return simpleUpdate(getContext(), Tables.Films.TABLE_NAME, uri, values,
+                return simpleUpdate( Tables.Films.TABLE_NAME, uri, values,
                         Tables.Films.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case TIMETABLE_LIST_URI_INDICATOR :
+                return simpleUpdate(Tables.FilmsTimetable.TABLE_NAME, uri, values, selection, selectionArgs);
+            case TIMETABLE_ITEM_URI_INDICATOR :
+                return simpleUpdate(Tables.FilmsTimetable.TABLE_NAME, uri, values,
+                        Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 
@@ -100,9 +126,25 @@ public class TodayProvider extends ContentProvider {
         throw new UnsupportedOperationException("TodayProvider doesn't implement getType() method");
     }
 
+    @Override
+    public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
+        final SQLiteDatabase db = sqlStorage.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            final int numOperations = operations.size();
+            final ContentProviderResult[] results = new ContentProviderResult[numOperations];
+            for (int i = 0; i < numOperations; i++) {
+                results[i] = operations.get(i).apply(this, results, i);
+            }
+            db.setTransactionSuccessful();
+            return results;
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     /**
      * Helper method for selecting all data from table by name
-     * @param context Android context
      * @param tableName Name of the table in the database
      * @param uri The URI to query
      * @param projection The list of columns to put into the cursor. If null all columns are included
@@ -111,7 +153,7 @@ public class TodayProvider extends ContentProvider {
      * @param sortOrder How the rows in the cursor should be sorted. If null then the provider is free to define the sort order
      * @return Cursor to the data
      */
-    protected Cursor queryFullTable(Context context, String tableName, Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    protected Cursor queryFullTable(String tableName, Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(tableName);
 
@@ -120,20 +162,19 @@ public class TodayProvider extends ContentProvider {
         Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 
         // Make sure that potential listeners are getting notified
-        cursor.setNotificationUri(context.getContentResolver(), uri);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
     }
 
     /**
      * Helper method for inserting row into the table by the table name
-     * @param context Android context
      * @param tableName Name of the table in the database
      * @param uri The URI of the insertion request
      * @param values A set of column_name/value pairs to add to the database. This must not be null.
      * @return The URI for the newly inserted item
      */
-    protected Uri simpleInsert(Context context, String tableName, Uri uri, ContentValues values) {
+    protected Uri simpleInsert(String tableName, Uri uri, ContentValues values) {
         SQLiteDatabase db = sqlStorage.getWritableDatabase();
 
         long rowId = db.insert(tableName, null, values);
@@ -141,7 +182,7 @@ public class TodayProvider extends ContentProvider {
         if (rowId > 0)
         {
             Uri resultUri = ContentUris.withAppendedId(uri, rowId);
-            context.getContentResolver().notifyChange(resultUri, null);
+            getContext().getContentResolver().notifyChange(resultUri, null);
             return resultUri;
         }
         throw new SQLiteException("Faild to insert row into " + uri);
@@ -149,27 +190,25 @@ public class TodayProvider extends ContentProvider {
 
     /**
      * Helper method for deleting rows from the table by the table name
-     * @param context Android context
      * @param tableName Name of the table in the database
      * @param uri The URI of the deleting request
      * @param selection An optional restriction to apply to rows when deleting.
      * @param selectionArgs You may include ?s in selection, which will be replaced by the values from selectionArgs, in order that they appear in the selection. The values will be bound as Strings
      * @return The number of rows affected
      */
-    protected int simpleDelete(Context context, String tableName, Uri uri, String selection, String[] selectionArgs) {
+    protected int simpleDelete(String tableName, Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = sqlStorage.getWritableDatabase();
 
         int rowsDeleted = db.delete(tableName, selection, selectionArgs);
 
         if (rowsDeleted > 0) {
-            context.getContentResolver().notifyChange(uri, null);
+            getContext().getContentResolver().notifyChange(uri, null);
         }
         return rowsDeleted;
     }
 
     /**
      * Helper method for updating rows from the table by the table name
-     * @param context Android context
      * @param tableName Name of the table in the database
      * @param uri The URI to query
      * @param values A set of column_name/value pairs to update in the database. This must not be null
@@ -177,12 +216,12 @@ public class TodayProvider extends ContentProvider {
      * @param selectionArgs You may include ?s in selection, which will be replaced by the values from selectionArgs, in order that they appear in the selection. The values will be bound as Strings
      * @return The number of rows affected
      */
-    protected int simpleUpdate(Context context, String tableName, Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    protected int simpleUpdate(String tableName, Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase db = sqlStorage.getWritableDatabase();
         int rowsUpdated = db.update(tableName, values, selection, selectionArgs);
 
         if (rowsUpdated > 0) {
-            context.getContentResolver().notifyChange(uri, null);
+            getContext().getContentResolver().notifyChange(uri, null);
         }
         return rowsUpdated;
     }

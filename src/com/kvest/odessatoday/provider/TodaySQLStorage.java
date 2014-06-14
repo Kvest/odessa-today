@@ -25,10 +25,20 @@ public class TodaySQLStorage extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Films.CREATE_TABLE_SQL);
+        db.execSQL(FilmsTimetable.CREATE_TABLE_SQL);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Nothing to do
     }
+
+//    @Override
+//    public void onOpen(SQLiteDatabase db) {
+//        super.onOpen(db);
+//        if (!db.isReadOnly()) {
+//            // Enable foreign key constraints
+//            db.execSQL("PRAGMA foreign_keys=ON;");
+//        }
+//    }
 }

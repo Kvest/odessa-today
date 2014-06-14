@@ -31,12 +31,6 @@ public class GetTodayFilmsRequest extends BaseRequest<GetTodayFilmsResponse> {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             GetTodayFilmsResponse getPostResponse = gson.fromJson(json, GetTodayFilmsResponse.class);
 
-            //save data
-            //TODO
-//            if (!getPostResponse.isErrorOccur()) {
-//                updatePostCache(getPostResponse);
-//            }
-
             return Response.success(getPostResponse, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));

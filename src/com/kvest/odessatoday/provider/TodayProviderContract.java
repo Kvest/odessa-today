@@ -11,10 +11,13 @@ import android.provider.BaseColumns;
  * To change this template use File | Settings | File Templates.
  */
 public class TodayProviderContract {
-    public static final String CONTENT_AUTHORITY = "com.kvest.odessatoday";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    static final String CONTENT_AUTHORITY = "com.kvest.odessatoday";
+    static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String FILMS_PATH = "films";
+    static final String FILMS_PATH = "films";
+    static final String TIMETABLES_PATH = "timetables";
+
+    public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
 
     public interface Tables {
         interface Films {
@@ -50,6 +53,30 @@ public class TodayProviderContract {
                     + Columns.RATING + " INTEGER, "
                     + Columns.COMMENTS_COUNT + " INTEGER, "
                     + "UNIQUE (" + Columns.FILM_ID + ") ON CONFLICT REPLACE)";
+
+            String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        }
+
+        interface FilmsTimetable {
+            String TABLE_NAME = "films_timetable";
+
+            interface Columns extends BaseColumns {
+                String FILM_ID = "film_id";
+                String CINEMA_ID = "cinema_id";
+                String DATE = "date";
+                String PRICES = "prices";
+                String FORMAT = "format";
+            }
+
+            String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
+                    + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.FILM_ID + " INTEGER,"
+                    + Columns.CINEMA_ID + " INTEGER,"
+                    + Columns.DATE + " INTEGER,"
+                    + Columns.PRICES + " TEXT,"
+                    + Columns.FORMAT + " TEXT, "
+                    + "UNIQUE(" + Columns.FILM_ID + ", " + Columns.CINEMA_ID + ", " + Columns.DATE + ") ON CONFLICT IGNORE);";
+//                    + "FOREIGN KEY(" + Columns.FILM_ID + ") REFERENCES " + Films.TABLE_NAME + "(" + Films.Columns.FILM_ID + ") ON UPDATE NO ACTION ON DELETE CASCADE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
         }
