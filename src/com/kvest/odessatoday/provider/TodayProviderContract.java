@@ -11,13 +11,14 @@ import android.provider.BaseColumns;
  * To change this template use File | Settings | File Templates.
  */
 public class TodayProviderContract {
-    static final String CONTENT_AUTHORITY = "com.kvest.odessatoday";
+    public static final String CONTENT_AUTHORITY = "com.kvest.odessatoday";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     static final String FILMS_PATH = "films";
-    static final String TIMETABLES_PATH = "timetables";
+    static final String TIMETABLE_PATH = "timetable";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
+    public static final Uri TIMETABLE_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH + "/" + TIMETABLE_PATH);
 
     public interface Tables {
         interface Films {

@@ -1,5 +1,7 @@
 package com.kvest.odessatoday.io;
 
+import android.net.Uri;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -8,11 +10,15 @@ package com.kvest.odessatoday.io;
  * To change this template use File | Settings | File Templates.
  */
 public class NetworkContract {
-    private static final String BASE_URL = "http://todayy.od.ua/api/1.0/";
+    private static final String BASE_URL = "http://today.od.ua/api/1.0/";
     private static final String FILMS_PATH = "films";
-    private static final String TODAY_PATH = "today";
 
-    public interface FilmsTodayRequest {
-        String Url = BASE_URL + "/" + FILMS_PATH + "/" + TODAY_PATH;
+    public interface FilmsRequest {
+        Uri url = Uri.parse(BASE_URL + FILMS_PATH);
+
+        public interface Params {
+            String START_DATE = "start_date";
+            String END_DATE = "end_date";
+        }
     }
 }

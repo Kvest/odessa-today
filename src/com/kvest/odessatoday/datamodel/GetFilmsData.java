@@ -9,7 +9,7 @@ import java.util.List;
  * Time: 23:30
  * To change this template use File | Settings | File Templates.
  */
-public class GetTodayFilmsData {
+public class GetFilmsData {
     public long date;
     public List<Film> films;
 }

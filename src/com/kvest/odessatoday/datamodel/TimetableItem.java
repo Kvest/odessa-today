@@ -1,5 +1,8 @@
 package com.kvest.odessatoday.datamodel;
 
+import android.content.ContentValues;
+import com.kvest.odessatoday.provider.TodayProviderContract;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -12,4 +15,14 @@ public class TimetableItem {
     public long date;
     public String prices;
     public String format;
+
+    public ContentValues getContentValues() {
+        ContentValues values = new ContentValues(4);
+        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.CINEMA_ID, cinema_id);
+        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.DATE, date);
+        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.PRICES, prices);
+        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.FORMAT, format);
+
+        return values;
+    }
 }

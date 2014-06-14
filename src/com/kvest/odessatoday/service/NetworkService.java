@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.datamodel.GetTodayFilmsData;
-import com.kvest.odessatoday.io.request.GetTodayFilmsRequest;
-import com.kvest.odessatoday.io.response.GetTodayFilmsResponse;
+import com.kvest.odessatoday.io.request.GetFilmsRequest;
+import com.kvest.odessatoday.io.response.GetFilmsResponse;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,11 +20,23 @@ import java.util.concurrent.ExecutionException;
  */
 public class NetworkService extends IntentService {
     private static final String ACTION_EXTRA = "com.kvest.odessatoday.EXTRAS.ACTION";
-    private static final int ACTION_LOAD_TODAY_FILMS = 0;
+    private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
+    private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
+    private static final int ACTION_LOAD_FILMS = 0;
 
     public static void loadTodayFilms(Context context) {
+        //calculate start and end date
+        long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+        long endDate = startDate + (TimeUnit.HOURS.toSeconds(24) - startDate % TimeUnit.HOURS.toSeconds(24));
+
+        loadFilms(context, startDate, endDate);
+    }
+
+    public static void loadFilms(Context context, long startDate, long endDate) {
         Intent intent = new Intent(context, NetworkService.class);
-        intent.putExtra(ACTION_EXTRA, ACTION_LOAD_TODAY_FILMS);
+        intent.putExtra(ACTION_EXTRA, ACTION_LOAD_FILMS);
+        intent.putExtra(START_DATE_EXTRA, startDate);
+        intent.putExtra(END_DATE_EXTRA, endDate);
 
         context.startService(intent);
     }
@@ -36,23 +48,24 @@ public class NetworkService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         switch (intent.getIntExtra(ACTION_EXTRA, -1)) {
-            case ACTION_LOAD_TODAY_FILMS :
-                doLoadTodayFilms(intent);
+            case ACTION_LOAD_FILMS :
+                doLoadFilms(intent);
                 break;
         }
     }
 
-    private void doLoadTodayFilms(Intent intent) {
+    private void doLoadFilms(Intent intent) {
+        //get extra data
+        long startDate = intent.getLongExtra(START_DATE_EXTRA, -1);
+        long endDate = intent.getLongExtra(END_DATE_EXTRA, -1);
+
         //send request
-        RequestFuture<GetTodayFilmsResponse> future = RequestFuture.newFuture();
-        GetTodayFilmsRequest request = new GetTodayFilmsRequest(future, future);
+        RequestFuture<GetFilmsResponse> future = RequestFuture.newFuture();
+        GetFilmsRequest request = new GetFilmsRequest(startDate, endDate, future, future);
         TodayApplication.getApplication().getVolleyHelper().addRequest(request);
         try {
-            GetTodayFilmsResponse response = future.get();
+            GetFilmsResponse response = future.get();
             if (response.isSuccessful()) {
-                //save data
-                saveTodayFilms(response.data);
-
                 //TODO
             } else {
                 //TODO
@@ -62,9 +75,5 @@ public class NetworkService extends IntentService {
         } catch (ExecutionException e) {
             //TODO;
         }
-    }
-
-    private void saveTodayFilms(GetTodayFilmsData response) {
-        //TODO
     }
 }

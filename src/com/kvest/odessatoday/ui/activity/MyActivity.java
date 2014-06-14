@@ -1,29 +1,22 @@
 package com.kvest.odessatoday.ui.activity;
 
 import android.app.FragmentTransaction;
+import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.UriMatcher;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.io.request.GetTodayFilmsRequest;
-import com.kvest.odessatoday.io.response.GetTodayFilmsResponse;
 import com.kvest.odessatoday.provider.TodayProviderContract;
-import com.kvest.odessatoday.provider.TodaySQLStorage;
+import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.FilmsFragment;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
-
-public class MyActivity extends TodayBaseActivity {
+public class MyActivity extends TodayBaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     /**
      * Called when the activity is first created.
      */
@@ -83,6 +76,7 @@ public class MyActivity extends TodayBaseActivity {
     }
 
     private void test() {
+        NetworkService.loadTodayFilms(this);
 //        TodaySQLStorage sqlStorage = new TodaySQLStorage(this);
 //        SQLiteDatabase db = sqlStorage.getWritableDatabase();
 //        db.delete(TodayProviderContract.Tables.Films.TABLE_NAME, null, null);
@@ -114,12 +108,12 @@ public class MyActivity extends TodayBaseActivity {
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
-//                RequestFuture<GetTodayFilmsResponse> future = RequestFuture.newFuture();
-//                GetTodayFilmsRequest req = new GetTodayFilmsRequest(future, future);
+//                RequestFuture<GetFilmsResponse> future = RequestFuture.newFuture();
+//                GetFilmsRequest req = new GetFilmsRequest(future, future);
 //                TodayApplication.getApplication().getVolleyHelper().addRequest(req);
 //
 //                try {
-//                    GetTodayFilmsResponse response = future.get(); // this will block
+//                    GetFilmsResponse response = future.get(); // this will block
 //                    response.isSuccessful();
 //                } catch (InterruptedException e) {
 //                    // exception handling
@@ -131,9 +125,9 @@ public class MyActivity extends TodayBaseActivity {
 //        }).start();
 
 
-//        GetTodayFilmsRequest req = new GetTodayFilmsRequest(new Response.Listener<GetTodayFilmsResponse>() {
+//        GetFilmsRequest req = new GetFilmsRequest(new Response.Listener<GetFilmsResponse>() {
 //            @Override
-//            public void onResponse(GetTodayFilmsResponse response) {
+//            public void onResponse(GetFilmsResponse response) {
 //                //To change body of implemented methods use File | Settings | File Templates.
 //            }
 //        }, new Response.ErrorListener() {
@@ -152,5 +146,29 @@ public class MyActivity extends TodayBaseActivity {
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh.mm.ss");
 //        Date d = new Date(1401310800000L);
 //        Log.d("KVEST_TAG", "d=" + sdf.format(d));
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            getLoaderManager().initLoader(1, null, this);
+        }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, TodayProviderContract.FILMS_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d("KVEST_TAG", "new cursor = " + data.getCount());
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        Log.d("KVEST_TAG", "reset");
     }
 }

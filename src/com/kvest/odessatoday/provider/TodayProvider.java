@@ -32,8 +32,8 @@ public class TodayProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH, FILM_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/#", FILM_ITEM_URI_INDICATOR);
-        uriMatcher.addURI(CONTENT_AUTHORITY, TIMETABLES_PATH, TIMETABLE_LIST_URI_INDICATOR);
-        uriMatcher.addURI(CONTENT_AUTHORITY, TIMETABLES_PATH + "/#", TIMETABLE_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH, TIMETABLE_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/#", TIMETABLE_ITEM_URI_INDICATOR);
     }
 
     @Override
