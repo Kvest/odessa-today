@@ -21,8 +21,12 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * To change this template use File | Settings | File Templates.
  */
 public class FilmsAdapter extends CursorAdapter {
-    public FilmsAdapter(Context context, int flags) {
-        super(context, null, flags);
+    public static final String[] PROJECTION = new String[]{Tables.Films.Columns._ID, Tables.Films.Columns.IMAGE, Tables.Films.Columns.NAME,
+                                                           Tables.Films.Columns.GENRE, Tables.Films.Columns.DIRECTOR, Tables.Films.Columns.ACTORS,
+                                                           Tables.Films.Columns.RATING, Tables.Films.Columns.COMMENTS_COUNT };
+
+    public FilmsAdapter(Context context) {
+        super(context, null, 0);
     }
 
     private int imageColumnIndex = -1;
@@ -37,7 +41,7 @@ public class FilmsAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         //create view
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.films_fragment, viewGroup, false);
+        View view = inflater.inflate(R.layout.films_list_item, viewGroup, false);
 
         //create holder
         ViewHolder holder = new ViewHolder();

@@ -7,6 +7,7 @@ import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.io.request.GetFilmsRequest;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  * To change this template use File | Settings | File Templates.
  */
 public class NetworkService extends IntentService {
+
     private static final String ACTION_EXTRA = "com.kvest.odessatoday.EXTRAS.ACTION";
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
@@ -27,7 +29,7 @@ public class NetworkService extends IntentService {
     public static void loadTodayFilms(Context context) {
         //calculate start and end date
         long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-        long endDate = startDate + (TimeUnit.HOURS.toSeconds(24) - startDate % TimeUnit.HOURS.toSeconds(24));
+        long endDate = Utils.getEndOfTheDay(startDate);
 
         loadFilms(context, startDate, endDate);
     }

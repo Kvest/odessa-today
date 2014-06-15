@@ -1,5 +1,7 @@
 package com.kvest.odessatoday.ui.activity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -11,12 +13,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.FilmsFragment;
 
-public class MyActivity extends TodayBaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+
+public class MyActivity extends TodayBaseActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                             DatePickerDialog.OnDateSetListener {
+    private static final int START_YEAR = 1900;
+    private static final int SELECT_DATE_DIALOG_ID = 0;
     /**
      * Called when the activity is first created.
      */
@@ -25,17 +37,32 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        findViewById(R.id.select_date).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(SELECT_DATE_DIALOG_ID);
+            }
+        });
         test();
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                FilmsFragment filmsFragment = FilmsFragment.getInstance(true);
+                FilmsFragment filmsFragment = FilmsFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()), true);
                 transaction.add(R.id.fragment_container, filmsFragment);
             } finally {
                 transaction.commit();
             }
         }
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == SELECT_DATE_DIALOG_ID) {
+            return new DatePickerDialog(this,  this, 2014, 5, 15);
+        }
+
+        return super.onCreateDialog(id);
     }
 
     private void printTable(SQLiteDatabase db, String tableName) {
@@ -76,7 +103,8 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
     }
 
     private void test() {
-        NetworkService.loadTodayFilms(this);
+
+//        NetworkService.loadTodayFilms(this);
 //        TodaySQLStorage sqlStorage = new TodaySQLStorage(this);
 //        SQLiteDatabase db = sqlStorage.getWritableDatabase();
 //        db.delete(TodayProviderContract.Tables.Films.TABLE_NAME, null, null);
@@ -148,14 +176,14 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
 //        Log.d("KVEST_TAG", "d=" + sdf.format(d));
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        if (savedInstanceState == null) {
-            getLoaderManager().initLoader(1, null, this);
-        }
-    }
+//    @Override
+//    protected void onPostCreate(Bundle savedInstanceState) {
+//        super.onPostCreate(savedInstanceState);
+//
+//        if (savedInstanceState == null) {
+//            getLoaderManager().initLoader(1, null, this);
+//        }
+//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -170,5 +198,21 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.d("KVEST_TAG", "reset");
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        //calculate date
+        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
+        long date = cal.getTimeInMillis();
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        try {
+            FilmsFragment filmsFragment = FilmsFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(date), false);
+            transaction.replace(R.id.fragment_container, filmsFragment);
+        } finally {
+            transaction.commit();
+        }
     }
 }
