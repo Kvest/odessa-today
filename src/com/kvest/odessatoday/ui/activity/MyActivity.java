@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.io.request.GetCinemasRequest;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.FilmsFragment;
@@ -103,7 +105,8 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
     }
 
     private void test() {
-
+        GetCinemasRequest req = new GetCinemasRequest(null, null);
+        TodayApplication.getApplication().getVolleyHelper().addRequest(req);
 //        NetworkService.loadTodayFilms(this);
 //        TodaySQLStorage sqlStorage = new TodaySQLStorage(this);
 //        SQLiteDatabase db = sqlStorage.getWritableDatabase();
