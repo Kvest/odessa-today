@@ -12,6 +12,7 @@ import android.net.Uri;
 public class NetworkContract {
     private static final String BASE_URL = "http://today.od.ua/api/1.0/";
     private static final String FILMS_PATH = "films";
+    public static final String API_KEY_HEADER_NAME = "api-key";
 
     public interface FilmsRequest {
         Uri url = Uri.parse(BASE_URL + FILMS_PATH);

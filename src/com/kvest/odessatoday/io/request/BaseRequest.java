@@ -2,7 +2,12 @@ package com.kvest.odessatoday.io.request;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonRequest;
+import com.kvest.odessatoday.io.NetworkContract;
 import com.kvest.odessatoday.io.response.BaseResponse;
+import com.kvest.odessatoday.utils.Constants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,5 +25,11 @@ public abstract class BaseRequest<T> extends JsonRequest<T> {
         super(method, url, requestBody, listener, errorListener);
     }
 
-    //TODO add api key here
+    @Override
+    public Map getHeaders() {
+        //add API key
+        Map headers = new HashMap();
+        headers.put(NetworkContract.API_KEY_HEADER_NAME, Constants.NETWORK_API_KEY);
+        return headers;
+    }
 }
