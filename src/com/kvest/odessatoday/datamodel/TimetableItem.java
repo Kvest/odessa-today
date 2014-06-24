@@ -14,7 +14,7 @@ public class TimetableItem {
     public long cinema_id;
     public long date;
     public String prices;
-    public String format;
+    public int format;
 
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues(4);

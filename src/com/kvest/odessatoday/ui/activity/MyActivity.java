@@ -105,8 +105,8 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
     }
 
     private void test() {
-        GetCinemasRequest req = new GetCinemasRequest(null, null);
-        TodayApplication.getApplication().getVolleyHelper().addRequest(req);
+//        GetCinemasRequest req = new GetCinemasRequest(null, null);
+//        TodayApplication.getApplication().getVolleyHelper().addRequest(req);
 //        NetworkService.loadTodayFilms(this);
 //        TodaySQLStorage sqlStorage = new TodaySQLStorage(this);
 //        SQLiteDatabase db = sqlStorage.getWritableDatabase();

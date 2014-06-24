@@ -24,6 +24,8 @@ public class Film {
     public String video;
     public String genre;
     public float rating;
+    public int commentsCount;
+    public int is_premiere;
     public List<TimetableItem> timetable;
 
     public ContentValues getContentValues() {

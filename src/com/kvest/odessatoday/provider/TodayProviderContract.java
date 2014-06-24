@@ -75,7 +75,7 @@ public class TodayProviderContract {
                     + Columns.CINEMA_ID + " INTEGER,"
                     + Columns.DATE + " INTEGER,"
                     + Columns.PRICES + " TEXT,"
-                    + Columns.FORMAT + " TEXT, "
+                    + Columns.FORMAT + " INTEGER, "
                     + "UNIQUE(" + Columns.FILM_ID + ", " + Columns.CINEMA_ID + ", " + Columns.DATE + ") ON CONFLICT IGNORE);";
 //                    + "FOREIGN KEY(" + Columns.FILM_ID + ") REFERENCES " + Films.TABLE_NAME + "(" + Films.Columns.FILM_ID + ") ON UPDATE NO ACTION ON DELETE CASCADE);";
 
