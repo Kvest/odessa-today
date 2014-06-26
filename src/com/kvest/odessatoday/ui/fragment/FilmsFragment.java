@@ -17,6 +17,7 @@ import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
 import com.kvest.odessatoday.utils.Utils;
+import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -79,7 +80,11 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case FILMS_LOADER_ID :
-                return new CursorLoader(getActivity(), TodayProviderContract.FILMS_URI, FilmsAdapter.PROJECTION, null, null, null);
+                long startDate = getDate();
+                long endDate = Utils.getEndOfTheDay(startDate);
+                String selection = Tables.Films.Columns.FILM_ID + " in (" + Tables.FilmsTimetable.GET_FILMS_ID_BY_PERIOD_SQL + ")";
+                return new CursorLoader(getActivity(), TodayProviderContract.FILMS_URI, FilmsAdapter.PROJECTION, selection,
+                                        new String[]{Long.toString(startDate), Long.toString(endDate)}, null);
             default :
                 return null;
         }

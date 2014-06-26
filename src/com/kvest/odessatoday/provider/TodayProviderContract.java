@@ -80,6 +80,8 @@ public class TodayProviderContract {
 //                    + "FOREIGN KEY(" + Columns.FILM_ID + ") REFERENCES " + Films.TABLE_NAME + "(" + Films.Columns.FILM_ID + ") ON UPDATE NO ACTION ON DELETE CASCADE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+            String GET_FILMS_ID_BY_PERIOD_SQL = "SELECT DISTINCT " + Columns.FILM_ID + " FROM " + TABLE_NAME +
+                                                " WHERE " + Columns.DATE + ">=? AND " + Columns.DATE + "<=?";
         }
     }
 }
