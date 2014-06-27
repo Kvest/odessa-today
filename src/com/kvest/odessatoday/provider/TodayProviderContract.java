@@ -62,6 +62,7 @@ public class TodayProviderContract {
             String TABLE_NAME = "films_timetable";
 
             interface Columns extends BaseColumns {
+                String TIMETABLE_ID = "timetable_id";
                 String FILM_ID = "film_id";
                 String CINEMA_ID = "cinema_id";
                 String DATE = "date";
@@ -71,12 +72,13 @@ public class TodayProviderContract {
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
                     + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.TIMETABLE_ID + " INTEGER,"
                     + Columns.FILM_ID + " INTEGER,"
                     + Columns.CINEMA_ID + " INTEGER,"
                     + Columns.DATE + " INTEGER,"
                     + Columns.PRICES + " TEXT,"
                     + Columns.FORMAT + " INTEGER, "
-                    + "UNIQUE(" + Columns.FILM_ID + ", " + Columns.CINEMA_ID + ", " + Columns.DATE + ") ON CONFLICT IGNORE);";
+                    + "UNIQUE(" + Columns.TIMETABLE_ID + ") ON CONFLICT REPLACE);";
 //                    + "FOREIGN KEY(" + Columns.FILM_ID + ") REFERENCES " + Films.TABLE_NAME + "(" + Films.Columns.FILM_ID + ") ON UPDATE NO ACTION ON DELETE CASCADE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;

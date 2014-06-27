@@ -61,7 +61,7 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == SELECT_DATE_DIALOG_ID) {
-            return new DatePickerDialog(this,  this, 2014, 5, 15);
+            return new DatePickerDialog(this,  this, 2014, 5, 30);
         }
 
         return super.onCreateDialog(id);

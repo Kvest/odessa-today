@@ -11,13 +11,15 @@ import com.kvest.odessatoday.provider.TodayProviderContract;
  * To change this template use File | Settings | File Templates.
  */
 public class TimetableItem {
+    public long id;
     public long cinema_id;
     public long date;
     public String prices;
     public int format;
 
     public ContentValues getContentValues(long filmId) {
-        ContentValues values = new ContentValues(4);
+        ContentValues values = new ContentValues(6);
+        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.TIMETABLE_ID, id);
         values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.CINEMA_ID, cinema_id);
         values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.FILM_ID, filmId);
         values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.DATE, date);
