@@ -91,7 +91,7 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
             //insert timetable
             for (TimetableItem timetableItem : film.timetable) {
-                operations.add(ContentProviderOperation.newInsert(TIMETABLE_URI).withValues(timetableItem.getContentValues()).build());
+                operations.add(ContentProviderOperation.newInsert(TIMETABLE_URI).withValues(timetableItem.getContentValues(film.id)).build());
             }
         }
 

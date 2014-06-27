@@ -16,9 +16,10 @@ public class TimetableItem {
     public String prices;
     public int format;
 
-    public ContentValues getContentValues() {
+    public ContentValues getContentValues(long filmId) {
         ContentValues values = new ContentValues(4);
         values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.CINEMA_ID, cinema_id);
+        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.FILM_ID, filmId);
         values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.DATE, date);
         values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.PRICES, prices);
         values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.FORMAT, format);
