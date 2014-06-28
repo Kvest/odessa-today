@@ -9,6 +9,6 @@ package com.kvest.odessatoday.utils;
  */
 public abstract class Constants {
     public static final String BUGSENS_API_KEY = "ae43aa1c";
-    public static final String NETWORK_API_KEY = "";
+    public static final String NETWORK_API_KEY = "key4debug";
     public static final String TAG = "odessa-today";
 }

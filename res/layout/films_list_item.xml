@@ -31,6 +31,7 @@
         android:layout_below="@id/genre"
         android:numStars="5"
         android:stepSize="1"
+        style="@android:style/Widget.Holo.RatingBar.Small"
         android:isIndicator="true"/>
     <TextView
         android:id="@+id/comments_count"

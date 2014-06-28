@@ -3,10 +3,14 @@ package com.kvest.odessatoday.service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.io.request.GetFilmsRequest;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
+import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
 
 import java.util.concurrent.ExecutionException;
@@ -25,6 +29,7 @@ public class NetworkService extends IntentService {
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
     private static final int ACTION_LOAD_FILMS = 0;
+    private static final int ACTION_LOAD_CINEMAS = 1;
 
     public static void loadTodayFilms(Context context) {
         //calculate start and end date
@@ -43,6 +48,13 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
+    public static void loadCinemas(Context context) {
+        Intent intent = new Intent(context, NetworkService.class);
+        intent.putExtra(ACTION_EXTRA, ACTION_LOAD_CINEMAS);
+
+        context.startService(intent);
+    }
+
     public NetworkService() {
         super("NetworkService");
     }
@@ -53,7 +65,15 @@ public class NetworkService extends IntentService {
             case ACTION_LOAD_FILMS :
                 doLoadFilms(intent);
                 break;
+            case ACTION_LOAD_CINEMAS :
+                doLoadCinemas(intent);
+                break;
         }
+    }
+
+    private void doLoadCinemas(Intent  intent) {
+        //TODO
+        //Проверить что вызволось при запросе фильмов
     }
 
     private void doLoadFilms(Intent intent) {
@@ -68,14 +88,31 @@ public class NetworkService extends IntentService {
         try {
             GetFilmsResponse response = future.get();
             if (response.isSuccessful()) {
-                //TODO
+                //notify listeners about successful loading films
+                sendLocalBroadcast(LoadFilmsNotification.createSuccessResult());
+
+                //update cinemas
+                NetworkService.loadCinemas(this);
             } else {
-                //TODO
+                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+
+                //notify listeners about unsuccessful loading films
+                sendLocalBroadcast(LoadFilmsNotification.createErrorsResult(response.error));
             }
         } catch (InterruptedException e) {
-            //TODO
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading films
+            sendLocalBroadcast(LoadFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
         } catch (ExecutionException e) {
-            //TODO;
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading films
+            sendLocalBroadcast(LoadFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
         }
+    }
+
+    private void sendLocalBroadcast(Intent intent) {
+        LocalBroadcastManager.getInstance(NetworkService.this).sendBroadcast(intent);
     }
 }

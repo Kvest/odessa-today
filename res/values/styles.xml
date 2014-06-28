@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Application style-->
+    <style name="OdessaTodayTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/OdessaTodayActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="OdessaTodayActionBar"
+           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/application_green</item>
+        <!--Hide app icon-->
+        <!--<item name="android:displayOptions">showTitle</item>-->
+    </style>
+</resources>

@@ -41,6 +41,8 @@ public class Film {
         values.put(TodayProviderContract.Tables.Films.Columns.VIDEO, video);
         values.put(TodayProviderContract.Tables.Films.Columns.GENRE, genre);
         values.put(TodayProviderContract.Tables.Films.Columns.RATING, rating);
+        values.put(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT, comments_count);
+        values.put(TodayProviderContract.Tables.Films.Columns.IS_PREMIERE, is_premiere);
 
         return values;
     }
