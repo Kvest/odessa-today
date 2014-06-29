@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="films_list_item_padding">8dip</dimen>
+    <dimen name="film_thumbnail_image_width">120dip</dimen>
+    <dimen name="film_thumbnail_padding_right">12dip</dimen>
+    <dimen name="films_list_divider_height">1dip</dimen>
+    <dimen name="film_name_text_size">22sp</dimen>
+    <dimen name="genre_text_size">14sp</dimen>
+    <dimen name="premiere_label_text_size">14sp</dimen>
+    <dimen name="premiere_label_padding">2dip</dimen>
+</resources>

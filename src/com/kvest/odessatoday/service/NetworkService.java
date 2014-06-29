@@ -73,7 +73,6 @@ public class NetworkService extends IntentService {
 
     private void doLoadCinemas(Intent  intent) {
         //TODO
-        //Проверить что вызволось при запросе фильмов
     }
 
     private void doLoadFilms(Intent intent) {
