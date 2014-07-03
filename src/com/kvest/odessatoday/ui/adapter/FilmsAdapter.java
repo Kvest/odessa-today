@@ -46,6 +46,8 @@ public class FilmsAdapter extends CursorAdapter {
         //create holder
         ViewHolder holder = new ViewHolder();
         holder.image = (NetworkImageView)view.findViewById(R.id.film_image);
+        holder.image.setDefaultImageResId(R.drawable.no_poster);
+        holder.image.setErrorImageResId(R.drawable.no_poster);
         holder.name = (TextView)view.findViewById(R.id.film_name);
         holder.genre = (TextView)view.findViewById(R.id.genre);
         holder.rating = (RatingBar)view.findViewById(R.id.film_rating);

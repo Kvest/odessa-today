@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Odessa Today</string>
     <string name="premiere">ПРЕМЬЕРА</string>
+    <string name="select_date">Выбрать дату</string>
 </resources>

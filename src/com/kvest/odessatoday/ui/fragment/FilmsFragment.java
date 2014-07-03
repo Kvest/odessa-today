@@ -7,15 +7,15 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
+import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -40,6 +40,8 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
     private ListView filmsList;
     private FilmsAdapter adapter;
 
+    private ShowCalendarListener showCalendarListener;
+
     public static FilmsFragment getInstance(long date, boolean isForToday) {
         Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_DATE, date);
@@ -51,7 +53,26 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.films_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.show_calendar:
+                onShowCalendar();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         View root = inflater.inflate(R.layout.films_fragment, container, false);
 
         initComponents(root);
@@ -62,6 +83,12 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+        try {
+            showCalendarListener = (ShowCalendarListener) activity;
+        } catch (ClassCastException cce) {
+            Log.e(Constants.TAG, "Host activity for FilmsFragment should implements FilmsFragment.ShowCalendarListener");
+        }
 
         //reload films data
         long startDate = getDate();
@@ -74,6 +101,12 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
         super.onActivityCreated(savedInstanceState);
 
         getLoaderManager().initLoader(FILMS_LOADER_ID, null, this);
+    }
+
+    private void onShowCalendar() {
+        if (showCalendarListener != null) {
+            showCalendarListener.onShowCalendar();
+        }
     }
 
     @Override
@@ -139,5 +172,9 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
         } else {
             return 0;
         }
+    }
+
+    public interface ShowCalendarListener {
+        public void onShowCalendar();
     }
 }

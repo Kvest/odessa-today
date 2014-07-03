@@ -28,7 +28,8 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class MyActivity extends TodayBaseActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-                                                             DatePickerDialog.OnDateSetListener {
+                                                             DatePickerDialog.OnDateSetListener,
+                                                             FilmsFragment.ShowCalendarListener {
     private static final int START_YEAR = 1900;
     private static final int SELECT_DATE_DIALOG_ID = 0;
     /**
@@ -39,12 +40,6 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        findViewById(R.id.select_date).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(SELECT_DATE_DIALOG_ID);
-            }
-        });
         test();
 
         if (savedInstanceState == null) {
@@ -61,7 +56,7 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == SELECT_DATE_DIALOG_ID) {
-            return new DatePickerDialog(this,  this, 2014, 5, 30);
+            return new DatePickerDialog(this,  this, 2014, 6, 7);
         }
 
         return super.onCreateDialog(id);
@@ -217,5 +212,10 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
         } finally {
             transaction.commit();
         }
+    }
+
+    @Override
+    public void onShowCalendar() {
+        showDialog(SELECT_DATE_DIALOG_ID);
     }
 }
