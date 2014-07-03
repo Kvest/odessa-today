@@ -35,8 +35,11 @@
         android:layout_toRightOf="@id/film_image"
         android:layout_below="@id/genre"
         android:numStars="5"
-        android:stepSize="1"
-        style="@android:style/Widget.Holo.RatingBar.Small"
+        android:stepSize="0.1"
+        android:layout_marginTop="@dimen/films_ratingbar_margin"
+        android:layout_marginRight="@dimen/films_ratingbar_margin"
+        android:layout_marginBottom="@dimen/films_ratingbar_margin"
+        style="@style/FilmsRatingBarTheme"
         android:isIndicator="true"/>
     <TextView
         android:id="@+id/comments_count"

@@ -3,6 +3,7 @@ package com.kvest.odessatoday.ui.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class FilmsAdapter extends CursorAdapter {
         //create holder
         ViewHolder holder = new ViewHolder();
         holder.image = (NetworkImageView)view.findViewById(R.id.film_image);
-        holder.image.setDefaultImageResId(R.drawable.no_poster);
+        holder.image.setDefaultImageResId(R.drawable.loading_poster);
         holder.image.setErrorImageResId(R.drawable.no_poster);
         holder.name = (TextView)view.findViewById(R.id.film_name);
         holder.genre = (TextView)view.findViewById(R.id.genre);
@@ -65,10 +66,10 @@ public class FilmsAdapter extends CursorAdapter {
         if (!isColumnIndexesCalculated()) {
             calculateColumnIndexes(cursor);
         }
-
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.genre.setText(cursor.getString(genreColumnIndex));
-        holder.rating.setRating(cursor.getInt(ratingColumnIndex));
+        holder.genre.setVisibility(TextUtils.isEmpty(holder.genre.getText()) ? View.GONE : View.VISIBLE);
+        holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
         holder.commentsCount.setText(Integer.toString(cursor.getInt(commentsCountColumnIndex)));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex),
                                  TodayApplication.getApplication().getVolleyHelper().getImageLoader());

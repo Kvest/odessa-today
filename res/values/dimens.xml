@@ -8,4 +8,6 @@
     <dimen name="genre_text_size">14sp</dimen>
     <dimen name="premiere_label_text_size">14sp</dimen>
     <dimen name="premiere_label_padding">2dip</dimen>
+    <dimen name="films_ratingbar_min_height">24dip</dimen>
+    <dimen name="films_ratingbar_margin">4dip</dimen>
 </resources>

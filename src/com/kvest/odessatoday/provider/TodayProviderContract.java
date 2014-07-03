@@ -52,7 +52,7 @@ public class TodayProviderContract {
                     + Columns.IMAGE + " TEXT, "
                     + Columns.VIDEO + " TEXT, "
                     + Columns.GENRE + " TEXT, "
-                    + Columns.RATING + " INTEGER, "
+                    + Columns.RATING + " REAL, "
                     + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
                     + Columns.IS_PREMIERE + " INTEGER DEFAULT 0, "
                     + "UNIQUE (" + Columns.FILM_ID + ") ON CONFLICT REPLACE)";
