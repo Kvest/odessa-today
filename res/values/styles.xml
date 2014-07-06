@@ -19,4 +19,17 @@
         <item name="android:indeterminateDrawable">@drawable/films_ratingbar</item>
         <item name="android:minHeight">@dimen/films_ratingbar_min_height</item>
     </style>
+
+    <style name="CategorySelectorRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton" >
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/category_selector_bg</item>
+        <item name="android:textColor">@color/category_selector_text_color</item>
+        <item name="android:textSize">@dimen/category_selector_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">@dimen/category_selector_padding</item>
+        <item name="android:paddingBottom">@dimen/category_selector_padding</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>

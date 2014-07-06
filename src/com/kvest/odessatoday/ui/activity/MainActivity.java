@@ -5,29 +5,22 @@ import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.DatePicker;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.io.request.GetCinemasRequest;
 import com.kvest.odessatoday.provider.TodayProviderContract;
-import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.FilmsFragment;
 
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class MyActivity extends TodayBaseActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+public class MainActivity extends TodayBaseActivity implements LoaderManager.LoaderCallbacks<Cursor>,
                                                              DatePickerDialog.OnDateSetListener,
                                                              FilmsFragment.ShowCalendarListener {
     private static final int START_YEAR = 1900;
@@ -38,7 +31,7 @@ public class MyActivity extends TodayBaseActivity implements LoaderManager.Loade
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.main_activity);
 
         test();
 

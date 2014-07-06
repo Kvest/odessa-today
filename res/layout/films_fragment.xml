@@ -4,12 +4,40 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/date"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/films_list_divider_height"
+        android:background="@color/films_list_divider_color" />
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="22sp" />
+        android:background="@color/films_date_bg">
+        <TextView
+            android:id="@+id/is_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today_marker"
+            android:textColor="@color/films_date_text_color"
+            android:textSize="@dimen/films_date_text_size"/>
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/films_date_text_color"
+            android:textSize="@dimen/films_date_text_size" />
+        <TextView
+            android:id="@+id/week_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/films_week_text_color"
+            android:textSize="@dimen/films_week_text_size" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/films_list_divider_height"
+        android:background="@color/films_list_divider_color" />
     <ListView
         android:id="@+id/films_list"
         android:divider="@color/films_list_divider_color"
