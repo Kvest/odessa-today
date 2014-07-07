@@ -16,6 +16,7 @@ public class TodayProviderContract {
 
     static final String FILMS_PATH = "films";
     static final String TIMETABLE_PATH = "timetable";
+    static final String CINEMAS_PATH = "cinemas";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
     public static final Uri TIMETABLE_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH + "/" + TIMETABLE_PATH);
@@ -86,6 +87,34 @@ public class TodayProviderContract {
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String GET_FILMS_ID_BY_PERIOD_SQL = "SELECT DISTINCT " + Columns.FILM_ID + " FROM " + TABLE_NAME +
                                                 " WHERE " + Columns.DATE + ">=? AND " + Columns.DATE + "<=?";
+        }
+
+        interface Cinemas {
+            String TABLE_NAME = "cinemas";
+            interface Columns extends BaseColumns {
+                String CINEMA_ID = "cinema_id";
+                String NAME = "name";
+                String ADDRESS = "address";
+                String PHONES = "phones";
+                String TRANSPORT = "transport";
+                String DESCRIPTION = "description";
+                String WORK_TIME = "worktime";
+                String IMAGE = "image";
+            }
+
+            String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
+                    + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.CINEMA_ID + " INTEGER,"
+                    + Columns.NAME + " TEXT,"
+                    + Columns.ADDRESS + " TEXT,"
+                    + Columns.PHONES + " TEXT,"
+                    + Columns.TRANSPORT + " TEXT,"
+                    + Columns.DESCRIPTION + " TEXT,"
+                    + Columns.WORK_TIME + " TEXT,"
+                    + Columns.IMAGE + " TEXT,"
+                    + "UNIQUE(" + Columns.CINEMA_ID + ") ON CONFLICT REPLACE);";
+
+            String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
         }
     }
 }

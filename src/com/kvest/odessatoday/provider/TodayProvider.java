@@ -26,6 +26,8 @@ public class TodayProvider extends ContentProvider {
     private static final int FILM_ITEM_URI_INDICATOR = 2;
     private static final int TIMETABLE_LIST_URI_INDICATOR = 3;
     private static final int TIMETABLE_ITEM_URI_INDICATOR = 4;
+    private static final int CINEMA_LIST_URI_INDICATOR = 5;
+    private static final int CINEMA_ITEM_URI_INDICATOR = 6;
 
     private static final UriMatcher uriMatcher;
     static {
@@ -34,6 +36,8 @@ public class TodayProvider extends ContentProvider {
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/#", FILM_ITEM_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH, TIMETABLE_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/#", TIMETABLE_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, CINEMAS_PATH, CINEMA_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, CINEMAS_PATH + "/#", CINEMA_ITEM_URI_INDICATOR);
     }
 
     @Override
@@ -61,6 +65,12 @@ public class TodayProvider extends ContentProvider {
                 return queryFullTable(Tables.FilmsTimetable.TABLE_NAME , uri, projection,
                         Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
+            case CINEMA_LIST_URI_INDICATOR :
+                return queryFullTable(Tables.Cinemas.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
+            case CINEMA_ITEM_URI_INDICATOR :
+                return queryFullTable(Tables.Cinemas.TABLE_NAME , uri, projection,
+                        Tables.Cinemas.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null), sortOrder);
         }
 
         throw new IllegalArgumentException("Unknown uri for query : " + uri);
@@ -73,6 +83,8 @@ public class TodayProvider extends ContentProvider {
                 return simpleInsert(Tables.Films.TABLE_NAME, uri, values);
             case TIMETABLE_LIST_URI_INDICATOR :
                 return simpleInsert(Tables.FilmsTimetable.TABLE_NAME, uri, values);
+            case CINEMA_LIST_URI_INDICATOR :
+                return simpleInsert(Tables.Cinemas.TABLE_NAME, uri, values);
         }
         throw new IllegalArgumentException("Unknown uri for insert : " + uri);
     }
@@ -93,6 +105,12 @@ public class TodayProvider extends ContentProvider {
             case TIMETABLE_ITEM_URI_INDICATOR :
                 return simpleDelete(Tables.FilmsTimetable.TABLE_NAME, uri,
                         Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case CINEMA_LIST_URI_INDICATOR :
+                return simpleDelete(Tables.Cinemas.TABLE_NAME, uri, selection, selectionArgs);
+            case CINEMA_ITEM_URI_INDICATOR :
+                return simpleDelete(Tables.Cinemas.TABLE_NAME, uri,
+                        Tables.Cinemas.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 
@@ -115,6 +133,12 @@ public class TodayProvider extends ContentProvider {
             case TIMETABLE_ITEM_URI_INDICATOR :
                 return simpleUpdate(Tables.FilmsTimetable.TABLE_NAME, uri, values,
                         Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case CINEMA_LIST_URI_INDICATOR :
+                return simpleUpdate(Tables.Cinemas.TABLE_NAME, uri, values, selection, selectionArgs);
+            case CINEMA_ITEM_URI_INDICATOR :
+                return simpleUpdate(Tables.Cinemas.TABLE_NAME, uri, values,
+                        Tables.Cinemas.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 
