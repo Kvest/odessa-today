@@ -8,4 +8,8 @@
     <color name="films_week_text_color">#FF0000</color>
     <color name="films_date_bg">#DDDDDD</color>
     <color name="category_selector_checked_bg">#FFFFFF</color>
+
+    <!--Calendar fragment-->
+    <color name="calendar_header_bg">#444953</color>
+    <color name="calendar_shown_month_text_color">#ffffff</color>
 </resources>

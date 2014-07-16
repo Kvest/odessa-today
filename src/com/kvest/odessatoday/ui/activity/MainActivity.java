@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.DatePicker;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.TodayProviderContract;
+import com.kvest.odessatoday.ui.fragment.CalendarFragment;
 import com.kvest.odessatoday.ui.fragment.FilmsFragment;
 
 import java.util.GregorianCalendar;
@@ -38,8 +39,11 @@ public class MainActivity extends TodayBaseActivity implements LoaderManager.Loa
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                FilmsFragment filmsFragment = FilmsFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()), true);
-                transaction.add(R.id.fragment_container, filmsFragment);
+//                FilmsFragment filmsFragment = FilmsFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()), true);
+//                transaction.add(R.id.fragment_container, filmsFragment);
+
+                CalendarFragment calendarFragment = CalendarFragment.getInstance(System.currentTimeMillis());
+                transaction.add(R.id.fragment_container, calendarFragment);
             } finally {
                 transaction.commit();
             }

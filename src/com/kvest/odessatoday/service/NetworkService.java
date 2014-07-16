@@ -7,8 +7,11 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
 import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
+import com.kvest.odessatoday.io.request.GetCinemasRequest;
 import com.kvest.odessatoday.io.request.GetFilmsRequest;
+import com.kvest.odessatoday.io.response.GetCinemasResponse;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
@@ -72,7 +75,31 @@ public class NetworkService extends IntentService {
     }
 
     private void doLoadCinemas(Intent  intent) {
-        //TODO
+        RequestFuture<GetCinemasResponse> future = RequestFuture.newFuture();
+        GetCinemasRequest request = new GetCinemasRequest(future, future);
+        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
+        try {
+            GetCinemasResponse response = future.get();
+            if (response.isSuccessful()) {
+                //notify listeners about successful loading cinemas
+                sendLocalBroadcast(LoadCinemasNotification.createSuccessResult());
+            } else {
+                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+
+                //notify listeners about unsuccessful loading cinemas
+                sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(response.error));
+            }
+        } catch (InterruptedException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading cinemas
+            sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(e.getLocalizedMessage()));
+        } catch (ExecutionException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading cinemas
+            sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(e.getLocalizedMessage()));
+        }
     }
 
     private void doLoadFilms(Intent intent) {
