@@ -11,5 +11,10 @@
 
     <!--Calendar fragment-->
     <color name="calendar_header_bg">#444953</color>
+    <color name="calendar_bg">#23252b</color>
     <color name="calendar_shown_month_text_color">#ffffff</color>
+    <color name="calendar_other_month_text_color">#444953</color>
+    <color name="calendar_passed_days_text_color">#a3a3a3</color>
+    <color name="calendar_active_days_text_color">#ffffff</color>
+    <color name="calendar_selected_day_bg_color">#8ab71b</color>
 </resources>

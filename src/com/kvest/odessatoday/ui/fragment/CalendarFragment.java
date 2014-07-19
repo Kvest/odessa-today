@@ -1,19 +1,25 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.utils.Constants;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,15 +30,23 @@ import java.util.concurrent.TimeUnit;
  * To change this template use File | Settings | File Templates.
  */
 public class CalendarFragment extends Fragment {
+    private static final long ONE_DAY_MILLIS = TimeUnit.DAYS.toMillis(1);
     private static final String SELECTED_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.SELECTED_DATE";
+    private static final String DATE_FORMAT_PATTERN = "LLLL yyyy";
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
-
+    private Calendar calendar;
+    private CalendarAdapter adapter;
+    private int shownMonthNumber;
+    private int currentMonthNumber;
     private TextView shownMonthLabel;
-    private TableLayout days;
+    private Button showPreviousMonthButton;
+
+    private OnDateSelectedListener onDateSelectedListener;
 
     public static CalendarFragment getInstance(long selectedDate) {
         //cut hours, minutes,...
-        selectedDate -= (selectedDate % TimeUnit.DAYS.toMillis(1));
+        selectedDate = getDayDate(selectedDate);
 
         Bundle arguments = new Bundle(1);
         arguments.putLong(SELECTED_DATE_EXTRA, selectedDate);
@@ -51,67 +65,72 @@ public class CalendarFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            onDateSelectedListener = (OnDateSelectedListener) activity;
+        } catch (ClassCastException cce) {
+            Log.e(Constants.TAG, "Host activity for CalendarFragment should implements CalendarFragment.OnDateSelectedListener");
+        }
+    }
+
     private void init(View root) {
+        calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        currentMonthNumber = getMonthNumber(System.currentTimeMillis());
+
         //days = (TableLayout) root.findViewById(R.id.days);
         shownMonthLabel = (TextView) root.findViewById(R.id.shown_month_label);
 
-        CalendarAdapter adapter = new CalendarAdapter(root.getContext());
-        adapter.setContent(getSelectedDate());
-        ((GridView)root.findViewById(R.id.calendar_grid)).setAdapter(adapter);
+        //setup adapter
+        adapter = new CalendarAdapter(root.getContext());
+        GridView daysGridView = (GridView)root.findViewById(R.id.calendar_grid);
+        daysGridView.setAdapter(adapter);
+        daysGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long selectedDate) {
+                if (onDateSelectedListener != null) {
+                    onDateSelectedListener.onDateSelected(selectedDate);
+                }
+            }
+        });
+
+        //setup buttons
+        root.findViewById(R.id.next_month).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNextMonth();
+            }
+        });
+        showPreviousMonthButton = (Button) root.findViewById(R.id.previous_month);
+        showPreviousMonthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPreviousMonth();
+            }
+        });
+
+        //show calendar starting from the month with selected day
+        showMonth(getMonthNumber(getSelectedDate()));
     }
 
-//    private void setDays(TableLayout container, long date) {
-//        //setup calendar
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(date);
-//
-//        //get current month
-//        int month = calendar.get(Calendar.MONTH);
-//
-//        //Go to first day in month
-//        calendar.set(Calendar.DAY_OF_MONTH, 1);
-//
-//        String s = "";
-//        //go to monday and get days in this week from previous month
-//        calendar.setTimeInMillis(calendar.getTimeInMillis() - TimeUnit.DAYS.toMillis(shiftDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK))));
-//        while (calendar.get(Calendar.MONTH) != month) {
-//            s += (calendar.get(Calendar.DAY_OF_MONTH) + ", ");
-//
-//            //go to nest day
-//            calendar.setTimeInMillis(calendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(1));
-//        }
-//
-//        //add dates from the target month
-//        int dayOfWeek;
-//        while (calendar.get(Calendar.MONTH) == month) {
-//            s += (calendar.get(Calendar.DAY_OF_MONTH) + ", ");
-//
-//            //if it is last day of the week
-//            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-//                Log.d("KVEST_TAG", s);
-//                s = "";
-//            }
-//            //go to nest day
-//            calendar.setTimeInMillis(calendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(1));
-//        }
-//
-//        //part of the next month
-//        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-//            s += (calendar.get(Calendar.DAY_OF_MONTH) + ", ");
-//
-//            //go to nest day
-//            calendar.setTimeInMillis(calendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(1));
-//        }
-//
-//        Log.d("KVEST_TAG", s);
-//        //TODO
-//    }
+    private void showNextMonth() {
+        //increment month
+        ++shownMonthNumber;
 
-    private View getDayView(Context context, String text, int type) {
-        TextView day = new TextView(context);
-        day.setText(text);
+        showMonth(shownMonthNumber);
+    }
 
-        return day;
+    private void showPreviousMonth(){
+        //decrement month
+        --shownMonthNumber;
+
+        showMonth(shownMonthNumber);
+    }
+
+    private boolean canShowPreviousMonth() {
+        return ((shownMonthNumber - 1) >= currentMonthNumber);
     }
 
     private long getSelectedDate() {
@@ -123,10 +142,58 @@ public class CalendarFragment extends Fragment {
         }
     }
 
+    private void showMonth(int monthNumber) {
+        //store month number
+        shownMonthNumber = monthNumber;
+
+        //convert month number to the date
+        long monthDate = getDateByMonthNumber(monthNumber);
+
+        adapter.setContent(monthDate, getSelectedDate());
+
+        shownMonthLabel.setText(DATE_FORMAT.format(monthDate));
+
+        //set previous button availability
+        showPreviousMonthButton.setEnabled(canShowPreviousMonth());
+    }
+
+    /**
+     * Method cuts hours, minutes,... from date
+     * @param date Date to cut
+     * @return Date without hours, minutes,...
+     */
+    private static long getDayDate(long date) {
+        return date - (date % ONE_DAY_MILLIS);
+    }
+
+    /**
+     * Method returns month number
+     * @param date Date to convert
+     * @return Month number since 0 year
+     */
+    private int getMonthNumber(long date) {
+        calendar.setTimeInMillis(date);
+
+        return calendar.get(Calendar.YEAR) * 12 + calendar.get(Calendar.MONTH);
+    }
+
+    private long getDateByMonthNumber(int monthNumber) {
+        calendar.clear();
+        calendar.set(Calendar.YEAR, monthNumber / 12);
+        calendar.set(Calendar.MONTH, monthNumber % 12);
+
+        return calendar.getTimeInMillis();
+    }
+
+    public interface OnDateSelectedListener {
+        public void onDateSelected(long date);
+    }
+
     private static class CalendarDay {
         public static final int DAY_TYPE_ACTIVE = 0;
         public static final int DAY_TYPE_PASSED = 1;
         public static final int DAY_TYPE_ANOTHER_MONTH = 2;
+        public static final int DAY_TYPE_SELECTED = 3;
 
         public long date;
         public int dayNumber;
@@ -140,11 +207,14 @@ public class CalendarFragment extends Fragment {
     }
 
     private static class CalendarAdapter extends BaseAdapter {
-        private static final int VIEW_TYPE_COUNT = 3;
+        private static final float DAY_TEXT_SIZE = 18f;
 
         private Context context;
         private List<CalendarDay> days;
         private Calendar calendar;
+        private int otherMonthTextColor;
+        private int passedDaysTextColor;
+        private int activeDaysTextColor;
 
         public CalendarAdapter(Context context) {
             super();
@@ -152,12 +222,16 @@ public class CalendarFragment extends Fragment {
             this.context = context;
             days = new ArrayList<CalendarDay>();
             calendar = Calendar.getInstance();
+
+            otherMonthTextColor = context.getResources().getColor(R.color.calendar_other_month_text_color);
+            passedDaysTextColor = context.getResources().getColor(R.color.calendar_passed_days_text_color);
+            activeDaysTextColor = context.getResources().getColor(R.color.calendar_active_days_text_color);
         }
 
-        public void setContent(long date)  {
+        public void setContent(long monthToShow, long selectedDate)  {
             days.clear();
 
-            calendar.setTimeInMillis(date);
+            calendar.setTimeInMillis(monthToShow);
 
             //get current month
             int month = calendar.get(Calendar.MONTH);
@@ -170,18 +244,28 @@ public class CalendarFragment extends Fragment {
             while (calendar.get(Calendar.MONTH) != month) {
                 days.add(new CalendarDay(calendar.getTimeInMillis(), calendar.get(Calendar.DAY_OF_MONTH), CalendarDay.DAY_TYPE_ANOTHER_MONTH));
 
-                //go to nest day
-                calendar.setTimeInMillis(calendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(1));
+                //go to next day
+                calendar.setTimeInMillis(calendar.getTimeInMillis() + ONE_DAY_MILLIS);
             }
 
             //add dates from the target month
-            int dayOfWeek;
-            while (calendar.get(Calendar.MONTH) == month) {
-                days.add(new CalendarDay(calendar.getTimeInMillis(), calendar.get(Calendar.DAY_OF_MONTH),
-                        calendar.getTimeInMillis() < date ? CalendarDay.DAY_TYPE_PASSED : CalendarDay.DAY_TYPE_ACTIVE));
+            int type;
+            long currentDate = System.currentTimeMillis();
+            //delete hours from date
+            currentDate = getDayDate(currentDate);
 
-                //go to nest day
-                calendar.setTimeInMillis(calendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(1));
+            while (calendar.get(Calendar.MONTH) == month) {
+                if (calendar.getTimeInMillis() == selectedDate) {
+                    type = CalendarDay.DAY_TYPE_SELECTED;
+                }else if (calendar.getTimeInMillis() < currentDate) {
+                    type = CalendarDay.DAY_TYPE_PASSED;
+                } else {
+                    type = CalendarDay.DAY_TYPE_ACTIVE;
+                }
+                days.add(new CalendarDay(calendar.getTimeInMillis(), calendar.get(Calendar.DAY_OF_MONTH), type));
+
+                //go to the next day
+                calendar.setTimeInMillis(calendar.getTimeInMillis() + ONE_DAY_MILLIS);
             }
 
             //part of the next month
@@ -189,7 +273,7 @@ public class CalendarFragment extends Fragment {
                 days.add(new CalendarDay(calendar.getTimeInMillis(), calendar.get(Calendar.DAY_OF_MONTH), CalendarDay.DAY_TYPE_ANOTHER_MONTH));
 
                 //go to nest day
-                calendar.setTimeInMillis(calendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(1));
+                calendar.setTimeInMillis(calendar.getTimeInMillis() + ONE_DAY_MILLIS);
             }
 
             notifyDataSetChanged();
@@ -213,32 +297,42 @@ public class CalendarFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = new TextView(context);
-                switch (getItemViewType(position)) {
-                    case CalendarDay.DAY_TYPE_ACTIVE :
-                        convertView.setBackgroundColor(Color.GREEN);
-                        break;
-                    case CalendarDay.DAY_TYPE_PASSED :
-                        convertView.setBackgroundColor(Color.BLUE);
-                        break;
-                    case CalendarDay.DAY_TYPE_ANOTHER_MONTH :
-                        convertView.setBackgroundColor(Color.RED);
-                        break;
-                }
+                convertView = buildView();
             }
 
-            ((TextView)convertView).setText(Integer.toString(days.get(position).dayNumber));
+            CalendarDay calendarDay = days.get(position);
+            //set bg color
+            if (calendarDay.type == CalendarDay.DAY_TYPE_SELECTED) {
+                convertView.setBackgroundResource(R.drawable.calendar_selected_day_bg);
+            } else {
+                convertView.setBackgroundColor(Color.TRANSPARENT);
+            }
+            //set text color
+            switch (calendarDay.type) {
+                case CalendarDay.DAY_TYPE_ACTIVE :
+                case CalendarDay.DAY_TYPE_SELECTED :
+                    ((TextView)convertView).setTextColor(activeDaysTextColor);
+                    break;
+                case CalendarDay.DAY_TYPE_PASSED :
+                    ((TextView)convertView).setTextColor(passedDaysTextColor);
+                    break;
+                case CalendarDay.DAY_TYPE_ANOTHER_MONTH :
+                    ((TextView)convertView).setTextColor(otherMonthTextColor);
+                    break;
+            }
+            //set text
+            ((TextView)convertView).setText(Integer.toString(calendarDay.dayNumber));
+
             return convertView;
         }
 
-        @Override
-        public int getViewTypeCount() {
-            return VIEW_TYPE_COUNT;
-        }
+        private View buildView() {
+            TextView view = new TextView(context);
+            view.setTypeface(Typeface.create(view.getTypeface(), Typeface.BOLD));
+            view.setTextSize(DAY_TEXT_SIZE);
+            view.setGravity(Gravity.CENTER);
 
-        @Override
-        public int getItemViewType(int position) {
-            return days.get(position).type;
+            return view;
         }
 
         //convert to post-Soviet style(week starts from monday = 0 till sunday = 6)

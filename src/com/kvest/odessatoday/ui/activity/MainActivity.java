@@ -11,7 +11,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
@@ -21,11 +25,14 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends TodayBaseActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-                                                             DatePickerDialog.OnDateSetListener,
-                                                             FilmsFragment.ShowCalendarListener {
-    private static final int START_YEAR = 1900;
-    private static final int SELECT_DATE_DIALOG_ID = 0;
+public class MainActivity extends TodayBaseActivity implements FilmsFragment.ShowCalendarListener,
+                                                               CalendarFragment.OnDateSelectedListener {
+    private long shownFilmsDate;
+    private FrameLayout calendarContainer;
+
+    private Animation showCalendarAnimation;
+    private Animation hideCalendarAnimation;
+
     /**
      * Called when the activity is first created.
      */
@@ -34,177 +41,61 @@ public class MainActivity extends TodayBaseActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        test();
+        init();
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-//                FilmsFragment filmsFragment = FilmsFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()), true);
-//                transaction.add(R.id.fragment_container, filmsFragment);
-
-                CalendarFragment calendarFragment = CalendarFragment.getInstance(System.currentTimeMillis());
-                transaction.add(R.id.fragment_container, calendarFragment);
+                shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                FilmsFragment filmsFragment = FilmsFragment.getInstance(shownFilmsDate, true);
+                transaction.add(R.id.fragment_container, filmsFragment);
             } finally {
                 transaction.commit();
             }
         }
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        if (id == SELECT_DATE_DIALOG_ID) {
-            return new DatePickerDialog(this,  this, 2014, 6, 7);
-        }
-
-        return super.onCreateDialog(id);
-    }
-
-    private void printTable(SQLiteDatabase db, String tableName) {
-        Cursor c = db.query(tableName, null, null, null, null, null, null);
-        try {
-            printCursor(c);
-        } finally {
-            c.close();
-        }
-    }
-
-    private void printCursor(Cursor c) {
-        String s = "";
-        Log.d("KVEST_TAG", "----------------------------------");
-        for (int i = 0; i < c.getColumnCount(); ++i) {
-            s += c.getColumnName(i) + "\t";
-        }
-        Log.d("KVEST_TAG", s);
-        Log.d("KVEST_TAG", "----------------------------------");
-        c.moveToFirst();
-
-        while (!c.isAfterLast()) {
-            s= "";
-            for (int i = 0; i < c.getColumnCount(); ++i) {
-                s += c.getString(i) + "\t";
+    private void init() {
+        calendarContainer = (FrameLayout)findViewById(R.id.calendar_container);
+        calendarContainer.setVisibility(View.INVISIBLE);
+        calendarContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideCalendar();
             }
-            Log.d("KVEST_TAG", s);
-            c.moveToNext();
+        });
+
+        showCalendarAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+        hideCalendarAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        hideCalendarAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                calendarContainer.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isCalendarShown()) {
+            hideCalendar();
+        } else {
+            super.onBackPressed();
         }
-        Log.d("KVEST_TAG", "----------------------------------");
     }
 
-    private void addFilm(SQLiteDatabase db, int id, String name) {
-        ContentValues cv = new ContentValues();
-        cv.put(TodayProviderContract.Tables.Films.Columns.FILM_ID, id);
-        cv.put(TodayProviderContract.Tables.Films.Columns.NAME, name);
-        db.insert(TodayProviderContract.Tables.Films.TABLE_NAME, null, cv);
-    }
-
-    private void test() {
-//        GetCinemasRequest req = new GetCinemasRequest(null, null);
-//        TodayApplication.getApplication().getVolleyHelper().addRequest(req);
-//        NetworkService.loadTodayFilms(this);
-//        TodaySQLStorage sqlStorage = new TodaySQLStorage(this);
-//        SQLiteDatabase db = sqlStorage.getWritableDatabase();
-//        db.delete(TodayProviderContract.Tables.Films.TABLE_NAME, null, null);
-//        db.delete(TodayProviderContract.Tables.FilmsTimetable.TABLE_NAME, null, null);
-//        printTable(db, TodayProviderContract.Tables.Films.TABLE_NAME);
-//        printTable(db, TodayProviderContract.Tables.FilmsTimetable.TABLE_NAME);
-//
-//        addFilm(db, 2, "Film 2");
-//
-//        for (int i = 0; i < 2; ++i) {
-//            ContentValues cv = new ContentValues();
-//            cv.put(TodayProviderContract.Tables.FilmsTimetable.Columns.CINEMA_ID, i);
-//            cv.put(TodayProviderContract.Tables.FilmsTimetable.Columns.DATE, 100);
-//            cv.put(TodayProviderContract.Tables.FilmsTimetable.Columns.FILM_ID, 2);
-//            cv.put(TodayProviderContract.Tables.FilmsTimetable.Columns.PRICES, "PRICES" + i);
-//            cv.put(TodayProviderContract.Tables.FilmsTimetable.Columns.FORMAT, "FORMAT" + i);
-//            db.insert(TodayProviderContract.Tables.FilmsTimetable.TABLE_NAME, null, cv);
-//        }
-//        printTable(db, TodayProviderContract.Tables.Films.TABLE_NAME);
-//        printTable(db, TodayProviderContract.Tables.FilmsTimetable.TABLE_NAME);
-//
-//        ContentValues cv = new ContentValues();
-//        cv.put(TodayProviderContract.Tables.Films.Columns.FILM_ID, 7);
-//        cv.put(TodayProviderContract.Tables.Films.Columns.NAME, "new name");
-//        db.update(TodayProviderContract.Tables.Films.TABLE_NAME,  cv,null, null);
-//        printTable(db, TodayProviderContract.Tables.Films.TABLE_NAME);
-//        printTable(db, TodayProviderContract.Tables.FilmsTimetable.TABLE_NAME);
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                RequestFuture<GetFilmsResponse> future = RequestFuture.newFuture();
-//                GetFilmsRequest req = new GetFilmsRequest(future, future);
-//                TodayApplication.getApplication().getVolleyHelper().addRequest(req);
-//
-//                try {
-//                    GetFilmsResponse response = future.get(); // this will block
-//                    response.isSuccessful();
-//                } catch (InterruptedException e) {
-//                    // exception handling
-//                } catch (ExecutionException e) {
-//                    // exception handling
-//                    e.getLocalizedMessage();
-//                }
-//            }
-//        }).start();
-
-
-//        GetFilmsRequest req = new GetFilmsRequest(new Response.Listener<GetFilmsResponse>() {
-//            @Override
-//            public void onResponse(GetFilmsResponse response) {
-//                //To change body of implemented methods use File | Settings | File Templates.
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                //To change body of implemented methods use File | Settings | File Templates.
-//            }
-//        });
-//        TodayApplication.getApplication().getVolleyHelper().addRequest(req);
-
-
-
-//        Uri filmsUri = Uri.withAppendedPath(TodayProviderContract.BASE_CONTENT_URI, TodayProviderContract.FILMS_PATH);
-//        getContentResolver().delete(filmsUri, null, null);
-//
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh.mm.ss");
-//        Date d = new Date(1401310800000L);
-//        Log.d("KVEST_TAG", "d=" + sdf.format(d));
-    }
-
-//    @Override
-//    protected void onPostCreate(Bundle savedInstanceState) {
-//        super.onPostCreate(savedInstanceState);
-//
-//        if (savedInstanceState == null) {
-//            getLoaderManager().initLoader(1, null, this);
-//        }
-//    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, TodayProviderContract.FILMS_URI, null, null, null, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("KVEST_TAG", "new cursor = " + data.getCount());
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        Log.d("KVEST_TAG", "reset");
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        //calculate date
-        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-        cal.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-        long date = cal.getTimeInMillis();
-
+    private void showFilmsByDate(long date) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
-            FilmsFragment filmsFragment = FilmsFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(date), false);
+            shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(date);
+            //TODO  calculate today flag
+            FilmsFragment filmsFragment = FilmsFragment.getInstance(shownFilmsDate, false);
             transaction.replace(R.id.fragment_container, filmsFragment);
         } finally {
             transaction.commit();
@@ -213,6 +104,49 @@ public class MainActivity extends TodayBaseActivity implements LoaderManager.Loa
 
     @Override
     public void onShowCalendar() {
-        showDialog(SELECT_DATE_DIALOG_ID);
+        if (isCalendarShown()) {
+            hideCalendar();
+        } else {
+            showCalendar(TimeUnit.SECONDS.toMillis(shownFilmsDate));
+        }
+    }
+
+    private void showCalendar(long selectedDate) {
+        //set fragment
+        if (calendarContainer != null && !isCalendarShown()) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            try {
+                CalendarFragment calendarFragment = CalendarFragment.getInstance(selectedDate);
+                transaction.add(R.id.calendar_container, calendarFragment);
+            } finally {
+                transaction.commit();
+            }
+
+            //set calendar visible
+            calendarContainer.setVisibility(View.VISIBLE);
+
+            //animate
+            calendarContainer.clearAnimation();
+            calendarContainer.startAnimation(showCalendarAnimation);
+        }
+    }
+
+    private void hideCalendar() {
+        //animate
+        calendarContainer.clearAnimation();
+        calendarContainer.startAnimation(hideCalendarAnimation);
+    }
+
+    private boolean isCalendarShown() {
+        return calendarContainer.getVisibility() == View.VISIBLE;
+    }
+
+    @Override
+    public void onDateSelected(long date) {
+        //hide calendar
+        hideCalendar();
+
+        //show films by selected date
+        showFilmsByDate(date);
     }
 }

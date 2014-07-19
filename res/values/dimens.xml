@@ -17,6 +17,10 @@
 
     <!--Calendar fragment-->
     <dimen name="calendar_header_height">50dip</dimen>
+    <dimen name="calendar_padding">15dip</dimen>
     <dimen name="calendar_navigation_button_width">50dip</dimen>
+    <dimen name="calendar_days_spacing">12dip</dimen>
     <dimen name="calendar_shown_month_text_size">24sp</dimen>
+    <dimen name="calendar_selected_day_corner_radius">6dip</dimen>
+    <dimen name="calendar_days_text_size">18sp</dimen>
 </resources>

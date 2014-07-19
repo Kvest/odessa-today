@@ -2,22 +2,24 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/calendar_header_height"
         android:background="@color/calendar_header_bg" >
         <Button
-            android:id="@+id/button_previous"
+            android:id="@+id/previous_month"
             android:layout_width="@dimen/calendar_navigation_button_width"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/calendar_previous_month_bg" />
         <Button
-            android:id="@+id/button_next"
+            android:id="@+id/next_month"
             android:layout_width="@dimen/calendar_navigation_button_width"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:background="@drawable/calendar_next_month_bg"/>
         <TextView
             android:id="@+id/shown_month_label"
             android:layout_width="match_parent"
@@ -25,18 +27,19 @@
             android:gravity="center"
             android:textColor="@color/calendar_shown_month_text_color"
             android:textSize="@dimen/calendar_shown_month_text_size"
-            android:layout_toRightOf="@id/button_previous"
-            android:layout_toLeftOf="@id/button_next" />
+            android:layout_toRightOf="@id/previous_month"
+            android:layout_toLeftOf="@id/next_month" />
     </RelativeLayout>
     <GridView
         android:id="@+id/calendar_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:padding="@dimen/calendar_padding"
+        android:background="@color/calendar_bg"
         android:numColumns="7"
-        android:verticalSpacing="2dp"
-        android:horizontalSpacing="2dp"
+        android:verticalSpacing="@dimen/calendar_days_spacing"
+        android:horizontalSpacing="@dimen/calendar_days_spacing"
         android:stretchMode="columnWidth"
-
+        android:listSelector="@android:color/transparent"
         android:gravity="center" />
 </LinearLayout>
