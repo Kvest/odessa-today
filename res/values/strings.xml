@@ -7,4 +7,5 @@
     <string name="timetable">Расписание</string>
     <string name="cinemas">Кинотеатры</string>
     <string name="announcements">Анонсы</string>
+    <string name="error_loading_films">Произошла ошибка при загрузке фильмов</string>
 </resources>

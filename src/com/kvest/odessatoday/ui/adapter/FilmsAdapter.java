@@ -23,9 +23,10 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * To change this template use File | Settings | File Templates.
  */
 public class FilmsAdapter extends CursorAdapter {
-    public static final String[] PROJECTION = new String[]{Tables.Films.Columns._ID, Tables.Films.Columns.IMAGE, Tables.Films.Columns.NAME,
-                                                           Tables.Films.Columns.GENRE, Tables.Films.Columns.RATING, Tables.Films.Columns.COMMENTS_COUNT,
-                                                           Tables.Films.Columns.IS_PREMIERE};
+    public static final String[] PROJECTION = new String[]{Tables.Films.Columns.FILM_ID + " as " + Tables.Films.Columns._ID,
+                                                           Tables.Films.Columns.IMAGE, Tables.Films.Columns.NAME,
+                                                           Tables.Films.Columns.GENRE, Tables.Films.Columns.RATING,
+                                                           Tables.Films.Columns.COMMENTS_COUNT, Tables.Films.Columns.IS_PREMIERE};
 
     public FilmsAdapter(Context context) {
         super(context, null, 0);

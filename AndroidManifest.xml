@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.activity.FilmDetailsActivity" />
+
         <provider
             android:authorities="com.kvest.odessatoday"
             android:name=".provider.TodayProvider"

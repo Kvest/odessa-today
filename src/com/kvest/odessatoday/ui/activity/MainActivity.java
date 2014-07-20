@@ -1,32 +1,20 @@
 package com.kvest.odessatoday.ui.activity;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
-import android.app.LoaderManager;
-import android.content.ContentValues;
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
-import com.kvest.odessatoday.ui.fragment.FilmsFragment;
+import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
 
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends TodayBaseActivity implements FilmsFragment.ShowCalendarListener,
-                                                               CalendarFragment.OnDateSelectedListener {
+public class MainActivity extends TodayBaseActivity implements FilmsListFragment.ShowCalendarListener,
+                                                               CalendarFragment.OnDateSelectedListener,
+                                                               FilmsListFragment.FilmSelectedListener{
     private long shownFilmsDate;
     private FrameLayout calendarContainer;
 
@@ -47,8 +35,8 @@ public class MainActivity extends TodayBaseActivity implements FilmsFragment.Sho
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
                 shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-                FilmsFragment filmsFragment = FilmsFragment.getInstance(shownFilmsDate, true);
-                transaction.add(R.id.fragment_container, filmsFragment);
+                FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, true);
+                transaction.add(R.id.fragment_container, filmsListFragment);
             } finally {
                 transaction.commit();
             }
@@ -94,9 +82,9 @@ public class MainActivity extends TodayBaseActivity implements FilmsFragment.Sho
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
             shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(date);
-            //TODO  calculate today flag
-            FilmsFragment filmsFragment = FilmsFragment.getInstance(shownFilmsDate, false);
-            transaction.replace(R.id.fragment_container, filmsFragment);
+            FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, isCurrentDay(shownFilmsDate));
+            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out);
+            transaction.replace(R.id.fragment_container, filmsListFragment);
         } finally {
             transaction.commit();
         }
@@ -109,6 +97,15 @@ public class MainActivity extends TodayBaseActivity implements FilmsFragment.Sho
         } else {
             showCalendar(TimeUnit.SECONDS.toMillis(shownFilmsDate));
         }
+    }
+
+    private boolean isCurrentDay(long date) {
+        //set start of the current date in seconds
+        long currentDate = System.currentTimeMillis();
+        currentDate -= (currentDate % TimeUnit.DAYS.toMillis(1));
+        currentDate = TimeUnit.MILLISECONDS.toSeconds(currentDate);
+
+        return (date >= currentDate && date < (currentDate + TimeUnit.DAYS.toSeconds(1)));
     }
 
     private void showCalendar(long selectedDate) {
@@ -148,5 +145,10 @@ public class MainActivity extends TodayBaseActivity implements FilmsFragment.Sho
 
         //show films by selected date
         showFilmsByDate(date);
+    }
+
+    @Override
+    public void onFilmSelected(long filmId) {
+        startActivity(FilmDetailsActivity.getStartIntent(this, filmId));
     }
 }

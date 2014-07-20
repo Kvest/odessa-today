@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CalendarFragment extends Fragment {
     private static final long ONE_DAY_MILLIS = TimeUnit.DAYS.toMillis(1);
-    private static final String SELECTED_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.SELECTED_DATE";
+    private static final String ARGUMENT_SELECTED_DATE = "com.kvest.odessatoday.argument.SELECTED_DATE";
     private static final String DATE_FORMAT_PATTERN = "LLLL yyyy";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
@@ -49,7 +49,7 @@ public class CalendarFragment extends Fragment {
         selectedDate = getDayDate(selectedDate);
 
         Bundle arguments = new Bundle(1);
-        arguments.putLong(SELECTED_DATE_EXTRA, selectedDate);
+        arguments.putLong(ARGUMENT_SELECTED_DATE, selectedDate);
 
         CalendarFragment result = new CalendarFragment();
         result.setArguments(arguments);
@@ -89,9 +89,11 @@ public class CalendarFragment extends Fragment {
         daysGridView.setAdapter(adapter);
         daysGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long selectedDate) {
-                if (onDateSelectedListener != null) {
-                    onDateSelectedListener.onDateSelected(selectedDate);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CalendarDay calendarDay = (CalendarDay)adapter.getItem(position);
+                if ((calendarDay.type == CalendarDay.DAY_TYPE_ACTIVE || calendarDay.type == CalendarDay.DAY_TYPE_SELECTED)
+                     && onDateSelectedListener != null) {
+                    onDateSelectedListener.onDateSelected(calendarDay.date);
                 }
             }
         });
@@ -136,7 +138,7 @@ public class CalendarFragment extends Fragment {
     private long getSelectedDate() {
         Bundle arguments = getArguments();
         if (arguments != null) {
-            return arguments.getLong(SELECTED_DATE_EXTRA, 0);
+            return arguments.getLong(ARGUMENT_SELECTED_DATE, 0);
         } else {
             return 0;
         }
@@ -221,7 +223,7 @@ public class CalendarFragment extends Fragment {
 
             this.context = context;
             days = new ArrayList<CalendarDay>();
-            calendar = Calendar.getInstance();
+            calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
             otherMonthTextColor = context.getResources().getColor(R.color.calendar_other_month_text_color);
             passedDaysTextColor = context.getResources().getColor(R.color.calendar_passed_days_text_color);

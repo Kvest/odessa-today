@@ -3,15 +3,18 @@ package com.kvest.odessatoday.ui.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
@@ -30,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 11:09
  * To change this template use File | Settings | File Templates.
  */
-public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class FilmsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_FOR_TODAY = "com.kvest.odessatoday.argiment.FOR_TODAY";
     private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
     private static final int FILMS_LOADER_ID = 1;
@@ -43,13 +46,16 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
     private FilmsAdapter adapter;
 
     private ShowCalendarListener showCalendarListener;
+    private FilmSelectedListener filmSelectedListener;
 
-    public static FilmsFragment getInstance(long date, boolean isForToday) {
+    private LoadFilmsNotificationReceiver receiver = new LoadFilmsNotificationReceiver();
+
+    public static FilmsListFragment getInstance(long date, boolean isForToday) {
         Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_DATE, date);
         arguments.putBoolean(ARGUMENT_FOR_TODAY, isForToday);
 
-        FilmsFragment result = new FilmsFragment();
+        FilmsListFragment result = new FilmsListFragment();
         result.setArguments(arguments);
         return result;
     }
@@ -89,13 +95,33 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
         try {
             showCalendarListener = (ShowCalendarListener) activity;
         } catch (ClassCastException cce) {
-            Log.e(Constants.TAG, "Host activity for FilmsFragment should implements FilmsFragment.ShowCalendarListener");
+            Log.e(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.ShowCalendarListener");
+        }
+
+        try {
+            filmSelectedListener = (FilmSelectedListener) activity;
+        } catch (ClassCastException cce) {
+            Log.e(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.FilmSelectedListener");
         }
 
         //reload films data
         long startDate = getDate();
         long endDate = Utils.getEndOfTheDay(startDate);
         NetworkService.loadFilms(activity, startDate, endDate);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(LoadFilmsNotification.ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
     @Override
@@ -143,10 +169,17 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
         }
     }
 
-
     private void initComponents(View root) {
         //get list view for films
         filmsList = (ListView) root.findViewById(R.id.films_list);
+        filmsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (filmSelectedListener != null) {
+                    filmSelectedListener.onFilmSelected(id);
+                }
+            }
+        });
 
         //set date
         root.findViewById(R.id.is_today).setVisibility(isForToday() ? View.VISIBLE : View.GONE);
@@ -179,7 +212,21 @@ public class FilmsFragment extends Fragment implements LoaderManager.LoaderCallb
         }
     }
 
+    private class LoadFilmsNotificationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Activity activity = getActivity();
+            if (!LoadFilmsNotification.isSuccessful(intent) && activity != null) {
+                Toast.makeText(activity, R.string.error_loading_films, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     public interface ShowCalendarListener {
         public void onShowCalendar();
+    }
+
+    public interface FilmSelectedListener {
+        public void onFilmSelected(long filmId);
     }
 }
