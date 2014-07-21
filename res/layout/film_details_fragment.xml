@@ -1,8 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/film_poster_margin"
+            android:paddingBottom="@dimen/film_poster_margin" >
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/film_poster"
+                android:layout_width="@dimen/film_thumbnail_image_width"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/film_details_padding"
+                android:layout_marginRight="@dimen/film_poster_margin" />
+            <TextView
+                android:id="@+id/film_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/film_details_padding"
+                android:layout_toRightOf="@id/film_poster"
+                android:layout_alignParentTop="true"
+                android:textSize="@dimen/film_name_text_size"
+                android:maxLines="4"
+                android:ellipsize="end" />
+            <TextView
+                android:id="@+id/genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/film_details_padding"
+                android:layout_toRightOf="@id/film_poster"
+                android:layout_below="@id/film_name"
+                android:textSize="@dimen/genre_text_size"
+                android:singleLine="true"
+                android:ellipsize="end" />
+            <RatingBar
+                android:id="@+id/film_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/film_poster"
+                android:layout_below="@id/genre"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:layout_marginTop="@dimen/films_ratingbar_margin"
+                android:layout_marginBottom="@dimen/films_ratingbar_margin"
+                style="@style/FilmsRatingBarTheme"
+                android:isIndicator="true"/>
+            <TextView
+                android:id="@+id/film_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/film_poster"
+                android:layout_below="@id/film_rating"
+                android:textSize="@dimen/film_duration_text_size" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/film_details_divider_height"
+            android:background="@color/film_details_divider_color" />
+    </LinearLayout>
+</ScrollView>

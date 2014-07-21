@@ -1,15 +1,22 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.TodayApplication;
+
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 /**
@@ -22,6 +29,12 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 public class FilmDetailsFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_FILM_ID = "com.kvest.odessatoday.argument.FILM_ID";
     private static final int FILM_LOADER_ID = 1;
+
+    private NetworkImageView filmPoster;
+    private TextView filmName;
+    private TextView genre;
+    private RatingBar filmRating;
+    private TextView filmDuration;
 
     public static FilmDetailsFragment getInstance(long filmId) {
         Bundle arguments = new Bundle(1);
@@ -42,6 +55,14 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     }
 
     private void init(View rootView) {
+        //store views
+        filmPoster = (NetworkImageView) rootView.findViewById(R.id.film_poster);
+        filmPoster.setDefaultImageResId(R.drawable.loading_poster);
+        filmPoster.setErrorImageResId(R.drawable.no_poster);
+        filmName = (TextView) rootView.findViewById(R.id.film_name);
+        genre = (TextView) rootView.findViewById(R.id.genre);
+        filmRating = (RatingBar) rootView.findViewById(R.id.film_rating);
+        filmDuration = (TextView) rootView.findViewById(R.id.film_duration);
         //TODO
     }
 
@@ -76,10 +97,10 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         switch (loader.getId()) {
             case FILM_LOADER_ID :
-                //TODO
+                setFilmData(cursor);
                 break;
         }
     }
@@ -87,5 +108,34 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         //TODO
+    }
+
+    private void setFilmData(Cursor cursor) {
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()) {
+            //set data
+            filmPoster.setImageUrl(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.IMAGE)),
+                    TodayApplication.getApplication().getVolleyHelper().getImageLoader());
+
+            String filmNameValue = cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.NAME));
+            Activity activity = getActivity();
+            if (activity != null) {
+                activity.setTitle(filmNameValue);
+            }
+            filmName.setText(filmNameValue);
+
+            genre.setText(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.GENRE)));
+            genre.setVisibility(TextUtils.isEmpty(genre.getText()) ? View.GONE : View.VISIBLE);
+
+            filmRating.setRating(cursor.getFloat(cursor.getColumnIndex(Tables.Films.Columns.RATING)));
+
+            int filmDurationValue = cursor.getInt(cursor.getColumnIndex(Tables.Films.Columns.FILM_DURATION));
+            if (filmDurationValue > 0) {
+                filmDuration.setVisibility(View.VISIBLE);
+                filmDuration.setText(getString(R.string.film_duration, filmDurationValue));
+            } else {
+                filmDuration.setVisibility(View.GONE);
+            }
+        }
     }
 }

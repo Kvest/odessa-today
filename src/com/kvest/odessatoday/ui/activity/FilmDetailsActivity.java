@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.FilmDetailsFragment;
 
@@ -29,6 +30,8 @@ public class FilmDetailsActivity extends TodayBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
+        getActionBar().setHomeButtonEnabled(true);
+
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {
             long filmId = intent.getLongExtra(EXTRA_FILM_ID, -1);
@@ -39,5 +42,15 @@ public class FilmDetailsActivity extends TodayBaseActivity {
                 transaction.commit();
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
