@@ -26,10 +26,11 @@ public class Film {
     public float rating;
     public int comments_count;
     public int is_premiere;
+    public int film_duration;
     public List<TimetableItem> timetable;
 
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues(11);
+        ContentValues values = new ContentValues(12);
         values.put(TodayProviderContract.Tables.Films.Columns.FILM_ID, id);
         values.put(TodayProviderContract.Tables.Films.Columns.NAME, filmname);
         values.put(TodayProviderContract.Tables.Films.Columns.COUNTRY, country);
@@ -43,6 +44,7 @@ public class Film {
         values.put(TodayProviderContract.Tables.Films.Columns.RATING, rating);
         values.put(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT, comments_count);
         values.put(TodayProviderContract.Tables.Films.Columns.IS_PREMIERE, is_premiere);
+        values.put(TodayProviderContract.Tables.Films.Columns.FILM_DURATION, film_duration);
 
         return values;
     }

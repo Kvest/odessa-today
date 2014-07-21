@@ -40,6 +40,7 @@ public class TodayProviderContract {
                 String RATING = "rating";
                 String COMMENTS_COUNT = "comments_count";
                 String IS_PREMIERE = "is_premiere";
+                String FILM_DURATION = "film_duration";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
@@ -57,6 +58,7 @@ public class TodayProviderContract {
                     + Columns.RATING + " REAL, "
                     + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
                     + Columns.IS_PREMIERE + " INTEGER DEFAULT 0, "
+                    + Columns.FILM_DURATION + " INTEGER DEFAULT 0, "
                     + "UNIQUE (" + Columns.FILM_ID + ") ON CONFLICT REPLACE)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
