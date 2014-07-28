@@ -8,6 +8,7 @@
     <dimen name="films_list_divider_height">1dip</dimen>
     <dimen name="film_name_text_size">22sp</dimen>
     <dimen name="genre_text_size">14sp</dimen>
+    <dimen name="film_description_text_size">14sp</dimen>
     <dimen name="premiere_label_text_size">14sp</dimen>
     <dimen name="premiere_label_padding">2dip</dimen>
     <dimen name="films_ratingbar_min_height">24dip</dimen>
@@ -25,8 +26,18 @@
     <dimen name="calendar_days_text_size">18sp</dimen>
 
     <!--film details-->
-    <dimen name="film_details_padding">14dip</dimen>
-    <dimen name="film_poster_margin">10dip</dimen>
-    <dimen name="film_duration_text_size">14sp</dimen>
+    <dimen name="film_details_padding">12dip</dimen>
+    <dimen name="film_details_poster_margin">10dip</dimen>
+    <dimen name="film_details_duration_text_size">14sp</dimen>
     <dimen name="film_details_divider_height">1dip</dimen>
+    <dimen name="film_details_director_padding">8dip</dimen>
+    <dimen name="film_details_actors_padding_bottom">8dip</dimen>
+    <dimen name="film_description_collapsed_height">50dip</dimen>
+    <dimen name="film_details_director_text_size">14sp</dimen>
+    <dimen name="film_details_actors_text_size">14sp</dimen>
+    <dimen name="film_details_description_padding_bottom">8dip</dimen>
+    <dimen name="film_details_description_text_size">14sp</dimen>
+    <dimen name="film_details_comments_count_height">50dip</dimen>
+    <dimen name="film_details_comments_count_text_size">14sp</dimen>
+    <dimen name="film_details_comments_count_margin_left">6dip</dimen>
 </resources>

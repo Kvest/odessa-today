@@ -7,6 +7,7 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.service.NetworkService;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -35,6 +37,10 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     private TextView genre;
     private RatingBar filmRating;
     private TextView filmDuration;
+    private TextView description;
+    private TextView director;
+    private TextView actors;
+    private TextView commentsCount;
 
     public static FilmDetailsFragment getInstance(long filmId) {
         Bundle arguments = new Bundle(1);
@@ -63,6 +69,10 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
         genre = (TextView) rootView.findViewById(R.id.genre);
         filmRating = (RatingBar) rootView.findViewById(R.id.film_rating);
         filmDuration = (TextView) rootView.findViewById(R.id.film_duration);
+        description = (TextView)rootView.findViewById(R.id.film_description);
+        director = (TextView)rootView.findViewById(R.id.director);
+        actors = (TextView)rootView.findViewById(R.id.actors);
+        commentsCount = (TextView)rootView.findViewById(R.id.comments_count_value);
         //TODO
     }
 
@@ -70,8 +80,9 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Request full timetable for film
-        //TODO
+        //Request full timetable for the film and comments
+        NetworkService.loadTimetable(getActivity(), getFilmId());
+        NetworkService.loadFilmComments(getActivity(), getFilmId());
 
         getLoaderManager().initLoader(FILM_LOADER_ID, null, this);
     }
@@ -136,6 +147,15 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
             } else {
                 filmDuration.setVisibility(View.GONE);
             }
+
+            String value = getString(R.string.film_director, cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.DIRECTOR)));
+            director.setText(Html.fromHtml(value));
+
+            value = getString(R.string.film_actors, cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.ACTORS)));
+            actors.setText(Html.fromHtml(value));
+
+            description.setText(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.DESCRIPTION)));
+            commentsCount.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(Tables.Films.Columns.COMMENTS_COUNT))));
         }
     }
 }

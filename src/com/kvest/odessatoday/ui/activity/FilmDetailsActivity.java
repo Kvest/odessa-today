@@ -30,7 +30,7 @@ public class FilmDetailsActivity extends TodayBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
-        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {

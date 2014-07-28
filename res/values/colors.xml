@@ -20,4 +20,5 @@
 
     <!--film details-->
     <color name="film_details_divider_color">#e6e6e6</color>
+    <color name="film_details_comments_count_text_color">#999999</color>
 </resources>

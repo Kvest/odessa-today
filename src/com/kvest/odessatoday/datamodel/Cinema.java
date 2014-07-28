@@ -19,6 +19,7 @@ public class Cinema {
     public String description;
     public String worktime;
     public String image;
+    public int comments_count;
 
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues(8);
@@ -30,6 +31,7 @@ public class Cinema {
         values.put(TodayProviderContract.Tables.Cinemas.Columns.DESCRIPTION, description);
         values.put(TodayProviderContract.Tables.Cinemas.Columns.WORK_TIME, worktime);
         values.put(TodayProviderContract.Tables.Cinemas.Columns.IMAGE, image);
+        values.put(TodayProviderContract.Tables.Cinemas.Columns.COMMENTS_COUNT, comments_count);
 
         return values;
     }

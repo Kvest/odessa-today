@@ -8,11 +8,17 @@ import android.util.Log;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
+import com.kvest.odessatoday.io.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
+import com.kvest.odessatoday.io.notification.LoadTimetableNotification;
 import com.kvest.odessatoday.io.request.GetCinemasRequest;
+import com.kvest.odessatoday.io.request.GetFilmCommentsRequest;
 import com.kvest.odessatoday.io.request.GetFilmsRequest;
+import com.kvest.odessatoday.io.request.GetTimetableRequest;
 import com.kvest.odessatoday.io.response.GetCinemasResponse;
+import com.kvest.odessatoday.io.response.GetCommentsResponse;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
+import com.kvest.odessatoday.io.response.GetTimetableResponse;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
 
@@ -27,12 +33,14 @@ import java.util.concurrent.TimeUnit;
  * To change this template use File | Settings | File Templates.
  */
 public class NetworkService extends IntentService {
-
     private static final String ACTION_EXTRA = "com.kvest.odessatoday.EXTRAS.ACTION";
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
+    private static final String FILM_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.FILM_ID";
     private static final int ACTION_LOAD_FILMS = 0;
     private static final int ACTION_LOAD_CINEMAS = 1;
+    private static final int ACTION_LOAD_TIMETABLE = 2;
+    private static final int ACTION_LOAD_FILM_COMMENTS = 3;
 
     public static void loadTodayFilms(Context context) {
         //calculate start and end date
@@ -58,6 +66,22 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
+    public static void loadTimetable(Context context, long filmId) {
+        Intent intent = new Intent(context, NetworkService.class);
+        intent.putExtra(ACTION_EXTRA, ACTION_LOAD_TIMETABLE);
+        intent.putExtra(FILM_ID_EXTRA, filmId);
+
+        context.startService(intent);
+    }
+
+    public static void loadFilmComments(Context context, long filmId) {
+        Intent intent = new Intent(context, NetworkService.class);
+        intent.putExtra(ACTION_EXTRA, ACTION_LOAD_FILM_COMMENTS);
+        intent.putExtra(FILM_ID_EXTRA, filmId);
+
+        context.startService(intent);
+    }
+
     public NetworkService() {
         super("NetworkService");
     }
@@ -71,6 +95,75 @@ public class NetworkService extends IntentService {
             case ACTION_LOAD_CINEMAS :
                 doLoadCinemas(intent);
                 break;
+            case ACTION_LOAD_TIMETABLE :
+                doLoadTimetable(intent);
+                break;
+            case ACTION_LOAD_FILM_COMMENTS :
+                doLoadFilmComments(intent);
+                break;
+        }
+    }
+
+    private void doLoadFilmComments(Intent  intent) {
+        //get extra data
+        long filmId = intent.getLongExtra(FILM_ID_EXTRA, -1);
+
+        RequestFuture<GetCommentsResponse> future = RequestFuture.newFuture();
+        GetFilmCommentsRequest request = new GetFilmCommentsRequest(filmId, future, future);
+        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
+        try {
+            GetCommentsResponse response = future.get();
+            if (response.isSuccessful()) {
+                //notify listeners about successful loading comments
+                sendLocalBroadcast(LoadCommentsNotification.createSuccessResult());
+            } else {
+                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+
+                //notify listeners about unsuccessful loading comments
+                sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(response.error));
+            }
+        } catch (InterruptedException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading comments
+            sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage()));
+        } catch (ExecutionException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading comments
+            sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage()));
+        }
+
+    }
+
+    private void doLoadTimetable(Intent  intent) {
+        //get extra data
+        long filmId = intent.getLongExtra(FILM_ID_EXTRA, -1);
+
+        RequestFuture<GetTimetableResponse> future = RequestFuture.newFuture();
+        GetTimetableRequest request = new GetTimetableRequest(filmId, future, future);
+        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
+        try {
+            GetTimetableResponse response = future.get();
+            if (response.isSuccessful()) {
+                //notify listeners about successful loading timetable
+                sendLocalBroadcast(LoadTimetableNotification.createSuccessResult());
+            } else {
+                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+
+                //notify listeners about unsuccessful loading timetable
+                sendLocalBroadcast(LoadTimetableNotification.createErrorsResult(response.error));
+            }
+        } catch (InterruptedException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading timetable
+            sendLocalBroadcast(LoadTimetableNotification.createErrorsResult(e.getLocalizedMessage()));
+        } catch (ExecutionException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading timetable
+            sendLocalBroadcast(LoadTimetableNotification.createErrorsResult(e.getLocalizedMessage()));
         }
     }
 
