@@ -1,14 +1,25 @@
 package com.kvest.odessatoday.io.request;
 
+import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.content.OperationApplicationException;
+import android.os.RemoteException;
+import android.util.Log;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
-import com.kvest.odessatoday.io.NetworkContract;
+import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.datamodel.Comment;
 import com.kvest.odessatoday.io.response.GetCommentsResponse;
+import com.kvest.odessatoday.utils.Constants;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,8 +44,7 @@ public abstract class GetCommentsRequest extends BaseRequest<GetCommentsResponse
 
             //save data
             if (getCommentsResponse.isSuccessful()) {
-                //TODO
-//                saveComments(getCommentsResponse.data.);
+                saveComments(getCommentsResponse.data.comments);
             }
 
             return Response.success(getCommentsResponse, HttpHeaderParser.parseCacheHeaders(response));
@@ -42,4 +52,29 @@ public abstract class GetCommentsRequest extends BaseRequest<GetCommentsResponse
             return Response.error(new ParseError(e));
         }
     }
+
+    private void saveComments(List<Comment> comments) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(comments.size());
+
+        //insert comments
+        for (Comment comment : comments) {
+            operations.add(ContentProviderOperation.newInsert(COMMENTS_URI)
+                           .withValues(comment.getContentValues(getTargetId(), getTargetType())).build());
+        }
+
+        //apply
+        Context context = TodayApplication.getApplication().getApplicationContext();
+        try {
+            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
+        }catch (RemoteException re) {
+            Log.e(Constants.TAG, re.getMessage());
+            re.printStackTrace();
+        }catch (OperationApplicationException oae) {
+            Log.e(Constants.TAG, oae.getMessage());
+            oae.printStackTrace();
+        }
+    }
+
+    protected abstract long getTargetId();
+    protected abstract int getTargetType();
 }

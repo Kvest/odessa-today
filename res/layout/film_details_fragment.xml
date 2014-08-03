@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    android:id="@+id/scroll_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -48,11 +49,20 @@
                 android:layout_marginBottom="@dimen/films_ratingbar_margin"
                 style="@style/FilmsRatingBarTheme"
                 android:isIndicator="true"/>
+            <ImageView
+                android:id="@+id/film_duration_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/film_poster"
+                android:layout_below="@id/film_rating"
+                android:src="@drawable/ic_film_duration" />
             <TextView
                 android:id="@+id/film_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/film_poster"
+                android:layout_marginTop="@dimen/film_duration_margin_top"
+                android:layout_marginLeft="@dimen/film_duration_margin_left"
+                android:layout_toRightOf="@id/film_duration_icon"
                 android:layout_below="@id/film_rating"
                 android:textSize="@dimen/film_details_duration_text_size" />
         </RelativeLayout>
@@ -142,7 +152,11 @@
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_calendar"/>
+                android:src="@drawable/ic_arrow_details"/>
         </RelativeLayout>
+        <ListView
+            android:id="@+id/timetable_list"
+            android:layout_height="300dip"
+            android:layout_width="wrap_content" />
     </LinearLayout>
 </ScrollView>

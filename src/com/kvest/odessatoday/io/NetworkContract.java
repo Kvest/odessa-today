@@ -38,4 +38,8 @@ public class NetworkContract {
     public static Uri createFilmCommentsUri(long filmId) {
         return Uri.parse(BASE_URL + FILMS_PATH + "/" + Long.toString(filmId) + "/" + COMMENTS_PATH);
     }
+
+    public static Uri createCinemaCommentsUri(long cinemaId) {
+        return Uri.parse(BASE_URL + CINEMAS_PATH + "/" + Long.toString(cinemaId) + "/" + COMMENTS_PATH);
+    }
 }

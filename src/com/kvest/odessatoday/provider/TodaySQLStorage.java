@@ -27,6 +27,7 @@ public class TodaySQLStorage extends SQLiteOpenHelper {
         db.execSQL(Films.CREATE_TABLE_SQL);
         db.execSQL(FilmsTimetable.CREATE_TABLE_SQL);
         db.execSQL(Cinemas.CREATE_TABLE_SQL);
+        db.execSQL(Comments.CREATE_TABLE_SQL);
     }
 
     @Override

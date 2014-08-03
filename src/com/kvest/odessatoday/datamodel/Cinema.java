@@ -1,7 +1,7 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
-import com.kvest.odessatoday.provider.TodayProviderContract;
+import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,15 +23,15 @@ public class Cinema {
 
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues(8);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.CINEMA_ID, id);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.NAME, name);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.ADDRESS, address);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.PHONES, phones);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.TRANSPORT, transport);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.DESCRIPTION, description);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.WORK_TIME, worktime);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.IMAGE, image);
-        values.put(TodayProviderContract.Tables.Cinemas.Columns.COMMENTS_COUNT, comments_count);
+        values.put(Cinemas.Columns.CINEMA_ID, id);
+        values.put(Cinemas.Columns.NAME, name);
+        values.put(Cinemas.Columns.ADDRESS, address);
+        values.put(Cinemas.Columns.PHONES, phones);
+        values.put(Cinemas.Columns.TRANSPORT, transport);
+        values.put(Cinemas.Columns.DESCRIPTION, description);
+        values.put(Cinemas.Columns.WORK_TIME, worktime);
+        values.put(Cinemas.Columns.IMAGE, image);
+        values.put(Cinemas.Columns.COMMENTS_COUNT, comments_count);
 
         return values;
     }

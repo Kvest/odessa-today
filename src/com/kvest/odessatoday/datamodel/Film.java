@@ -1,7 +1,7 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
-import com.kvest.odessatoday.provider.TodayProviderContract;
+import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
 import java.util.List;
 
@@ -31,20 +31,20 @@ public class Film {
 
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues(12);
-        values.put(TodayProviderContract.Tables.Films.Columns.FILM_ID, id);
-        values.put(TodayProviderContract.Tables.Films.Columns.NAME, filmname);
-        values.put(TodayProviderContract.Tables.Films.Columns.COUNTRY, country);
-        values.put(TodayProviderContract.Tables.Films.Columns.YEAR, year);
-        values.put(TodayProviderContract.Tables.Films.Columns.DIRECTOR, director);
-        values.put(TodayProviderContract.Tables.Films.Columns.ACTORS, actors);
-        values.put(TodayProviderContract.Tables.Films.Columns.DESCRIPTION, description);
-        values.put(TodayProviderContract.Tables.Films.Columns.IMAGE, image);
-        values.put(TodayProviderContract.Tables.Films.Columns.VIDEO, video);
-        values.put(TodayProviderContract.Tables.Films.Columns.GENRE, genre);
-        values.put(TodayProviderContract.Tables.Films.Columns.RATING, rating);
-        values.put(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT, comments_count);
-        values.put(TodayProviderContract.Tables.Films.Columns.IS_PREMIERE, is_premiere);
-        values.put(TodayProviderContract.Tables.Films.Columns.FILM_DURATION, film_duration);
+        values.put(Films.Columns.FILM_ID, id);
+        values.put(Films.Columns.NAME, filmname);
+        values.put(Films.Columns.COUNTRY, country);
+        values.put(Films.Columns.YEAR, year);
+        values.put(Films.Columns.DIRECTOR, director);
+        values.put(Films.Columns.ACTORS, actors);
+        values.put(Films.Columns.DESCRIPTION, description);
+        values.put(Films.Columns.IMAGE, image);
+        values.put(Films.Columns.VIDEO, video);
+        values.put(Films.Columns.GENRE, genre);
+        values.put(Films.Columns.RATING, rating);
+        values.put(Films.Columns.COMMENTS_COUNT, comments_count);
+        values.put(Films.Columns.IS_PREMIERE, is_premiere);
+        values.put(Films.Columns.FILM_DURATION, film_duration);
 
         return values;
     }

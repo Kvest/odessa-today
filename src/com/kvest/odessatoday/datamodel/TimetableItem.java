@@ -1,7 +1,7 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
-import com.kvest.odessatoday.provider.TodayProviderContract;
+import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,12 +19,12 @@ public class TimetableItem {
 
     public ContentValues getContentValues(long filmId) {
         ContentValues values = new ContentValues(6);
-        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.TIMETABLE_ID, id);
-        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.CINEMA_ID, cinema_id);
-        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.FILM_ID, filmId);
-        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.DATE, date);
-        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.PRICES, prices);
-        values.put(TodayProviderContract.Tables.FilmsTimetable.Columns.FORMAT, format);
+        values.put(FilmsTimetable.Columns.TIMETABLE_ID, id);
+        values.put(FilmsTimetable.Columns.CINEMA_ID, cinema_id);
+        values.put(FilmsTimetable.Columns.FILM_ID, filmId);
+        values.put(FilmsTimetable.Columns.DATE, date);
+        values.put(FilmsTimetable.Columns.PRICES, prices);
+        values.put(FilmsTimetable.Columns.FORMAT, format);
 
         return values;
     }

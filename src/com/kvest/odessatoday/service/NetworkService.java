@@ -11,10 +11,7 @@ import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
 import com.kvest.odessatoday.io.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.io.notification.LoadTimetableNotification;
-import com.kvest.odessatoday.io.request.GetCinemasRequest;
-import com.kvest.odessatoday.io.request.GetFilmCommentsRequest;
-import com.kvest.odessatoday.io.request.GetFilmsRequest;
-import com.kvest.odessatoday.io.request.GetTimetableRequest;
+import com.kvest.odessatoday.io.request.*;
 import com.kvest.odessatoday.io.response.GetCinemasResponse;
 import com.kvest.odessatoday.io.response.GetCommentsResponse;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
@@ -37,10 +34,12 @@ public class NetworkService extends IntentService {
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
     private static final String FILM_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.FILM_ID";
+    private static final String CINEMA_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.CINEMA_ID";
     private static final int ACTION_LOAD_FILMS = 0;
     private static final int ACTION_LOAD_CINEMAS = 1;
     private static final int ACTION_LOAD_TIMETABLE = 2;
     private static final int ACTION_LOAD_FILM_COMMENTS = 3;
+    private static final int ACTION_LOAD_CINEMA_COMMENTS = 4;
 
     public static void loadTodayFilms(Context context) {
         //calculate start and end date
@@ -82,6 +81,14 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
+    public static void loadCinemaComments(Context context, long cinemaId) {
+        Intent intent = new Intent(context, NetworkService.class);
+        intent.putExtra(ACTION_EXTRA, ACTION_LOAD_CINEMA_COMMENTS);
+        intent.putExtra(CINEMA_ID_EXTRA, cinemaId);
+
+        context.startService(intent);
+    }
+
     public NetworkService() {
         super("NetworkService");
     }
@@ -101,10 +108,45 @@ public class NetworkService extends IntentService {
             case ACTION_LOAD_FILM_COMMENTS :
                 doLoadFilmComments(intent);
                 break;
+            case ACTION_LOAD_CINEMA_COMMENTS :
+                doLoadCinemaComments(intent);
+                break;
         }
     }
 
-    private void doLoadFilmComments(Intent  intent) {
+    private void doLoadCinemaComments(Intent intent) {
+        //get extra data
+        long cinemaId = intent.getLongExtra(CINEMA_ID_EXTRA, -1);
+
+        RequestFuture<GetCommentsResponse> future = RequestFuture.newFuture();
+        GetCinemaCommentsRequest request = new GetCinemaCommentsRequest(cinemaId, future, future);
+        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
+        try {
+            GetCommentsResponse response = future.get();
+            if (response.isSuccessful()) {
+                //notify listeners about successful loading comments
+                sendLocalBroadcast(LoadCommentsNotification.createSuccessResult(cinemaId, Constants.CommentTargetType.CINEMA));
+            } else {
+                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+
+                //notify listeners about unsuccessful loading comments
+                sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(response.error, cinemaId, Constants.CommentTargetType.CINEMA));
+            }
+        } catch (InterruptedException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading comments
+            sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), cinemaId, Constants.CommentTargetType.CINEMA));
+        } catch (ExecutionException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading comments
+            sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), cinemaId, Constants.CommentTargetType.CINEMA));
+        }
+
+    }
+
+    private void doLoadFilmComments(Intent intent) {
         //get extra data
         long filmId = intent.getLongExtra(FILM_ID_EXTRA, -1);
 
@@ -115,25 +157,24 @@ public class NetworkService extends IntentService {
             GetCommentsResponse response = future.get();
             if (response.isSuccessful()) {
                 //notify listeners about successful loading comments
-                sendLocalBroadcast(LoadCommentsNotification.createSuccessResult());
+                sendLocalBroadcast(LoadCommentsNotification.createSuccessResult(filmId, Constants.CommentTargetType.FILM));
             } else {
                 Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading comments
-                sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(response.error));
+                sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(response.error, filmId, Constants.CommentTargetType.FILM));
             }
         } catch (InterruptedException e) {
             Log.e(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading comments
-            sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage()));
+            sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), filmId, Constants.CommentTargetType.FILM));
         } catch (ExecutionException e) {
             Log.e(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading comments
-            sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage()));
+            sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), filmId, Constants.CommentTargetType.FILM));
         }
-
     }
 
     private void doLoadTimetable(Intent  intent) {

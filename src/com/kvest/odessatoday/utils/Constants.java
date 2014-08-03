@@ -16,4 +16,10 @@ public abstract class Constants {
         int NOT_PREMIERE = 0;
         int IS_PREMIERE = 0;
     }
+
+    public interface CommentTargetType {
+        int UNKNOWN = -1;
+        int FILM = 0;
+        int CINEMA = 1;
+    }
 }

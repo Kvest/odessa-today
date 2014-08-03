@@ -10,14 +10,16 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.provider.CursorLoaderBuilder;
 import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -31,16 +33,21 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 public class FilmDetailsFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_FILM_ID = "com.kvest.odessatoday.argument.FILM_ID";
     private static final int FILM_LOADER_ID = 1;
+    private static final int TIMETABLE_LOADER_ID = 2;
 
+    private ScrollView scrollContainer;
     private NetworkImageView filmPoster;
     private TextView filmName;
     private TextView genre;
     private RatingBar filmRating;
     private TextView filmDuration;
+    private ImageView filmDurationIcon;
     private TextView description;
     private TextView director;
     private TextView actors;
     private TextView commentsCount;
+    private ListView timetableList;
+    private TimetableAdapter timetableAdapter;
 
     public static FilmDetailsFragment getInstance(long filmId) {
         Bundle arguments = new Bundle(1);
@@ -62,6 +69,7 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
 
     private void init(View rootView) {
         //store views
+        scrollContainer = (ScrollView) rootView.findViewById(R.id.scroll_container);
         filmPoster = (NetworkImageView) rootView.findViewById(R.id.film_poster);
         filmPoster.setDefaultImageResId(R.drawable.loading_poster);
         filmPoster.setErrorImageResId(R.drawable.no_poster);
@@ -69,11 +77,25 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
         genre = (TextView) rootView.findViewById(R.id.genre);
         filmRating = (RatingBar) rootView.findViewById(R.id.film_rating);
         filmDuration = (TextView) rootView.findViewById(R.id.film_duration);
+        filmDurationIcon = (ImageView) rootView.findViewById(R.id.film_duration_icon);
         description = (TextView)rootView.findViewById(R.id.film_description);
         director = (TextView)rootView.findViewById(R.id.director);
         actors = (TextView)rootView.findViewById(R.id.actors);
         commentsCount = (TextView)rootView.findViewById(R.id.comments_count_value);
-        //TODO
+
+        timetableList = (ListView)rootView.findViewById(R.id.timetable_list);
+        timetableAdapter = new TimetableAdapter(getActivity());
+        timetableList.setAdapter(timetableAdapter);
+
+        timetableList.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                timetableList.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -85,6 +107,7 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
         NetworkService.loadFilmComments(getActivity(), getFilmId());
 
         getLoaderManager().initLoader(FILM_LOADER_ID, null, this);
+        getLoaderManager().initLoader(TIMETABLE_LOADER_ID, null, this);
     }
 
     private long getFilmId() {
@@ -102,6 +125,9 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
             String selection = Tables.Films.Columns.FILM_ID + "=?";
             return new CursorLoader(getActivity(), FILMS_URI, null,
                                     selection, new String[]{Long.toString(getFilmId())}, null);
+        } else if (id == TIMETABLE_LOADER_ID) {
+            return CursorLoaderBuilder.getFilmsFullTimetable(getActivity(), getFilmId(), TimetableAdapter.PROJECTION,
+                    Tables.FilmsFullTimetable.TIMETABLE_ORDER_ASC);
         }
 
         return null;
@@ -113,12 +139,19 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
             case FILM_LOADER_ID :
                 setFilmData(cursor);
                 break;
+            case TIMETABLE_LOADER_ID :
+                timetableAdapter.swapCursor(cursor);
+                break;
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        //TODO
+        switch (loader.getId()) {
+            case TIMETABLE_LOADER_ID :
+                timetableAdapter.swapCursor(null);
+                break;
+        }
     }
 
     private void setFilmData(Cursor cursor) {
@@ -143,9 +176,11 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
             int filmDurationValue = cursor.getInt(cursor.getColumnIndex(Tables.Films.Columns.FILM_DURATION));
             if (filmDurationValue > 0) {
                 filmDuration.setVisibility(View.VISIBLE);
+                filmDurationIcon.setVisibility(View.VISIBLE);
                 filmDuration.setText(getString(R.string.film_duration, filmDurationValue));
             } else {
                 filmDuration.setVisibility(View.GONE);
+                filmDurationIcon.setVisibility(View.GONE);
             }
 
             String value = getString(R.string.film_director, cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.DIRECTOR)));

@@ -40,4 +40,6 @@
     <dimen name="film_details_comments_count_height">50dip</dimen>
     <dimen name="film_details_comments_count_text_size">14sp</dimen>
     <dimen name="film_details_comments_count_margin_left">6dip</dimen>
+    <dimen name="film_duration_margin_top">3dip</dimen>
+    <dimen name="film_duration_margin_left">6dip</dimen>
 </resources>

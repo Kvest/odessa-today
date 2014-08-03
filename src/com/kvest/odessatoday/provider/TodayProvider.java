@@ -28,6 +28,8 @@ public class TodayProvider extends ContentProvider {
     private static final int TIMETABLE_ITEM_URI_INDICATOR = 4;
     private static final int CINEMA_LIST_URI_INDICATOR = 5;
     private static final int CINEMA_ITEM_URI_INDICATOR = 6;
+    private static final int FULL_TIMETABLE_LIST_URI_INDICATOR = 7;
+
 
     private static final UriMatcher uriMatcher;
     static {
@@ -38,6 +40,7 @@ public class TodayProvider extends ContentProvider {
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/#", TIMETABLE_ITEM_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, CINEMAS_PATH, CINEMA_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, CINEMAS_PATH + "/#", CINEMA_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + FULL_TIMETABLE_PATH, FULL_TIMETABLE_LIST_URI_INDICATOR);
     }
 
     @Override
@@ -71,6 +74,8 @@ public class TodayProvider extends ContentProvider {
                 return queryFullTable(Tables.Cinemas.TABLE_NAME , uri, projection,
                         Tables.Cinemas.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
+            case FULL_TIMETABLE_LIST_URI_INDICATOR :
+                return queryFullTable(Tables.FilmsFullTimetable.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
         }
 
         throw new IllegalArgumentException("Unknown uri for query : " + uri);
