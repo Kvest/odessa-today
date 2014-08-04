@@ -14,7 +14,7 @@ public abstract class Constants {
 
     public interface Premiere {
         int NOT_PREMIERE = 0;
-        int IS_PREMIERE = 0;
+        int IS_PREMIERE = 1;
     }
 
     public interface CommentTargetType {
