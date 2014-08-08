@@ -43,6 +43,7 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
         this.startDate = startDate;
         this.endDate = endDate;
+        Log.d("KVEST_TAG", "startDate=" + startDate + ", endDate=" + endDate);
     };
 
     @Override

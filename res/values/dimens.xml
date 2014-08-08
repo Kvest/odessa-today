@@ -42,4 +42,6 @@
     <dimen name="film_details_comments_count_margin_left">6dip</dimen>
     <dimen name="film_duration_margin_top">3dip</dimen>
     <dimen name="film_duration_margin_left">6dip</dimen>
+    <dimen name="film_details_posters_height">100dip</dimen>
+    <dimen name="film_details_posters_margin">8dip</dimen>
 </resources>

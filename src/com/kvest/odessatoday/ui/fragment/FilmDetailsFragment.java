@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,9 +20,11 @@ import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.datamodel.Film;
 import com.kvest.odessatoday.provider.CursorLoaderBuilder;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
+import com.kvest.odessatoday.ui.widget.ExpandablePanel;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -35,7 +40,6 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     private static final int FILM_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
 
-    private ScrollView scrollContainer;
     private NetworkImageView filmPoster;
     private TextView filmName;
     private TextView genre;
@@ -48,6 +52,9 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     private TextView commentsCount;
     private ListView timetableList;
     private TimetableAdapter timetableAdapter;
+    private LinearLayout postersContainer;
+
+    private LinearLayout.LayoutParams postersLayoutParams;
 
     public static FilmDetailsFragment getInstance(long filmId) {
         Bundle arguments = new Bundle(1);
@@ -68,8 +75,13 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     }
 
     private void init(View rootView) {
+        //create layout params for posters
+        int postersMargin = (int)getResources().getDimension(R.dimen.film_details_posters_margin);
+        postersLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                                                           (int)getResources().getDimension(R.dimen.film_details_posters_height));
+        postersLayoutParams.setMargins(0, postersMargin, postersMargin, postersMargin);
+
         //store views
-        scrollContainer = (ScrollView) rootView.findViewById(R.id.scroll_container);
         filmPoster = (NetworkImageView) rootView.findViewById(R.id.film_poster);
         filmPoster.setDefaultImageResId(R.drawable.loading_poster);
         filmPoster.setErrorImageResId(R.drawable.no_poster);
@@ -82,10 +94,23 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
         director = (TextView)rootView.findViewById(R.id.director);
         actors = (TextView)rootView.findViewById(R.id.actors);
         commentsCount = (TextView)rootView.findViewById(R.id.comments_count_value);
+        postersContainer = (LinearLayout)rootView.findViewById(R.id.posters_container);
 
         timetableList = (ListView)rootView.findViewById(R.id.timetable_list);
         timetableAdapter = new TimetableAdapter(getActivity());
         timetableList.setAdapter(timetableAdapter);
+
+        ((ExpandablePanel)rootView.findViewById(R.id.expand_panel)).setOnExpandListener(new ExpandablePanel.OnExpandListener() {
+            @Override
+            public void onExpand(View handle, View content) {
+                ((ImageButton)handle).setImageResource(R.drawable.collapse_arrow);
+            }
+
+            @Override
+            public void onCollapse(View handle, View content) {
+                ((ImageButton)handle).setImageResource(R.drawable.expand_arrow);
+            }
+        });
 
         timetableList.setOnTouchListener(new View.OnTouchListener() {
             // Setting on Touch Listener for handling the touch inside ScrollView
@@ -191,6 +216,24 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
 
             description.setText(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.DESCRIPTION)));
             commentsCount.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(Tables.Films.Columns.COMMENTS_COUNT))));
+
+            //clear posters container
+            postersContainer.removeAllViews();
+
+            //add new posters
+            String[] postersUrls = Film.string2Posters(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.POSTERS)));
+            addPosters(postersUrls);
+        }
+    }
+
+    private void addPosters(String[] posterUrls) {
+        for (String posterUrl : posterUrls) {
+            //add image view
+            NetworkImageView imageView = new NetworkImageView(postersContainer.getContext());
+            postersContainer.addView(imageView, postersLayoutParams);
+
+            //start loading
+            imageView.setImageUrl(posterUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         }
     }
 }

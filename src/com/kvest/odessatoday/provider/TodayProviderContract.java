@@ -17,13 +17,13 @@ public class TodayProviderContract {
 
     static final String FILMS_PATH = "films";
     static final String TIMETABLE_PATH = "timetable";
-    static final String FULL_TIMETABLE_PATH = "full_timetable";
+    static final String FULL_PATH = "full";
     static final String CINEMAS_PATH = "cinemas";
     static final String COMMENTS_PATH = "comments";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
     public static final Uri TIMETABLE_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH + "/" + TIMETABLE_PATH);
-    public static final Uri FULL_TIMETABLE_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH + "/" + FULL_TIMETABLE_PATH);
+    public static final Uri FULL_TIMETABLE_URI = Uri.withAppendedPath(TIMETABLE_URI, FULL_PATH);
     public static final Uri CINEMAS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, CINEMAS_PATH);
     public static final Uri COMMENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, COMMENTS_PATH);
 
@@ -46,6 +46,7 @@ public class TodayProviderContract {
                 String COMMENTS_COUNT = "comments_count";
                 String IS_PREMIERE = "is_premiere";
                 String FILM_DURATION = "film_duration";
+                String POSTERS = "posters";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
@@ -64,6 +65,7 @@ public class TodayProviderContract {
                     + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
                     + Columns.IS_PREMIERE + " INTEGER DEFAULT 0, "
                     + Columns.FILM_DURATION + " INTEGER DEFAULT 0, "
+                    + Columns.POSTERS + " TEXT, "
                     + "UNIQUE (" + Columns.FILM_ID + ") ON CONFLICT REPLACE)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -113,7 +115,7 @@ public class TodayProviderContract {
                     + Columns.CINEMA_ID + " INTEGER,"
                     + Columns.DATE + " INTEGER,"
                     + Columns.PRICES + " TEXT,"
-                    + Columns.FORMAT + " INTEGER, "
+                    + Columns.FORMAT + " INTEGER DEFAULT " + Constants.FilmFormat.UNKNOWN + ", "
                     + "UNIQUE(" + Columns.TIMETABLE_ID + ") ON CONFLICT REPLACE);";
 //                    + "FOREIGN KEY(" + Columns.FILM_ID + ") REFERENCES " + Films.TABLE_NAME + "(" + Films.Columns.FILM_ID + ") ON UPDATE NO ACTION ON DELETE CASCADE);";
 

@@ -2,18 +2,21 @@ package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
+import static com.kvest.odessatoday.utils.Constants.*;
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -23,16 +26,24 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  */
 public class TimetableAdapter extends CursorAdapter {
     public static final String[] PROJECTION = new String[]{Tables.FilmsFullTimetable.Columns._ID, Tables.FilmsFullTimetable.Columns.CINEMA_NAME,
-                                                           Tables.FilmsFullTimetable.Columns.DATE, Tables.FilmsFullTimetable.Columns.PRICES};
-    private static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm";
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+                                                           Tables.FilmsFullTimetable.Columns.DATE, Tables.FilmsFullTimetable.Columns.PRICES,
+                                                           Tables.FilmsFullTimetable.Columns.CINEMA_ADDRESS, Tables.FilmsFullTimetable.Columns.FORMAT};
+    private static final String TIME_FORMAT_PATTERN = "HH:mm";
+    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
 
     private int cinemaNameIndex = -1;
     private int dateIndex = -1;
     private int pricesIndex = -1;
+    private int formatIndex = -1;
+    private int cinemaAddressIndex = -1;
+
+    private Typeface robotoLightTypeface;
 
     public TimetableAdapter(Context context) {
         super(context, null, 0);
+
+        //create typeface
+        robotoLightTypeface = Typeface.create(Constants.ROBOTO_LIGHT_FONT_NAME, Typeface.NORMAL);
     }
 
     @Override
@@ -43,9 +54,15 @@ public class TimetableAdapter extends CursorAdapter {
 
         //create holder
         ViewHolder holder = new ViewHolder();
+        holder.filmFormat = (ImageView)view.findViewById(R.id.film_format);
+        holder.cinemaAddress = (TextView)view.findViewById(R.id.cinema_address);
         holder.cinemaName = (TextView)view.findViewById(R.id.cinema_name);
-        holder.date = (TextView)view.findViewById(R.id.date);
+        holder.time = (TextView)view.findViewById(R.id.time);
         holder.prices = (TextView)view.findViewById(R.id.prices);
+
+        //set typefaces
+        holder.cinemaName.setTypeface(robotoLightTypeface);
+        holder.time.setTypeface(robotoLightTypeface);
 
         view.setTag(holder);
 
@@ -60,9 +77,38 @@ public class TimetableAdapter extends CursorAdapter {
             calculateColumnIndexes(cursor);
         }
         holder.cinemaName.setText(cursor.getString(cinemaNameIndex));
+        holder.cinemaAddress.setText(cursor.getString(cinemaAddressIndex));
         long dateValue = TimeUnit.SECONDS.toMillis(cursor.getLong(dateIndex));
-        holder.date.setText(DATE_FORMAT.format(dateValue));
+        holder.time.setText(TIME_FORMAT.format(dateValue));
         holder.prices.setText(cursor.getString(pricesIndex));
+
+        //film format
+        holder.filmFormat.setVisibility(View.VISIBLE);
+        switch (cursor.getInt(formatIndex)) {
+            case FilmFormat.THIRTY_FIFE_MM:
+                holder.filmFormat.setImageResource(R.drawable.thirty_five_mm);
+                break;
+            case FilmFormat.TWO_D:
+                holder.filmFormat.setImageResource(R.drawable.two_d);
+                break;
+            case FilmFormat.THREE_D:
+                holder.filmFormat.setImageResource(R.drawable.three_d);
+                break;
+            case FilmFormat.IMAX_THREE_D:
+                holder.filmFormat.setImageResource(R.drawable.imax3d);
+                break;
+            case FilmFormat.IMAX:
+                holder.filmFormat.setImageResource(R.drawable.imax);
+                break;
+            case FilmFormat.FIVE_D:
+                holder.filmFormat.setImageResource(R.drawable.five_d);
+                break;
+            case FilmFormat.FOUR_DX:
+                holder.filmFormat.setImageResource(R.drawable.imax4dx);
+                break;
+            default:
+                holder.filmFormat.setVisibility(View.INVISIBLE);
+        }
     }
 
     private boolean isColumnIndexesCalculated() {
@@ -73,11 +119,15 @@ public class TimetableAdapter extends CursorAdapter {
         cinemaNameIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.CINEMA_NAME);
         dateIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.DATE);
         pricesIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.PRICES);
+        formatIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.FORMAT);
+        cinemaAddressIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.CINEMA_ADDRESS);
     }
 
     private static class ViewHolder {
+        private ImageView filmFormat;
         private TextView cinemaName;
-        private TextView date;
+        private TextView cinemaAddress;
+        private TextView time;
         private TextView prices;
     }
 }

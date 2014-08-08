@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
 import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +35,7 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                shownFilmsDate = Utils.toLocalDate(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
                 FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, true);
                 transaction.add(R.id.fragment_container, filmsListFragment);
             } finally {

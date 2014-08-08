@@ -107,6 +107,10 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
         //reload films data
         long startDate = getDate();
         long endDate = Utils.getEndOfTheDay(startDate);
+        //convert date to utc
+        startDate = Utils.toUtcDate(startDate);
+        endDate = Utils.toUtcDate(endDate);
+
         NetworkService.loadFilms(activity, startDate, endDate);
     }
 
@@ -143,6 +147,11 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
             case FILMS_LOADER_ID :
                 long startDate = getDate();
                 long endDate = Utils.getEndOfTheDay(startDate);
+
+                //convert date to utc
+                startDate = Utils.toUtcDate(startDate);
+                endDate = Utils.toUtcDate(endDate);
+
                 String selection = Tables.Films.Columns.FILM_ID + " in (" + Tables.FilmsTimetable.GET_FILMS_ID_BY_PERIOD_SQL + ")";
                 return new CursorLoader(getActivity(), TodayProviderContract.FILMS_URI, FilmsAdapter.PROJECTION, selection,
                                         new String[]{Long.toString(startDate), Long.toString(endDate)}, null);
