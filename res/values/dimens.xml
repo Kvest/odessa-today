@@ -15,6 +15,10 @@
     <dimen name="films_ratingbar_margin">4dip</dimen>
     <dimen name="films_date_text_size">20sp</dimen>
     <dimen name="films_week_text_size">15sp</dimen>
+    <dimen name="comments_count_height">28dip</dimen>
+    <dimen name="comments_count_min_width">32dip</dimen>
+    <dimen name="comments_count_horizontal_padding">8dip</dimen>
+    <dimen name="comments_count_text_size">14sp</dimen>
 
     <!--Calendar fragment-->
     <dimen name="calendar_header_height">50dip</dimen>

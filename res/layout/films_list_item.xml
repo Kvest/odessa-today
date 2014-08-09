@@ -44,11 +44,18 @@
     <TextView
         android:id="@+id/comments_count"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/comments_count_height"
+        android:minWidth="@dimen/comments_count_min_width"
+        android:paddingLeft="@dimen/comments_count_horizontal_padding"
+        android:paddingRight="@dimen/comments_count_horizontal_padding"
         android:layout_toRightOf="@id/film_rating"
-        android:layout_below="@id/genre"
+        android:layout_alignTop="@id/film_rating"
+        android:background="@drawable/comments_count_bg"
+        android:textColor="@color/comments_count_text_color"
+        android:textSize="@dimen/comments_count_text_size"
         android:singleLine="true"
-        android:ellipsize="end" />
+        android:ellipsize="end"
+        android:gravity="center" />
     <TextView
         android:id="@+id/is_premiere"
         android:visibility="gone"

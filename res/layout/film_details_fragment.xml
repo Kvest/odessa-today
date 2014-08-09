@@ -118,7 +118,9 @@
                 android:layout_marginLeft="@dimen/film_details_padding"
                 android:layout_marginRight="@dimen/film_details_padding"
                 android:layout_marginBottom="@dimen/film_details_description_padding_bottom"
-                android:textSize="@dimen/film_details_description_text_size" />
+                android:textSize="@dimen/film_details_description_text_size"
+                android:autoLink="all"
+                android:linksClickable="true"/>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

@@ -43,5 +43,6 @@
         android:divider="@color/films_list_divider_color"
         android:dividerHeight="@dimen/films_list_divider_height"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:listSelector="@drawable/application_list_item_selector" />
 </LinearLayout>
