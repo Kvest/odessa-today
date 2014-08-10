@@ -18,8 +18,6 @@ public class Utils {
     private static final long SECONDS_IN_DAY = TimeUnit.HOURS.toSeconds(24);
 
     public static long getEndOfTheDay(long date) {
-
-
         return (date + (SECONDS_IN_DAY - date % SECONDS_IN_DAY) - 1);
     }
 

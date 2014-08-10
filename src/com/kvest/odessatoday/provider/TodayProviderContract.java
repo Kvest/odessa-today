@@ -146,6 +146,7 @@ public class TodayProviderContract {
                     + "UNIQUE(" + Columns.COMMENT_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+            String DATE_ORDER_DESC = Comments.Columns.DATE + " DESC";
         }
 
         interface Cinemas {

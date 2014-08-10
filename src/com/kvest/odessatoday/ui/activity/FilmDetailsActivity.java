@@ -1,12 +1,15 @@
 package com.kvest.odessatoday.ui.activity;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.ui.fragment.CommentsFragment;
 import com.kvest.odessatoday.ui.fragment.FilmDetailsFragment;
+import com.kvest.odessatoday.utils.Constants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +18,7 @@ import com.kvest.odessatoday.ui.fragment.FilmDetailsFragment;
  * Time: 22:57
  * To change this template use File | Settings | File Templates.
  */
-public class FilmDetailsActivity extends TodayBaseActivity {
+public class FilmDetailsActivity extends TodayBaseActivity implements FilmDetailsFragment.OnShowFilmCommentsListener {
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
 
     public static Intent getStartIntent(Context context, long filmId) {
@@ -38,7 +41,7 @@ public class FilmDetailsActivity extends TodayBaseActivity {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
                 transaction.add(R.id.fragment_container, FilmDetailsFragment.getInstance(filmId));
-            }  finally {
+            } finally {
                 transaction.commit();
             }
         }
@@ -52,5 +55,17 @@ public class FilmDetailsActivity extends TodayBaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onShowFilmComments(long filmId) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        try {
+            Fragment fragment = CommentsFragment.getInstance(Constants.CommentTargetType.FILM, filmId);
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+        } finally {
+            transaction.commit();
+        }
     }
 }

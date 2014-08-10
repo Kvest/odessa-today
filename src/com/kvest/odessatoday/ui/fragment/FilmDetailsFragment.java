@@ -3,11 +3,8 @@ package com.kvest.odessatoday.ui.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -25,6 +22,7 @@ import com.kvest.odessatoday.provider.CursorLoaderBuilder;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
+import com.kvest.odessatoday.utils.Constants;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -35,7 +33,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * Time: 23:23
  * To change this template use File | Settings | File Templates.
  */
-public class FilmDetailsFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor> {
+public class FilmDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_FILM_ID = "com.kvest.odessatoday.argument.FILM_ID";
     private static final int FILM_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
@@ -56,6 +54,8 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
 
     private LinearLayout.LayoutParams postersLayoutParams;
 
+    private OnShowFilmCommentsListener onShowFilmCommentsListener;
+
     public static FilmDetailsFragment getInstance(long filmId) {
         Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
@@ -72,6 +72,17 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
         init(rootView);
 
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            onShowFilmCommentsListener = (OnShowFilmCommentsListener) activity;
+        } catch (ClassCastException cce) {
+            Log.e(Constants.TAG, "Host activity for FilmDetailsFragment should implements FilmDetailsFragment.OnShowFilmCommentsListener");
+        }
     }
 
     private void init(View rootView) {
@@ -121,6 +132,13 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
                 return false;
             }
         });
+
+        rootView.findViewById(R.id.comments_count).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showComments();
+            }
+        });
     }
 
     @Override
@@ -147,9 +165,7 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == FILM_LOADER_ID) {
-            String selection = Tables.Films.Columns.FILM_ID + "=?";
-            return new CursorLoader(getActivity(), FILMS_URI, null,
-                                    selection, new String[]{Long.toString(getFilmId())}, null);
+            return CursorLoaderBuilder.getFilm(getActivity(), getFilmId(), null, null);
         } else if (id == TIMETABLE_LOADER_ID) {
             return CursorLoaderBuilder.getFilmsFullTimetable(getActivity(), getFilmId(), TimetableAdapter.PROJECTION,
                     Tables.FilmsFullTimetable.TIMETABLE_ORDER_ASC);
@@ -176,6 +192,12 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
             case TIMETABLE_LOADER_ID :
                 timetableAdapter.swapCursor(null);
                 break;
+        }
+    }
+
+    private void showComments() {
+        if (onShowFilmCommentsListener != null) {
+            onShowFilmCommentsListener.onShowFilmComments(getFilmId());
         }
     }
 
@@ -235,5 +257,9 @@ public class FilmDetailsFragment extends Fragment  implements LoaderManager.Load
             //start loading
             imageView.setImageUrl(posterUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         }
+    }
+
+    public interface OnShowFilmCommentsListener {
+        public void onShowFilmComments(long filmId);
     }
 }

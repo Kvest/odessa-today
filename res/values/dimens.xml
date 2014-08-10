@@ -48,4 +48,12 @@
     <dimen name="film_duration_margin_left">6dip</dimen>
     <dimen name="film_details_posters_height">100dip</dimen>
     <dimen name="film_details_posters_margin">8dip</dimen>
+
+    <!--comments-->
+    <dimen name="comments_list_divider_height">1dip</dimen>
+    <dimen name="comments_list_item_padding">12dip</dimen>
+    <dimen name="comment_author_name_text_size">17sp</dimen>
+    <dimen name="comment_date_text_size">15sp</dimen>
+    <dimen name="comment_text_text_size">15sp</dimen>
+    <dimen name="comment_text_top_margin">6dip</dimen>
 </resources>

@@ -22,4 +22,10 @@
     <!--film details-->
     <color name="film_details_divider_color">#e6e6e6</color>
     <color name="film_details_comments_count_text_color">#999999</color>
+
+    <!--comments-->
+    <color name="comments_list_divider_color">#e6e6e6</color>
+    <color name="comment_author_name_text_color">#040404</color>
+    <color name="comment_date_text_color">#a2a2a2</color>
+    <color name="comment_text_text_color">#040404</color>
 </resources>

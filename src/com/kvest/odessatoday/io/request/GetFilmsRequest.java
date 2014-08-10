@@ -17,6 +17,7 @@ import com.kvest.odessatoday.datamodel.TimetableItem;
 import com.kvest.odessatoday.io.NetworkContract;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.Utils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -39,11 +40,11 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
     public GetFilmsRequest(long startDate, long endDate, Response.Listener<GetFilmsResponse> listener,
                            Response.ErrorListener errorListener) {
-        super(Method.GET, generateUrl(startDate, endDate), null, listener, errorListener);
+        super(Method.GET, generateUrl(Utils.toUtcDate(startDate), Utils.toUtcDate(endDate)), null, listener, errorListener);
 
-        this.startDate = startDate;
-        this.endDate = endDate;
-        Log.d("KVEST_TAG", "startDate=" + startDate + ", endDate=" + endDate);
+        this.startDate = Utils.toUtcDate(startDate);
+        this.endDate = Utils.toUtcDate(endDate);
+        Log.d("KVEST_TAG", "startDate=" + this.startDate + ", endDate=" + this.endDate);
     };
 
     @Override

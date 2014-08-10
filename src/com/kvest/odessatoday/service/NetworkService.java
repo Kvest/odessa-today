@@ -41,14 +41,6 @@ public class NetworkService extends IntentService {
     private static final int ACTION_LOAD_FILM_COMMENTS = 3;
     private static final int ACTION_LOAD_CINEMA_COMMENTS = 4;
 
-    public static void loadTodayFilms(Context context) {
-        //calculate start and end date
-        long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-        long endDate = Utils.getEndOfTheDay(startDate);
-
-        loadFilms(context, startDate, endDate);
-    }
-
     public static void loadFilms(Context context, long startDate, long endDate) {
         Intent intent = new Intent(context, NetworkService.class);
         intent.putExtra(ACTION_EXTRA, ACTION_LOAD_FILMS);
