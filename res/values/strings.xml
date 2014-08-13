@@ -13,4 +13,5 @@
     <string name="film_actors"><![CDATA[<b>Актеры: </b>%1$s]]></string>
     <string name="comments">Отзывы</string>
     <string name="comments_date_format">dd MMMM yyyy в HH:mm</string>
+    <string name="add_comment">Добавить комментарий</string>
 </resources>

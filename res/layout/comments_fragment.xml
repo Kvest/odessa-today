@@ -11,4 +11,42 @@
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/comments_list_divider_color"
         android:dividerHeight="@dimen/comments_list_divider_height" />
+    <LinearLayout
+        android:id="@+id/add_comment_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/application_green"
+        android:visibility="invisible"
+        android:layout_gravity="bottom">
+        <EditText
+            android:id="@+id/comment_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name" />
+        <EditText
+            android:id="@+id/comment_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="1000"
+            android:hint="Comment text" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <Button
+                android:id="@+id/hide"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hide" />
+            <Button
+                android:id="@+id/send"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Send" />
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

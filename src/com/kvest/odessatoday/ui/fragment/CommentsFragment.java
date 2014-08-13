@@ -5,9 +5,11 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.CursorLoaderBuilder;
@@ -30,6 +32,15 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     private ListView commentsList;
     private CommentsAdapter adapter;
 
+    private View addCommentPanel;
+    private Animation showCommentPanelAnimation;
+    private Animation hideCommentPanelAnimation;
+
+    private EditText commentName;
+    private EditText commentText;
+    private Button hideCommentPanelButton;
+    private Button sendCommentButton;
+
     public static CommentsFragment getInstance(int targetType, long targetId) {
         Bundle arguments = new Bundle(2);
         arguments.putInt(ARGUMENT_TARGET_TYPE, targetType);
@@ -45,8 +56,26 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
         View rootView = inflater.inflate(R.layout.comments_fragment, container, false);
 
         init(rootView);
+        setHasOptionsMenu(true);
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.comments_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_comment:
+                showAddCommentPanel();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -57,12 +86,79 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void init(View rootView) {
+        //store widgets
+        addCommentPanel = rootView.findViewById(R.id.add_comment_panel);
+        commentName = (EditText)rootView.findViewById(R.id.comment_name);
+        commentText = (EditText)rootView.findViewById(R.id.comment_text);
+        hideCommentPanelButton = (Button)rootView.findViewById(R.id.hide);
+        sendCommentButton = (Button)rootView.findViewById(R.id.send);
+
         //store list view
         commentsList = (ListView)rootView.findViewById(R.id.comments_list);
 
         //create and set an adapter
         adapter = new CommentsAdapter(getActivity());
         commentsList.setAdapter(adapter);
+
+        //create animations
+        showCommentPanelAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.add_comment_panel_up);
+        hideCommentPanelAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.add_comment_panel_down);
+        hideCommentPanelAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                addCommentPanel.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        sendCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sendComment()) {
+                    hideAddCommentPanel();
+                }
+            }
+        });
+
+        hideCommentPanelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideAddCommentPanel();
+            }
+        });
+    }
+
+    private boolean sendComment() {
+        //TODO
+        return true;
+    }
+
+    private void showAddCommentPanel() {
+        if (!isAddCommentPanelShown()) {
+            //set visible
+            addCommentPanel.setVisibility(View.VISIBLE);
+
+            //animate
+            addCommentPanel.clearAnimation();
+            addCommentPanel.startAnimation(showCommentPanelAnimation);
+        }
+    }
+
+    private void hideAddCommentPanel() {
+        if (isAddCommentPanelShown()) {
+            //animate
+            addCommentPanel.clearAnimation();
+            addCommentPanel.startAnimation(hideCommentPanelAnimation);
+        }
+    }
+
+    private boolean isAddCommentPanelShown() {
+        return addCommentPanel.getVisibility() == View.VISIBLE;
     }
 
     private long getTargetId() {
