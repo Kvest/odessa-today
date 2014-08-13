@@ -5,6 +5,7 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -134,8 +135,44 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private boolean sendComment() {
-        //TODO
-        return true;
+        if (isNewCommentDataValid()) {
+            //send comment
+            //TODO
+
+            //clean comment text
+            commentText.setText("");
+
+            //remember name
+            //TODO
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isNewCommentDataValid() {
+        boolean isDataValid = true;
+
+        if (TextUtils.isEmpty(getCommentName())) {
+            commentName.setError(getString(R.string.fill_field));
+            isDataValid = false;
+        }
+
+        if (TextUtils.isEmpty(getCommentText())) {
+            commentText.setError(getString(R.string.fill_field));
+            isDataValid = false;
+        }
+
+        return isDataValid;
+    }
+
+    private String getCommentText() {
+        return commentText.getText().toString().trim();
+    }
+
+    private String getCommentName() {
+        return commentName.getText().toString().trim();
     }
 
     private void showAddCommentPanel() {
