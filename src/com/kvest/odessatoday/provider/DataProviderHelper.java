@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.Utils;
+import com.kvest.odessatoday.utils.TimeUtils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -46,8 +46,8 @@ public abstract class DataProviderHelper {
 
     public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate, String[] projection, String order) {
         //convert date to utc
-        startDate = Utils.toUtcDate(startDate);
-        endDate = Utils.toUtcDate(endDate);
+        startDate = TimeUtils.toUtcDate(startDate);
+        endDate = TimeUtils.toUtcDate(endDate);
 
 Log.d("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDate=" + endDate);
 
