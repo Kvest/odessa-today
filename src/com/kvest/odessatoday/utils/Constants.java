@@ -34,4 +34,11 @@ public abstract class Constants {
         int FIVE_D = 6;
         int FOUR_DX = 7;
     }
+
+    public interface SyncStatus {
+        public static final int UP_TO_DATE = 0;
+        public static final int NEED_UPLOAD = 1;
+        public static final int NEED_UPDATE = 2;
+        public static final int NEED_DELETE = 4;
+    }
 }

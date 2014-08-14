@@ -18,7 +18,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.Film;
-import com.kvest.odessatoday.provider.CursorLoaderBuilder;
+import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
@@ -165,9 +165,9 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == FILM_LOADER_ID) {
-            return CursorLoaderBuilder.getFilm(getActivity(), getFilmId(), null, null);
+            return DataProviderHelper.getFilmLoader(getActivity(), getFilmId(), null, null);
         } else if (id == TIMETABLE_LOADER_ID) {
-            return CursorLoaderBuilder.getFilmsFullTimetable(getActivity(), getFilmId(), TimetableAdapter.PROJECTION,
+            return DataProviderHelper.getFilmsFullTimetableLoader(getActivity(), getFilmId(), TimetableAdapter.PROJECTION,
                     Tables.FilmsFullTimetable.TIMETABLE_ORDER_ASC);
         }
 

@@ -2,6 +2,7 @@ package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.provider.CursorLoaderBuilder;
+import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -135,9 +138,11 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private boolean sendComment() {
-        if (isNewCommentDataValid()) {
+        Context context = getActivity();
+        if (isNewCommentDataValid() && context != null) {
             //send comment
-            //TODO
+            DataProviderHelper.addComment(context, getTargetType(), getTargetId(), commentName.getText().toString(),
+                                          commentText.getText().toString(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
 
             //clean comment text
             commentText.setText("");
@@ -219,8 +224,8 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == COMMENTS_LOADER_ID) {
-            return CursorLoaderBuilder.getComments(getActivity(), getTargetId(), getTargetType(),
-                                                   CommentsAdapter.PROJECTION, Tables.Comments.DATE_ORDER_DESC);
+            return DataProviderHelper.getCommentsLoader(getActivity(), getTargetId(), getTargetType(),
+                    CommentsAdapter.PROJECTION, Tables.Comments.DATE_ORDER_DESC);
         }
 
         return null;

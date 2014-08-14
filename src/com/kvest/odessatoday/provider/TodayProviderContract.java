@@ -50,7 +50,7 @@ public class TodayProviderContract {
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
-                    + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Columns.FILM_ID + " INTEGER,"
                     + Columns.NAME + " TEXT,"
                     + Columns.COUNTRY + " TEXT,"
@@ -109,7 +109,7 @@ public class TodayProviderContract {
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
-                    + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Columns.TIMETABLE_ID + " INTEGER,"
                     + Columns.FILM_ID + " INTEGER,"
                     + Columns.CINEMA_ID + " INTEGER,"
@@ -127,6 +127,7 @@ public class TodayProviderContract {
         interface Comments {
             String TABLE_NAME = "comments";
             interface Columns extends BaseColumns {
+                String SYNC_STATUS = "sync_status";
                 String TARGET_ID = "target_id";
                 String TARGET_TYPE = "target_type";
                 String COMMENT_ID = "comment_id";
@@ -136,7 +137,8 @@ public class TodayProviderContract {
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
-                    + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.SYNC_STATUS + " INTEGER DEFAULT " + Constants.SyncStatus.UP_TO_DATE + ","
                     + Columns.TARGET_ID + " INTEGER,"
                     + Columns.TARGET_TYPE + " INTEGER DEFAULT " + Constants.CommentTargetType.UNKNOWN + ","
                     + Columns.COMMENT_ID + " INTEGER,"
@@ -164,7 +166,7 @@ public class TodayProviderContract {
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
-                    + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Columns.CINEMA_ID + " INTEGER,"
                     + Columns.NAME + " TEXT,"
                     + Columns.ADDRESS + " TEXT,"

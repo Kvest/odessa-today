@@ -2,6 +2,7 @@ package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.TodayProviderContract;
+import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -28,12 +30,14 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  */
 public class CommentsAdapter extends CursorAdapter {
     public static final String[] PROJECTION = new String[]{Tables.Comments.Columns._ID, Tables.Comments.Columns.DATE,
-                                                           Tables.Comments.Columns.NAME, Tables.Comments.Columns.TEXT};
+                                                           Tables.Comments.Columns.NAME, Tables.Comments.Columns.TEXT,
+                                                           Tables.Comments.Columns.SYNC_STATUS};
     private static final String DATE_FORMAT_PATTERN = " dd.MM.yyyy ";
 
     private int dateColumnIndex = -1;
     private int nameColumnIndex = -1;
     private int textColumnIndex = -1;
+    private int syncStatusColumnIndex = -1;
 
     private SimpleDateFormat dateFormat;
 
@@ -70,6 +74,12 @@ public class CommentsAdapter extends CursorAdapter {
         holder.date.setText(dateFormat.format(dateMillis));
         holder.name.setText(Html.fromHtml(cursor.getString(nameColumnIndex)));
         holder.text.setText(Html.fromHtml(cursor.getString(textColumnIndex)));
+
+        if ((cursor.getInt(syncStatusColumnIndex) & Constants.SyncStatus.NEED_UPLOAD) == Constants.SyncStatus.NEED_UPLOAD) {
+            view.setBackgroundColor(Color.YELLOW);
+        } else {
+            view.setBackgroundColor(Color.WHITE);
+        }
     }
 
     private boolean isColumnIndexesCalculated() {
@@ -80,7 +90,7 @@ public class CommentsAdapter extends CursorAdapter {
         dateColumnIndex = cursor.getColumnIndex(Tables.Comments.Columns.DATE);
         nameColumnIndex = cursor.getColumnIndex(Tables.Comments.Columns.NAME);
         textColumnIndex = cursor.getColumnIndex(Tables.Comments.Columns.TEXT);
-
+        syncStatusColumnIndex = cursor.getColumnIndex(Tables.Comments.Columns.SYNC_STATUS);
     }
 
     private static class ViewHolder {
