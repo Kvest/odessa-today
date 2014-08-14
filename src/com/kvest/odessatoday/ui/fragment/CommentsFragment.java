@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
+import com.kvest.odessatoday.utils.SettingsSPStorage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +30,9 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * To change this template use File | Settings | File Templates.
  */
 public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String STORAGE_NAME = "com.skylion.quezzle.SettingsSPStorage.SETTINGS";
+
+
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
     private static final int COMMENTS_LOADER_ID = 1;
@@ -97,6 +101,8 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
         hideCommentPanelButton = (Button)rootView.findViewById(R.id.hide);
         sendCommentButton = (Button)rootView.findViewById(R.id.send);
 
+        commentName.setText(SettingsSPStorage.getCommentAuthorName(getActivity()));
+
         //store list view
         commentsList = (ListView)rootView.findViewById(R.id.comments_list);
 
@@ -141,14 +147,15 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
         Context context = getActivity();
         if (isNewCommentDataValid() && context != null) {
             //send comment
-            DataProviderHelper.addComment(context, getTargetType(), getTargetId(), commentName.getText().toString(),
-                                          commentText.getText().toString(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+            DataProviderHelper.addComment(context, getTargetType(), getTargetId(), getCommentName(),
+                                          getCommentText(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
 
             //clean comment text
             commentText.setText("");
 
             //remember name
-            //TODO
+            SettingsSPStorage.setCommentAuthorName(context, getCommentName());
+
 
             return true;
         }
