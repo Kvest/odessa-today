@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
 import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
-import com.kvest.odessatoday.utils.Utils;
+import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -35,7 +35,7 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                shownFilmsDate = Utils.toLocalDate(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                shownFilmsDate = TimeUtils.toLocalDate(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
                 FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, true);
                 transaction.add(R.id.fragment_container, filmsListFragment);
             } finally {
@@ -82,8 +82,8 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
     private void showFilmsByDate(long date) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
-            shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(date);
-            FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, isCurrentDay(shownFilmsDate));
+            shownFilmsDate = date;
+            FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, TimeUtils.isCurrentDay(shownFilmsDate));
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out);
             transaction.replace(R.id.fragment_container, filmsListFragment);
         } finally {
@@ -96,17 +96,8 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
         if (isCalendarShown()) {
             hideCalendar();
         } else {
-            showCalendar(TimeUnit.SECONDS.toMillis(shownFilmsDate));
+            showCalendar(shownFilmsDate);
         }
-    }
-
-    private boolean isCurrentDay(long date) {
-        //set start of the current date in seconds
-        long currentDate = System.currentTimeMillis();
-        currentDate -= (currentDate % TimeUnit.DAYS.toMillis(1));
-        currentDate = TimeUnit.MILLISECONDS.toSeconds(currentDate);
-
-        return (date >= currentDate && date < (currentDate + TimeUnit.DAYS.toSeconds(1)));
     }
 
     private void showCalendar(long selectedDate) {

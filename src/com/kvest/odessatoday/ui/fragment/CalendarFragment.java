@@ -45,8 +45,10 @@ public class CalendarFragment extends Fragment {
     private OnDateSelectedListener onDateSelectedListener;
 
     public static CalendarFragment getInstance(long selectedDate) {
-        //cut hours, minutes,...
-        selectedDate = getDayDate(selectedDate);
+        //convert to UTC milliseconds
+        selectedDate = TimeUnit.SECONDS.toMillis(selectedDate);
+        //cut hours, minutes, ...
+        selectedDate -= (selectedDate % ONE_DAY_MILLIS);
 
         Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_SELECTED_DATE, selectedDate);
@@ -93,7 +95,12 @@ public class CalendarFragment extends Fragment {
                 CalendarDay calendarDay = (CalendarDay)adapter.getItem(position);
                 if ((calendarDay.type == CalendarDay.DAY_TYPE_ACTIVE || calendarDay.type == CalendarDay.DAY_TYPE_SELECTED)
                      && onDateSelectedListener != null) {
-                    onDateSelectedListener.onDateSelected(calendarDay.date);
+                    //convert date to local seconds
+                    long resultDate = calendarDay.date;
+                    resultDate = /*TimeUtils.toLocalDate*/(TimeUnit.MILLISECONDS.toSeconds(resultDate));
+
+                    Log.d("KVEST_TAG", "selected=" + calendarDay.date + " -> " + resultDate);
+                    onDateSelectedListener.onDateSelected(resultDate/*calendarDay.date*/);
                 }
             }
         });
@@ -157,15 +164,6 @@ public class CalendarFragment extends Fragment {
 
         //set previous button availability
         showPreviousMonthButton.setEnabled(canShowPreviousMonth());
-    }
-
-    /**
-     * Method cuts hours, minutes,... from date
-     * @param date Date to cut
-     * @return Date without hours, minutes,...
-     */
-    private static long getDayDate(long date) {
-        return date - (date % ONE_DAY_MILLIS);
     }
 
     /**
@@ -254,7 +252,7 @@ public class CalendarFragment extends Fragment {
             int type;
             long currentDate = System.currentTimeMillis();
             //delete hours from date
-            currentDate = getDayDate(currentDate);
+            currentDate =  currentDate - (currentDate % ONE_DAY_MILLIS);
 
             while (calendar.get(Calendar.MONTH) == month) {
                 if (calendar.getTimeInMillis() == selectedDate) {

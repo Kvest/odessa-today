@@ -16,12 +16,10 @@ import android.widget.Toast;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.CursorLoaderBuilder;
-import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
 import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.Utils;
-import static com.kvest.odessatoday.provider.TodayProviderContract.*;
+import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -107,7 +105,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
 
         //reload films data
         long startDate = getDate();
-        long endDate = Utils.getEndOfTheDay(startDate);
+        long endDate = TimeUtils.getEndOfTheDay(startDate);
 
         NetworkService.loadFilms(activity, startDate, endDate);
     }
@@ -144,7 +142,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
         switch (id) {
             case FILMS_LOADER_ID :
                 long startDate = getDate();
-                long endDate = Utils.getEndOfTheDay(startDate);
+                long endDate = TimeUtils.getEndOfTheDay(startDate);
 
                 return CursorLoaderBuilder.getFilmsForPeriod(getActivity(), startDate, endDate, FilmsAdapter.PROJECTION, null);
             default :

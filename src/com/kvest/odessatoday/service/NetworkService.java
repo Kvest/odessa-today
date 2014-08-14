@@ -17,10 +17,8 @@ import com.kvest.odessatoday.io.response.GetCommentsResponse;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
 import com.kvest.odessatoday.io.response.GetTimetableResponse;
 import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.Utils;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.

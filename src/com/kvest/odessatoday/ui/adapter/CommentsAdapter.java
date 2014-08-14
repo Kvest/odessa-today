@@ -7,12 +7,8 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.provider.TodayProviderContract;
-import com.kvest.odessatoday.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;

@@ -3,7 +3,7 @@ package com.kvest.odessatoday.provider;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.util.Log;
-import com.kvest.odessatoday.utils.Utils;
+import com.kvest.odessatoday.utils.TimeUtils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -23,8 +23,8 @@ public abstract class CursorLoaderBuilder {
 
     public static CursorLoader getFilmsForPeriod(Context context, long startDate, long endDate, String[] projection, String order) {
         //convert date to utc
-        startDate = Utils.toUtcDate(startDate);
-        endDate = Utils.toUtcDate(endDate);
+        startDate = TimeUtils.toUtcDate(startDate);
+        endDate = TimeUtils.toUtcDate(endDate);
 
 Log.d("KVEST_TAG", "getFilmsForPeriod : startDate=" + startDate + ", endDate=" + endDate);
 
