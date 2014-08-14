@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.net.Uri;
 import android.util.Log;
+import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
 
@@ -19,6 +20,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  */
 public abstract class DataProviderHelper {
     public static void addComment(Context context, int targetType, long targetId, String name, String text, long date) {
+        //fill ContentValues
         ContentValues values = new ContentValues(6);
         values.put(Tables.Comments.Columns.TARGET_ID, targetId);
         values.put(Tables.Comments.Columns.TARGET_TYPE, targetType);
@@ -27,8 +29,12 @@ public abstract class DataProviderHelper {
         values.put(Tables.Comments.Columns.NAME, name);
         values.put(Tables.Comments.Columns.TEXT, text);
 
+        //insert comment
         Uri uri = context.getContentResolver().insert(TodayProviderContract.COMMENTS_URI, values);
-        //TODO send to server
+
+        //start upload comment to the server
+        Long recordId = Long.parseLong(uri.getLastPathSegment());
+        NetworkService.uploadComment(context, recordId);
     }
 
 
