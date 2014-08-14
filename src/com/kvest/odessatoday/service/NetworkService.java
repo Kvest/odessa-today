@@ -33,11 +33,13 @@ public class NetworkService extends IntentService {
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
     private static final String FILM_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.FILM_ID";
     private static final String CINEMA_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.CINEMA_ID";
+    private static final String COMMENT_RECORD_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.COMMENT_RECORD_ID";
     private static final int ACTION_LOAD_FILMS = 0;
     private static final int ACTION_LOAD_CINEMAS = 1;
     private static final int ACTION_LOAD_TIMETABLE = 2;
     private static final int ACTION_LOAD_FILM_COMMENTS = 3;
     private static final int ACTION_LOAD_CINEMA_COMMENTS = 4;
+    private static final int ACTION_UPLOAD_COMMENT = 5;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
         Intent intent = new Intent(context, NetworkService.class);
@@ -79,6 +81,14 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
+    public static void uploadComment(Context context, long recordId) {
+        Intent intent = new Intent(context, NetworkService.class);
+        intent.putExtra(ACTION_EXTRA, ACTION_UPLOAD_COMMENT);
+        intent.putExtra(COMMENT_RECORD_ID_EXTRA, recordId);
+
+        context.startService(intent);
+    }
+
     public NetworkService() {
         super("NetworkService");
     }
@@ -101,7 +111,17 @@ public class NetworkService extends IntentService {
             case ACTION_LOAD_CINEMA_COMMENTS :
                 doLoadCinemaComments(intent);
                 break;
+            case ACTION_UPLOAD_COMMENT :
+                doUploadComment(intent);
+                break;
         }
+    }
+
+    private void doUploadComment(Intent intent) {
+        //get extra data
+        long recordId = intent.getLongExtra(COMMENT_RECORD_ID_EXTRA, -1);
+
+        Log.d("KVEST_TAG", "recordId=" + recordId);
     }
 
     private void doLoadCinemaComments(Intent intent) {

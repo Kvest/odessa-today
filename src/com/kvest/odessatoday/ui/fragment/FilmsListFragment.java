@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
-import com.kvest.odessatoday.provider.CursorLoaderBuilder;
+import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
 import com.kvest.odessatoday.utils.Constants;
@@ -144,7 +144,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
                 long startDate = getDate();
                 long endDate = TimeUtils.getEndOfTheDay(startDate);
 
-                return CursorLoaderBuilder.getFilmsForPeriod(getActivity(), startDate, endDate, FilmsAdapter.PROJECTION, null);
+                return DataProviderHelper.getFilmsForPeriodLoader(getActivity(), startDate, endDate, FilmsAdapter.PROJECTION, null);
             default :
                 return null;
         }

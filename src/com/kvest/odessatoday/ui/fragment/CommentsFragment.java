@@ -2,16 +2,23 @@ package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.text.TextUtils;
+import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.provider.CursorLoaderBuilder;
+import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
+import com.kvest.odessatoday.utils.SettingsSPStorage;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -23,12 +30,24 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * To change this template use File | Settings | File Templates.
  */
 public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String STORAGE_NAME = "com.skylion.quezzle.SettingsSPStorage.SETTINGS";
+
+
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
     private static final int COMMENTS_LOADER_ID = 1;
 
     private ListView commentsList;
     private CommentsAdapter adapter;
+
+    private View addCommentPanel;
+    private Animation showCommentPanelAnimation;
+    private Animation hideCommentPanelAnimation;
+
+    private EditText commentName;
+    private EditText commentText;
+    private Button hideCommentPanelButton;
+    private Button sendCommentButton;
 
     public static CommentsFragment getInstance(int targetType, long targetId) {
         Bundle arguments = new Bundle(2);
@@ -45,8 +64,26 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
         View rootView = inflater.inflate(R.layout.comments_fragment, container, false);
 
         init(rootView);
+        setHasOptionsMenu(true);
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.comments_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_comment:
+                showAddCommentPanel();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -57,12 +94,120 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void init(View rootView) {
+        //store widgets
+        addCommentPanel = rootView.findViewById(R.id.add_comment_panel);
+        commentName = (EditText)rootView.findViewById(R.id.comment_name);
+        commentText = (EditText)rootView.findViewById(R.id.comment_text);
+        hideCommentPanelButton = (Button)rootView.findViewById(R.id.hide);
+        sendCommentButton = (Button)rootView.findViewById(R.id.send);
+
+        commentName.setText(SettingsSPStorage.getCommentAuthorName(getActivity()));
+
         //store list view
         commentsList = (ListView)rootView.findViewById(R.id.comments_list);
 
         //create and set an adapter
         adapter = new CommentsAdapter(getActivity());
         commentsList.setAdapter(adapter);
+
+        //create animations
+        showCommentPanelAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.add_comment_panel_up);
+        hideCommentPanelAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.add_comment_panel_down);
+        hideCommentPanelAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                addCommentPanel.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        sendCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sendComment()) {
+                    hideAddCommentPanel();
+                }
+            }
+        });
+
+        hideCommentPanelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideAddCommentPanel();
+            }
+        });
+    }
+
+    private boolean sendComment() {
+        Context context = getActivity();
+        if (isNewCommentDataValid() && context != null) {
+            //send comment
+            DataProviderHelper.addComment(context, getTargetType(), getTargetId(), getCommentName(),
+                                          getCommentText(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+
+            //clean comment text
+            commentText.setText("");
+
+            //remember name
+            SettingsSPStorage.setCommentAuthorName(context, getCommentName());
+
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isNewCommentDataValid() {
+        boolean isDataValid = true;
+
+        if (TextUtils.isEmpty(getCommentName())) {
+            commentName.setError(getString(R.string.fill_field));
+            isDataValid = false;
+        }
+
+        if (TextUtils.isEmpty(getCommentText())) {
+            commentText.setError(getString(R.string.fill_field));
+            isDataValid = false;
+        }
+
+        return isDataValid;
+    }
+
+    private String getCommentText() {
+        return commentText.getText().toString().trim();
+    }
+
+    private String getCommentName() {
+        return commentName.getText().toString().trim();
+    }
+
+    private void showAddCommentPanel() {
+        if (!isAddCommentPanelShown()) {
+            //set visible
+            addCommentPanel.setVisibility(View.VISIBLE);
+
+            //animate
+            addCommentPanel.clearAnimation();
+            addCommentPanel.startAnimation(showCommentPanelAnimation);
+        }
+    }
+
+    private void hideAddCommentPanel() {
+        if (isAddCommentPanelShown()) {
+            //animate
+            addCommentPanel.clearAnimation();
+            addCommentPanel.startAnimation(hideCommentPanelAnimation);
+        }
+    }
+
+    private boolean isAddCommentPanelShown() {
+        return addCommentPanel.getVisibility() == View.VISIBLE;
     }
 
     private long getTargetId() {
@@ -86,8 +231,8 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == COMMENTS_LOADER_ID) {
-            return CursorLoaderBuilder.getComments(getActivity(), getTargetId(), getTargetType(),
-                                                   CommentsAdapter.PROJECTION, Tables.Comments.DATE_ORDER_DESC);
+            return DataProviderHelper.getCommentsLoader(getActivity(), getTargetId(), getTargetType(),
+                    CommentsAdapter.PROJECTION, Tables.Comments.DATE_ORDER_DESC);
         }
 
         return null;
