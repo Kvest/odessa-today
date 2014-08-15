@@ -1,8 +1,11 @@
 package com.kvest.odessatoday.service;
 
 import android.app.IntentService;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.android.volley.toolbox.RequestFuture;
@@ -12,13 +15,12 @@ import com.kvest.odessatoday.io.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.io.notification.LoadTimetableNotification;
 import com.kvest.odessatoday.io.request.*;
-import com.kvest.odessatoday.io.response.GetCinemasResponse;
-import com.kvest.odessatoday.io.response.GetCommentsResponse;
-import com.kvest.odessatoday.io.response.GetFilmsResponse;
-import com.kvest.odessatoday.io.response.GetTimetableResponse;
+import com.kvest.odessatoday.io.response.*;
+import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.utils.Constants;
 
 import java.util.concurrent.ExecutionException;
+import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +30,8 @@ import java.util.concurrent.ExecutionException;
  * To change this template use File | Settings | File Templates.
  */
 public class NetworkService extends IntentService {
+    private static final String[] ADD_COMMENTS_PROJECTION = new String[]{Tables.Comments.Columns.NAME, Tables.Comments.Columns.TEXT,
+                                                                         Tables.Comments.Columns.TARGET_ID, Tables.Comments.Columns.TARGET_TYPE};
     private static final String ACTION_EXTRA = "com.kvest.odessatoday.EXTRAS.ACTION";
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
@@ -120,8 +124,45 @@ public class NetworkService extends IntentService {
     private void doUploadComment(Intent intent) {
         //get extra data
         long recordId = intent.getLongExtra(COMMENT_RECORD_ID_EXTRA, -1);
+        Uri commentUri = Uri.withAppendedPath(TodayProviderContract.COMMENTS_URI, Long.toString(recordId));
 
-        Log.d("KVEST_TAG", "recordId=" + recordId);
+        //get comment and target id and type
+        long targetId = -1;
+        int targetType = -1;
+        AddCommentRequest.Comment comment = new AddCommentRequest.Comment();
+        //TODO
+//        comment.device_id =
+        Cursor cursor = getContentResolver().query(commentUri, ADD_COMMENTS_PROJECTION, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                comment.name = cursor.getString(cursor.getColumnIndex(Tables.Comments.Columns.NAME));
+                comment.text = cursor.getString(cursor.getColumnIndex(Tables.Comments.Columns.TEXT));
+                targetId = cursor.getLong(cursor.getColumnIndex(Tables.Comments.Columns.TARGET_ID));
+                targetType = cursor.getInt(cursor.getColumnIndex(Tables.Comments.Columns.TARGET_TYPE));
+            }
+        } finally {
+            cursor.close();
+        }
+
+        RequestFuture<AddCommentResponse> future = RequestFuture.newFuture();
+        AddCommentRequest request = new AddCommentRequest(targetId, targetType, comment, future, future);
+
+        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
+        try {
+            AddCommentResponse response = future.get();
+            if (response.isSuccessful()) {
+                //update record
+                ContentValues cv = response.data.getContentValues(targetId, targetType);
+                getContentResolver().update(commentUri, cv, null, null);
+            } else {
+                //TODO
+                //react right to the code
+            }
+        } catch (InterruptedException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+        } catch (ExecutionException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+        }
     }
 
     private void doLoadCinemaComments(Intent intent) {
