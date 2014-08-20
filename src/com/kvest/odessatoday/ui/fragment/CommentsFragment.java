@@ -156,7 +156,6 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
             //remember name
             SettingsSPStorage.setCommentAuthorName(context, getCommentName());
 
-
             return true;
         }
 

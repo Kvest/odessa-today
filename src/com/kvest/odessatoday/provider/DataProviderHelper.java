@@ -38,10 +38,20 @@ public abstract class DataProviderHelper {
     }
 
 
-    public static CursorLoader getFilmsFullTimetableLoader(Context context, long filmId, String[] projection, String order) {
-        String selection = Tables.FilmsFullTimetable.Columns.FILM_ID + "=?";
+    public static CursorLoader getFilmsFullTimetableLoader(Context context, long filmId, long timetableStartDate,
+                                                           long timetableEndDate, String[] projection, String order) {
+        //convert date to utc
+        timetableStartDate = TimeUtils.toUtcDate(timetableStartDate);
+        timetableEndDate = TimeUtils.toUtcDate(timetableEndDate);
+
+        Log.d("KVEST_TAG", "getFilmsFullTimetableLoader : timetableStartDate=" + timetableStartDate + ", endDate=" + timetableEndDate);
+
+        String selection = Tables.FilmsFullTimetable.Columns.FILM_ID + "=? AND " +
+                           Tables.FilmsFullTimetable.Columns.DATE + ">= ? AND " +
+                           Tables.FilmsFullTimetable.Columns.DATE + "<= ?";
         return new CursorLoader(context, FULL_TIMETABLE_URI, projection,
-                                selection, new String[]{Long.toString(filmId)}, order);
+                                selection, new String[]{Long.toString(filmId), Long.toString(timetableStartDate), Long.toString(timetableEndDate)},
+                                order);
     }
 
     public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate, String[] projection, String order) {
@@ -67,5 +77,9 @@ Log.d("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDa
                            "(" + Tables.Comments.Columns.SYNC_STATUS + " | " + targetStatus + " = " + targetStatus + ")";
         return new CursorLoader(context, TodayProviderContract.COMMENTS_URI, projection, selection,
                                 new String[]{Long.toString(targetId), Integer.toString(targetType)}, order);
+    }
+
+    public static CursorLoader getCinemasLoader(Context context, String[] projection, String order) {
+        return new CursorLoader(context, TodayProviderContract.CINEMAS_URI, projection, null, null, order);
     }
 }

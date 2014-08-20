@@ -23,6 +23,10 @@ import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.TimeUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -34,10 +38,16 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * To change this template use File | Settings | File Templates.
  */
 public class FilmDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String TIMETABLE_DATE_FORMAT_PATTERN = "dd MMMM yyyy";
+    private static final SimpleDateFormat TIMETABLE_DATE_FORMAT = new SimpleDateFormat(TIMETABLE_DATE_FORMAT_PATTERN);
+
     private static final String ARGUMENT_FILM_ID = "com.kvest.odessatoday.argument.FILM_ID";
+    private static final String ARGUMENT_TIMETABLE_DATE = "com.kvest.odessatoday.argument.TIMETABLE_DATE";
+
     private static final int FILM_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
 
+    private ScrollView scrollContainer;
     private NetworkImageView filmPoster;
     private TextView filmName;
     private TextView genre;
@@ -48,6 +58,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     private TextView director;
     private TextView actors;
     private TextView commentsCount;
+    private TextView timetableDate;
     private ListView timetableList;
     private TimetableAdapter timetableAdapter;
     private LinearLayout postersContainer;
@@ -56,9 +67,12 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
 
     private OnShowFilmCommentsListener onShowFilmCommentsListener;
 
-    public static FilmDetailsFragment getInstance(long filmId) {
-        Bundle arguments = new Bundle(1);
+    private long shownTimetableDate;
+
+    public static FilmDetailsFragment getInstance(long filmId, long timetableDate) {
+        Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
+        arguments.putLong(ARGUMENT_TIMETABLE_DATE, timetableDate);
 
         FilmDetailsFragment result = new FilmDetailsFragment();
         result.setArguments(arguments);
@@ -68,6 +82,8 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.film_details_fragment, container, false);
+
+        shownTimetableDate = getTimetableDate();
 
         init(rootView);
 
@@ -93,6 +109,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         postersLayoutParams.setMargins(0, postersMargin, postersMargin, postersMargin);
 
         //store views
+        scrollContainer = (ScrollView) rootView.findViewById(R.id.scroll_container);
         filmPoster = (NetworkImageView) rootView.findViewById(R.id.film_poster);
         filmPoster.setDefaultImageResId(R.drawable.loading_poster);
         filmPoster.setErrorImageResId(R.drawable.no_poster);
@@ -106,6 +123,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         actors = (TextView)rootView.findViewById(R.id.actors);
         commentsCount = (TextView)rootView.findViewById(R.id.comments_count_value);
         postersContainer = (LinearLayout)rootView.findViewById(R.id.posters_container);
+        timetableDate = (TextView)rootView.findViewById(R.id.timetable_date);
 
         timetableList = (ListView)rootView.findViewById(R.id.timetable_list);
         timetableAdapter = new TimetableAdapter(getActivity());
@@ -123,6 +141,8 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
             }
         });
 
+        long dateUTC = TimeUnit.SECONDS.toMillis(TimeUtils.toUtcDate(shownTimetableDate));
+        timetableDate.setText(TIMETABLE_DATE_FORMAT.format(dateUTC));
         timetableList.setOnTouchListener(new View.OnTouchListener() {
             // Setting on Touch Listener for handling the touch inside ScrollView
             @Override
@@ -162,13 +182,23 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         }
     }
 
+    private long getTimetableDate() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getLong(ARGUMENT_TIMETABLE_DATE, 0);
+        } else {
+            return 0;
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == FILM_LOADER_ID) {
             return DataProviderHelper.getFilmLoader(getActivity(), getFilmId(), null, null);
         } else if (id == TIMETABLE_LOADER_ID) {
-            return DataProviderHelper.getFilmsFullTimetableLoader(getActivity(), getFilmId(), TimetableAdapter.PROJECTION,
-                    Tables.FilmsFullTimetable.TIMETABLE_ORDER_ASC);
+            long endDate = TimeUtils.getEndOfTheDay(shownTimetableDate);
+            return DataProviderHelper.getFilmsFullTimetableLoader(getActivity(), getFilmId(), shownTimetableDate, endDate,
+                                                                  TimetableAdapter.PROJECTION, Tables.FilmsFullTimetable.TIMETABLE_ORDER_ASC);
         }
 
         return null;
@@ -245,6 +275,8 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
             //add new posters
             String[] postersUrls = Film.string2Posters(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.POSTERS)));
             addPosters(postersUrls);
+
+            scrollContainer.scrollTo(0, 0);
         }
     }
 

@@ -18,6 +18,7 @@ import com.kvest.odessatoday.io.request.*;
 import com.kvest.odessatoday.io.response.*;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.util.concurrent.ExecutionException;
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
@@ -130,8 +131,8 @@ public class NetworkService extends IntentService {
         long targetId = -1;
         int targetType = -1;
         AddCommentRequest.Comment comment = new AddCommentRequest.Comment();
-        //TODO
-//        comment.device_id =
+        comment.device_id = Utils.getDeviceId(getApplicationContext());
+
         Cursor cursor = getContentResolver().query(commentUri, ADD_COMMENTS_PROJECTION, null, null, null);
         try {
             if (cursor.moveToFirst()) {
@@ -153,6 +154,7 @@ public class NetworkService extends IntentService {
             if (response.isSuccessful()) {
                 //update record
                 ContentValues cv = response.data.getContentValues(targetId, targetType);
+                cv.put(Tables.Comments.Columns.COMMENT_ID, Constants.SyncStatus.UP_TO_DATE);
                 getContentResolver().update(commentUri, cv, null, null);
             } else {
                 //TODO

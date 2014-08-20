@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -177,6 +178,19 @@
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_details"/>
         </RelativeLayout>
+        <TextView
+            android:id="@+id/timetable_date"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingLeft="@dimen/timetable_date_padding_horizontal"
+            android:paddingRight="@dimen/timetable_date_padding_horizontal"
+            android:paddingTop="@dimen/timetable_date_padding_vertical"
+            android:paddingBottom="@dimen/timetable_date_padding_vertical"
+            android:gravity="left"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/timetable_date_text_size"
+            android:textStyle="bold"
+            android:background="@color/timetable_date_bg" />
         <ListView
             android:id="@+id/timetable_list"
             android:layout_height="300dip"

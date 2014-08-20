@@ -1,13 +1,17 @@
 package com.kvest.odessatoday.ui.activity;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.RadioGroup;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
+import com.kvest.odessatoday.ui.fragment.CinemasListFragment;
 import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
 import com.kvest.odessatoday.utils.TimeUtils;
 
@@ -68,6 +72,25 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
             @Override
             public void onAnimationRepeat(Animation animation) {}
         });
+
+        //category selector
+        RadioGroup categorySelector = (RadioGroup)findViewById(R.id.category_selector);
+        categorySelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.timetable :
+                        switchToTimetable();
+                        break;
+                    case R.id.cinemas :
+                        switchToCinemas();
+                        break;
+                    case R.id.announcements :
+                        switchToAnnouncements();
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -80,12 +103,16 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
     }
 
     private void showFilmsByDate(long date) {
+        shownFilmsDate = Math.max(date, TimeUtils.toLocalDate(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
+        Fragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, TimeUtils.isCurrentDay(shownFilmsDate));
+        replaceFragment(filmsListFragment);
+    }
+
+    private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
-            shownFilmsDate = date;
-            FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, TimeUtils.isCurrentDay(shownFilmsDate));
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out);
-            transaction.replace(R.id.fragment_container, filmsListFragment);
+            transaction.replace(R.id.fragment_container, fragment);
         } finally {
             transaction.commit();
         }
@@ -120,6 +147,19 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
         }
     }
 
+    private void switchToTimetable() {
+        showFilmsByDate(shownFilmsDate);
+    }
+
+    private void switchToCinemas() {
+        CinemasListFragment cinemasListFragment = CinemasListFragment.getInstance();
+        replaceFragment(cinemasListFragment);
+    }
+
+    private void switchToAnnouncements() {
+        //TODO
+    }
+
     private void hideCalendar() {
         //animate
         calendarContainer.clearAnimation();
@@ -141,6 +181,6 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
 
     @Override
     public void onFilmSelected(long filmId) {
-        startActivity(FilmDetailsActivity.getStartIntent(this, filmId));
+        startActivity(FilmDetailsActivity.getStartIntent(this, filmId, shownFilmsDate));
     }
 }

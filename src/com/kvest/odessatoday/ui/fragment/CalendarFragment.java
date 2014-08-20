@@ -96,11 +96,9 @@ public class CalendarFragment extends Fragment {
                 if ((calendarDay.type == CalendarDay.DAY_TYPE_ACTIVE || calendarDay.type == CalendarDay.DAY_TYPE_SELECTED)
                      && onDateSelectedListener != null) {
                     //convert date to local seconds
-                    long resultDate = calendarDay.date;
-                    resultDate = /*TimeUtils.toLocalDate*/(TimeUnit.MILLISECONDS.toSeconds(resultDate));
+                    long resultDate = TimeUnit.MILLISECONDS.toSeconds(calendarDay.date);
 
-                    Log.d("KVEST_TAG", "selected=" + calendarDay.date + " -> " + resultDate);
-                    onDateSelectedListener.onDateSelected(resultDate/*calendarDay.date*/);
+                    onDateSelectedListener.onDateSelected(resultDate);
                 }
             }
         });

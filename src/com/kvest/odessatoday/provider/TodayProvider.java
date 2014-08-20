@@ -235,7 +235,7 @@ public class TodayProvider extends ContentProvider {
         if (rowId > 0)
         {
             Uri resultUri = ContentUris.withAppendedId(uri, rowId);
-            getContext().getContentResolver().notifyChange(resultUri, null);
+            getContext().getContentResolver().notifyChange(uri, null);
             return resultUri;
         }
         throw new SQLiteException("Faild to insert row into " + uri);

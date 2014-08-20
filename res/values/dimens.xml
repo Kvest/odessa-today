@@ -43,11 +43,14 @@
     <dimen name="film_details_description_text_size">14sp</dimen>
     <dimen name="film_details_comments_count_height">50dip</dimen>
     <dimen name="film_details_comments_count_text_size">14sp</dimen>
+    <dimen name="timetable_date_text_size">14sp</dimen>
     <dimen name="film_details_comments_count_margin_left">6dip</dimen>
     <dimen name="film_duration_margin_top">3dip</dimen>
     <dimen name="film_duration_margin_left">6dip</dimen>
     <dimen name="film_details_posters_height">100dip</dimen>
     <dimen name="film_details_posters_margin">8dip</dimen>
+    <dimen name="timetable_date_padding_horizontal">@dimen/film_details_padding</dimen>
+    <dimen name="timetable_date_padding_vertical">6dip</dimen>
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>
@@ -56,4 +59,10 @@
     <dimen name="comment_date_text_size">15sp</dimen>
     <dimen name="comment_text_text_size">15sp</dimen>
     <dimen name="comment_text_top_margin">6dip</dimen>
+
+    <!--cinemas-->
+    <dimen name="cinemas_list_divider_height">1dip</dimen>
+    <dimen name="cinemas_list_item_padding">12dip</dimen>
+    <dimen name="cinema_name_text_size">18sp</dimen>
+    <dimen name="cinema_address_text_size">16sp</dimen>
 </resources>

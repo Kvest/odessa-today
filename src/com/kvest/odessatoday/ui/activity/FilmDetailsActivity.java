@@ -20,10 +20,12 @@ import com.kvest.odessatoday.utils.Constants;
  */
 public class FilmDetailsActivity extends TodayBaseActivity implements FilmDetailsFragment.OnShowFilmCommentsListener {
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
+    private static final String EXTRA_TIMETABLE_DATE = "com.kvest.odessatoday.extra.FILM_TIMETABLE_DATE";
 
-    public static Intent getStartIntent(Context context, long filmId) {
+    public static Intent getStartIntent(Context context, long filmId, long timetableDate) {
         Intent intent = new Intent(context, FilmDetailsActivity.class);
         intent.putExtra(EXTRA_FILM_ID, filmId);
+        intent.putExtra(EXTRA_TIMETABLE_DATE, timetableDate);
 
         return intent;
     }
@@ -38,9 +40,10 @@ public class FilmDetailsActivity extends TodayBaseActivity implements FilmDetail
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {
             long filmId = intent.getLongExtra(EXTRA_FILM_ID, -1);
+            long timetableDate = intent.getLongExtra(EXTRA_TIMETABLE_DATE, 0);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                transaction.add(R.id.fragment_container, FilmDetailsFragment.getInstance(filmId));
+                transaction.add(R.id.fragment_container, FilmDetailsFragment.getInstance(filmId, timetableDate));
             } finally {
                 transaction.commit();
             }

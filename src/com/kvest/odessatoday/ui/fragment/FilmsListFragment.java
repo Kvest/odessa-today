@@ -82,7 +82,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
 
         View root = inflater.inflate(R.layout.films_fragment, container, false);
 
-        initComponents(root);
+        init(root);
 
         return root;
     }
@@ -168,7 +168,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
         }
     }
 
-    private void initComponents(View root) {
+    private void init(View root) {
         //get list view for films
         filmsList = (ListView) root.findViewById(R.id.films_list);
         filmsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
