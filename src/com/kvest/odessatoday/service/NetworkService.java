@@ -1,15 +1,18 @@
 package com.kvest.odessatoday.service;
 
 import android.app.IntentService;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.datamodel.Cinema;
+import com.kvest.odessatoday.datamodel.Comment;
+import com.kvest.odessatoday.datamodel.Film;
+import com.kvest.odessatoday.datamodel.TimetableItem;
 import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
 import com.kvest.odessatoday.io.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
@@ -20,6 +23,8 @@ import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -177,6 +182,9 @@ public class NetworkService extends IntentService {
         try {
             GetCommentsResponse response = future.get();
             if (response.isSuccessful()) {
+                //save comments
+                saveComments(response.data.comments, request.getTargetId(), request.getTargetType());
+
                 //notify listeners about successful loading comments
                 sendLocalBroadcast(LoadCommentsNotification.createSuccessResult(cinemaId, Constants.CommentTargetType.CINEMA));
             } else {
@@ -209,6 +217,9 @@ public class NetworkService extends IntentService {
         try {
             GetCommentsResponse response = future.get();
             if (response.isSuccessful()) {
+                //save comments
+                saveComments(response.data.comments, request.getTargetId(), request.getTargetType());
+
                 //notify listeners about successful loading comments
                 sendLocalBroadcast(LoadCommentsNotification.createSuccessResult(filmId, Constants.CommentTargetType.FILM));
             } else {
@@ -240,6 +251,9 @@ public class NetworkService extends IntentService {
         try {
             GetTimetableResponse response = future.get();
             if (response.isSuccessful()) {
+                //save timetable
+                saveTimetable(response.data.timetable, request.getFilmId());
+
                 //notify listeners about successful loading timetable
                 sendLocalBroadcast(LoadTimetableNotification.createSuccessResult());
             } else {
@@ -268,6 +282,9 @@ public class NetworkService extends IntentService {
         try {
             GetCinemasResponse response = future.get();
             if (response.isSuccessful()) {
+                //save cinemas
+                saveCinemas(response.data.cinemas);
+
                 //notify listeners about successful loading cinemas
                 sendLocalBroadcast(LoadCinemasNotification.createSuccessResult());
             } else {
@@ -301,6 +318,9 @@ public class NetworkService extends IntentService {
         try {
             GetFilmsResponse response = future.get();
             if (response.isSuccessful()) {
+                //save films
+                saveFilms(response.data.films, request.getStartDate(), request.getEndDate());
+
                 //notify listeners about successful loading films
                 sendLocalBroadcast(LoadFilmsNotification.createSuccessResult());
 
@@ -327,5 +347,112 @@ public class NetworkService extends IntentService {
 
     private void sendLocalBroadcast(Intent intent) {
         LocalBroadcastManager.getInstance(NetworkService.this).sendBroadcast(intent);
+    }
+
+    private void saveCinemas(List<Cinema> cinemas) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(cinemas.size() + 1);
+
+        //delete cinemas
+        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(CINEMAS_URI).build();
+        operations.add(deleteOperation);
+
+        for (Cinema cinema : cinemas) {
+            //insert film
+            operations.add(ContentProviderOperation.newInsert(CINEMAS_URI).withValues(cinema.getContentValues()).build());
+        }
+
+        //apply
+        Context context = TodayApplication.getApplication().getApplicationContext();
+        try {
+            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
+        }catch (RemoteException re) {
+            Log.e(Constants.TAG, re.getMessage());
+            re.printStackTrace();
+        }catch (OperationApplicationException oae) {
+            Log.e(Constants.TAG, oae.getMessage());
+            oae.printStackTrace();
+        }
+    }
+
+    private void saveFilms(List<Film> films, long startDate, long endDate) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
+
+        //delete timetable from startDate to endDate
+        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(TIMETABLE_URI)
+                .withSelection(Tables.FilmsTimetable.Columns.DATE + ">=? AND " + Tables.FilmsTimetable.Columns.DATE + "<=?",
+                        new String[]{Long.toString(startDate), Long.toString(endDate)})
+                .build();
+        operations.add(deleteOperation);
+
+        for (Film film : films) {
+            //insert film
+            operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
+
+            //insert timetable
+            for (TimetableItem timetableItem : film.timetable) {
+                operations.add(ContentProviderOperation.newInsert(TIMETABLE_URI).withValues(timetableItem.getContentValues(film.id)).build());
+            }
+        }
+
+        //apply
+        Context context = TodayApplication.getApplication().getApplicationContext();
+        try {
+            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
+        }catch (RemoteException re) {
+            Log.e(Constants.TAG, re.getMessage());
+            re.printStackTrace();
+        }catch (OperationApplicationException oae) {
+            Log.e(Constants.TAG, oae.getMessage());
+            oae.printStackTrace();
+        }
+    }
+
+    private void saveTimetable(List<TimetableItem> timetable, long filmId) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
+
+        //delete timetable for film with filmId
+        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(TIMETABLE_URI)
+                .withSelection(Tables.FilmsTimetable.Columns.FILM_ID + "=?", new String[]{Long.toString(filmId)})
+                .build();
+        operations.add(deleteOperation);
+
+        //insert timetable items
+        for (TimetableItem timetableItem : timetable) {
+            operations.add(ContentProviderOperation.newInsert(TIMETABLE_URI).withValues(timetableItem.getContentValues(filmId)).build());
+        }
+
+        //apply
+        Context context = TodayApplication.getApplication().getApplicationContext();
+        try {
+            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
+        }catch (RemoteException re) {
+            Log.e(Constants.TAG, re.getMessage());
+            re.printStackTrace();
+        }catch (OperationApplicationException oae) {
+            Log.e(Constants.TAG, oae.getMessage());
+            oae.printStackTrace();
+        }
+    }
+
+    private void saveComments(List<Comment> comments, long targetId, int targetType) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(comments.size());
+
+        //insert comments
+        for (Comment comment : comments) {
+            operations.add(ContentProviderOperation.newInsert(COMMENTS_URI)
+                    .withValues(comment.getContentValues(targetId, targetType)).build());
+        }
+
+        //apply
+        Context context = TodayApplication.getApplication().getApplicationContext();
+        try {
+            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
+        }catch (RemoteException re) {
+            Log.e(Constants.TAG, re.getMessage());
+            re.printStackTrace();
+        }catch (OperationApplicationException oae) {
+            Log.e(Constants.TAG, oae.getMessage());
+            oae.printStackTrace();
+        }
     }
 }

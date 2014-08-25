@@ -19,4 +19,5 @@
     <string name="hide">Спрятать</string>
     <string name="send">Отправить</string>
     <string name="fill_field">Заполните поле</string>
+    <string name="error_loading_cinemas">Не удалось обновить список кинотеатров</string>
 </resources>

@@ -23,12 +23,12 @@ public class GetCinemaCommentsRequest extends GetCommentsRequest {
     }
 
     @Override
-    protected long getTargetId() {
+    public long getTargetId() {
         return cinemaId;
     }
 
     @Override
-    protected int getTargetType() {
+    public int getTargetType() {
         return Constants.CommentTargetType.CINEMA;
     }
 }

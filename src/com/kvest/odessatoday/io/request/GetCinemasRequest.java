@@ -45,39 +45,9 @@ public class GetCinemasRequest extends BaseRequest<GetCinemasResponse> {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             GetCinemasResponse cinemasResponse = gson.fromJson(json, GetCinemasResponse.class);
 
-            //save data
-            if (cinemasResponse.isSuccessful()) {
-                saveCinemas(cinemasResponse.data.cinemas);
-            }
-
             return Response.success(cinemasResponse, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
-        }
-    }
-
-    private void saveCinemas(List<Cinema> cinemas) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(cinemas.size() + 1);
-
-        //delete cinemas
-        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(CINEMAS_URI).build();
-        operations.add(deleteOperation);
-
-        for (Cinema cinema : cinemas) {
-            //insert film
-            operations.add(ContentProviderOperation.newInsert(CINEMAS_URI).withValues(cinema.getContentValues()).build());
-        }
-
-        //apply
-        Context context = TodayApplication.getApplication().getApplicationContext();
-        try {
-            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
-        }catch (RemoteException re) {
-            Log.e(Constants.TAG, re.getMessage());
-            re.printStackTrace();
-        }catch (OperationApplicationException oae) {
-            Log.e(Constants.TAG, oae.getMessage());
-            oae.printStackTrace();
         }
     }
 }

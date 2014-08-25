@@ -1,15 +1,19 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.Loader;
+import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CinemasAdapter;
@@ -26,6 +30,8 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
 
     private ListView cinemasList;
     private CinemasAdapter adapter;
+
+    private LoadCinemasNotificationReceiver receiver = new LoadCinemasNotificationReceiver();
 
     public static CinemasListFragment getInstance() {
         CinemasListFragment result = new CinemasListFragment();
@@ -50,13 +56,26 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(LoadCinemasNotification.ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+    }
+
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         //Request all cinemas
         NetworkService.loadCinemas(getActivity());
-        //TODO
-        //обработать ошибки загрузки
 
         getLoaderManager().initLoader(CINEMAS_LOADER_ID, null, this);
     }
@@ -85,6 +104,16 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
             case CINEMAS_LOADER_ID :
                 adapter.swapCursor(null);
                 break;
+        }
+    }
+
+    private class LoadCinemasNotificationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Activity activity = getActivity();
+            if (!LoadCinemasNotification.isSuccessful(intent) && activity != null) {
+                Toast.makeText(activity, R.string.error_loading_cinemas, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -275,8 +275,6 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
             //add new posters
             String[] postersUrls = Film.string2Posters(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.POSTERS)));
             addPosters(postersUrls);
-
-            scrollContainer.scrollTo(0, 0);
         }
     }
 

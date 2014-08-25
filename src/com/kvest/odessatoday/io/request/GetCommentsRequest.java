@@ -42,39 +42,12 @@ public abstract class GetCommentsRequest extends BaseRequest<GetCommentsResponse
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             GetCommentsResponse getCommentsResponse  = gson.fromJson(json, GetCommentsResponse.class);
 
-            //save data
-            if (getCommentsResponse.isSuccessful()) {
-                saveComments(getCommentsResponse.data.comments);
-            }
-
             return Response.success(getCommentsResponse, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         }
     }
 
-    private void saveComments(List<Comment> comments) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(comments.size());
-
-        //insert comments
-        for (Comment comment : comments) {
-            operations.add(ContentProviderOperation.newInsert(COMMENTS_URI)
-                           .withValues(comment.getContentValues(getTargetId(), getTargetType())).build());
-        }
-
-        //apply
-        Context context = TodayApplication.getApplication().getApplicationContext();
-        try {
-            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
-        }catch (RemoteException re) {
-            Log.e(Constants.TAG, re.getMessage());
-            re.printStackTrace();
-        }catch (OperationApplicationException oae) {
-            Log.e(Constants.TAG, oae.getMessage());
-            oae.printStackTrace();
-        }
-    }
-
-    protected abstract long getTargetId();
-    protected abstract int getTargetType();
+    public abstract long getTargetId();
+    public abstract int getTargetType();
 }

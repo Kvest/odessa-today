@@ -48,41 +48,13 @@ public class GetTimetableRequest extends BaseRequest<GetTimetableResponse> {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             GetTimetableResponse getTimetableResponse  = gson.fromJson(json, GetTimetableResponse.class);
 
-            //save data
-            if (getTimetableResponse.isSuccessful()) {
-                saveTimetable(getTimetableResponse.data.timetable);
-            }
-
             return Response.success(getTimetableResponse, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         }
     }
 
-    private void saveTimetable(List<TimetableItem> timetable) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
-
-        //delete timetable for film with filmId
-        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(TIMETABLE_URI)
-                .withSelection(Tables.FilmsTimetable.Columns.FILM_ID + "=?", new String[]{Long.toString(filmId)})
-                .build();
-        operations.add(deleteOperation);
-
-        //insert timetable items
-        for (TimetableItem timetableItem : timetable) {
-            operations.add(ContentProviderOperation.newInsert(TIMETABLE_URI).withValues(timetableItem.getContentValues(filmId)).build());
-        }
-
-        //apply
-        Context context = TodayApplication.getApplication().getApplicationContext();
-        try {
-            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
-        }catch (RemoteException re) {
-            Log.e(Constants.TAG, re.getMessage());
-            re.printStackTrace();
-        }catch (OperationApplicationException oae) {
-            Log.e(Constants.TAG, oae.getMessage());
-            oae.printStackTrace();
-        }
+    public long getFilmId() {
+        return filmId;
     }
 }

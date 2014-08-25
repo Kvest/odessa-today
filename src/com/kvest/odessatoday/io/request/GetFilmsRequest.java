@@ -54,15 +54,18 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             GetFilmsResponse getFilmsResponse = gson.fromJson(json, GetFilmsResponse.class);
 
-            //save data
-            if (getFilmsResponse.isSuccessful()) {
-                saveFilms(getFilmsResponse.data.films);
-            }
-
             return Response.success(getFilmsResponse, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         }
+    }
+
+    public long getStartDate() {
+        return startDate;
+    }
+
+    public long getEndDate() {
+        return endDate;
     }
 
     private static String generateUrl(long startDate, long endDate) {
@@ -75,38 +78,5 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
         }
 
         return builder.build().toString();
-    }
-
-    private void saveFilms(List<Film> films) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
-
-        //delete timetable from startDate to endDate
-        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(TIMETABLE_URI)
-                .withSelection(Tables.FilmsTimetable.Columns.DATE + ">=? AND " + Tables.FilmsTimetable.Columns.DATE + "<=?",
-                        new String[]{Long.toString(startDate), Long.toString(endDate)})
-                .build();
-        operations.add(deleteOperation);
-
-        for (Film film : films) {
-            //insert film
-            operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
-
-            //insert timetable
-            for (TimetableItem timetableItem : film.timetable) {
-                operations.add(ContentProviderOperation.newInsert(TIMETABLE_URI).withValues(timetableItem.getContentValues(film.id)).build());
-            }
-        }
-
-        //apply
-        Context context = TodayApplication.getApplication().getApplicationContext();
-        try {
-            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
-        }catch (RemoteException re) {
-            Log.e(Constants.TAG, re.getMessage());
-            re.printStackTrace();
-        }catch (OperationApplicationException oae) {
-            Log.e(Constants.TAG, oae.getMessage());
-            oae.printStackTrace();
-        }
     }
 }
