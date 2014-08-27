@@ -28,7 +28,6 @@ public class CommentsAdapter extends CursorAdapter {
     public static final String[] PROJECTION = new String[]{Tables.Comments.Columns._ID, Tables.Comments.Columns.DATE,
                                                            Tables.Comments.Columns.NAME, Tables.Comments.Columns.TEXT,
                                                            Tables.Comments.Columns.SYNC_STATUS};
-    private static final String DATE_FORMAT_PATTERN = " dd.MM.yyyy ";
 
     private int dateColumnIndex = -1;
     private int nameColumnIndex = -1;

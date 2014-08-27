@@ -22,8 +22,10 @@ import com.kvest.odessatoday.utils.TimeUtils;
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,7 +46,10 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
         this.startDate = TimeUtils.toUtcDate(startDate);
         this.endDate = TimeUtils.toUtcDate(endDate);
-        Log.d("KVEST_TAG", "startDate=" + this.startDate + ", endDate=" + this.endDate);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        Log.d("KVEST_TAG", "startDate=" + this.startDate + "(" + sdf.format(TimeUnit.SECONDS.toMillis(this.startDate)) + ")" +
+                           ", endDate=" + this.endDate + "(" + sdf.format(TimeUnit.SECONDS.toMillis(this.endDate)) + ")");
     };
 
     @Override

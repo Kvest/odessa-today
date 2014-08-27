@@ -159,7 +159,7 @@ public class NetworkService extends IntentService {
             if (response.isSuccessful()) {
                 //update record
                 ContentValues cv = response.data.getContentValues(targetId, targetType);
-                cv.put(Tables.Comments.Columns.COMMENT_ID, Constants.SyncStatus.UP_TO_DATE);
+                cv.put(Tables.Comments.Columns.SYNC_STATUS, Constants.SyncStatus.UP_TO_DATE);
                 getContentResolver().update(commentUri, cv, null, null);
             } else {
                 //TODO
