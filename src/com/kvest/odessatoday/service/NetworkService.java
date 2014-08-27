@@ -36,8 +36,9 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * To change this template use File | Settings | File Templates.
  */
 public class NetworkService extends IntentService {
-    private static final String[] ADD_COMMENTS_PROJECTION = new String[]{Tables.Comments.Columns.NAME, Tables.Comments.Columns.TEXT,
-                                                                         Tables.Comments.Columns.TARGET_ID, Tables.Comments.Columns.TARGET_TYPE};
+    private static final String[] ADD_COMMENTS_PROJECTION = new String[]{Tables.Comments.Columns._ID, Tables.Comments.Columns.NAME,
+                                                                         Tables.Comments.Columns.TEXT, Tables.Comments.Columns.TARGET_ID,
+                                                                         Tables.Comments.Columns.TARGET_TYPE};
     private static final String ACTION_EXTRA = "com.kvest.odessatoday.EXTRAS.ACTION";
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
@@ -50,6 +51,7 @@ public class NetworkService extends IntentService {
     private static final int ACTION_LOAD_FILM_COMMENTS = 3;
     private static final int ACTION_LOAD_CINEMA_COMMENTS = 4;
     private static final int ACTION_UPLOAD_COMMENT = 5;
+    private static final int ACTION_SYNC = 6;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
         Intent intent = new Intent(context, NetworkService.class);
@@ -99,6 +101,13 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
+    public static void sync(Context context) {
+        Intent intent = new Intent(context, NetworkService.class);
+        intent.putExtra(ACTION_EXTRA, ACTION_SYNC);
+
+        context.startService(intent);
+    }
+
     public NetworkService() {
         super("NetworkService");
     }
@@ -124,6 +133,15 @@ public class NetworkService extends IntentService {
             case ACTION_UPLOAD_COMMENT :
                 doUploadComment(intent);
                 break;
+            case ACTION_SYNC :
+                doSync(intent);
+                break;
+        }
+    }
+
+    private void doSync(Intent intent) {
+        if (Utils.isNetworkAvailable(this)) {
+            syncComments();
         }
     }
 
@@ -150,26 +168,7 @@ public class NetworkService extends IntentService {
             cursor.close();
         }
 
-        RequestFuture<AddCommentResponse> future = RequestFuture.newFuture();
-        AddCommentRequest request = new AddCommentRequest(targetId, targetType, comment, future, future);
-
-        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
-        try {
-            AddCommentResponse response = future.get();
-            if (response.isSuccessful()) {
-                //update record
-                ContentValues cv = response.data.getContentValues(targetId, targetType);
-                cv.put(Tables.Comments.Columns.SYNC_STATUS, Constants.SyncStatus.UP_TO_DATE);
-                getContentResolver().update(commentUri, cv, null, null);
-            } else {
-                //TODO
-                //react right to the code
-            }
-        } catch (InterruptedException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
-        } catch (ExecutionException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
-        }
+        syncComment(targetId, targetType, comment, commentUri);
     }
 
     private void doLoadCinemaComments(Intent intent) {
@@ -453,6 +452,58 @@ public class NetworkService extends IntentService {
         }catch (OperationApplicationException oae) {
             Log.e(Constants.TAG, oae.getMessage());
             oae.printStackTrace();
+        }
+    }
+
+    private void syncComments() {
+        String selection = "(" + Tables.Comments.Columns.SYNC_STATUS + " & " + Constants.SyncStatus.NEED_UPLOAD + " = " + Constants.SyncStatus.NEED_UPLOAD + ")";
+        Cursor cursor = getContentResolver().query(TodayProviderContract.COMMENTS_URI, ADD_COMMENTS_PROJECTION, selection, null, null);
+        try {
+            //create comment object
+            AddCommentRequest.Comment comment = new AddCommentRequest.Comment();
+            comment.device_id = Utils.getDeviceId(this);
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                //collect data
+                comment.name = cursor.getString(cursor.getColumnIndex(Tables.Comments.Columns.NAME));
+                comment.text = cursor.getString(cursor.getColumnIndex(Tables.Comments.Columns.TEXT));
+                long recordId = cursor.getLong(cursor.getColumnIndex(Tables.Comments.Columns._ID));
+                long targetId = cursor.getLong(cursor.getColumnIndex(Tables.Comments.Columns.TARGET_ID));
+                int targetType = cursor.getInt(cursor.getColumnIndex(Tables.Comments.Columns.TARGET_TYPE));
+
+                //sync
+                syncComment(targetId, targetType, comment, Uri.withAppendedPath(TodayProviderContract.COMMENTS_URI, Long.toString(recordId)));
+
+                //go to next comment
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+    }
+
+    private void syncComment(long targetId, int targetType, AddCommentRequest.Comment comment, Uri commentUri) {
+        RequestFuture<AddCommentResponse> future = RequestFuture.newFuture();
+        AddCommentRequest request = new AddCommentRequest(targetId, targetType, comment, future, future);
+
+        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
+        try {
+            AddCommentResponse response = future.get();
+            if (response.isSuccessful()) {
+                //update record
+                ContentValues cv = response.data.getContentValues(targetId, targetType);
+                cv.put(Tables.Comments.Columns.SYNC_STATUS, Constants.SyncStatus.UP_TO_DATE);
+                getContentResolver().update(commentUri, cv, null, null);
+            } else {
+                //TODO
+                //react right to the code
+            }
+        } catch (InterruptedException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
+        } catch (ExecutionException e) {
+            Log.e(Constants.TAG, e.getLocalizedMessage());
         }
     }
 }
