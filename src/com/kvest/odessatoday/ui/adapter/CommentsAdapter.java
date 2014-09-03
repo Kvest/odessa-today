@@ -33,11 +33,11 @@ public class CommentsAdapter extends CursorAdapter {
     private int nameColumnIndex = -1;
     private int textColumnIndex = -1;
     private int syncStatusColumnIndex = -1;
-
     private SimpleDateFormat dateFormat;
 
     public CommentsAdapter(Context context) {
         super(context, null, 0);
+
         dateFormat = new SimpleDateFormat(context.getString(R.string.comments_date_format));
     }
 
@@ -71,7 +71,7 @@ public class CommentsAdapter extends CursorAdapter {
         holder.text.setText(Html.fromHtml(cursor.getString(textColumnIndex)));
 
         if ((cursor.getInt(syncStatusColumnIndex) & Constants.SyncStatus.NEED_UPLOAD) == Constants.SyncStatus.NEED_UPLOAD) {
-            view.setBackgroundColor(Color.YELLOW);
+            view.setBackgroundResource(R.color.comment_need_upload_bg);
         } else {
             view.setBackgroundColor(Color.WHITE);
         }

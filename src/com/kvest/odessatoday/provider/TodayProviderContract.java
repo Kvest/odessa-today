@@ -149,6 +149,7 @@ public class TodayProviderContract {
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String DATE_ORDER_DESC = Comments.Columns.DATE + " DESC";
+            String DATE_ORDER_ASC = Comments.Columns.DATE + " ASC";
         }
 
         interface Cinemas {

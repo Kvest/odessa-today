@@ -26,6 +26,8 @@ import com.kvest.odessatoday.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 /**
@@ -434,7 +436,16 @@ public class NetworkService extends IntentService {
     }
 
     private void saveComments(List<Comment> comments, long targetId, int targetType) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(comments.size());
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(comments.size() + 1);
+
+        //delete old comments
+        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(COMMENTS_URI)
+                .withSelection(Tables.Comments.Columns.TARGET_ID + "=? AND " + Tables.Comments.Columns.TARGET_TYPE + "=? AND " +
+                               Tables.Comments.Columns.SYNC_STATUS + "=?",
+                               new String[]{Long.toString(targetId), Integer.toString(targetType),
+                                            Integer.toString(Constants.SyncStatus.UP_TO_DATE)})
+                .build();
+        operations.add(deleteOperation);
 
         //insert comments
         for (Comment comment : comments) {
@@ -457,7 +468,8 @@ public class NetworkService extends IntentService {
 
     private void syncComments() {
         String selection = "(" + Tables.Comments.Columns.SYNC_STATUS + " & " + Constants.SyncStatus.NEED_UPLOAD + " = " + Constants.SyncStatus.NEED_UPLOAD + ")";
-        Cursor cursor = getContentResolver().query(TodayProviderContract.COMMENTS_URI, ADD_COMMENTS_PROJECTION, selection, null, null);
+        Cursor cursor = getContentResolver().query(TodayProviderContract.COMMENTS_URI, ADD_COMMENTS_PROJECTION, selection,
+                                                   null, Tables.Comments.DATE_ORDER_ASC);
         try {
             //create comment object
             AddCommentRequest.Comment comment = new AddCommentRequest.Comment();
@@ -477,11 +489,15 @@ public class NetworkService extends IntentService {
 
                 //go to next comment
                 cursor.moveToNext();
+
+                //make artificial delay to keep comments order
+                try {
+                    Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+                } catch (InterruptedException ie) {}
             }
         } finally {
             cursor.close();
         }
-
     }
 
     private void syncComment(long targetId, int targetType, AddCommentRequest.Comment comment, Uri commentUri) {
