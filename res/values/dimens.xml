@@ -59,6 +59,10 @@
     <dimen name="comment_date_text_size">15sp</dimen>
     <dimen name="comment_text_text_size">15sp</dimen>
     <dimen name="comment_text_top_margin">6dip</dimen>
+    <dimen name="add_comment_edit_text_padding">8dip</dimen>
+    <dimen name="add_comment_text_top_margin">16dip</dimen>
+    <dimen name="add_comment_button_min_size">50dip</dimen>
+    <dimen name="write_comment_text_size">18sp</dimen>
 
     <!--cinemas-->
     <dimen name="cinemas_list_divider_height">1dip</dimen>

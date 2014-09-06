@@ -16,8 +16,7 @@
     <string name="add_comment">Добавить комментарий</string>
     <string name="name">Имя</string>
     <string name="comment_text">Текст комментария</string>
-    <string name="hide">Спрятать</string>
-    <string name="send">Отправить</string>
+    <string name="write_comment">Написать отзыв</string>
     <string name="fill_field">Заполните поле</string>
     <string name="error_loading_cinemas">Не удалось обновить список кинотеатров</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
@@ -12,10 +13,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
+import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
 
 import java.util.concurrent.TimeUnit;
@@ -46,8 +49,8 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     private EditText commentName;
     private EditText commentText;
-    private Button hideCommentPanelButton;
-    private Button sendCommentButton;
+    private ImageButton hideCommentPanelButton;
+    private ImageButton sendCommentButton;
 
     public static CommentsFragment getInstance(int targetType, long targetId) {
         Bundle arguments = new Bundle(2);
@@ -98,8 +101,8 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
         addCommentPanel = rootView.findViewById(R.id.add_comment_panel);
         commentName = (EditText)rootView.findViewById(R.id.comment_name);
         commentText = (EditText)rootView.findViewById(R.id.comment_text);
-        hideCommentPanelButton = (Button)rootView.findViewById(R.id.hide);
-        sendCommentButton = (Button)rootView.findViewById(R.id.send);
+        hideCommentPanelButton = (ImageButton)rootView.findViewById(R.id.hide);
+        sendCommentButton = (ImageButton)rootView.findViewById(R.id.send);
 
         commentName.setText(SettingsSPStorage.getCommentAuthorName(getActivity()));
 
@@ -112,6 +115,29 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
         //create animations
         showCommentPanelAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.add_comment_panel_up);
+        showCommentPanelAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //open keyboard
+                Context context = getActivity();
+                if (context != null) {
+                    if (TextUtils.isEmpty(commentName.getText())) {
+                        commentName.requestFocus();
+                        KeyboardUtils.showKeyboard(context, commentName);
+                    } else {
+                        commentText.requestFocus();
+                        KeyboardUtils.showKeyboard(context, commentText);
+                    }
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
         hideCommentPanelAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.add_comment_panel_down);
         hideCommentPanelAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -120,6 +146,11 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
             @Override
             public void onAnimationEnd(Animation animation) {
                 addCommentPanel.setVisibility(View.INVISIBLE);
+
+                Activity activity = getActivity();
+                if (activity != null) {
+                    KeyboardUtils.hideKeyboard(activity, activity.getCurrentFocus());
+                }
             }
 
             @Override
