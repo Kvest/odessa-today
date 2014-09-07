@@ -2,7 +2,6 @@ package com.kvest.odessatoday;
 
 import android.app.Application;
 import com.kvest.odessatoday.io.VolleyHelper;
-import com.kvest.odessatoday.service.NetworkService;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,9 +28,6 @@ public class TodayApplication extends Application {
 
         //init volley
         volleyHelper.init(getApplicationContext());
-
-        //sync data
-        NetworkService.sync(getApplicationContext());
     }
 
     public VolleyHelper getVolleyHelper() {

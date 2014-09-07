@@ -2,6 +2,8 @@ package com.kvest.odessatoday.ui.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
+import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
 import com.kvest.odessatoday.ui.fragment.CinemasListFragment;
 import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
@@ -25,6 +29,8 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
 
     private Animation showCalendarAnimation;
     private Animation hideCalendarAnimation;
+
+    private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
 
     /**
      * Called when the activity is first created.
@@ -45,6 +51,25 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
             } finally {
                 transaction.commit();
             }
+        }
+
+        //sync data
+        NetworkService.sync(getApplicationContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        registerReceiver(networkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (isFinishing()) {
+            unregisterReceiver(networkChangeReceiver);
         }
     }
 
