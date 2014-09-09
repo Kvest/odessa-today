@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -15,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.Film;
@@ -37,7 +41,9 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * Time: 23:23
  * To change this template use File | Settings | File Templates.
  */
-public class FilmDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class FilmDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                             YouTubePlayer.OnInitializedListener {
+    private static final String VIDEO_ID_PARAM = "v";
     private static final String TIMETABLE_DATE_FORMAT_PATTERN = "dd MMMM yyyy";
     private static final SimpleDateFormat TIMETABLE_DATE_FORMAT = new SimpleDateFormat(TIMETABLE_DATE_FORMAT_PATTERN);
 
@@ -69,6 +75,10 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
 
     private long shownTimetableDate;
 
+    private YouTubePlayer youTubePlayer;
+    private View youTubePlayerFragmentContainer;
+    private String trailerVideoId;
+
     public static FilmDetailsFragment getInstance(long filmId, long timetableDate) {
         Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
@@ -77,6 +87,11 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         FilmDetailsFragment result = new FilmDetailsFragment();
         result.setArguments(arguments);
         return result;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -124,6 +139,11 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         commentsCount = (TextView)rootView.findViewById(R.id.comments_count_value);
         postersContainer = (LinearLayout)rootView.findViewById(R.id.posters_container);
         timetableDate = (TextView)rootView.findViewById(R.id.timetable_date);
+        youTubePlayerFragmentContainer = rootView.findViewById(R.id.youtube_fragment_container);
+
+        //init youtube player
+        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager().findFragmentById(R.id.youtube_fragment);
+        youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
 
         timetableList = (ListView)rootView.findViewById(R.id.timetable_list);
         timetableAdapter = new TimetableAdapter(getActivity());
@@ -171,6 +191,21 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
 
         getLoaderManager().initLoader(FILM_LOADER_ID, null, this);
         getLoaderManager().initLoader(TIMETABLE_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+        this.youTubePlayer = youTubePlayer;
+
+        if (!wasRestored && !TextUtils.isEmpty(trailerVideoId)) {
+            youTubePlayer.cueVideo(trailerVideoId);
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+        //TODO
+        Log.d("KVEST_TAG", "onInitializationFailure");
     }
 
     private long getFilmId() {
@@ -269,23 +304,66 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
             description.setText(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.DESCRIPTION)));
             commentsCount.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(Tables.Films.Columns.COMMENTS_COUNT))));
 
-            //clear posters container
-            postersContainer.removeAllViews();
+            //setTrailer
+            setTrailer(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.VIDEO)));
 
             //add new posters
             String[] postersUrls = Film.string2Posters(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.POSTERS)));
-            addPosters(postersUrls);
+            mergePosters(postersUrls);
+
+            //set visibility for Youtube player and posters
+            if (TextUtils.isEmpty(trailerVideoId)) {
+                if (postersUrls.length == 0) {
+                    postersContainer.setVisibility(View.GONE);
+                } else {
+                    postersContainer.setVisibility(View.VISIBLE);
+                    youTubePlayerFragmentContainer.setVisibility(View.GONE);
+                }
+            } else {
+                postersContainer.setVisibility(View.VISIBLE);
+                youTubePlayerFragmentContainer.setVisibility(View.VISIBLE);
+            }
         }
     }
 
-    private void addPosters(String[] posterUrls) {
-        for (String posterUrl : posterUrls) {
-            //add image view
-            NetworkImageView imageView = new NetworkImageView(postersContainer.getContext());
-            postersContainer.addView(imageView, postersLayoutParams);
+    private void setTrailer(String trailerLink) {
+        //parse video id
+        String newTrailerVideoId = null;
+        if (!TextUtils.isEmpty(trailerLink)) {
+            newTrailerVideoId = Uri.parse(trailerLink).getQueryParameter(VIDEO_ID_PARAM);
+        }
+        if (newTrailerVideoId == null) {
+            newTrailerVideoId = "";
+        }
 
-            //start loading
-            imageView.setImageUrl(posterUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
+        //start playing video
+        if (youTubePlayer != null && !newTrailerVideoId.equals(trailerVideoId)) {
+            youTubePlayer.cueVideo(newTrailerVideoId);
+        }
+
+        //store video id
+        trailerVideoId = newTrailerVideoId;
+    }
+
+    private void mergePosters(String[] posterUrls) {
+        boolean found;
+        for (String posterUrl : posterUrls) {
+            found = false;
+            for (int i = 1; i < postersContainer.getChildCount(); ++i) {
+                if (posterUrl.equals(((NetworkImageView)postersContainer.getChildAt(i)).getUrl())) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                //add image view
+                NetworkImageView imageView = new NetworkImageView(postersContainer.getContext());
+                postersContainer.addView(imageView, postersLayoutParams);
+
+                //start loading
+                imageView.setImageUrl(posterUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
+            }
         }
     }
 

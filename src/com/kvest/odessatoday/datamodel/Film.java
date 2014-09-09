@@ -64,6 +64,10 @@ public class Film {
     }
 
     public static String[] string2Posters(String value) {
-        return value.split(POSTER_SEPARATOR);
+        if (!TextUtils.isEmpty(value)) {
+            return value.split(POSTER_SEPARATOR);
+        } else {
+            return new String[0];
+        }
     }
 }

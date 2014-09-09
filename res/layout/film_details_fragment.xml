@@ -79,7 +79,21 @@
                 android:id="@+id/posters_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal">
+                <FrameLayout
+                    android:id="@+id/youtube_fragment_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/film_details_posters_margin"
+                    android:layout_marginBottom="@dimen/film_details_posters_margin"
+                    android:layout_marginRight="@dimen/film_details_posters_margin">
+                    <fragment
+                        android:id="@+id/youtube_fragment"
+                        android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/film_details_posters_height" />
+                </FrameLayout>
+            </LinearLayout>
         </HorizontalScrollView>
         <View
             android:layout_width="match_parent"

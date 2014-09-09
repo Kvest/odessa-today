@@ -216,4 +216,8 @@ public class NetworkImageView extends ImageView {
         super.drawableStateChanged();
         invalidate();
     }
+
+    public String getUrl() {
+        return mUrl;
+    }
 }
