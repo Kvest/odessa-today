@@ -3,6 +3,7 @@
     <!--Application style-->
     <style name="OdessaTodayTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/OdessaTodayActionBar</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <!-- ActionBar styles -->

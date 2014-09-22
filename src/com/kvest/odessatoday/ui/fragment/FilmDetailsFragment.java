@@ -3,6 +3,7 @@ package com.kvest.odessatoday.ui.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -43,6 +44,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  */
 public class FilmDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
                                                              YouTubePlayer.OnInitializedListener {
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
     private static final String VIDEO_ID_PARAM = "v";
     private static final String TIMETABLE_DATE_FORMAT_PATTERN = "dd MMMM yyyy";
     private static final SimpleDateFormat TIMETABLE_DATE_FORMAT = new SimpleDateFormat(TIMETABLE_DATE_FORMAT_PATTERN);
@@ -53,7 +55,6 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     private static final int FILM_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
 
-    private ScrollView scrollContainer;
     private NetworkImageView filmPoster;
     private TextView filmName;
     private TextView genre;
@@ -97,10 +98,11 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.film_details_fragment, container, false);
+        View headerView = inflater.inflate(R.layout.film_details_header, null);
 
         shownTimetableDate = getTimetableDate();
 
-        init(rootView);
+        init((ListView)rootView, headerView);
 
         return rootView;
     }
@@ -116,7 +118,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         }
     }
 
-    private void init(View rootView) {
+    private void init(ListView rootView, View headerView) {
         //create layout params for posters
         int postersMargin = (int)getResources().getDimension(R.dimen.film_details_posters_margin);
         postersLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -124,32 +126,26 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         postersLayoutParams.setMargins(0, postersMargin, postersMargin, postersMargin);
 
         //store views
-        scrollContainer = (ScrollView) rootView.findViewById(R.id.scroll_container);
-        filmPoster = (NetworkImageView) rootView.findViewById(R.id.film_poster);
+        filmPoster = (NetworkImageView) headerView.findViewById(R.id.film_poster);
         filmPoster.setDefaultImageResId(R.drawable.loading_poster);
         filmPoster.setErrorImageResId(R.drawable.no_poster);
-        filmName = (TextView) rootView.findViewById(R.id.film_name);
-        genre = (TextView) rootView.findViewById(R.id.genre);
-        filmRating = (RatingBar) rootView.findViewById(R.id.film_rating);
-        filmDuration = (TextView) rootView.findViewById(R.id.film_duration);
-        filmDurationIcon = (ImageView) rootView.findViewById(R.id.film_duration_icon);
-        description = (TextView)rootView.findViewById(R.id.film_description);
-        director = (TextView)rootView.findViewById(R.id.director);
-        actors = (TextView)rootView.findViewById(R.id.actors);
-        commentsCount = (TextView)rootView.findViewById(R.id.comments_count_value);
-        postersContainer = (LinearLayout)rootView.findViewById(R.id.posters_container);
-        timetableDate = (TextView)rootView.findViewById(R.id.timetable_date);
-        youTubePlayerFragmentContainer = rootView.findViewById(R.id.youtube_fragment_container);
+        filmName = (TextView) headerView.findViewById(R.id.film_name);
+        genre = (TextView) headerView.findViewById(R.id.genre);
+        filmRating = (RatingBar) headerView.findViewById(R.id.film_rating);
+        filmDuration = (TextView) headerView.findViewById(R.id.film_duration);
+        filmDurationIcon = (ImageView) headerView.findViewById(R.id.film_duration_icon);
+        description = (TextView)headerView.findViewById(R.id.film_description);
+        director = (TextView)headerView.findViewById(R.id.director);
+        actors = (TextView)headerView.findViewById(R.id.actors);
+        commentsCount = (TextView)headerView.findViewById(R.id.comments_count_value);
+        postersContainer = (LinearLayout)headerView.findViewById(R.id.posters_container);
+        timetableDate = (TextView)headerView.findViewById(R.id.timetable_date);
+        youTubePlayerFragmentContainer = headerView.findViewById(R.id.youtube_fragment_container);
 
         //init youtube player
-        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager().findFragmentById(R.id.youtube_fragment);
-        youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
+        initYoutubePlayer();
 
-        timetableList = (ListView)rootView.findViewById(R.id.timetable_list);
-        timetableAdapter = new TimetableAdapter(getActivity());
-        timetableList.setAdapter(timetableAdapter);
-
-        ((ExpandablePanel)rootView.findViewById(R.id.expand_panel)).setOnExpandListener(new ExpandablePanel.OnExpandListener() {
+        ((ExpandablePanel)headerView.findViewById(R.id.expand_panel)).setOnExpandListener(new ExpandablePanel.OnExpandListener() {
             @Override
             public void onExpand(View handle, View content) {
                 ((ImageButton)handle).setImageResource(R.drawable.collapse_arrow);
@@ -161,6 +157,18 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
             }
         });
 
+        headerView.findViewById(R.id.comments_count).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showComments();
+            }
+        });
+
+        timetableList = rootView;
+        timetableList.addHeaderView(headerView);
+        timetableAdapter = new TimetableAdapter(getActivity());
+        timetableList.setAdapter(timetableAdapter);
+
         long dateUTC = TimeUnit.SECONDS.toMillis(TimeUtils.toUtcDate(shownTimetableDate));
         timetableDate.setText(TIMETABLE_DATE_FORMAT.format(dateUTC));
         timetableList.setOnTouchListener(new View.OnTouchListener() {
@@ -170,13 +178,6 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
                 // Disallow the touch request for parent scroll on touch of child view
                 timetableList.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
-            }
-        });
-
-        rootView.findViewById(R.id.comments_count).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showComments();
             }
         });
     }
@@ -193,6 +194,21 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         getLoaderManager().initLoader(TIMETABLE_LOADER_ID, null, this);
     }
 
+    private void initYoutubePlayer() {
+        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager().findFragmentById(R.id.youtube_fragment);
+        if (youTubePlayerFragment != null) {
+            youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RECOVERY_DIALOG_REQUEST) {
+            // Retry initialization if user performed a recovery action
+            initYoutubePlayer();
+        }
+    }
+
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
         this.youTubePlayer = youTubePlayer;
@@ -204,8 +220,17 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        //TODO
-        Log.d("KVEST_TAG", "onInitializationFailure");
+        Log.d(Constants.TAG, "YouTubePlayer onInitializationFailure");
+
+        Activity activity = getActivity();
+        if (youTubeInitializationResult.isUserRecoverableError() && activity != null) {
+            youTubeInitializationResult.getErrorDialog(activity, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            //if only 1 child - it is youtube fragment
+            if (postersContainer.getChildCount() <= 1) {
+                postersContainer.setVisibility(View.GONE);
+            }
+        }
     }
 
     private long getFilmId() {
@@ -301,7 +326,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
             value = getString(R.string.film_actors, cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.ACTORS)));
             actors.setText(Html.fromHtml(value));
 
-            description.setText(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.DESCRIPTION)));
+            description.setText(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.DESCRIPTION)) + "\n");
             commentsCount.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(Tables.Films.Columns.COMMENTS_COUNT))));
 
             //setTrailer
