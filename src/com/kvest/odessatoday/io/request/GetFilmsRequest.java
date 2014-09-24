@@ -1,32 +1,21 @@
 package com.kvest.odessatoday.io.request;
 
-import android.content.ContentProviderOperation;
-import android.content.Context;
-import android.content.OperationApplicationException;
 import android.net.Uri;
-import android.os.RemoteException;
 import android.util.Log;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
-import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.datamodel.Film;
-import com.kvest.odessatoday.datamodel.TimetableItem;
 import com.kvest.odessatoday.io.NetworkContract;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
-import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
-
-import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.kvest.odessatoday.utils.LogUtils.*;
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -48,7 +37,7 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
         this.endDate = TimeUtils.toUtcDate(endDate);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        Log.d("KVEST_TAG", "startDate=" + this.startDate + "(" + sdf.format(TimeUnit.SECONDS.toMillis(this.startDate)) + ")" +
+        LOGD("KVEST_TAG", "startDate=" + this.startDate + "(" + sdf.format(TimeUnit.SECONDS.toMillis(this.startDate)) + ")" +
                            ", endDate=" + this.endDate + "(" + sdf.format(TimeUnit.SECONDS.toMillis(this.endDate)) + ")");
     };
 

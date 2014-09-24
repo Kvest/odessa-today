@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.Cinema;
@@ -29,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
-
+import static com.kvest.odessatoday.utils.LogUtils.*;
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -189,18 +188,18 @@ public class NetworkService extends IntentService {
                 //notify listeners about successful loading comments
                 sendLocalBroadcast(LoadCommentsNotification.createSuccessResult(cinemaId, Constants.CommentTargetType.CINEMA));
             } else {
-                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+                LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading comments
                 sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(response.error, cinemaId, Constants.CommentTargetType.CINEMA));
             }
         } catch (InterruptedException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading comments
             sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), cinemaId, Constants.CommentTargetType.CINEMA));
         } catch (ExecutionException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading comments
             sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), cinemaId, Constants.CommentTargetType.CINEMA));
@@ -224,18 +223,18 @@ public class NetworkService extends IntentService {
                 //notify listeners about successful loading comments
                 sendLocalBroadcast(LoadCommentsNotification.createSuccessResult(filmId, Constants.CommentTargetType.FILM));
             } else {
-                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+                LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading comments
                 sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(response.error, filmId, Constants.CommentTargetType.FILM));
             }
         } catch (InterruptedException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading comments
             sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), filmId, Constants.CommentTargetType.FILM));
         } catch (ExecutionException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading comments
             sendLocalBroadcast(LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), filmId, Constants.CommentTargetType.FILM));
@@ -258,18 +257,18 @@ public class NetworkService extends IntentService {
                 //notify listeners about successful loading timetable
                 sendLocalBroadcast(LoadTimetableNotification.createSuccessResult());
             } else {
-                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+                LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading timetable
                 sendLocalBroadcast(LoadTimetableNotification.createErrorsResult(response.error));
             }
         } catch (InterruptedException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading timetable
             sendLocalBroadcast(LoadTimetableNotification.createErrorsResult(e.getLocalizedMessage()));
         } catch (ExecutionException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading timetable
             sendLocalBroadcast(LoadTimetableNotification.createErrorsResult(e.getLocalizedMessage()));
@@ -289,18 +288,18 @@ public class NetworkService extends IntentService {
                 //notify listeners about successful loading cinemas
                 sendLocalBroadcast(LoadCinemasNotification.createSuccessResult());
             } else {
-                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+                LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading cinemas
                 sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(response.error));
             }
         } catch (InterruptedException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading cinemas
             sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(e.getLocalizedMessage()));
         } catch (ExecutionException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading cinemas
             sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(e.getLocalizedMessage()));
@@ -328,18 +327,18 @@ public class NetworkService extends IntentService {
                 //update cinemas
                 NetworkService.loadCinemas(this);
             } else {
-                Log.e(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+                LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading films
                 sendLocalBroadcast(LoadFilmsNotification.createErrorsResult(response.error));
             }
         } catch (InterruptedException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading films
             sendLocalBroadcast(LoadFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
         } catch (ExecutionException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading films
             sendLocalBroadcast(LoadFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
@@ -367,10 +366,10 @@ public class NetworkService extends IntentService {
         try {
             context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
         }catch (RemoteException re) {
-            Log.e(Constants.TAG, re.getMessage());
+            LOGE(Constants.TAG, re.getMessage());
             re.printStackTrace();
         }catch (OperationApplicationException oae) {
-            Log.e(Constants.TAG, oae.getMessage());
+            LOGE(Constants.TAG, oae.getMessage());
             oae.printStackTrace();
         }
     }
@@ -400,10 +399,10 @@ public class NetworkService extends IntentService {
         try {
             context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
         }catch (RemoteException re) {
-            Log.e(Constants.TAG, re.getMessage());
+            LOGE(Constants.TAG, re.getMessage());
             re.printStackTrace();
         }catch (OperationApplicationException oae) {
-            Log.e(Constants.TAG, oae.getMessage());
+            LOGE(Constants.TAG, oae.getMessage());
             oae.printStackTrace();
         }
     }
@@ -427,10 +426,10 @@ public class NetworkService extends IntentService {
         try {
             context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
         }catch (RemoteException re) {
-            Log.e(Constants.TAG, re.getMessage());
+            LOGE(Constants.TAG, re.getMessage());
             re.printStackTrace();
         }catch (OperationApplicationException oae) {
-            Log.e(Constants.TAG, oae.getMessage());
+            LOGE(Constants.TAG, oae.getMessage());
             oae.printStackTrace();
         }
     }
@@ -458,10 +457,10 @@ public class NetworkService extends IntentService {
         try {
             context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
         }catch (RemoteException re) {
-            Log.e(Constants.TAG, re.getMessage());
+            LOGE(Constants.TAG, re.getMessage());
             re.printStackTrace();
         }catch (OperationApplicationException oae) {
-            Log.e(Constants.TAG, oae.getMessage());
+            LOGE(Constants.TAG, oae.getMessage());
             oae.printStackTrace();
         }
     }
@@ -517,9 +516,9 @@ public class NetworkService extends IntentService {
                 //react right to the code
             }
         } catch (InterruptedException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
         } catch (ExecutionException e) {
-            Log.e(Constants.TAG, e.getLocalizedMessage());
+            LOGE(Constants.TAG, e.getLocalizedMessage());
         }
     }
 }

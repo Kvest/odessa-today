@@ -4,12 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.net.Uri;
-import android.util.Log;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
+import static com.kvest.odessatoday.utils.LogUtils.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,7 +44,7 @@ public abstract class DataProviderHelper {
         timetableStartDate = TimeUtils.toUtcDate(timetableStartDate);
         timetableEndDate = TimeUtils.toUtcDate(timetableEndDate);
 
-        Log.d("KVEST_TAG", "getFilmsFullTimetableLoader : timetableStartDate=" + timetableStartDate + ", endDate=" + timetableEndDate);
+        LOGD("KVEST_TAG", "getFilmsFullTimetableLoader : timetableStartDate=" + timetableStartDate + ", endDate=" + timetableEndDate);
 
         String selection = Tables.FilmsFullTimetable.Columns.FILM_ID + "=? AND " +
                            Tables.FilmsFullTimetable.Columns.DATE + ">= ? AND " +
@@ -59,7 +59,7 @@ public abstract class DataProviderHelper {
         startDate = TimeUtils.toUtcDate(startDate);
         endDate = TimeUtils.toUtcDate(endDate);
 
-Log.d("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDate=" + endDate);
+LOGD("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDate=" + endDate);
 
         String selection = Tables.Films.Columns.FILM_ID + " in (" + Tables.FilmsTimetable.GET_FILMS_ID_BY_PERIOD_SQL + ")";
         return new CursorLoader(context, TodayProviderContract.FILMS_URI, projection, selection,

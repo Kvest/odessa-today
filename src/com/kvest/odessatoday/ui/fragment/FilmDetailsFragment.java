@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
+import static com.kvest.odessatoday.utils.LogUtils.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -114,7 +114,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         try {
             onShowFilmCommentsListener = (OnShowFilmCommentsListener) activity;
         } catch (ClassCastException cce) {
-            Log.e(Constants.TAG, "Host activity for FilmDetailsFragment should implements FilmDetailsFragment.OnShowFilmCommentsListener");
+            LOGE(Constants.TAG, "Host activity for FilmDetailsFragment should implements FilmDetailsFragment.OnShowFilmCommentsListener");
         }
     }
 
@@ -220,7 +220,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        Log.d(Constants.TAG, "YouTubePlayer onInitializationFailure");
+        LOGE(Constants.TAG, "YouTubePlayer onInitializationFailure");
 
         Activity activity = getActivity();
         if (youTubeInitializationResult.isUserRecoverableError() && activity != null) {

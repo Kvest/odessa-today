@@ -7,7 +7,6 @@ import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import static com.kvest.odessatoday.utils.LogUtils.*;
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -94,13 +94,13 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
         try {
             showCalendarListener = (ShowCalendarListener) activity;
         } catch (ClassCastException cce) {
-            Log.e(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.ShowCalendarListener");
+            LOGE(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.ShowCalendarListener");
         }
 
         try {
             filmSelectedListener = (FilmSelectedListener) activity;
         } catch (ClassCastException cce) {
-            Log.e(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.FilmSelectedListener");
+            LOGE(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.FilmSelectedListener");
         }
 
         //reload films data

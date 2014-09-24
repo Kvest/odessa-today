@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import static com.kvest.odessatoday.utils.LogUtils.*;
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -74,7 +74,7 @@ public class CalendarFragment extends Fragment {
         try {
             onDateSelectedListener = (OnDateSelectedListener) activity;
         } catch (ClassCastException cce) {
-            Log.e(Constants.TAG, "Host activity for CalendarFragment should implements CalendarFragment.OnDateSelectedListener");
+            LOGE(Constants.TAG, "Host activity for CalendarFragment should implements CalendarFragment.OnDateSelectedListener");
         }
     }
 
