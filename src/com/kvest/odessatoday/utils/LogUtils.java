@@ -11,7 +11,6 @@ import com.kvest.odessatoday.BuildConfig;
  * To change this template use File | Settings | File Templates.
  */
 public class LogUtils {
-
     private LogUtils() {
     }
 

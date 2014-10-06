@@ -12,7 +12,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
  * Time: 22:38
  * To change this template use File | Settings | File Templates.
  */
-public class TodaySQLStorage extends SQLiteOpenHelper {
+class TodaySQLStorage extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "odessa_today.db";
 
     private static final int DATABASE_VERSION_V1 = 101;  // 1.0

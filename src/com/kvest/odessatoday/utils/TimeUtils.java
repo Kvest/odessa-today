@@ -16,73 +16,43 @@ import java.util.concurrent.TimeUnit;
  */
 public class TimeUtils {
     /**
-     * Method returns end for the date in the local date-time
-     * @param date Local date-time
-     * @return End for the date in the local date-time
+     * Method returns end for the date in seconds
+     * @param date Date in seconds
+     * @return End for the date in seconds
      */
     public static long getEndOfTheDay(long date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(toUtcDate(date)));
+        calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(date));
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
 
         long result = TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis());
-        result = toLocalDate(result);
         return result;
     }
 
     /**
-     * Method returns beginning for the date in the local date-time
-     * @param date Local date-time
-     * @return Beginning for the date in the local date-time
+     * Method returns beginning for the date in seconds
+     * @param date Date in seconds
+     * @return Beginning for the date in seconds
      */
     public static long getBeginningOfTheDay(long date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(toUtcDate(date)));
+        calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(date));
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
         long result = TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis());
-        result = toLocalDate(result);
         return result;
     }
 
     /**
-     * Convert UTC date to local
-     * @param date UTC date in seconds
-     * @return Local date
-     */
-    public static long toLocalDate(long date) {
-        //get timezone
-        TimeZone timeZone = TimeZone.getDefault();
-
-        return date + TimeUnit.MILLISECONDS.toSeconds(timeZone.getOffset(date));
-    }
-
-    /**
-     * Convert local date to UTC
-     * @param date Local date in seconds
-     * @return UTC date
-     */
-    public static long toUtcDate(long date) {
-        //get timezone
-        TimeZone timeZone = TimeZone.getDefault();
-
-        return date - TimeUnit.MILLISECONDS.toSeconds(timeZone.getOffset(date));
-    }
-
-    /**
      * Method checks is the date current day
-     * @param date Local date-time
+     * @param date Date in seconds
      * @return True if date is current date, false otherwise
      */
     public static boolean isCurrentDay(long date) {
-        //get start of the current date in seconds
-        long currentDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-        currentDate = getBeginningOfTheDay(toLocalDate(currentDate));
-
-        return (date >= currentDate && date < (currentDate + TimeUnit.DAYS.toSeconds(1)));
+        return getBeginningOfTheDay(date) == getBeginningOfTheDay(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
     }
 }

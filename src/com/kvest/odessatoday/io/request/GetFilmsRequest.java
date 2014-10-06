@@ -9,7 +9,6 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 import com.kvest.odessatoday.io.NetworkContract;
 import com.kvest.odessatoday.io.response.GetFilmsResponse;
-import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -31,10 +30,10 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
     public GetFilmsRequest(long startDate, long endDate, Response.Listener<GetFilmsResponse> listener,
                            Response.ErrorListener errorListener) {
-        super(Method.GET, generateUrl(TimeUtils.toUtcDate(startDate), TimeUtils.toUtcDate(endDate)), null, listener, errorListener);
+        super(Method.GET, generateUrl(startDate, endDate), null, listener, errorListener);
 
-        this.startDate = TimeUtils.toUtcDate(startDate);
-        this.endDate = TimeUtils.toUtcDate(endDate);
+        this.startDate = startDate;
+        this.endDate = endDate;
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         LOGD("KVEST_TAG", "startDate=" + this.startDate + "(" + sdf.format(TimeUnit.SECONDS.toMillis(this.startDate)) + ")" +

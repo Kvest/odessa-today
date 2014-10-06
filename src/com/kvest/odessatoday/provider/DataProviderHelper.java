@@ -40,10 +40,6 @@ public abstract class DataProviderHelper {
 
     public static CursorLoader getFilmsFullTimetableLoader(Context context, long filmId, long timetableStartDate,
                                                            long timetableEndDate, String[] projection, String order) {
-        //convert date to utc
-        timetableStartDate = TimeUtils.toUtcDate(timetableStartDate);
-        timetableEndDate = TimeUtils.toUtcDate(timetableEndDate);
-
         LOGD("KVEST_TAG", "getFilmsFullTimetableLoader : timetableStartDate=" + timetableStartDate + ", endDate=" + timetableEndDate);
 
         String selection = Tables.FilmsFullTimetable.Columns.FILM_ID + "=? AND " +
@@ -55,10 +51,6 @@ public abstract class DataProviderHelper {
     }
 
     public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate, String[] projection, String order) {
-        //convert date to utc
-        startDate = TimeUtils.toUtcDate(startDate);
-        endDate = TimeUtils.toUtcDate(endDate);
-
 LOGD("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDate=" + endDate);
 
         String selection = Tables.Films.Columns.FILM_ID + " in (" + Tables.FilmsTimetable.GET_FILMS_ID_BY_PERIOD_SQL + ")";

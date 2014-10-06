@@ -18,12 +18,14 @@ import com.kvest.odessatoday.ui.fragment.CinemasListFragment;
 import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
 import com.kvest.odessatoday.utils.TimeUtils;
 
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends TodayBaseActivity implements FilmsListFragment.ShowCalendarListener,
                                                                CalendarFragment.OnDateSelectedListener,
                                                                FilmsListFragment.FilmSelectedListener{
     private long shownFilmsDate;
+    private final Calendar calendar = Calendar.getInstance();
     private FrameLayout calendarContainer;
 
     private Animation showCalendarAnimation;
@@ -44,7 +46,7 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                shownFilmsDate = TimeUtils.toLocalDate(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                 FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, true);
                 transaction.add(R.id.fragment_container, filmsListFragment);
             } finally {
@@ -127,7 +129,7 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
     }
 
     private void showFilmsByDate(long date) {
-        shownFilmsDate = Math.max(date, TimeUtils.toLocalDate(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
+        shownFilmsDate = Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
         Fragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, TimeUtils.isCurrentDay(shownFilmsDate));
         replaceFragment(filmsListFragment);
     }
@@ -156,7 +158,10 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
         if (calendarContainer != null && !isCalendarShown()) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                CalendarFragment calendarFragment = CalendarFragment.getInstance(selectedDate);
+                calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(selectedDate));
+                CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
+                                                                                 calendar.get(Calendar.MONTH),
+                                                                                 calendar.get(Calendar.YEAR));
                 transaction.add(R.id.calendar_container, calendarFragment);
             } finally {
                 transaction.commit();
@@ -195,12 +200,16 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
     }
 
     @Override
-    public void onDateSelected(long date) {
+    public void onDateSelected(int day, int month, int year) {
         //hide calendar
         hideCalendar();
 
         //show films by selected date
-        showFilmsByDate(date);
+        calendar.clear();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        showFilmsByDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
     }
 
     @Override

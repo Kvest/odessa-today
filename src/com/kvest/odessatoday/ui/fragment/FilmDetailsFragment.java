@@ -169,17 +169,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         timetableAdapter = new TimetableAdapter(getActivity());
         timetableList.setAdapter(timetableAdapter);
 
-        long dateUTC = TimeUnit.SECONDS.toMillis(TimeUtils.toUtcDate(shownTimetableDate));
-        timetableDate.setText(TIMETABLE_DATE_FORMAT.format(dateUTC));
-        timetableList.setOnTouchListener(new View.OnTouchListener() {
-            // Setting on Touch Listener for handling the touch inside ScrollView
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // Disallow the touch request for parent scroll on touch of child view
-                timetableList.getParent().requestDisallowInterceptTouchEvent(true);
-                return false;
-            }
-        });
+        timetableDate.setText(TIMETABLE_DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(shownTimetableDate)));
     }
 
     @Override
@@ -203,7 +193,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RECOVERY_DIALOG_REQUEST) {
+        if (requestCode == RECOVERY_DIALOG_REQUEST && requestCode == Activity.RESULT_OK) {
             // Retry initialization if user performed a recovery action
             initYoutubePlayer();
         }
