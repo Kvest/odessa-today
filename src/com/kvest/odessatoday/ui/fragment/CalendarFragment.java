@@ -261,13 +261,13 @@ public class CalendarFragment extends Fragment {
             }
 
             int type;
-            Date currentDate = new Date();
+            Date currentDate = getToday();
             while (calendar.get(Calendar.MONTH) == month) {
                 if (calendar.get(Calendar.DAY_OF_MONTH) == selectedDate.day &&
                         calendar.get(Calendar.MONTH) == selectedDate.month &&
                         calendar.get(Calendar.YEAR) == selectedDate.year) {
                     type = CalendarDay.DAY_TYPE_SELECTED;
-                }else if (currentDate.after(calendar.getTime())) {
+                } else if (currentDate.after(calendar.getTime())) {
                     type = CalendarDay.DAY_TYPE_PASSED;
                 } else {
                     type = CalendarDay.DAY_TYPE_ACTIVE;
@@ -343,6 +343,17 @@ public class CalendarFragment extends Fragment {
             view.setGravity(Gravity.CENTER);
 
             return view;
+        }
+
+        private static Date getToday() {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            return new Date(calendar.getTimeInMillis());
         }
     }
 }

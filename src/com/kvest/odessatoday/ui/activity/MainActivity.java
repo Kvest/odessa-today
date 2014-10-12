@@ -162,7 +162,7 @@ public class MainActivity extends TodayBaseActivity implements FilmsListFragment
                 CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
                                                                                  calendar.get(Calendar.MONTH),
                                                                                  calendar.get(Calendar.YEAR));
-                transaction.add(R.id.calendar_container, calendarFragment);
+                transaction.replace(R.id.calendar_container, calendarFragment);
             } finally {
                 transaction.commit();
             }
