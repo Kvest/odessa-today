@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.ui.activity;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -18,7 +19,7 @@ import com.kvest.odessatoday.utils.Constants;
  * Time: 22:57
  * To change this template use File | Settings | File Templates.
  */
-public class FilmDetailsActivity extends TodayBaseActivity implements FilmDetailsFragment.OnShowFilmCommentsListener {
+public class FilmDetailsActivity extends Activity implements FilmDetailsFragment.OnShowFilmCommentsListener {
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
     private static final String EXTRA_TIMETABLE_DATE = "com.kvest.odessatoday.extra.FILM_TIMETABLE_DATE";
 

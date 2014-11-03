@@ -1,7 +1,9 @@
 package com.kvest.odessatoday;
 
 import android.app.Application;
+import com.bugsense.trace.BugSenseHandler;
 import com.kvest.odessatoday.io.VolleyHelper;
+import com.kvest.odessatoday.utils.Constants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +24,8 @@ public class TodayApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        BugSenseHandler.initAndStartSession(this, Constants.BUGSENS_API_KEY);
 
         //save application instance
         applicaion = this;

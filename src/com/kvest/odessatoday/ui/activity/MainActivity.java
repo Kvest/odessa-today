@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.ui.activity;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.IntentFilter;
@@ -21,7 +22,7 @@ import com.kvest.odessatoday.utils.TimeUtils;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends TodayBaseActivity implements FilmsListFragment.ShowCalendarListener,
+public class MainActivity extends Activity implements FilmsListFragment.ShowCalendarListener,
                                                                CalendarFragment.OnDateSelectedListener,
                                                                FilmsListFragment.FilmSelectedListener{
     private long shownFilmsDate;

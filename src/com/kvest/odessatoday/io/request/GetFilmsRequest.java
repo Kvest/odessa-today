@@ -28,9 +28,9 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
     private long startDate;
     private long endDate;
 
-    public GetFilmsRequest(long startDate, long endDate, Response.Listener<GetFilmsResponse> listener,
+    public GetFilmsRequest(long startDate, long endDate, long cinemaId, Response.Listener<GetFilmsResponse> listener,
                            Response.ErrorListener errorListener) {
-        super(Method.GET, generateUrl(startDate, endDate), null, listener, errorListener);
+        super(Method.GET, generateUrl(startDate, endDate, cinemaId), null, listener, errorListener);
 
         this.startDate = startDate;
         this.endDate = endDate;
@@ -61,13 +61,16 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
         return endDate;
     }
 
-    private static String generateUrl(long startDate, long endDate) {
+    private static String generateUrl(long startDate, long endDate, long cinemaId) {
         Uri.Builder builder = NetworkContract.FilmsRequest.url.buildUpon();
         if (startDate >= 0) {
             builder.appendQueryParameter(NetworkContract.FilmsRequest.Params.START_DATE, Long.toString(startDate));
         }
         if (endDate >= 0) {
             builder.appendQueryParameter(NetworkContract.FilmsRequest.Params.END_DATE, Long.toString(endDate));
+        }
+        if (cinemaId >=0 ) {
+            builder.appendQueryParameter(NetworkContract.FilmsRequest.Params.CINEMA_ID, Long.toString(cinemaId));
         }
 
         return builder.build().toString();

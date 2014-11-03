@@ -313,7 +313,7 @@ public class NetworkService extends IntentService {
 
         //send request
         RequestFuture<GetFilmsResponse> future = RequestFuture.newFuture();
-        GetFilmsRequest request = new GetFilmsRequest(startDate, endDate, future, future);
+        GetFilmsRequest request = new GetFilmsRequest(startDate, endDate, -1, future, future);
         TodayApplication.getApplication().getVolleyHelper().addRequest(request);
         try {
             GetFilmsResponse response = future.get();

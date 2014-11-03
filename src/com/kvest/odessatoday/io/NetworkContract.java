@@ -24,6 +24,7 @@ public class NetworkContract {
         public interface Params {
             String START_DATE = "start_date";
             String END_DATE = "end_date";
+            String CINEMA_ID = "cinema_id";
         }
     }
 
