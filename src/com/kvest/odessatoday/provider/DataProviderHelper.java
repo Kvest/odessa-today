@@ -58,9 +58,9 @@ LOGD("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDat
                                 new String[]{Long.toString(startDate), Long.toString(endDate)}, order);
     }
 
-    public static CursorLoader getFilmLoader(Context context, long filmId, String[] projection, String order) {
+    public static CursorLoader getFilmLoader(Context context, long filmId, String[] projection) {
         String selection = Tables.Films.Columns.FILM_ID + "=?";
-        return new CursorLoader(context, FILMS_URI, projection, selection, new String[]{Long.toString(filmId)}, order);
+        return new CursorLoader(context, FILMS_URI, projection, selection, new String[]{Long.toString(filmId)}, null);
     }
 
     public static CursorLoader getCommentsLoader(Context context, long targetId, int targetType, String[] projection, String order) {
@@ -72,6 +72,11 @@ LOGD("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDat
     }
 
     public static CursorLoader getCinemasLoader(Context context, String[] projection, String order) {
-        return new CursorLoader(context, TodayProviderContract.CINEMAS_URI, projection, null, null, order);
+        return new CursorLoader(context, CINEMAS_URI, projection, null, null, order);
+    }
+
+    public static CursorLoader getCinemaLoader(Context context, long cinemaId, String[] projection) {
+        String selection = Tables.Cinemas.Columns.CINEMA_ID + "=?";
+        return new CursorLoader(context, CINEMAS_URI, projection, selection, new String[]{Long.toString(cinemaId)}, null);
     }
 }

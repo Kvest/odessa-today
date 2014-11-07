@@ -24,7 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends Activity implements FilmsListFragment.ShowCalendarListener,
                                                                CalendarFragment.OnDateSelectedListener,
-                                                               FilmsListFragment.FilmSelectedListener{
+                                                               FilmsListFragment.FilmSelectedListener,
+                                                               CinemasListFragment.CinemaSelectedListener {
     private long shownFilmsDate;
     private final Calendar calendar = Calendar.getInstance();
     private FrameLayout calendarContainer;
@@ -216,5 +217,10 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
     @Override
     public void onFilmSelected(long filmId) {
         startActivity(FilmDetailsActivity.getStartIntent(this, filmId, shownFilmsDate));
+    }
+
+    @Override
+    public void onCinemaSelected(long cinemaId) {
+        startActivity(CinemaDetailsActivity.getStartIntent(this, cinemaId));
     }
 }

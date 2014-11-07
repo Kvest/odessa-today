@@ -19,4 +19,10 @@
     <string name="write_comment">Написать отзыв</string>
     <string name="fill_field">Заполните поле</string>
     <string name="error_loading_cinemas">Не удалось обновить список кинотеатров</string>
+    <string name="cinema_info">Информация о кинотеатре</string>
+    <string name="cinema_phones">Телефоны:</string>
+    <string name="cinema_address">Адрес:</string>
+    <string name="map_not_found">Приложение-карта не найдено</string>
+    <string name="cinema_comments"><![CDATA[Отзывы <b>%1$d</b>]]></string>
+    <string name="cinema_photos"><![CDATA[Фото <b>%1$d</b>]]></string>
 </resources>

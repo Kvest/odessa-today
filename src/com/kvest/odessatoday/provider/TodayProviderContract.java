@@ -148,6 +148,7 @@ public class TodayProviderContract {
                     + "UNIQUE(" + Columns.COMMENT_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+            String COMMENTS_COUNT = "count(*)";
             String DATE_ORDER_DESC = Comments.Columns.DATE + " DESC";
             String DATE_ORDER_ASC = Comments.Columns.DATE + " ASC";
         }

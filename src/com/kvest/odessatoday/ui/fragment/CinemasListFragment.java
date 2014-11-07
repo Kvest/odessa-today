@@ -10,6 +10,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.kvest.odessatoday.R;
@@ -17,6 +18,9 @@ import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CinemasAdapter;
+import com.kvest.odessatoday.utils.Constants;
+
+import static com.kvest.odessatoday.utils.LogUtils.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,6 +34,8 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
 
     private ListView cinemasList;
     private CinemasAdapter adapter;
+
+    private CinemaSelectedListener cinemaSelectedListener;
 
     private LoadCinemasNotificationReceiver receiver = new LoadCinemasNotificationReceiver();
 
@@ -47,8 +53,27 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
         return rootView;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            cinemaSelectedListener = (CinemaSelectedListener) activity;
+        } catch (ClassCastException cce) {
+            LOGE(Constants.TAG, "Host activity for CinemasListFragment should implements CinemasListFragment.CinemaSelectedListener");
+        }
+    }
+
     private void init(View rootView) {
         cinemasList = (ListView) rootView.findViewById(R.id.cinemas_list);
+        cinemasList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (cinemaSelectedListener != null) {
+                    cinemaSelectedListener.onCinemaSelected(id);
+                }
+            }
+        });
 
         //create and set an adapter
         adapter = new CinemasAdapter(getActivity());
@@ -115,5 +140,9 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
                 Toast.makeText(activity, R.string.error_loading_cinemas, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public interface CinemaSelectedListener {
+        public void onCinemaSelected(long cinemaId);
     }
 }

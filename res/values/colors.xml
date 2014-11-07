@@ -36,4 +36,9 @@
     <!--cinemas-->
     <color name="cinemas_list_divider_color">#AAAAAA</color>
     <color name="cinema_name_text_color">#5ca63e</color>
+
+    <!--cinema details-->
+    <color name="cinema_details_name_text_color">#000000</color>
+    <color name="cinema_details_bg">#ffffff</color>
+    <color name="cinema_details_list_bg">#e8e9eb</color>
 </resources>

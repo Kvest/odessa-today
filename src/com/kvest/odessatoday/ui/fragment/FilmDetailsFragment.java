@@ -91,11 +91,6 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.film_details_fragment, container, false);
         View headerView = inflater.inflate(R.layout.film_details_header, null);
@@ -108,7 +103,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
-    public void onAttach(Activity activity) {
+     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         try {
@@ -244,7 +239,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == FILM_LOADER_ID) {
-            return DataProviderHelper.getFilmLoader(getActivity(), getFilmId(), null, null);
+            return DataProviderHelper.getFilmLoader(getActivity(), getFilmId(), null);
         } else if (id == TIMETABLE_LOADER_ID) {
             long endDate = TimeUtils.getEndOfTheDay(shownTimetableDate);
             return DataProviderHelper.getFilmsFullTimetableLoader(getActivity(), getFilmId(), shownTimetableDate, endDate,
