@@ -78,8 +78,8 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
         showPhotos = (Button) headerView.findViewById(R.id.show_photos);
 
         timetableList = rootView;
-        timetableList.setAdapter(new CinemasAdapter(getActivity()));
         timetableList.addHeaderView(headerView);
+        timetableList.setAdapter(new CinemasAdapter(getActivity()));
         
         showOnMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
