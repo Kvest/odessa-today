@@ -73,6 +73,10 @@ public class CalendarFragment extends Fragment {
         }
     }
 
+    public void setOnDateSelectedListener(OnDateSelectedListener onDateSelectedListener) {
+        this.onDateSelectedListener = onDateSelectedListener;
+    }
+
     private void init(View root) {
         calendar = Calendar.getInstance();
         currentMonthNumber = getMonthNumber(System.currentTimeMillis());

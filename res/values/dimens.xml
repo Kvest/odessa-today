@@ -73,6 +73,7 @@
     <!--cinema details-->
     <dimen name="cinema_details_name_text_size">24sp</dimen>
     <dimen name="cinema_details_header_padding">10dip</dimen>
+    <dimen name="cinema_details_header_padding_bottom">20dip</dimen>
     <dimen name="cinema_details_corner_radius">5dip</dimen>
     <dimen name="cinema_details_phones_padding">6dip</dimen>
     <dimen name="cinema_details_address_padding">6dip</dimen>
@@ -80,4 +81,7 @@
     <dimen name="phones_container_margin_bottom">10dip</dimen>
     <dimen name="address_container_margin_bottom">10dip</dimen>
     <dimen name="show_on_map_min_size">40dip</dimen>
+    <dimen name="cinema_details_date_text_size">18sp</dimen>
+    <dimen name="cinema_details_week_text_size">15sp</dimen>
+    <dimen name="cinema_details_date_padding">8dip</dimen>
 </resources>

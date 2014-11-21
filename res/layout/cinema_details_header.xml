@@ -4,7 +4,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/cinema_details_header_padding"
+    android:paddingLeft="@dimen/cinema_details_header_padding"
+    android:paddingRight="@dimen/cinema_details_header_padding"
+    android:paddingTop="@dimen/cinema_details_header_padding"
+    android:paddingBottom="@dimen/cinema_details_header_padding_bottom"
     android:background="@color/cinema_details_bg">
     <TextView
         android:id="@+id/cinema_name"

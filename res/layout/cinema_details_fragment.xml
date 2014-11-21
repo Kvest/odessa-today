@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-      android:id="@+id/cinema_details_list"
-      android:layout_height="match_parent"
-      android:layout_width="match_parent"
-      android:background="@color/cinema_details_list_bg"
-      android:divider="@null"
-      android:listSelector="@android:color/transparent"/>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <ListView
+        android:id="@+id/cinema_details_list"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/cinema_details_list_bg"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent"/>
+    <FrameLayout
+        android:id="@+id/calendar_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>
+

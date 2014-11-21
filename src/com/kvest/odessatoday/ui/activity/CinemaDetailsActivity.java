@@ -109,7 +109,9 @@ public class CinemaDetailsActivity extends Activity implements CinemaDetailsFrag
         if (showFragmentType != SHOWN_FRAGMENT_DETAILS) {
             backToCinemaDetails();
         } else {
-            super.onBackPressed();
+            if (!cinemaDetailsFragment.onBackPressed()) {
+                super.onBackPressed();
+            }
         }
     }
 }

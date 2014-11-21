@@ -3,6 +3,8 @@ package com.kvest.odessatoday.ui.activity;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -34,6 +36,12 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
     private Animation hideCalendarAnimation;
 
     private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
+
+    public static Intent getStartIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+
+        return intent;
+    }
 
     /**
      * Called when the activity is first created.

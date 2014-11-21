@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/cinema_details_header_padding"
+    android:paddingRight="@dimen/cinema_details_header_padding"
+    android:paddingBottom="@dimen/cinema_details_header_padding"
+    android:paddingTop="@dimen/cinema_details_header_padding_bottom"
+    android:background="@color/cinema_details_list_bg">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:padding="@dimen/cinema_details_date_padding"
+        android:gravity="center_vertical"
+        android:background="@drawable/cinema_date_bg">
+        <TextView
+            android:id="@+id/is_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today_marker"
+            android:textColor="@color/cinema_details_date_text_color"
+            android:textSize="@dimen/cinema_details_date_text_size"/>
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cinema_details_date_text_color"
+            android:textSize="@dimen/cinema_details_date_text_size" />
+        <TextView
+            android:id="@+id/week_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cinema_details_week_text_color"
+            android:textSize="@dimen/cinema_details_week_text_size" />
+        <View
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <ImageView
+            android:id="@+id/show_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_calendar" />
+    </LinearLayout>
+</FrameLayout>
