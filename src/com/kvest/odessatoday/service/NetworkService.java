@@ -55,13 +55,20 @@ public class NetworkService extends IntentService {
     private static final int ACTION_SYNC = 6;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
+        loadFilms(context, startDate, endDate, -1);
+    }
+
+    public static void loadFilms(Context context, long startDate, long endDate, long cinemaId) {
         Intent intent = new Intent(context, NetworkService.class);
         intent.putExtra(ACTION_EXTRA, ACTION_LOAD_FILMS);
         intent.putExtra(START_DATE_EXTRA, startDate);
         intent.putExtra(END_DATE_EXTRA, endDate);
+        intent.putExtra(CINEMA_ID_EXTRA, cinemaId);
 
         context.startService(intent);
     }
+
+
 
     public static void loadCinemas(Context context) {
         Intent intent = new Intent(context, NetworkService.class);
@@ -310,10 +317,11 @@ public class NetworkService extends IntentService {
         //get extra data
         long startDate = intent.getLongExtra(START_DATE_EXTRA, -1);
         long endDate = intent.getLongExtra(END_DATE_EXTRA, -1);
+        long cinemaId = intent.getLongExtra(CINEMA_ID_EXTRA, -1);
 
         //send request
         RequestFuture<GetFilmsResponse> future = RequestFuture.newFuture();
-        GetFilmsRequest request = new GetFilmsRequest(startDate, endDate, -1, future, future);
+        GetFilmsRequest request = new GetFilmsRequest(startDate, endDate, cinemaId, future, future);
         TodayApplication.getApplication().getVolleyHelper().addRequest(request);
         try {
             GetFilmsResponse response = future.get();

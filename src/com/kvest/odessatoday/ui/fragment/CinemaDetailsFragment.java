@@ -190,7 +190,11 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
 
         updateShownDateUI();
 
-        //TODO reload data
+        //start loading data
+        NetworkService.loadFilms(getActivity(), shownDate, TimeUtils.getEndOfTheDay(shownDate), getCinemaId());
+
+        //restart loader
+        getLoaderManager().restartLoader(TIMETABLE_LOADER_ID, null, this);
     }
 
     private void updateShownDateUI() {
@@ -283,7 +287,7 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
         super.onActivityCreated(savedInstanceState);
 
         //Request full timetable for the cinema for today and comments
-        //NetworkService.loadTimetable(getActivity(), getCinemaId());
+        NetworkService.loadFilms(getActivity(), shownDate, TimeUtils.getEndOfTheDay(shownDate), getCinemaId());
         NetworkService.loadCinemaComments(getActivity(), getCinemaId());
 
         getLoaderManager().initLoader(CINEMA_LOADER_ID, null, this);
