@@ -20,6 +20,7 @@ import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.ui.adapter.CinemaTimetableAdapter;
 import com.kvest.odessatoday.ui.adapter.CinemasAdapter;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
@@ -49,6 +50,7 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
 
     private static final int CINEMA_LOADER_ID = 1;
     private static final int COMMENTS_COUNT_LOADER_ID = 2;
+    private static final int TIMETABLE_LOADER_ID = 3;
 
     private TextView cinemaName;
     private View phonesContainer;
@@ -64,6 +66,8 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
     private TextView dateTextView;
     private TextView weekDayTextView;
     private long shownDate;
+
+    private CinemaTimetableAdapter cinemaTimetableAdapter;
 
     private final Calendar calendar = Calendar.getInstance();
     private FrameLayout calendarContainer;
@@ -116,10 +120,12 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
         //set shown date UI
         updateShownDateUI();
 
+        //setup timetable list
         timetableList = (ListView)rootView.findViewById(R.id.cinema_details_list);
         timetableList.addHeaderView(headerView);
         timetableList.addHeaderView(dateHeaderView);
-        timetableList.setAdapter(new CinemasAdapter(getActivity()));
+        cinemaTimetableAdapter = new CinemaTimetableAdapter(getActivity());
+        timetableList.setAdapter(cinemaTimetableAdapter);
         
         showOnMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,6 +288,7 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
 
         getLoaderManager().initLoader(CINEMA_LOADER_ID, null, this);
         getLoaderManager().initLoader(COMMENTS_COUNT_LOADER_ID, null, this);
+        getLoaderManager().initLoader(TIMETABLE_LOADER_ID, null, this);
     }
 
     @Override
@@ -292,6 +299,10 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
             case COMMENTS_COUNT_LOADER_ID :
                 return DataProviderHelper.getCommentsLoader(getActivity(), getCinemaId(), Constants.CommentTargetType.CINEMA,
                                                             COMMENTS_COUNT_PROJECTION, null);
+            case TIMETABLE_LOADER_ID :
+                long endDate = TimeUtils.getEndOfTheDay(shownDate);
+                return DataProviderHelper.getCinemaTimetableLoader(getActivity(), getCinemaId(), shownDate, endDate,
+                        CinemaTimetableAdapter.PROJECTION , Tables.CinemaTimetableView.TIMETABLE_ORDER_ASC);
         }
 
         return null;
@@ -305,6 +316,9 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
                 break;
             case COMMENTS_COUNT_LOADER_ID :
                 setCommentsCount(data);
+                break;
+            case TIMETABLE_LOADER_ID :
+                cinemaTimetableAdapter.setCursor(data);
                 break;
         }
     }

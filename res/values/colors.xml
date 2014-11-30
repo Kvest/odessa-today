@@ -43,4 +43,5 @@
     <color name="cinema_details_list_bg">#e8e9eb</color>
     <color name="cinema_details_date_text_color">#ffffff</color>
     <color name="cinema_details_week_text_color">#99cc01</color>
+    <color name="cinema_details_row_date2_text_color">#98cb00</color>
 </resources>

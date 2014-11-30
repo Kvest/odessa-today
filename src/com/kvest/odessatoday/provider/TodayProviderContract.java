@@ -18,12 +18,14 @@ public class TodayProviderContract {
     static final String FILMS_PATH = "films";
     static final String TIMETABLE_PATH = "timetable";
     static final String FULL_PATH = "full";
+    static final String CINEMA_VIEW_PATH = "cinema_view";
     static final String CINEMAS_PATH = "cinemas";
     static final String COMMENTS_PATH = "comments";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
-    public static final Uri TIMETABLE_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH + "/" + TIMETABLE_PATH);
+    public static final Uri TIMETABLE_URI = Uri.withAppendedPath(FILMS_URI, TIMETABLE_PATH);
     public static final Uri FULL_TIMETABLE_URI = Uri.withAppendedPath(TIMETABLE_URI, FULL_PATH);
+    public static final Uri CINEMA_TIMETABLE_URI = Uri.withAppendedPath(TIMETABLE_URI, CINEMA_VIEW_PATH);
     public static final Uri CINEMAS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, CINEMAS_PATH);
     public static final Uri COMMENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, COMMENTS_PATH);
 
@@ -94,6 +96,42 @@ public class TodayProviderContract {
             }
 
             String TIMETABLE_ORDER_ASC = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.DATE + " ASC";
+        }
+
+        interface CinemaTimetableView {
+            String VIEW_NAME = "cinema_timetable_view";
+
+            String CREATE_VIEW_SQL = "CREATE VIEW IF NOT EXISTS " + VIEW_NAME + " AS SELECT * FROM " + FilmsTimetable.TABLE_NAME +
+                                     " LEFT OUTER JOIN " + Films.TABLE_NAME + " ON " +
+                                     FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.FILM_ID + "=" +
+                                     Films.TABLE_NAME + "." + Films.Columns.FILM_ID + ";";
+
+            interface Columns extends BaseColumns {
+                String TIMETABLE_ID = "timetable_id";
+                String FILM_ID = "film_id";
+                String CINEMA_ID = "cinema_id";
+                String DATE = "date";
+                String PRICES = "prices";
+                String FORMAT = "format";
+                String _ID1 = "_id:1";
+                String FILM_ID1 = "film_id:1";
+                String NAME = "name";
+                String COUNTRY = "country";
+                String YEAR = "year";
+                String DIRECTOR = "director";
+                String ACTORS = "actors";
+                String DESCRIPTION = "description";
+                String IMAGE = "image";
+                String VIDEO = "video";
+                String GENRE = "genre";
+                String RATING = "rating";
+                String COMMENTS_COUNT = "comments_count";
+                String IS_PREMIERE = "is_premiere";
+                String FILM_DURATION = "film_duration";
+                String POSTERS = "posters";
+            }
+
+            String TIMETABLE_ORDER_ASC = Columns.DATE + " ASC";
         }
 
         interface FilmsTimetable {

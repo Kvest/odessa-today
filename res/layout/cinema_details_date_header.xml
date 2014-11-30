@@ -3,9 +3,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/cinema_details_header_padding"
-    android:paddingRight="@dimen/cinema_details_header_padding"
-    android:paddingBottom="@dimen/cinema_details_header_padding"
+    android:paddingLeft="@dimen/cinema_details_padding"
+    android:paddingRight="@dimen/cinema_details_padding"
     android:paddingTop="@dimen/cinema_details_header_padding_bottom"
     android:background="@color/cinema_details_list_bg">
     <LinearLayout

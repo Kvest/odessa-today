@@ -50,6 +50,16 @@ public abstract class DataProviderHelper {
                                 order);
     }
 
+    public static CursorLoader getCinemaTimetableLoader(Context context, long cinemaId, long timetableStartDate,
+                                                           long timetableEndDate, String[] projection, String order) {
+        String selection = Tables.CinemaTimetableView.Columns.CINEMA_ID + "=? AND " +
+                           Tables.CinemaTimetableView.Columns.DATE + ">= ? AND " +
+                           Tables.CinemaTimetableView.Columns.DATE + "<= ?";
+        return new CursorLoader(context, CINEMA_TIMETABLE_URI, projection,
+                                selection, new String[]{Long.toString(cinemaId), Long.toString(timetableStartDate), Long.toString(timetableEndDate)},
+                                order);
+    }
+
     public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate, String[] projection, String order) {
 LOGD("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDate=" + endDate);
 

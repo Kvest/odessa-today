@@ -72,7 +72,7 @@
 
     <!--cinema details-->
     <dimen name="cinema_details_name_text_size">24sp</dimen>
-    <dimen name="cinema_details_header_padding">10dip</dimen>
+    <dimen name="cinema_details_padding">12dip</dimen>
     <dimen name="cinema_details_header_padding_bottom">20dip</dimen>
     <dimen name="cinema_details_corner_radius">5dip</dimen>
     <dimen name="cinema_details_phones_padding">6dip</dimen>
@@ -84,4 +84,13 @@
     <dimen name="cinema_details_date_text_size">18sp</dimen>
     <dimen name="cinema_details_week_text_size">15sp</dimen>
     <dimen name="cinema_details_date_padding">8dip</dimen>
+    <dimen name="cinema_details_film_name_text_size">16sp</dimen>
+    <dimen name="cinema_details_film_name_padding_top">14dip</dimen>
+    <dimen name="cinema_details_film_name_padding_bottom">6dip</dimen>
+    <dimen name="cinema_details_row_item_margin">6dip</dimen>
+    <dimen name="cinema_details_row_item_vertical_padding">4dip</dimen>
+    <dimen name="cinema_details_row_date_text_size">20dip</dimen>
+    <dimen name="cinema_details_row_format_text_size">14dip</dimen>
+    <dimen name="cinema_details_row_prices_text_size">12dip</dimen>
+    <dimen name="cinema_details_row_date_margin_right">8dip</dimen>
 </resources>

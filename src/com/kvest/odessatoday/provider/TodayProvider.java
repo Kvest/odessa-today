@@ -31,6 +31,7 @@ public class TodayProvider extends ContentProvider {
     private static final int FULL_TIMETABLE_LIST_URI_INDICATOR = 7;
     private static final int COMMENT_LIST_URI_INDICATOR = 8;
     private static final int COMMENT_ITEM_URI_INDICATOR = 9;
+    private static final int CINEMA_TIMETABLE_LIST_URI_INDICATOR = 10;
 
 
     private static final UriMatcher uriMatcher;
@@ -45,6 +46,7 @@ public class TodayProvider extends ContentProvider {
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/" +FULL_PATH, FULL_TIMETABLE_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, COMMENTS_PATH, COMMENT_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, COMMENTS_PATH + "/#", COMMENT_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/" + CINEMA_VIEW_PATH, CINEMA_TIMETABLE_LIST_URI_INDICATOR);
     }
 
     @Override
@@ -86,6 +88,8 @@ public class TodayProvider extends ContentProvider {
                 return queryFullTable(Tables.Comments.TABLE_NAME, uri, projection,
                         Tables.Comments.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
+            case CINEMA_TIMETABLE_LIST_URI_INDICATOR :
+                return queryFullTable(Tables.CinemaTimetableView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
         }
 
         throw new IllegalArgumentException("Unknown uri for query : " + uri);
