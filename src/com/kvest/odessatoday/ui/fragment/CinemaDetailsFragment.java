@@ -18,10 +18,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.datamodel.Cinema;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CinemaTimetableAdapter;
-import com.kvest.odessatoday.ui.adapter.CinemasAdapter;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
 
@@ -363,7 +363,7 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
             }
 
             tmp = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.IMAGE));
-            int photosCount = tmp.split(",").length;
+            int photosCount = tmp != null ? tmp.split(Cinema.IMAGES_SEPARATOR).length : 0;
             showPhotos.setText(Html.fromHtml(getString(R.string.cinema_photos, photosCount)));
             showPhotos.setEnabled(photosCount > 0);
         }

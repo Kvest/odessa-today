@@ -1,6 +1,9 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
+
+import java.util.Arrays;
+
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
 /**
@@ -11,6 +14,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
  * To change this template use File | Settings | File Templates.
  */
 public class Cinema {
+    public static final String IMAGES_SEPARATOR = ",";
     public long id;
     public String name;
     public String address;
@@ -18,7 +22,7 @@ public class Cinema {
     public String transport;
     public String description;
     public String worktime;
-    public String image;
+    public String[] images;
     public int comments_count;
 
     public ContentValues getContentValues() {
@@ -30,9 +34,22 @@ public class Cinema {
         values.put(Cinemas.Columns.TRANSPORT, transport);
         values.put(Cinemas.Columns.DESCRIPTION, description);
         values.put(Cinemas.Columns.WORK_TIME, worktime);
-        values.put(Cinemas.Columns.IMAGE, image);
+        values.put(Cinemas.Columns.IMAGE, imagesToString());
         values.put(Cinemas.Columns.COMMENTS_COUNT, comments_count);
 
         return values;
+    }
+
+    public String imagesToString() {
+        String result = null;
+
+        if (images != null) {
+            result = "";
+            for (int i = 0; i < images.length; ++i) {
+                result += (i != 0 ? IMAGES_SEPARATOR : "") + images[i];
+            }
+        }
+
+        return result;
     }
 }

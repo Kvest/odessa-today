@@ -10,10 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -99,6 +96,8 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
 
         init((ListView)rootView, headerView);
 
+        setHasOptionsMenu(true);
+
         return rootView;
     }
 
@@ -111,6 +110,23 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         } catch (ClassCastException cce) {
             LOGE(Constants.TAG, "Host activity for FilmDetailsFragment should implements FilmDetailsFragment.OnShowFilmCommentsListener");
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.film_details_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.share:
+                share();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void init(ListView rootView, View headerView) {
@@ -334,6 +350,15 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
                 youTubePlayerFragmentContainer.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private void share() {
+        Intent sharingIntent = new Intent();
+        sharingIntent.setAction(Intent.ACTION_SEND);
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, "<b>This is my text to send.</b><br/> http://cdn.sudarmuthu.com/wp-content/uploads/2011/01/sharing-content-android.png");
+        //sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("http://cdn.sudarmuthu.com/wp-content/uploads/2011/01/sharing-content-android.png"));
+        sharingIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sharingIntent, getResources().getText(R.string.share)));
     }
 
     private void setTrailer(String trailerLink) {

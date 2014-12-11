@@ -33,6 +33,7 @@
     <string name="format_imax">IMAX</string>
     <string name="format_five_d">5D</string>
     <string name="format_four_dx">i4DX</string>
+    <string name="share">Поделиться...</string>
 
     <string-array name="formats">
         <item>@string/format_unknown</item>
