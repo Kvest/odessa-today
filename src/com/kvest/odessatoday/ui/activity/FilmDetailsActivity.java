@@ -23,10 +23,6 @@ public class FilmDetailsActivity extends Activity implements FilmDetailsFragment
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
     private static final String EXTRA_TIMETABLE_DATE = "com.kvest.odessatoday.extra.FILM_TIMETABLE_DATE";
 
-    private FilmDetailsFragment filmDetailsFragment;
-    private CommentsFragment commentsFragment;
-    private boolean commentsShown;
-
     public static Intent getStartIntent(Context context, long filmId, long timetableDate) {
         Intent intent = new Intent(context, FilmDetailsActivity.class);
         intent.putExtra(EXTRA_FILM_ID, filmId);
@@ -42,15 +38,13 @@ public class FilmDetailsActivity extends Activity implements FilmDetailsFragment
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        commentsShown = false;
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {
             long filmId = intent.getLongExtra(EXTRA_FILM_ID, -1);
             long timetableDate = intent.getLongExtra(EXTRA_TIMETABLE_DATE, 0);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                filmDetailsFragment = FilmDetailsFragment.getInstance(filmId, timetableDate);
-
+                FilmDetailsFragment filmDetailsFragment = FilmDetailsFragment.getInstance(filmId, timetableDate);
                 transaction.add(R.id.fragment_container, filmDetailsFragment);
             } finally {
                 transaction.commit();
@@ -72,40 +66,12 @@ public class FilmDetailsActivity extends Activity implements FilmDetailsFragment
     public void onShowFilmComments(long filmId) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
-            if (commentsFragment == null) {
-                commentsFragment = CommentsFragment.getInstance(Constants.CommentTargetType.FILM, filmId);
-                transaction.add(R.id.fragment_container, commentsFragment);
-            }
-
-            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out);
-
-            transaction.show(commentsFragment);
-            transaction.hide(filmDetailsFragment);
+            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
+            CommentsFragment commentsFragment = CommentsFragment.getInstance(Constants.CommentTargetType.FILM, filmId);
+            transaction.replace(R.id.fragment_container, commentsFragment);
+            transaction.addToBackStack(null);
         } finally {
             transaction.commit();
-            commentsShown = true;
-        }
-    }
-
-    public void backToFilmDetails() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        try {
-            transaction.setCustomAnimations(R.anim.slide_right_in, R.anim.slide_right_out);
-
-            transaction.show(filmDetailsFragment);
-            transaction.hide(commentsFragment);
-        } finally {
-            transaction.commit();
-            commentsShown = false;
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (commentsShown) {
-            backToFilmDetails();
-        } else {
-            super.onBackPressed();
         }
     }
 }

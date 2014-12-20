@@ -6,4 +6,10 @@
         <attr name="collapsedHeight" format="dimension"/>
         <attr name="animationDuration" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="PagerIndicator">
+        <attr name="active_circle_drawable" format="integer"/>
+        <attr name="inactive_circle_drawable" format="integer"/>
+        <attr name="margin_between_circles" format="float"/>
+    </declare-styleable>
 </resources>

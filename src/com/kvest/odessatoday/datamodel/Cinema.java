@@ -44,10 +44,15 @@ public class Cinema {
         String result = null;
 
         if (images != null) {
-            result = "";
+            StringBuilder builder = new StringBuilder();
             for (int i = 0; i < images.length; ++i) {
-                result += (i != 0 ? IMAGES_SEPARATOR : "") + images[i];
+                if (i != 0) {
+                    builder.append(IMAGES_SEPARATOR);
+                }
+                builder.append(images[i]);
             }
+
+            result = builder.toString();
         }
 
         return result;

@@ -1,6 +1,7 @@
 package com.kvest.odessatoday.ui.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CinemaDetailsFragment;
 import com.kvest.odessatoday.ui.fragment.CommentsFragment;
+import com.kvest.odessatoday.ui.fragment.PhotoGalleryFragment;
 import com.kvest.odessatoday.utils.Constants;
 
 /**
@@ -20,13 +22,6 @@ import com.kvest.odessatoday.utils.Constants;
  */
 public class CinemaDetailsActivity extends Activity implements CinemaDetailsFragment.CinemaDetailsActionsListener {
     private static final String EXTRA_CINEMA_ID = "com.kvest.odessatoday.extra.CINEMA_ID";
-    private static final int SHOWN_FRAGMENT_DETAILS = 0;
-    private static final int SHOWN_FRAGMENT_COMMENTS = 1;
-    private static final int SHOWN_FRAGMENT_PHOTOS = 2;
-
-    private CinemaDetailsFragment cinemaDetailsFragment;
-    private CommentsFragment commentsFragment;
-    private int showFragmentType;
 
     public static Intent getStartIntent(Context context, long cinemaId) {
         Intent intent = new Intent(context, CinemaDetailsActivity.class);
@@ -42,13 +37,12 @@ public class CinemaDetailsActivity extends Activity implements CinemaDetailsFrag
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        showFragmentType = SHOWN_FRAGMENT_DETAILS;
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {
             long cinemaId = intent.getLongExtra(EXTRA_CINEMA_ID, -1);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                cinemaDetailsFragment = CinemaDetailsFragment.getInstance(cinemaId);
+                CinemaDetailsFragment cinemaDetailsFragment = CinemaDetailsFragment.getInstance(cinemaId);
 
                 transaction.add(R.id.fragment_container, cinemaDetailsFragment);
             } finally {
@@ -71,47 +65,37 @@ public class CinemaDetailsActivity extends Activity implements CinemaDetailsFrag
     public void onShowCinemaComments(long cinemaId) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
-            if (commentsFragment == null) {
-                commentsFragment = CommentsFragment.getInstance(Constants.CommentTargetType.CINEMA, cinemaId);
-                transaction.add(R.id.fragment_container, commentsFragment);
-            }
-
-            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out);
-
-            transaction.show(commentsFragment);
-            transaction.hide(cinemaDetailsFragment);
+            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
+            CommentsFragment commentsFragment = CommentsFragment.getInstance(Constants.CommentTargetType.CINEMA, cinemaId);
+            transaction.replace(R.id.fragment_container, commentsFragment);
+            transaction.addToBackStack(null);
         } finally {
             transaction.commit();
-            showFragmentType = SHOWN_FRAGMENT_COMMENTS;
         }
     }
 
     @Override
-    public void onShowCinemaPhotos(long cinemaId) {
-        //TODO
-    }
-
-    public void backToCinemaDetails() {
+    public void onShowCinemaPhotos(String[] photoURLs) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
-            transaction.setCustomAnimations(R.anim.slide_right_in, R.anim.slide_right_out);
-
-            transaction.show(cinemaDetailsFragment);
-            transaction.hide(commentsFragment);
+            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
+            PhotoGalleryFragment photoGalleryFragment = PhotoGalleryFragment.getInstance(photoURLs);
+            transaction.replace(R.id.fragment_container, photoGalleryFragment);
+            transaction.addToBackStack(null);
         } finally {
             transaction.commit();
-            showFragmentType = SHOWN_FRAGMENT_DETAILS;
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (showFragmentType != SHOWN_FRAGMENT_DETAILS) {
-            backToCinemaDetails();
-        } else {
-            if (!cinemaDetailsFragment.onBackPressed()) {
-                super.onBackPressed();
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment != null && currentFragment instanceof CinemaDetailsFragment) {
+            if (((CinemaDetailsFragment)currentFragment).onBackPressed()) {
+                return;
             }
         }
+
+        super.onBackPressed();
     }
 }

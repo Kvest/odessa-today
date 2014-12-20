@@ -93,4 +93,8 @@
     <dimen name="cinema_details_row_format_text_size">14dip</dimen>
     <dimen name="cinema_details_row_prices_text_size">12dip</dimen>
     <dimen name="cinema_details_row_date_margin_right">8dip</dimen>
+
+    <!--PhotoGalleryFragment-->
+    <dimen name="pager_indicator_vertical_margin">10dip</dimen>
+    <dimen name="pager_indicator_margin_between_circles">4dip</dimen>
 </resources>

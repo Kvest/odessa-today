@@ -2,6 +2,7 @@ package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
@@ -196,10 +197,15 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     }
 
     private void initYoutubePlayer() {
-        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager().findFragmentById(R.id.youtube_fragment);
-        if (youTubePlayerFragment != null) {
-            youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
+        YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        try {
+            transaction.add(R.id.youtube_fragment_container, youTubePlayerFragment);
+        } finally {
+            transaction.commit();
         }
+
+        youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
     }
 
     @Override

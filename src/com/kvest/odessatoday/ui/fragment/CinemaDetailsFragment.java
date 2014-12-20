@@ -61,6 +61,7 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
     private Button showPhotos;
     private ListView timetableList;
     private String addressValue = "";
+    private String[] photoUrls = null;
 
     private TextView isToday;
     private TextView dateTextView;
@@ -239,8 +240,8 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
     }
 
     private void showPhotos() {
-        if (cinemaDetailsActionsListener != null) {
-            cinemaDetailsActionsListener.onShowCinemaPhotos(getCinemaId());
+        if (cinemaDetailsActionsListener != null && photoUrls != null) {
+            cinemaDetailsActionsListener.onShowCinemaPhotos(photoUrls);
         }
     }
 
@@ -363,7 +364,8 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
             }
 
             tmp = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.IMAGE));
-            int photosCount = tmp != null ? tmp.split(Cinema.IMAGES_SEPARATOR).length : 0;
+            photoUrls = tmp != null ? tmp.split(Cinema.IMAGES_SEPARATOR) : null;
+            int photosCount = photoUrls != null ? photoUrls.length : 0;
             showPhotos.setText(Html.fromHtml(getString(R.string.cinema_photos, photosCount)));
             showPhotos.setEnabled(photosCount > 0);
         }
@@ -393,6 +395,6 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
 
     public interface CinemaDetailsActionsListener {
         public void onShowCinemaComments(long cinemaId);
-        public void onShowCinemaPhotos(long cinemaId);
+        public void onShowCinemaPhotos(String[] photoURLs);
     }
 }

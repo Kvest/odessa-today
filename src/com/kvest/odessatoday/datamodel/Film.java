@@ -55,12 +55,15 @@ public class Film {
     }
 
     public static String posters2String(String[] posters) {
-        String result = "";
+        StringBuilder builder = new StringBuilder();
         for (int i = 0 ; i < posters.length; ++i) {
-            result += ((i > 0 ? POSTER_SEPARATOR : "") + posters[i]);
+            if (i > 0) {
+                builder.append(POSTER_SEPARATOR);
+            }
+            builder.append(posters[i]);
         }
 
-        return result;
+        return builder.toString();
     }
 
     public static String[] string2Posters(String value) {
