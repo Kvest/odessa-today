@@ -8,10 +8,7 @@ import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.datamodel.Cinema;
-import com.kvest.odessatoday.datamodel.Comment;
-import com.kvest.odessatoday.datamodel.Film;
-import com.kvest.odessatoday.datamodel.TimetableItem;
+import com.kvest.odessatoday.datamodel.*;
 import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
 import com.kvest.odessatoday.io.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
@@ -40,6 +37,7 @@ public class NetworkService extends IntentService {
     private static final String[] ADD_COMMENTS_PROJECTION = new String[]{Tables.Comments.Columns._ID, Tables.Comments.Columns.NAME,
                                                                          Tables.Comments.Columns.TEXT, Tables.Comments.Columns.TARGET_ID,
                                                                          Tables.Comments.Columns.TARGET_TYPE};
+    private static final int DEFAULT_ANNOUNCEMENTS_LIMIT = 30;
     private static final String ACTION_EXTRA = "com.kvest.odessatoday.EXTRAS.ACTION";
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
@@ -53,6 +51,7 @@ public class NetworkService extends IntentService {
     private static final int ACTION_LOAD_CINEMA_COMMENTS = 4;
     private static final int ACTION_UPLOAD_COMMENT = 5;
     private static final int ACTION_SYNC = 6;
+    private static final int ACTION_LOAD_ANNOUNCEMENTS = 7;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
         loadFilms(context, startDate, endDate, -1);
@@ -68,7 +67,12 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
+    public static void loadAnnouncements(Context context) {
+        Intent intent = new Intent(context, NetworkService.class);
+        intent.putExtra(ACTION_EXTRA, ACTION_LOAD_ANNOUNCEMENTS);
 
+        context.startService(intent);
+    }
 
     public static void loadCinemas(Context context) {
         Intent intent = new Intent(context, NetworkService.class);
@@ -144,7 +148,63 @@ public class NetworkService extends IntentService {
             case ACTION_SYNC :
                 doSync(intent);
                 break;
+            case ACTION_LOAD_ANNOUNCEMENTS :
+                doLoadAnnouncements(intent);
+                break;
         }
+    }
+
+    private void doLoadAnnouncements(Intent intent) {
+        int offset = 0;
+        int totalCount = 0;
+        do {
+            RequestFuture<GetAnnouncementsResponse> future = RequestFuture.newFuture();
+            GetAnnouncementsRequest request = new GetAnnouncementsRequest(offset, DEFAULT_ANNOUNCEMENTS_LIMIT, future, future);
+            TodayApplication.getApplication().getVolleyHelper().addRequest(request);
+            try {
+                GetAnnouncementsResponse response = future.get();
+                if (response.isSuccessful()) {
+                    LOGD("KVEST_TAG", "count=" + response.data.films.size());
+                    for (Film film : response.data.films) {
+                        LOGD("KVEST_TAG", film.filmname + "[" + film.id + "]");
+                    }
+
+                    offset += response.data.films.size();
+                    totalCount = response.data.total_count;
+
+                    //TODO
+    //                //save cinemas
+    //                saveCinemas(response.data.cinemas);
+    //
+    //                //notify listeners about successful loading cinemas
+    //                sendLocalBroadcast(LoadCinemasNotification.createSuccessResult());
+                } else {
+                    LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+
+                    //TODO
+    //                //notify listeners about unsuccessful loading cinemas
+    //                sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(response.error));
+
+                    break;
+                }
+            } catch (InterruptedException e) {
+                LOGE(Constants.TAG, e.getLocalizedMessage());
+
+                //TODO
+    //            //notify listeners about unsuccessful loading cinemas
+    //            sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(e.getLocalizedMessage()));
+
+                break;
+            } catch (ExecutionException e) {
+                LOGE(Constants.TAG, e.getLocalizedMessage());
+    //
+                //TODO
+    //            //notify listeners about unsuccessful loading cinemas
+    //            sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(e.getLocalizedMessage()));
+
+                break;
+            }
+        } while (offset < totalCount);
     }
 
     private void doSync(Intent intent) {
@@ -382,7 +442,7 @@ public class NetworkService extends IntentService {
         }
     }
 
-    private void saveFilms(List<Film> films, long startDate, long endDate) {
+    private void saveFilms(List<FilmWithTimetable> films, long startDate, long endDate) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
         //delete timetable from startDate to endDate
@@ -392,7 +452,7 @@ public class NetworkService extends IntentService {
                 .build();
         operations.add(deleteOperation);
 
-        for (Film film : films) {
+        for (FilmWithTimetable film : films) {
             //insert film
             operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
 

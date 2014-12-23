@@ -2,14 +2,11 @@ package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.utils.LogUtils;
 
 /**
  * Created with IntelliJ IDEA.

@@ -5,11 +5,11 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
- * Date: 03.06.14
- * Time: 23:30
+ * Date: 21.12.14
+ * Time: 11:55
  * To change this template use File | Settings | File Templates.
  */
-public class GetFilmsData {
-    public long date;
-    public List<FilmWithTimetable> films;
+public class GetAnnouncementsData {
+    public int total_count;
+    public List<Film> films;
 }

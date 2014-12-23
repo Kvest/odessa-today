@@ -15,6 +15,7 @@ public class NetworkContract {
     private static final String CINEMAS_PATH = "cinemas";
     private static final String TIMETABLE_PATH = "timetable";
     private static final String COMMENTS_PATH = "comments";
+    private static final String ANNOUNCEMENTS_PATH = "announcement";
 
     public static final String API_KEY_HEADER_NAME = "api-key";
 
@@ -25,6 +26,15 @@ public class NetworkContract {
             String START_DATE = "start_date";
             String END_DATE = "end_date";
             String CINEMA_ID = "cinema_id";
+        }
+    }
+
+    public interface AnnouncementRequest {
+        Uri url = Uri.parse(BASE_URL + FILMS_PATH + "/" + ANNOUNCEMENTS_PATH);
+
+        public interface Params {
+            String OFFSET = "offset";
+            String LIMIT = "limit";
         }
     }
 

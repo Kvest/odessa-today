@@ -1,13 +1,16 @@
 package com.kvest.odessatoday.ui.fragment;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.app.LoaderManager;
+import android.app.*;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -19,14 +22,19 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.datamodel.Film;
+import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
+import com.kvest.odessatoday.utils.Utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
@@ -67,6 +75,8 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     private ListView timetableList;
     private TimetableAdapter timetableAdapter;
     private LinearLayout postersContainer;
+
+    private String shareTitle, shareText;
 
     private LinearLayout.LayoutParams postersLayoutParams;
 
@@ -123,7 +133,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.share:
-                share();
+                new CacheImageAsyncTask(Long.toString(getFilmId())).execute(filmPoster.getDrawable());
                 return true;
         }
 
@@ -302,8 +312,8 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             //set data
-            filmPoster.setImageUrl(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.IMAGE)),
-                    TodayApplication.getApplication().getVolleyHelper().getImageLoader());
+            String imageUrl = cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.IMAGE));
+            filmPoster.setImageUrl(imageUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
 
             String filmNameValue = cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.NAME));
             Activity activity = getActivity();
@@ -340,7 +350,7 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
             setTrailer(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.VIDEO)));
 
             //add new posters
-            String[] postersUrls = Film.string2Posters(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.POSTERS)));
+            String[] postersUrls = FilmWithTimetable.string2Posters(cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.POSTERS)));
             mergePosters(postersUrls);
 
             //set visibility for Youtube player and posters
@@ -355,16 +365,26 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
                 postersContainer.setVisibility(View.VISIBLE);
                 youTubePlayerFragmentContainer.setVisibility(View.VISIBLE);
             }
+
+            //generate data for share
+            shareTitle = filmNameValue;
+            shareText = "Рекомендую посмотреть фильм \"" + filmNameValue + "\"\nШаринг сделан с помошью классного приложения бла-бла-бла";
         }
     }
 
-    private void share() {
-        Intent sharingIntent = new Intent();
-        sharingIntent.setAction(Intent.ACTION_SEND);
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, "<b>This is my text to send.</b><br/> http://cdn.sudarmuthu.com/wp-content/uploads/2011/01/sharing-content-android.png");
-        //sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("http://cdn.sudarmuthu.com/wp-content/uploads/2011/01/sharing-content-android.png"));
-        sharingIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sharingIntent, getResources().getText(R.string.share)));
+    private void share(String imageFilePath) {
+        Context context = getActivity();
+        if (context != null) {
+            Intent sharingIntent = new Intent();
+            sharingIntent.setAction(Intent.ACTION_SEND);
+            sharingIntent.setType(imageFilePath != null ? "image/*" : "text/plain");
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle);
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+            if (imageFilePath != null) {
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, Utils.getImageContentUri(context, imageFilePath));
+            }
+            startActivity(Intent.createChooser(sharingIntent, getResources().getText(R.string.share)));
+        }
     }
 
     private void setTrailer(String trailerLink) {
@@ -410,5 +430,82 @@ public class FilmDetailsFragment extends Fragment implements LoaderManager.Loade
 
     public interface OnShowFilmCommentsListener {
         public void onShowFilmComments(long filmId);
+    }
+
+    private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {
+        //minimum 3 sec of the cachring process to avoid a blinking of the load dialog
+        private static final long MIN_PROCESS_DURATION = 2000L;
+        private static final String CACHE_IMAGE_FORMAT = ".png";
+
+        private String fileName;
+        private ProgressDialog progressDialog;
+
+        public CacheImageAsyncTask(String fileName) {
+            super();
+
+            this.fileName = fileName + CACHE_IMAGE_FORMAT;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //show progress dialog
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage(getString(R.string.image_caching_progress));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(String filePath) {
+            //hide progress dialog
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+            progressDialog = null;
+
+            share(filePath);
+        }
+
+        @Override
+        protected String doInBackground(Drawable... params) {
+            long startTime = System.currentTimeMillis();
+
+            String result = null;
+            Drawable drawable = params[0];
+
+            if (drawable != null) {
+                Rect bounds = drawable.getBounds();
+                Bitmap bitmap = Bitmap.createBitmap(bounds.width(),bounds.height(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.draw(canvas);
+                OutputStream out = null;
+                try {
+                    File file = new File(getActivity().getExternalCacheDir(), fileName);
+                    if (!file.exists()) {
+                        out = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    }
+                    result = file.getAbsolutePath();
+                } catch (IOException ioException) {
+                } finally {
+                    if ( out != null ){
+                        try {
+                            out.close();
+                        } catch (IOException e) {}
+                    }
+                }
+            }
+
+            //artificial delay to avoid a blinking of the load dialog
+            long delayDuration = MIN_PROCESS_DURATION - (System.currentTimeMillis() - startTime);
+            if (delayDuration > 0) {
+                try {
+                    Thread.sleep(delayDuration);
+                } catch (InterruptedException e) {}
+            }
+
+            return result;
+        }
     }
 }

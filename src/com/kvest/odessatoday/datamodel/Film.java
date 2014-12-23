@@ -2,16 +2,13 @@ package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
 import android.text.TextUtils;
-
-import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
-
-import java.util.List;
+import com.kvest.odessatoday.provider.TodayProviderContract;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
- * Date: 03.06.14
- * Time: 22:40
+ * Date: 21.12.14
+ * Time: 12:56
  * To change this template use File | Settings | File Templates.
  */
 public class Film {
@@ -31,25 +28,24 @@ public class Film {
     public int is_premiere;
     public int film_duration;
     public String[] posters;
-    public List<TimetableItem> timetable;
 
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues(12);
-        values.put(Films.Columns.FILM_ID, id);
-        values.put(Films.Columns.NAME, filmname);
-        values.put(Films.Columns.COUNTRY, country);
-        values.put(Films.Columns.YEAR, year);
-        values.put(Films.Columns.DIRECTOR, director);
-        values.put(Films.Columns.ACTORS, actors);
-        values.put(Films.Columns.DESCRIPTION, description);
-        values.put(Films.Columns.IMAGE, image);
-        values.put(Films.Columns.VIDEO, video);
-        values.put(Films.Columns.GENRE, genre);
-        values.put(Films.Columns.RATING, rating);
-        values.put(Films.Columns.COMMENTS_COUNT, comments_count);
-        values.put(Films.Columns.IS_PREMIERE, is_premiere);
-        values.put(Films.Columns.FILM_DURATION, film_duration);
-        values.put(Films.Columns.POSTERS, posters2String(posters));
+        values.put(TodayProviderContract.Tables.Films.Columns.FILM_ID, id);
+        values.put(TodayProviderContract.Tables.Films.Columns.NAME, filmname);
+        values.put(TodayProviderContract.Tables.Films.Columns.COUNTRY, country);
+        values.put(TodayProviderContract.Tables.Films.Columns.YEAR, year);
+        values.put(TodayProviderContract.Tables.Films.Columns.DIRECTOR, director);
+        values.put(TodayProviderContract.Tables.Films.Columns.ACTORS, actors);
+        values.put(TodayProviderContract.Tables.Films.Columns.DESCRIPTION, description);
+        values.put(TodayProviderContract.Tables.Films.Columns.IMAGE, image);
+        values.put(TodayProviderContract.Tables.Films.Columns.VIDEO, video);
+        values.put(TodayProviderContract.Tables.Films.Columns.GENRE, genre);
+        values.put(TodayProviderContract.Tables.Films.Columns.RATING, rating);
+        values.put(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT, comments_count);
+        values.put(TodayProviderContract.Tables.Films.Columns.IS_PREMIERE, is_premiere);
+        values.put(TodayProviderContract.Tables.Films.Columns.FILM_DURATION, film_duration);
+        values.put(TodayProviderContract.Tables.Films.Columns.POSTERS, posters2String(posters));
 
         return values;
     }
