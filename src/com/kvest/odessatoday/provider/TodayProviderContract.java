@@ -21,6 +21,8 @@ public class TodayProviderContract {
     static final String CINEMA_VIEW_PATH = "cinema_view";
     static final String CINEMAS_PATH = "cinemas";
     static final String COMMENTS_PATH = "comments";
+    static final String ANNOUNCEMENTS_PATH = "announcements";
+    static final String FILM_VIEW_PATH = "film_view";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
     public static final Uri TIMETABLE_URI = Uri.withAppendedPath(FILMS_URI, TIMETABLE_PATH);
@@ -28,6 +30,8 @@ public class TodayProviderContract {
     public static final Uri CINEMA_TIMETABLE_URI = Uri.withAppendedPath(TIMETABLE_URI, CINEMA_VIEW_PATH);
     public static final Uri CINEMAS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, CINEMAS_PATH);
     public static final Uri COMMENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, COMMENTS_PATH);
+    public static final Uri ANNOUNCEMENT_FILMS_URI = Uri.withAppendedPath(FILMS_URI, ANNOUNCEMENTS_PATH);
+    public static final Uri ANNOUNCEMENT_FILMS_VIEW_URI = Uri.withAppendedPath(ANNOUNCEMENT_FILMS_URI, FILM_VIEW_PATH);
 
     public interface Tables {
         interface Films {
@@ -155,7 +159,6 @@ public class TodayProviderContract {
                     + Columns.PRICES + " TEXT,"
                     + Columns.FORMAT + " INTEGER DEFAULT " + Constants.FilmFormat.UNKNOWN + ", "
                     + "UNIQUE(" + Columns.TIMETABLE_ID + ") ON CONFLICT REPLACE);";
-//                    + "FOREIGN KEY(" + Columns.FILM_ID + ") REFERENCES " + Films.TABLE_NAME + "(" + Films.Columns.FILM_ID + ") ON UPDATE NO ACTION ON DELETE CASCADE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String GET_FILMS_ID_BY_PERIOD_SQL = "SELECT DISTINCT " + Columns.FILM_ID + " FROM " + TABLE_NAME +
@@ -219,6 +222,49 @@ public class TodayProviderContract {
                     + "UNIQUE(" + Columns.CINEMA_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        }
+
+        interface AnnouncementsMetadata {
+            String TABLE_NAME = "announcements_metadata";
+            interface Columns extends BaseColumns {
+                String FILM_ID = "film_id";
+            }
+
+            String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.FILM_ID + " INTEGER,"
+                    + "UNIQUE(" + Columns.FILM_ID + ") ON CONFLICT REPLACE);";
+
+            String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        }
+
+        interface AnnouncementFilmsView {
+            String VIEW_NAME = "announcement_films_view";
+
+            String CREATE_VIEW_SQL = "CREATE VIEW IF NOT EXISTS " + VIEW_NAME + " AS SELECT * FROM " + AnnouncementsMetadata.TABLE_NAME +
+                    " LEFT OUTER JOIN " + Films.TABLE_NAME + " ON " +
+                    AnnouncementsMetadata.TABLE_NAME + "." + AnnouncementsMetadata.Columns.FILM_ID + "=" +
+                    Films.TABLE_NAME + "." + Films.Columns.FILM_ID + ";";
+
+            interface Columns extends BaseColumns {
+                String FILM_ID = "film_id";
+                String NAME = "name";
+                String COUNTRY = "country";
+                String YEAR = "year";
+                String DIRECTOR = "director";
+                String ACTORS = "actors";
+                String DESCRIPTION = "description";
+                String IMAGE = "image";
+                String VIDEO = "video";
+                String GENRE = "genre";
+                String RATING = "rating";
+                String COMMENTS_COUNT = "comments_count";
+                String IS_PREMIERE = "is_premiere";
+                String FILM_DURATION = "film_duration";
+                String POSTERS = "posters";
+                String _ID1 = "_id:1";
+                String FILM_ID1 = "film_id:1";
+            }
         }
     }
 }

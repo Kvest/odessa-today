@@ -9,10 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.*;
-import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
-import com.kvest.odessatoday.io.notification.LoadCommentsNotification;
-import com.kvest.odessatoday.io.notification.LoadFilmsNotification;
-import com.kvest.odessatoday.io.notification.LoadTimetableNotification;
+import com.kvest.odessatoday.io.notification.*;
 import com.kvest.odessatoday.io.request.*;
 import com.kvest.odessatoday.io.response.*;
 import com.kvest.odessatoday.provider.TodayProviderContract;
@@ -157,6 +154,8 @@ public class NetworkService extends IntentService {
     private void doLoadAnnouncements(Intent intent) {
         int offset = 0;
         int totalCount = 0;
+        boolean deletePreviousAnnouncement = true;
+        boolean loadedWithoutErrors = true;
         do {
             RequestFuture<GetAnnouncementsResponse> future = RequestFuture.newFuture();
             GetAnnouncementsRequest request = new GetAnnouncementsRequest(offset, DEFAULT_ANNOUNCEMENTS_LIMIT, future, future);
@@ -164,47 +163,50 @@ public class NetworkService extends IntentService {
             try {
                 GetAnnouncementsResponse response = future.get();
                 if (response.isSuccessful()) {
-                    LOGD("KVEST_TAG", "count=" + response.data.films.size());
-                    for (Film film : response.data.films) {
-                        LOGD("KVEST_TAG", film.filmname + "[" + film.id + "]");
-                    }
+                    //TODO test this loop
+//                    LOGD("KVEST_TAG", "count=" + response.data.films.size());
+//                    for (Film film : response.data.films) {
+//                        LOGD("KVEST_TAG", film.filmname + "[" + film.id + "]");
+//                    }
 
+                    saveAnnouncementFilms(this, response.data.films, deletePreviousAnnouncement);
+
+                    //recalculate values
+                    deletePreviousAnnouncement = false;
                     offset += response.data.films.size();
                     totalCount = response.data.total_count;
-
-                    //TODO
-    //                //save cinemas
-    //                saveCinemas(response.data.cinemas);
-    //
-    //                //notify listeners about successful loading cinemas
-    //                sendLocalBroadcast(LoadCinemasNotification.createSuccessResult());
                 } else {
                     LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
-                    //TODO
-    //                //notify listeners about unsuccessful loading cinemas
-    //                sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(response.error));
+                    loadedWithoutErrors = false;
+                    //notify listeners about unsuccessful loading cinemas
+                    sendLocalBroadcast(LoadAnnouncementFilmsNotification.createErrorsResult(response.error));
 
                     break;
                 }
             } catch (InterruptedException e) {
                 LOGE(Constants.TAG, e.getLocalizedMessage());
 
-                //TODO
-    //            //notify listeners about unsuccessful loading cinemas
-    //            sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(e.getLocalizedMessage()));
+                loadedWithoutErrors = false;
+                //notify listeners about unsuccessful loading cinemas
+                sendLocalBroadcast(LoadAnnouncementFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
 
                 break;
             } catch (ExecutionException e) {
                 LOGE(Constants.TAG, e.getLocalizedMessage());
-    //
-                //TODO
-    //            //notify listeners about unsuccessful loading cinemas
-    //            sendLocalBroadcast(LoadCinemasNotification.createErrorsResult(e.getLocalizedMessage()));
+
+                loadedWithoutErrors = false;
+                //notify listeners about unsuccessful loading cinemas
+                sendLocalBroadcast(LoadAnnouncementFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
 
                 break;
             }
         } while (offset < totalCount);
+
+        if (loadedWithoutErrors) {
+            //notify listeners about successful loading cinemas
+            sendLocalBroadcast(LoadAnnouncementFilmsNotification.createSuccessResult());
+        }
     }
 
     private void doSync(Intent intent) {
@@ -250,7 +252,7 @@ public class NetworkService extends IntentService {
             GetCommentsResponse response = future.get();
             if (response.isSuccessful()) {
                 //save comments
-                saveComments(response.data.comments, request.getTargetId(), request.getTargetType());
+                saveComments(this, response.data.comments, request.getTargetId(), request.getTargetType());
 
                 //notify listeners about successful loading comments
                 sendLocalBroadcast(LoadCommentsNotification.createSuccessResult(cinemaId, Constants.CommentTargetType.CINEMA));
@@ -285,7 +287,7 @@ public class NetworkService extends IntentService {
             GetCommentsResponse response = future.get();
             if (response.isSuccessful()) {
                 //save comments
-                saveComments(response.data.comments, request.getTargetId(), request.getTargetType());
+                saveComments(this, response.data.comments, request.getTargetId(), request.getTargetType());
 
                 //notify listeners about successful loading comments
                 sendLocalBroadcast(LoadCommentsNotification.createSuccessResult(filmId, Constants.CommentTargetType.FILM));
@@ -319,7 +321,7 @@ public class NetworkService extends IntentService {
             GetTimetableResponse response = future.get();
             if (response.isSuccessful()) {
                 //save timetable
-                saveTimetable(response.data.timetable, request.getFilmId());
+                saveTimetable(this, response.data.timetable, request.getFilmId());
 
                 //notify listeners about successful loading timetable
                 sendLocalBroadcast(LoadTimetableNotification.createSuccessResult());
@@ -350,7 +352,7 @@ public class NetworkService extends IntentService {
             GetCinemasResponse response = future.get();
             if (response.isSuccessful()) {
                 //save cinemas
-                saveCinemas(response.data.cinemas);
+                saveCinemas(this, response.data.cinemas);
 
                 //notify listeners about successful loading cinemas
                 sendLocalBroadcast(LoadCinemasNotification.createSuccessResult());
@@ -387,7 +389,7 @@ public class NetworkService extends IntentService {
             GetFilmsResponse response = future.get();
             if (response.isSuccessful()) {
                 //save films
-                saveFilms(response.data.films, request.getStartDate(), request.getEndDate());
+                saveFilms(this, response.data.films, request.getStartDate(), request.getEndDate());
 
                 //notify listeners about successful loading films
                 sendLocalBroadcast(LoadFilmsNotification.createSuccessResult());
@@ -417,7 +419,7 @@ public class NetworkService extends IntentService {
         LocalBroadcastManager.getInstance(NetworkService.this).sendBroadcast(intent);
     }
 
-    private void saveCinemas(List<Cinema> cinemas) {
+    private void saveCinemas(Context context, List<Cinema> cinemas) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(cinemas.size() + 1);
 
         //delete cinemas
@@ -430,7 +432,6 @@ public class NetworkService extends IntentService {
         }
 
         //apply
-        Context context = TodayApplication.getApplication().getApplicationContext();
         try {
             context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
         }catch (RemoteException re) {
@@ -442,7 +443,7 @@ public class NetworkService extends IntentService {
         }
     }
 
-    private void saveFilms(List<FilmWithTimetable> films, long startDate, long endDate) {
+    private void saveFilms(Context context, List<FilmWithTimetable> films, long startDate, long endDate) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
         //delete timetable from startDate to endDate
@@ -463,7 +464,6 @@ public class NetworkService extends IntentService {
         }
 
         //apply
-        Context context = TodayApplication.getApplication().getApplicationContext();
         try {
             context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
         }catch (RemoteException re) {
@@ -475,7 +475,37 @@ public class NetworkService extends IntentService {
         }
     }
 
-    private void saveTimetable(List<TimetableItem> timetable, long filmId) {
+    private void saveAnnouncementFilms(Context context, List<Film> films, boolean deletePreviousAnnouncement) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(films.size() * 2 + (deletePreviousAnnouncement ? 1 : 0));
+
+        if (deletePreviousAnnouncement) {
+            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(ANNOUNCEMENT_FILMS_URI).build();
+            operations.add(deleteOperation);
+        }
+
+        for (Film film : films) {
+            //insert film
+            operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
+
+            //insert film id to metadata
+            ContentValues cv = new ContentValues(1);
+            cv.put(Tables.AnnouncementsMetadata.Columns.FILM_ID, film.id);
+            operations.add(ContentProviderOperation.newInsert(ANNOUNCEMENT_FILMS_URI).withValues(cv).build());
+        }
+
+        //apply
+        try {
+            context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
+        }catch (RemoteException re) {
+            LOGE(Constants.TAG, re.getMessage());
+            re.printStackTrace();
+        }catch (OperationApplicationException oae) {
+            LOGE(Constants.TAG, oae.getMessage());
+            oae.printStackTrace();
+        }
+    }
+
+    private void saveTimetable(Context context, List<TimetableItem> timetable, long filmId) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
         //delete timetable for film with filmId
@@ -490,7 +520,6 @@ public class NetworkService extends IntentService {
         }
 
         //apply
-        Context context = TodayApplication.getApplication().getApplicationContext();
         try {
             context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
         }catch (RemoteException re) {
@@ -502,7 +531,7 @@ public class NetworkService extends IntentService {
         }
     }
 
-    private void saveComments(List<Comment> comments, long targetId, int targetType) {
+    private void saveComments(Context context, List<Comment> comments, long targetId, int targetType) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(comments.size() + 1);
 
         //delete old comments
@@ -521,7 +550,6 @@ public class NetworkService extends IntentService {
         }
 
         //apply
-        Context context = TodayApplication.getApplication().getApplicationContext();
         try {
             context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
         }catch (RemoteException re) {

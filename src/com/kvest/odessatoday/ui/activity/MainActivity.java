@@ -16,7 +16,7 @@ import android.widget.RadioGroup;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
 import com.kvest.odessatoday.service.NetworkService;
-import com.kvest.odessatoday.ui.fragment.AnnouncementsFragment;
+import com.kvest.odessatoday.ui.fragment.AnnouncementFilmsFragment;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
 import com.kvest.odessatoday.ui.fragment.CinemasListFragment;
 import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
@@ -197,8 +197,8 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
     }
 
     private void switchToAnnouncements() {
-        AnnouncementsFragment announcementsFragment = AnnouncementsFragment.getInstance();
-        replaceFragment(announcementsFragment);
+        AnnouncementFilmsFragment announcementFilmsFragment = AnnouncementFilmsFragment.getInstance();
+        replaceFragment(announcementFilmsFragment);
     }
 
     private void hideCalendar() {

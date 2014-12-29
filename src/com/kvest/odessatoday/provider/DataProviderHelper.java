@@ -6,7 +6,6 @@ import android.content.CursorLoader;
 import android.net.Uri;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.TimeUtils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 import static com.kvest.odessatoday.utils.LogUtils.*;
@@ -88,5 +87,9 @@ LOGD("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDat
     public static CursorLoader getCinemaLoader(Context context, long cinemaId, String[] projection) {
         String selection = Tables.Cinemas.Columns.CINEMA_ID + "=?";
         return new CursorLoader(context, CINEMAS_URI, projection, selection, new String[]{Long.toString(cinemaId)}, null);
+    }
+
+    public static CursorLoader getAnnouncementFilmsLoader(Context context, String[] projection) {
+        return new CursorLoader(context, ANNOUNCEMENT_FILMS_VIEW_URI, projection, null, null, null);
     }
 }
