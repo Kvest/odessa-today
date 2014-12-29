@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/films_list_item_padding">
+    <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/film_image"
+            android:layout_width="@dimen/film_thumbnail_image_width"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/film_thumbnail_padding_right"/>
+    <TextView
+            android:id="@+id/film_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/film_image"
+            android:layout_alignParentTop="true"
+            android:textSize="@dimen/film_name_text_size"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end" />
+    <TextView
+            android:id="@+id/genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/film_image"
+            android:layout_below="@id/film_name"
+            android:textSize="@dimen/genre_text_size"
+            android:singleLine="true"
+            android:ellipsize="end" />
+    <RatingBar
+            android:id="@+id/film_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/film_image"
+            android:layout_below="@id/genre"
+            android:numStars="5"
+            android:stepSize="0.1"
+            android:layout_marginTop="@dimen/films_ratingbar_margin"
+            android:layout_marginRight="@dimen/films_ratingbar_margin"
+            android:layout_marginBottom="@dimen/films_ratingbar_margin"
+            style="@style/FilmsRatingBarTheme"
+            android:isIndicator="true"/>
+    <TextView
+            android:id="@+id/comments_count"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/comments_count_height"
+            android:minWidth="@dimen/comments_count_min_width"
+            android:paddingLeft="@dimen/comments_count_horizontal_padding"
+            android:paddingRight="@dimen/comments_count_horizontal_padding"
+            android:layout_toRightOf="@id/film_rating"
+            android:layout_alignTop="@id/film_rating"
+            android:background="@drawable/comments_count_bg"
+            android:textColor="@color/comments_count_text_color"
+            android:textSize="@dimen/comments_count_text_size"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center" />
+    <TextView
+            android:id="@+id/is_premiere"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/premiere_label_padding"
+            android:layout_toRightOf="@id/film_image"
+            android:layout_below="@id/film_rating"
+            android:background="@color/premiere_label_bg"
+            android:textColor="@color/premiere_label_text_color"
+            android:textSize="@dimen/premiere_label_text_size"
+            android:textStyle="bold"
+            android:text="@string/premiere" />
+</RelativeLayout>

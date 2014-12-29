@@ -72,8 +72,7 @@ public class FilmsAdapter extends CursorAdapter {
         holder.genre.setVisibility(TextUtils.isEmpty(holder.genre.getText()) ? View.GONE : View.VISIBLE);
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
         holder.commentsCount.setText(Integer.toString(cursor.getInt(commentsCountColumnIndex)));
-        holder.image.setImageUrl(cursor.getString(imageColumnIndex),
-                                 TodayApplication.getApplication().getVolleyHelper().getImageLoader());
+        holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
     }
 
@@ -88,10 +87,6 @@ public class FilmsAdapter extends CursorAdapter {
         ratingColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.RATING);
         commentsCountColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.COMMENTS_COUNT);
         isPremiereColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.IS_PREMIERE);
-    }
-
-    private String getString(Context context, int resId, Object... formatArgs) {
-        return context.getString(resId, formatArgs);
     }
 
     private static class ViewHolder {

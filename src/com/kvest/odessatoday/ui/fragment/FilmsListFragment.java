@@ -41,7 +41,6 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
     private static final SimpleDateFormat WEEK_DAY_FORMAT = new SimpleDateFormat(WEEK_DAY_FORMAT_PATTERN);
 
-    private ListView filmsList;
     private FilmsAdapter adapter;
 
     private ShowCalendarListener showCalendarListener;
@@ -170,7 +169,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
 
     private void init(View root) {
         //get list view for films
-        filmsList = (ListView) root.findViewById(R.id.films_list);
+        ListView filmsList = (ListView) root.findViewById(R.id.films_list);
         filmsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
