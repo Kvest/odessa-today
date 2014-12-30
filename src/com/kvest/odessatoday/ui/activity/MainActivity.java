@@ -16,7 +16,7 @@ import android.widget.RadioGroup;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
 import com.kvest.odessatoday.service.NetworkService;
-import com.kvest.odessatoday.ui.fragment.AnnouncementFilmsFragment;
+import com.kvest.odessatoday.ui.fragment.AnnouncementFilmsListFragment;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
 import com.kvest.odessatoday.ui.fragment.CinemasListFragment;
 import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
@@ -28,7 +28,8 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends Activity implements FilmsListFragment.ShowCalendarListener,
                                                                CalendarFragment.OnDateSelectedListener,
                                                                FilmsListFragment.FilmSelectedListener,
-                                                               CinemasListFragment.CinemaSelectedListener {
+                                                               CinemasListFragment.CinemaSelectedListener,
+                                                               AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener {
     private long shownFilmsDate;
     private final Calendar calendar = Calendar.getInstance();
     private FrameLayout calendarContainer;
@@ -197,8 +198,8 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
     }
 
     private void switchToAnnouncements() {
-        AnnouncementFilmsFragment announcementFilmsFragment = AnnouncementFilmsFragment.getInstance();
-        replaceFragment(announcementFilmsFragment);
+        AnnouncementFilmsListFragment announcementFilmsListFragment = AnnouncementFilmsListFragment.getInstance();
+        replaceFragment(announcementFilmsListFragment);
     }
 
     private void hideCalendar() {
@@ -227,6 +228,11 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
     @Override
     public void onFilmSelected(long filmId) {
         startActivity(FilmDetailsActivity.getStartIntent(this, filmId, shownFilmsDate));
+    }
+
+    @Override
+    public void onAnnouncementFilmSelected(long filmId) {
+        startActivity(AnnouncementFilmDetailsActivity.getStartIntent(this, filmId));
     }
 
     @Override

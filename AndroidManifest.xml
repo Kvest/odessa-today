@@ -34,6 +34,9 @@
             android:name=".ui.activity.FilmDetailsActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".ui.activity.AnnouncementFilmDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".ui.activity.CinemaDetailsActivity"
             android:label="@string/cinema_info"
             android:screenOrientation="portrait"/>

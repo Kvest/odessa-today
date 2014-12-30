@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
@@ -8,12 +9,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.AnnouncementFilmsAdapter;
-import com.kvest.odessatoday.utils.LogUtils;
+import com.kvest.odessatoday.utils.Constants;
+
+import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,13 +26,15 @@ import com.kvest.odessatoday.utils.LogUtils;
  * Time: 11:40
  * To change this template use File | Settings | File Templates.
  */
-public class AnnouncementFilmsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AnnouncementFilmsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int ANNOUNCEMENTS_LOADER_ID = 1;
 
     private AnnouncementFilmsAdapter adapter;
 
-    public static AnnouncementFilmsFragment getInstance() {
-        AnnouncementFilmsFragment result = new AnnouncementFilmsFragment();
+    private AnnouncementFilmSelectedListener announcementFilmSelectedListener;
+
+    public static AnnouncementFilmsListFragment getInstance() {
+        AnnouncementFilmsListFragment result = new AnnouncementFilmsListFragment();
         return result;
     }
 
@@ -46,6 +52,14 @@ public class AnnouncementFilmsFragment extends Fragment implements LoaderManager
     private void init(View rootView) {
         //get list view for announcement films
         ListView filmsList = (ListView) rootView.findViewById(R.id.announcement_films_list);
+        filmsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (announcementFilmSelectedListener != null) {
+                    announcementFilmSelectedListener.onAnnouncementFilmSelected(id);
+                }
+            }
+        });
 
         //create and set an adapter
         adapter = new AnnouncementFilmsAdapter(getActivity());
@@ -56,10 +70,21 @@ public class AnnouncementFilmsFragment extends Fragment implements LoaderManager
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        getLoaderManager().initLoader(ANNOUNCEMENTS_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            announcementFilmSelectedListener = (AnnouncementFilmSelectedListener) activity;
+        } catch (ClassCastException cce) {
+            LOGE(Constants.TAG, "Host activity for AnnouncementFilmsListFragment should implements AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener");
+        }
+
         //Request all announcements
         NetworkService.loadAnnouncements(getActivity());
-
-        getLoaderManager().initLoader(ANNOUNCEMENTS_LOADER_ID, null, this);
     }
 
     @Override
@@ -87,5 +112,9 @@ public class AnnouncementFilmsFragment extends Fragment implements LoaderManager
                 adapter.swapCursor(null);
                 break;
         }
+    }
+
+    public interface AnnouncementFilmSelectedListener {
+        public void onAnnouncementFilmSelected(long filmId);
     }
 }

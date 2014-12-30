@@ -1,0 +1,82 @@
+package com.kvest.odessatoday.ui.fragment;
+
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.provider.DataProviderHelper;
+import com.kvest.odessatoday.service.NetworkService;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: Kvest
+ * Date: 30.12.14
+ * Time: 17:07
+ * To change this template use File | Settings | File Templates.
+ */
+public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int FILM_LOADER_ID = 1;
+
+    public static AnnouncementFilmDetailsFragment getInstance(long filmId) {
+        Bundle arguments = new Bundle(2);
+        arguments.putLong(ARGUMENT_FILM_ID, filmId);
+
+        AnnouncementFilmDetailsFragment result = new AnnouncementFilmDetailsFragment();
+        result.setArguments(arguments);
+        return result;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.announcement_film_details_fragment, container, false);
+
+        initFilmInfoView(rootView);
+
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //Request comments
+        NetworkService.loadFilmComments(getActivity(), getFilmId());
+
+        getLoaderManager().initLoader(FILM_LOADER_ID, null, this);
+    }
+
+    @Override
+    protected void initFilmInfoView(View view) {
+        super.initFilmInfoView(view);
+
+        //timetable_date used only for usual film details - hide it
+        view.findViewById(R.id.timetable_date).setVisibility(View.GONE);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (id == FILM_LOADER_ID) {
+            return DataProviderHelper.getFilmLoader(getActivity(), getFilmId(), null);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        switch (loader.getId()) {
+            case FILM_LOADER_ID :
+                setFilmData(cursor);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        //nothing to do
+    }
+}
