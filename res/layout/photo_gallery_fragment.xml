@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.kvest.odessatoday.ui.widget.PagerIndicator
+    <com.kvest.odessatoday.ui.widget.CirclePagerIndicator
         xmlns:custom="http://schemas.android.com/apk/res/com.kvest.odessatoday"
         android:id="@+id/pager_indicator"
         android:layout_width="match_parent"
@@ -11,7 +11,11 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/pager_indicator_vertical_margin"
         android:layout_marginBottom="@dimen/pager_indicator_vertical_margin"
-        custom:margin_between_circles="@dimen/pager_indicator_margin_between_circles"/>
+        custom:circle_radius="5dip"
+        custom:margin_between_circles="4dip"
+        custom:selected_circle_color="#656869"
+        custom:unselected_circle_color="#BFCACC"
+        custom:gravity="center_vertical|center_horizontal"/>
     <android.support.v4.view.ViewPager
         android:id="@+id/images_pager"
         android:layout_width="match_parent"

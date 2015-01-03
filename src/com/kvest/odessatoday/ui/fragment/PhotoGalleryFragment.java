@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.adapter.PhotoGalleryAdapter;
-import com.kvest.odessatoday.ui.widget.PagerIndicator;
+import com.kvest.odessatoday.ui.widget.CirclePagerIndicator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,8 +44,8 @@ public class PhotoGalleryFragment extends Fragment {
         ViewPager viewPager = (ViewPager)rootView.findViewById(R.id.images_pager);
         viewPager.setAdapter(adapter);
 
-        PagerIndicator pagerIndicator = (PagerIndicator) rootView.findViewById(R.id.pager_indicator);
-        pagerIndicator.setPager(viewPager);
+        CirclePagerIndicator pagerIndicator = (CirclePagerIndicator) rootView.findViewById(R.id.pager_indicator);
+        pagerIndicator.setViewPager(viewPager);
     }
 
     private String[] getPhotoURLs() {

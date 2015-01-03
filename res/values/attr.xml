@@ -7,9 +7,18 @@
         <attr name="animationDuration" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="PagerIndicator">
-        <attr name="active_circle_drawable" format="integer"/>
-        <attr name="inactive_circle_drawable" format="integer"/>
-        <attr name="margin_between_circles" format="float"/>
+    <declare-styleable name="CirclePagerIndicator">
+        <attr name="circle_radius" format="dimension"/>
+        <attr name="selected_circle_color" format="color"/>
+        <attr name="unselected_circle_color" format="color"/>
+        <attr name="margin_between_circles" format="dimension"/>
+        <attr name="gravity">
+            <flag name="right" value="1" />
+            <flag name="left" value="2" />
+            <flag name="center_horizontal" value="4" />
+            <flag name="top" value="8" />
+            <flag name="bottom" value="16" />
+            <flag name="center_vertical" value="32" />
+        </attr>
     </declare-styleable>
 </resources>
