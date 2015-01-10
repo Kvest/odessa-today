@@ -8,6 +8,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.utils.Constants;
@@ -52,6 +53,7 @@ public class CommentsAdapter extends CursorAdapter {
         holder.date = (TextView)view.findViewById(R.id.comment_date);
         holder.name = (TextView)view.findViewById(R.id.comment_author_name);
         holder.text = (TextView)view.findViewById(R.id.comment_text);
+        holder.uploadWait  = (ImageView) view.findViewById(R.id.upload_wait);
         view.setTag(holder);
 
         return view;
@@ -70,7 +72,9 @@ public class CommentsAdapter extends CursorAdapter {
         holder.name.setText(Html.fromHtml(cursor.getString(nameColumnIndex)));
         holder.text.setText(Html.fromHtml(cursor.getString(textColumnIndex)));
 
-        if ((cursor.getInt(syncStatusColumnIndex) & Constants.SyncStatus.NEED_UPLOAD) == Constants.SyncStatus.NEED_UPLOAD) {
+        boolean needUpload = (cursor.getInt(syncStatusColumnIndex) & Constants.SyncStatus.NEED_UPLOAD) == Constants.SyncStatus.NEED_UPLOAD;
+        holder.uploadWait.setVisibility(needUpload ? View.VISIBLE : View.INVISIBLE);
+        if (needUpload) {
             view.setBackgroundResource(R.color.comment_need_upload_bg);
         } else {
             view.setBackgroundColor(Color.WHITE);
@@ -92,5 +96,6 @@ public class CommentsAdapter extends CursorAdapter {
         private TextView date;
         private TextView name;
         private TextView text;
+        private ImageView uploadWait;
     }
 }
