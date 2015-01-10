@@ -2,7 +2,7 @@ package com.kvest.odessatoday;
 
 import android.app.Application;
 import com.bugsense.trace.BugSenseHandler;
-import com.kvest.odessatoday.io.VolleyHelper;
+import com.kvest.odessatoday.io.network.VolleyHelper;
 import com.kvest.odessatoday.utils.Constants;
 
 /**

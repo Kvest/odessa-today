@@ -141,7 +141,7 @@ public class CirclePagerIndicator extends View implements ViewPager.OnPageChange
         }
 
         int count = viewPager.getAdapter().getCount();
-        if (count <= MIN_INDICATORS_COUNT) {
+        if (count < MIN_INDICATORS_COUNT) {
             return;
         }
 

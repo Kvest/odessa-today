@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.notification.LoadCinemasNotification;
+import com.kvest.odessatoday.io.network.notification.LoadCinemasNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CinemasAdapter;
