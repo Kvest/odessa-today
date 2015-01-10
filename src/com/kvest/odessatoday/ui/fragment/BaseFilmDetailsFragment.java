@@ -115,14 +115,21 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
     }
 
     private void initYoutubePlayer() {
-        YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        try {
-            transaction.add(R.id.youtube_fragment_container, youTubePlayerFragment);
-        } finally {
-            transaction.commit();
+        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager().findFragmentById(R.id.youtube_fragment_container);
+
+        //add new fragment if it is not exists
+        if (youTubePlayerFragment == null) {
+            youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            try {
+                transaction.add(R.id.youtube_fragment_container, youTubePlayerFragment);
+            } finally {
+                transaction.commit();
+            }
         }
 
+        //initialize player
         youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
     }
 
@@ -135,8 +142,8 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
     }
 
     @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
-        this.youTubePlayer = youTubePlayer;
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+        youTubePlayer = player;
 
         if (!wasRestored && !TextUtils.isEmpty(trailerVideoId)) {
             youTubePlayer.cueVideo(trailerVideoId);
