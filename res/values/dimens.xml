@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="films_list_item_padding">8dip</dimen>
+    <dimen name="application_padding">12dip</dimen>
+    <dimen name="films_list_item_padding">@dimen/application_padding</dimen>
     <dimen name="category_selector_padding">4dip</dimen>
     <dimen name="category_selector_text_size">16sp</dimen>
     <dimen name="film_thumbnail_image_width">120dip</dimen>
@@ -30,7 +31,7 @@
     <dimen name="calendar_days_text_size">18sp</dimen>
 
     <!--film details-->
-    <dimen name="film_details_padding">12dip</dimen>
+    <dimen name="film_details_padding">@dimen/application_padding</dimen>
     <dimen name="film_details_poster_margin">10dip</dimen>
     <dimen name="film_details_duration_text_size">14sp</dimen>
     <dimen name="film_details_divider_height">1dip</dimen>
@@ -54,7 +55,7 @@
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>
-    <dimen name="comments_list_item_padding">12dip</dimen>
+    <dimen name="comments_list_item_padding">@dimen/application_padding</dimen>
     <dimen name="comment_author_name_text_size">17sp</dimen>
     <dimen name="comment_date_text_size">15sp</dimen>
     <dimen name="comment_text_text_size">15sp</dimen>
