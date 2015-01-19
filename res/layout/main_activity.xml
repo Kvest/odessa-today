@@ -10,18 +10,13 @@
             android:id="@+id/category_selector"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/films_list_item_padding"
-            android:paddingRight="@dimen/films_list_item_padding"
-            android:paddingTop="@dimen/category_selector_padding"
-            android:paddingBottom="@dimen/category_selector_padding"
-            android:background="@color/application_green"
+            android:layout_height="@dimen/category_selector_height"
             android:weightSum="3" >
             <RadioButton
                 android:id="@+id/timetable"
                 android:layout_width="0dip"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:checked="true"
                 style="@style/CategorySelectorRadioButton"
                 android:text="@string/timetable" />
@@ -29,14 +24,14 @@
                 android:id="@+id/cinemas"
                 android:layout_width="0dip"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 style="@style/CategorySelectorRadioButton"
                 android:text="@string/cinemas" />
             <RadioButton
                 android:id="@+id/announcements"
                 android:layout_width="0dip"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 style="@style/CategorySelectorRadioButton"
                 android:text="@string/announcements" />
         </RadioGroup>

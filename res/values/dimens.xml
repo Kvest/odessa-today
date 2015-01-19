@@ -2,7 +2,7 @@
 <resources>
     <dimen name="application_padding">12dip</dimen>
     <dimen name="films_list_item_padding">@dimen/application_padding</dimen>
-    <dimen name="category_selector_padding">4dip</dimen>
+    <dimen name="category_selector_height">50dip</dimen>
     <dimen name="category_selector_text_size">16sp</dimen>
     <dimen name="film_thumbnail_image_width">120dip</dimen>
     <dimen name="film_thumbnail_padding_right">12dip</dimen>
