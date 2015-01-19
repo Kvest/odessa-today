@@ -28,9 +28,10 @@ public class Film {
     public int is_premiere;
     public int film_duration;
     public String[] posters;
+    public String share_text;
 
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues(12);
+        ContentValues values = new ContentValues(16);
         values.put(TodayProviderContract.Tables.Films.Columns.FILM_ID, id);
         values.put(TodayProviderContract.Tables.Films.Columns.NAME, filmname);
         values.put(TodayProviderContract.Tables.Films.Columns.COUNTRY, country);
@@ -46,6 +47,7 @@ public class Film {
         values.put(TodayProviderContract.Tables.Films.Columns.IS_PREMIERE, is_premiere);
         values.put(TodayProviderContract.Tables.Films.Columns.FILM_DURATION, film_duration);
         values.put(TodayProviderContract.Tables.Films.Columns.POSTERS, posters2String(posters));
+        values.put(TodayProviderContract.Tables.Films.Columns.SHARE_TEXT, share_text);
 
         return values;
     }

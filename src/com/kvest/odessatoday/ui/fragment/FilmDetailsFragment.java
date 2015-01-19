@@ -174,7 +174,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         if (!cursor.isAfterLast()) {
             String filmNameValue = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.NAME));
             shareTitle = filmNameValue;
-            shareText = "Рекомендую посмотреть фильм \"" + filmNameValue + "\"\nШаринг сделан с помошью классного приложения бла-бла-бла";
+            shareText = cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.SHARE_TEXT));
         }
     }
 

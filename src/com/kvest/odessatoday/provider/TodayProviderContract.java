@@ -53,6 +53,7 @@ public class TodayProviderContract {
                 String IS_PREMIERE = "is_premiere";
                 String FILM_DURATION = "film_duration";
                 String POSTERS = "posters";
+                String SHARE_TEXT = "share_text";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
@@ -72,6 +73,7 @@ public class TodayProviderContract {
                     + Columns.IS_PREMIERE + " INTEGER DEFAULT 0, "
                     + Columns.FILM_DURATION + " INTEGER DEFAULT 0, "
                     + Columns.POSTERS + " TEXT, "
+                    + Columns.SHARE_TEXT + " TEXT DEFAULT \'\', "
                     + "UNIQUE (" + Columns.FILM_ID + ") ON CONFLICT REPLACE)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
