@@ -60,8 +60,6 @@ public abstract class DataProviderHelper {
     }
 
     public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate, String[] projection, String order) {
-LOGD("KVEST_TAG", "getFilmsForPeriodLoader : startDate=" + startDate + ", endDate=" + endDate);
-
         String selection = Tables.Films.Columns.FILM_ID + " in (" + Tables.FilmsTimetable.GET_FILMS_ID_BY_PERIOD_SQL + ")";
         return new CursorLoader(context, TodayProviderContract.FILMS_URI, projection, selection,
                                 new String[]{Long.toString(startDate), Long.toString(endDate)}, order);

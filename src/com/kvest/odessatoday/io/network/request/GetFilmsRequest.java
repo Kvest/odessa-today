@@ -10,10 +10,6 @@ import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.GetFilmsResponse;
 
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.concurrent.TimeUnit;
-
-import static com.kvest.odessatoday.utils.LogUtils.*;
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -33,10 +29,6 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
         this.startDate = startDate;
         this.endDate = endDate;
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        LOGD("KVEST_TAG", "startDate=" + this.startDate + "(" + sdf.format(TimeUnit.SECONDS.toMillis(this.startDate)) + ")" +
-                           ", endDate=" + this.endDate + "(" + sdf.format(TimeUnit.SECONDS.toMillis(this.endDate)) + ")");
     };
 
     @Override

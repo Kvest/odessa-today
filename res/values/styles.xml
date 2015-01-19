@@ -12,10 +12,10 @@
            parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/application_green</item>
         <!--Hide app icon-->
-        <!--<item name="android:displayOptions">showTitle</item>-->
+        <item name="android:displayOptions">showTitle</item>
     </style>
 
-    <!--Films raiting-->
+    <!--Films rating-->
     <style name="FilmsRatingBarTheme" parent="android:Widget.Holo.Light.RatingBar">
         <item name="android:progressDrawable">@drawable/films_ratingbar</item>
         <item name="android:indeterminateDrawable">@drawable/films_ratingbar</item>
