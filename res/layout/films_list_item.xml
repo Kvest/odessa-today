@@ -3,19 +3,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/films_list_item_padding">
+    android:paddingTop="@dimen/films_list_item_padding"
+    android:paddingLeft="@dimen/films_list_item_padding"
+    android:paddingBottom="@dimen/films_list_item_padding"
+    android:paddingRight="@dimen/films_list_item_arrow_margin" >
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/film_image"
         android:layout_width="@dimen/film_thumbnail_image_width"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/film_thumbnail_padding_right"/>
+    <ImageView
+        android:id="@+id/arrow_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/films_list_item_arrow_margin"
+        android:src="@drawable/films_list_item_arrow" />
     <TextView
         android:id="@+id/film_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/film_image"
+        android:layout_toLeftOf="@id/arrow_image"
         android:layout_alignParentTop="true"
         android:textSize="@dimen/film_name_text_size"
+        android:textColor="@color/films_name_text_color"
         android:textStyle="bold"
         android:maxLines="2"
         android:ellipsize="end" />
@@ -24,10 +37,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/film_image"
+        android:layout_toLeftOf="@id/arrow_image"
         android:layout_below="@id/film_name"
         android:textSize="@dimen/genre_text_size"
-        android:singleLine="true"
-        android:ellipsize="end" />
+        android:textColor="@color/films_name_text_color"/>
     <RatingBar
         android:id="@+id/film_rating"
         android:layout_width="wrap_content"
@@ -37,10 +50,31 @@
         android:numStars="5"
         android:stepSize="0.1"
         android:layout_marginTop="@dimen/films_ratingbar_margin"
-        android:layout_marginRight="@dimen/films_ratingbar_margin"
         android:layout_marginBottom="@dimen/films_ratingbar_margin"
         style="@style/FilmsRatingBarTheme"
         android:isIndicator="true"/>
+    !!!!!!!
+    <ImageView
+        android:id="@+id/film_duration_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/film_image"
+        android:layout_below="@id/film_rating"
+        android:src="@drawable/ic_film_duration" />
+    <TextView
+        android:id="@+id/film_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/film_duration_icon"
+        android:layout_below="@id/film_rating"
+        android:text="test"
+
+            android:layout_marginTop="@dimen/film_duration_margin_top"
+
+
+            android:textSize="@dimen/film_details_duration_text_size" />
+
+
     <TextView
         android:id="@+id/comments_count"
         android:layout_width="wrap_content"

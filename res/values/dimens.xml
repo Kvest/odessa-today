@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="application_padding">12dip</dimen>
-    <dimen name="films_list_item_padding">@dimen/application_padding</dimen>
+    <dimen name="films_list_item_padding">12dip</dimen>
+    <dimen name="films_list_item_arrow_margin">4dip</dimen>
     <dimen name="category_selector_height">50dip</dimen>
     <dimen name="category_selector_text_size">16sp</dimen>
     <dimen name="film_thumbnail_image_width">120dip</dimen>
@@ -12,7 +13,7 @@
     <dimen name="film_description_text_size">14sp</dimen>
     <dimen name="premiere_label_text_size">14sp</dimen>
     <dimen name="premiere_label_padding">2dip</dimen>
-    <dimen name="films_ratingbar_min_height">24dip</dimen>
+    <dimen name="films_ratingbar_min_height">18dip</dimen>
     <dimen name="films_ratingbar_margin">4dip</dimen>
     <dimen name="films_date_text_size">20sp</dimen>
     <dimen name="films_week_text_size">15sp</dimen>
