@@ -12,9 +12,17 @@
     <dimen name="genre_text_size">14sp</dimen>
     <dimen name="film_description_text_size">14sp</dimen>
     <dimen name="premiere_label_text_size">14sp</dimen>
+    <dimen name="premiere_label_margin_top">2dip</dimen>
     <dimen name="premiere_label_padding">2dip</dimen>
     <dimen name="films_ratingbar_min_height">18dip</dimen>
     <dimen name="films_ratingbar_margin">4dip</dimen>
+    <dimen name="films_ratingbar_margin_top">16dip</dimen>
+    <dimen name="films_ratingbar_margin_bottom">12dip</dimen>
+    <dimen name="film_duration_icon_margin_right">7dip</dimen>
+    <dimen name="film_duration_margin_right">12dip</dimen>
+    <dimen name="film_duration_text_size">16sp</dimen>
+    <dimen name="comments_count_margin_right">4dip</dimen>
+
     <dimen name="films_date_text_size">20sp</dimen>
     <dimen name="films_week_text_size">15sp</dimen>
     <dimen name="comments_count_height">28dip</dimen>

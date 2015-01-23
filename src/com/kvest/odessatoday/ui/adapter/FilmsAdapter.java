@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
@@ -25,6 +26,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 public class FilmsAdapter extends CursorAdapter {
     public static final String[] PROJECTION = new String[]{Tables.Films.Columns.FILM_ID + " as " + Tables.Films.Columns._ID,
                                                            Tables.Films.Columns.IMAGE, Tables.Films.Columns.NAME,
+                                                           Tables.Films.Columns.GENRE, Tables.Films.Columns.FILM_DURATION,
                                                            Tables.Films.Columns.GENRE, Tables.Films.Columns.RATING,
                                                            Tables.Films.Columns.COMMENTS_COUNT, Tables.Films.Columns.IS_PREMIERE};
 
@@ -36,6 +38,7 @@ public class FilmsAdapter extends CursorAdapter {
     private int nameColumnIndex = -1;
     private int genreColumnIndex = -1;
     private int ratingColumnIndex = -1;
+    private int filmDurationColumnIndex = -1;
     private int commentsCountColumnIndex = -1;
     private int isPremiereColumnIndex = -1;
 
@@ -53,7 +56,9 @@ public class FilmsAdapter extends CursorAdapter {
         holder.name = (TextView)view.findViewById(R.id.film_name);
         holder.genre = (TextView)view.findViewById(R.id.genre);
         holder.rating = (RatingBar)view.findViewById(R.id.film_rating);
-        holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
+        holder.filmDurationIcon = (ImageView) view.findViewById(R.id.film_duration_icon);
+        holder.filmDuration = (TextView) view.findViewById(R.id.film_duration);
+        holder.commentsCount = (TextView) view.findViewById(R.id.comments_count);
         holder.isPremiere = (TextView)view.findViewById(R.id.is_premiere);
         view.setTag(holder);
 
@@ -70,6 +75,17 @@ public class FilmsAdapter extends CursorAdapter {
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.genre.setText(cursor.getString(genreColumnIndex));
         holder.genre.setVisibility(TextUtils.isEmpty(holder.genre.getText()) ? View.GONE : View.VISIBLE);
+
+        int filmDurationValue = cursor.getInt(cursor.getColumnIndex(Tables.Films.Columns.FILM_DURATION));
+        if (filmDurationValue > 0) {
+            holder.filmDuration.setVisibility(View.VISIBLE);
+            holder.filmDurationIcon.setVisibility(View.VISIBLE);
+            holder.filmDuration.setText(context.getString(R.string.film_duration, filmDurationValue));
+        } else {
+            holder.filmDuration.setVisibility(View.GONE);
+            holder.filmDurationIcon.setVisibility(View.GONE);
+        }
+
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
         holder.commentsCount.setText(Integer.toString(cursor.getInt(commentsCountColumnIndex)));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
@@ -84,6 +100,7 @@ public class FilmsAdapter extends CursorAdapter {
         imageColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.IMAGE);
         nameColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.NAME);
         genreColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.GENRE);
+        filmDurationColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.FILM_DURATION);
         ratingColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.RATING);
         commentsCountColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.COMMENTS_COUNT);
         isPremiereColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.IS_PREMIERE);
@@ -94,6 +111,8 @@ public class FilmsAdapter extends CursorAdapter {
         private TextView name;
         private TextView genre;
         private RatingBar rating;
+        private ImageView filmDurationIcon;
+        private TextView filmDuration;
         private TextView commentsCount;
         private TextView isPremiere;
     }
