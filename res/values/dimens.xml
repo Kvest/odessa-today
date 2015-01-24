@@ -23,8 +23,9 @@
     <dimen name="film_duration_text_size">16sp</dimen>
     <dimen name="comments_count_margin_right">4dip</dimen>
 
+    <dimen name="films_date_label_height">30dip</dimen>
+    <dimen name="films_date_label_horizontal_padding">12dip</dimen>
     <dimen name="films_date_text_size">20sp</dimen>
-    <dimen name="films_week_text_size">15sp</dimen>
     <dimen name="comments_count_height">28dip</dimen>
     <dimen name="comments_count_min_width">32dip</dimen>
     <dimen name="comments_count_horizontal_padding">8dip</dimen>

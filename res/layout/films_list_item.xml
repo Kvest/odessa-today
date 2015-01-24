@@ -79,19 +79,9 @@
             android:textColor="@color/film_duration_text_color" />
         <TextView
             android:id="@+id/comments_count"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/comments_count_height"
-            android:minWidth="@dimen/comments_count_min_width"
-            android:paddingLeft="@dimen/comments_count_horizontal_padding"
-            android:paddingRight="@dimen/comments_count_horizontal_padding"
+            style="@style/CommentsCountLabel"
             android:layout_gravity="top"
-            android:layout_marginRight="@dimen/comments_count_margin_right"
-            android:background="@drawable/comments_count_bg"
-            android:textColor="@color/comments_count_text_color"
-            android:textSize="@dimen/comments_count_text_size"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:gravity="center" />
+            android:layout_marginRight="@dimen/comments_count_margin_right"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -76,7 +76,7 @@ public class FilmsAdapter extends CursorAdapter {
         holder.genre.setText(cursor.getString(genreColumnIndex));
         holder.genre.setVisibility(TextUtils.isEmpty(holder.genre.getText()) ? View.GONE : View.VISIBLE);
 
-        int filmDurationValue = cursor.getInt(cursor.getColumnIndex(Tables.Films.Columns.FILM_DURATION));
+        int filmDurationValue = cursor.getInt(filmDurationColumnIndex);
         if (filmDurationValue > 0) {
             holder.filmDuration.setVisibility(View.VISIBLE);
             holder.filmDurationIcon.setVisibility(View.VISIBLE);
