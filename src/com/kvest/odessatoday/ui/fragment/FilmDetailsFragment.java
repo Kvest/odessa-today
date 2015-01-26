@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.*;
 import android.widget.*;
 import com.kvest.odessatoday.R;
@@ -27,9 +28,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
-import static com.kvest.odessatoday.utils.LogUtils.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,12 +43,18 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
 public class FilmDetailsFragment extends BaseFilmDetailsFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_TIMETABLE_DATE = "com.kvest.odessatoday.argument.TIMETABLE_DATE";
 
+    private static final String MIN_MAX_PRICES_SEPARATOR = "-";
+    private static final Pattern PRICES_PATTERN = Pattern.compile("(\\d+)");
+    private static final int PRICES_GROUP = 1;
+
     private static final String TIMETABLE_DATE_FORMAT_PATTERN = "dd MMMM yyyy";
     private static final SimpleDateFormat TIMETABLE_DATE_FORMAT = new SimpleDateFormat(TIMETABLE_DATE_FORMAT_PATTERN);
 
     private static final int FILM_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
 
+    private ImageView minMaxPricesIcon;
+    private TextView minMaxPricesView;
     private TextView timetableDate;
     private TimetableAdapter timetableAdapter;
     private String shareTitle, shareText;
@@ -100,6 +108,8 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         super.initFilmInfoView(view);
 
         timetableDate = (TextView)view.findViewById(R.id.timetable_date);
+        minMaxPricesIcon = (ImageView) view.findViewById(R.id.min_max_prices_icon);
+        minMaxPricesView = (TextView)view.findViewById(R.id.min_max_prices);
     }
 
     private void initTimetableList(ListView rootView, View headerView) {
@@ -131,6 +141,60 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         }
     }
 
+    private void setMinMaxPrices(Cursor cursor) {
+        String minMaxPrices = calculateMinMaxPrices(cursor);
+        if (!TextUtils.isEmpty(minMaxPrices)) {
+            minMaxPricesView.setText(minMaxPrices);
+
+            minMaxPricesView.setVisibility(View.VISIBLE);
+            minMaxPricesIcon.setVisibility(View.VISIBLE);
+        } else {
+            minMaxPricesView.setVisibility(View.GONE);
+            minMaxPricesIcon.setVisibility(View.GONE);
+        }
+    }
+
+    private String calculateMinMaxPrices(Cursor cursor) {
+        //get column index
+        int pricesColumnIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.PRICES);
+        if (pricesColumnIndex == -1) {
+            return "";
+        }
+
+        //calculate min-max values
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Matcher matcher = PRICES_PATTERN.matcher(cursor.getString(pricesColumnIndex));
+            while (matcher.find()) {
+                int price = Integer.parseInt(matcher.group(PRICES_GROUP));
+                min = Math.min(price, min);
+                max = Math.max(price, max);
+            }
+
+            cursor.moveToNext();
+        }
+
+        if (min == Integer.MAX_VALUE && max == Integer.MIN_VALUE) {
+            return "";
+        }
+
+        if (min == Integer.MAX_VALUE) {
+            return Integer.toString(max);
+        }
+
+        if (max == Integer.MIN_VALUE) {
+            return Integer.toString(min);
+        }
+
+        if (max == min) {
+            return Integer.toString(max);
+        }
+
+        return Integer.toString(min) + MIN_MAX_PRICES_SEPARATOR + Integer.toString(max);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
@@ -152,6 +216,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
                 setFilmData(cursor);
                 break;
             case TIMETABLE_LOADER_ID :
+                setMinMaxPrices(cursor);
                 timetableAdapter.swapCursor(cursor);
                 break;
         }

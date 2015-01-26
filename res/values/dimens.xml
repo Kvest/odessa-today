@@ -6,7 +6,7 @@
     <dimen name="category_selector_height">50dip</dimen>
     <dimen name="category_selector_text_size">16sp</dimen>
     <dimen name="film_thumbnail_image_width">120dip</dimen>
-    <dimen name="film_thumbnail_padding_right">12dip</dimen>
+    <dimen name="film_thumbnail_margin_right">12dip</dimen>
     <dimen name="films_list_divider_height">1dip</dimen>
     <dimen name="film_name_text_size">22sp</dimen>
     <dimen name="genre_text_size">14sp</dimen>
@@ -22,6 +22,7 @@
     <dimen name="film_duration_margin_right">12dip</dimen>
     <dimen name="film_duration_text_size">16sp</dimen>
     <dimen name="comments_count_margin_right">4dip</dimen>
+    <dimen name="film_format_icon_size">32dip</dimen>
 
     <dimen name="films_date_label_height">30dip</dimen>
     <dimen name="films_date_label_horizontal_padding">12dip</dimen>
@@ -42,7 +43,7 @@
 
     <!--film details-->
     <dimen name="film_details_padding">@dimen/application_padding</dimen>
-    <dimen name="film_details_poster_margin">10dip</dimen>
+    <dimen name="film_details_poster__margin_right">12dip</dimen>
     <dimen name="film_details_duration_text_size">14sp</dimen>
     <dimen name="film_details_divider_height">1dip</dimen>
     <dimen name="film_details_director_padding">8dip</dimen>
@@ -62,6 +63,9 @@
     <dimen name="film_details_posters_margin">8dip</dimen>
     <dimen name="timetable_date_padding_horizontal">@dimen/film_details_padding</dimen>
     <dimen name="timetable_date_padding_vertical">6dip</dimen>
+    <dimen name="min_max_prices_icon_margin_top">7dip</dimen>
+    <dimen name="min_max_prices_icon_margin_right">7dip</dimen>
+    <dimen name="min_max_prices_text_size">16sp</dimen>
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>

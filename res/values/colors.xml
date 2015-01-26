@@ -27,6 +27,7 @@
     <color name="film_details_divider_color">#e6e6e6</color>
     <color name="film_details_comments_count_text_color">#999999</color>
     <color name="timetable_date_bg">#dddddd</color>
+    <color name="min_max_prices_text_color">#454954</color>
 
     <!--comments-->
     <color name="comments_list_divider_color">#e6e6e6</color>

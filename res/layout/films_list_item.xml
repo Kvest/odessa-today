@@ -11,7 +11,7 @@
         android:id="@+id/film_image"
         android:layout_width="@dimen/film_thumbnail_image_width"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/film_thumbnail_padding_right"/>
+        android:layout_marginRight="@dimen/film_thumbnail_margin_right"/>
     <ImageView
         android:id="@+id/arrow_image"
         android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
         android:layout_toLeftOf="@id/arrow_image"
         android:layout_below="@id/film_name"
         android:textSize="@dimen/genre_text_size"
-        android:textColor="@color/films_name_text_color"/>
+        android:textColor="@color/films_genre_text_color"/>
     <RatingBar
         android:id="@+id/film_rating"
         android:layout_width="wrap_content"
@@ -53,7 +53,6 @@
         android:layout_marginBottom="@dimen/films_ratingbar_margin_bottom"
         style="@style/FilmsRatingBarTheme"
         android:isIndicator="true"/>
-
     <LinearLayout
         android:id="@+id/duration_and_comments_container"
         android:orientation="horizontal"

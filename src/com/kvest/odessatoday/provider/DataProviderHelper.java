@@ -8,7 +8,6 @@ import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
-import static com.kvest.odessatoday.utils.LogUtils.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,8 +38,6 @@ public abstract class DataProviderHelper {
 
     public static CursorLoader getFilmsFullTimetableLoader(Context context, long filmId, long timetableStartDate,
                                                            long timetableEndDate, String[] projection, String order) {
-        LOGD("KVEST_TAG", "getFilmsFullTimetableLoader : timetableStartDate=" + timetableStartDate + ", endDate=" + timetableEndDate);
-
         String selection = Tables.FilmsFullTimetable.Columns.FILM_ID + "=? AND " +
                            Tables.FilmsFullTimetable.Columns.DATE + ">= ? AND " +
                            Tables.FilmsFullTimetable.Columns.DATE + "<= ?";

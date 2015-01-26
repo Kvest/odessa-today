@@ -62,7 +62,6 @@ public class TimetableAdapter extends CursorAdapter {
 
         //set typefaces
         holder.cinemaName.setTypeface(robotoLightTypeface);
-        holder.time.setTypeface(robotoLightTypeface);
 
         view.setTag(holder);
 
@@ -83,7 +82,6 @@ public class TimetableAdapter extends CursorAdapter {
         holder.prices.setText(cursor.getString(pricesIndex));
 
         //film format
-        holder.filmFormat.setVisibility(View.VISIBLE);
         switch (cursor.getInt(formatIndex)) {
             case FilmFormat.THIRTY_FIFE_MM:
                 holder.filmFormat.setImageResource(R.drawable.thirty_five_mm);
@@ -107,7 +105,7 @@ public class TimetableAdapter extends CursorAdapter {
                 holder.filmFormat.setImageResource(R.drawable.imax4dx);
                 break;
             default:
-                holder.filmFormat.setVisibility(View.INVISIBLE);
+                holder.filmFormat.setImageResource(R.drawable.ic_empty_film_format);
         }
     }
 

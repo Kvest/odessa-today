@@ -86,7 +86,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
         description = (TextView)view.findViewById(R.id.film_description);
         director = (TextView)view.findViewById(R.id.director);
         actors = (TextView)view.findViewById(R.id.actors);
-        commentsCount = (TextView)view.findViewById(R.id.comments_count_value);
+        commentsCount = (TextView)view.findViewById(R.id.comments_count);
         postersContainer = (LinearLayout)view.findViewById(R.id.posters_container);
 
         youTubePlayerFragmentContainer = view.findViewById(R.id.youtube_fragment_container);
@@ -106,7 +106,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
             }
         });
 
-        view.findViewById(R.id.comments_count).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.comments_count_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showComments();

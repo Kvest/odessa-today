@@ -8,7 +8,7 @@
             android:id="@+id/film_image"
             android:layout_width="@dimen/film_thumbnail_image_width"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/film_thumbnail_padding_right"/>
+            android:layout_marginRight="@dimen/film_thumbnail_margin_right"/>
     <TextView
             android:id="@+id/film_name"
             android:layout_width="match_parent"
