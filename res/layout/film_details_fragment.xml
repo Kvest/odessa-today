@@ -4,7 +4,7 @@
     android:id="@+id/film_details_list"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:listSelector="@android:color/transparent"
+    android:listSelector="@drawable/application_list_item_selector"
     android:background="@android:color/white"
     android:divider="@color/film_details_divider_color"
     android:dividerHeight="@dimen/film_details_divider_height" />

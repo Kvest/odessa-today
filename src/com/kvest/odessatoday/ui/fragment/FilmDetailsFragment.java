@@ -12,12 +12,14 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.ui.activity.CinemaDetailsActivity;
 import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
 import com.kvest.odessatoday.utils.TimeUtils;
 import com.kvest.odessatoday.utils.Utils;
@@ -117,6 +119,14 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         timetableAdapter = new TimetableAdapter(getActivity());
         rootView.setAdapter(timetableAdapter);
 
+        rootView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                long cinemaId = timetableAdapter.getCinemaId(view, position, id);
+                showCinema(cinemaId);
+            }
+        });
+
         timetableDate.setText(TIMETABLE_DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(shownTimetableDate)));
     }
 
@@ -139,6 +149,10 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         } else {
             return 0;
         }
+    }
+
+    private void showCinema(long cinemaId) {
+        startActivity(CinemaDetailsActivity.getStartIntent(getActivity(), cinemaId));
     }
 
     private void setMinMaxPrices(Cursor cursor) {

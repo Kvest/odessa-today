@@ -27,10 +27,12 @@ import static com.kvest.odessatoday.utils.Constants.*;
 public class TimetableAdapter extends CursorAdapter {
     public static final String[] PROJECTION = new String[]{Tables.FilmsFullTimetable.Columns._ID, Tables.FilmsFullTimetable.Columns.CINEMA_NAME,
                                                            Tables.FilmsFullTimetable.Columns.DATE, Tables.FilmsFullTimetable.Columns.PRICES,
-                                                           Tables.FilmsFullTimetable.Columns.CINEMA_ADDRESS, Tables.FilmsFullTimetable.Columns.FORMAT};
+                                                           Tables.FilmsFullTimetable.Columns.CINEMA_ADDRESS, Tables.FilmsFullTimetable.Columns.FORMAT,
+                                                           Tables.FilmsFullTimetable.Columns.CINEMA_ID};
     private static final String TIME_FORMAT_PATTERN = "HH:mm";
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
 
+    private int cinemaIdIndex = -1;
     private int cinemaNameIndex = -1;
     private int dateIndex = -1;
     private int pricesIndex = -1;
@@ -75,6 +77,8 @@ public class TimetableAdapter extends CursorAdapter {
         if (!isColumnIndexesCalculated()) {
             calculateColumnIndexes(cursor);
         }
+
+        holder.cinemaId = cursor.getLong(cinemaIdIndex);
         holder.cinemaName.setText(cursor.getString(cinemaNameIndex));
         holder.cinemaAddress.setText(cursor.getString(cinemaAddressIndex));
         long dateValue = TimeUnit.SECONDS.toMillis(cursor.getLong(dateIndex));
@@ -109,11 +113,18 @@ public class TimetableAdapter extends CursorAdapter {
         }
     }
 
+    public long getCinemaId(View view, int position, long id) {
+        ViewHolder holder = (ViewHolder)view.getTag();
+
+        return holder.cinemaId;
+    }
+
     private boolean isColumnIndexesCalculated() {
         return (cinemaNameIndex >= 0);
     }
 
     private void calculateColumnIndexes(Cursor cursor) {
+        cinemaIdIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.CINEMA_ID);
         cinemaNameIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.CINEMA_NAME);
         dateIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.DATE);
         pricesIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.PRICES);
@@ -122,6 +133,7 @@ public class TimetableAdapter extends CursorAdapter {
     }
 
     private static class ViewHolder {
+        private long cinemaId;
         private ImageView filmFormat;
         private TextView cinemaName;
         private TextView cinemaAddress;
