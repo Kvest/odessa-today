@@ -53,8 +53,8 @@ public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  im
     protected void initFilmInfoView(View view) {
         super.initFilmInfoView(view);
 
-        //timetable_date used only for usual film details - hide it
-        view.findViewById(R.id.timetable_date).setVisibility(View.GONE);
+        //timetable date is used only for usual film details - hide it
+        view.findViewById(R.id.timetable_date_container).setVisibility(View.GONE);
     }
 
     @Override

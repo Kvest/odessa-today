@@ -24,10 +24,13 @@
     <color name="calendar_selected_day_bg_color">#8ab71b</color>
 
     <!--film details-->
+    <color name="film_details_header_bg">#e8e9eb</color>
     <color name="film_details_divider_color">#e6e6e6</color>
-    <color name="film_details_comments_count_text_color">#999999</color>
-    <color name="timetable_date_bg">#dddddd</color>
     <color name="min_max_prices_text_color">#454954</color>
+    <color name="film_details_director_text_color">#323232</color>
+    <color name="film_details_actors_text_color">#323232</color>
+    <color name="film_details_description_text_color">#323232</color>
+    <color name="film_expand_text_divider_color">#454954</color>
 
     <!--comments-->
     <color name="comments_list_divider_color">#e6e6e6</color>
@@ -46,7 +49,9 @@
     <color name="cinema_details_name_text_color">#000000</color>
     <color name="cinema_details_bg">#ffffff</color>
     <color name="cinema_details_list_bg">#e8e9eb</color>
-    <color name="cinema_details_date_text_color">#ffffff</color>
-    <color name="cinema_details_week_text_color">#99cc01</color>
     <color name="cinema_details_row_date2_text_color">#98cb00</color>
+
+    <!--complex date colors-->
+    <color name="complex_date_text_color">#ffffff</color>
+    <color name="complex_date_week_text_color">#99cc01</color>
 </resources>

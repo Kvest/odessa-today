@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/film_details_header_bg">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,10 +103,57 @@
             android:textSize="@dimen/min_max_prices_text_size"
             android:textColor="@color/min_max_prices_text_color"/>
     </RelativeLayout>
-    <View
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/film_details_divider_height"
-        android:background="@color/film_details_divider_color" />
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:paddingLeft="@dimen/film_details_padding"
+        android:paddingRight="@dimen/film_details_padding"
+        android:paddingBottom="6dip"
+        android:paddingTop="6dip">
+        <FrameLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="4dip">
+            <Button
+                android:id="@+id/show_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/green_button"
+                android:textColor="@android:color/white"
+                android:text="@string/comments"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="@dimen/film_details_button_icon_margin_left"
+                android:src="@drawable/ic_add_comment"/>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="4dip">
+            <Button
+                android:id="@+id/tickets"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/green_button"
+                android:textColor="@android:color/white"
+                android:text="@string/tickets"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="@dimen/film_details_button_icon_margin_left"
+                android:src="@drawable/ic_arrow_tickets"/>
+        </FrameLayout>
+    </LinearLayout>
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -121,23 +169,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/film_details_posters_height"
                 android:layout_marginTop="@dimen/film_details_posters_margin"
-                android:layout_marginBottom="@dimen/film_details_posters_margin"
-                android:layout_marginRight="@dimen/film_details_posters_margin" />
+                android:layout_marginBottom="@dimen/film_details_posters_margin" />
         </LinearLayout>
     </HorizontalScrollView>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/film_details_divider_height"
-        android:background="@color/film_details_divider_color" />
     <TextView
         android:id="@+id/director"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/film_details_padding"
         android:layout_marginRight="@dimen/film_details_padding"
-        android:layout_marginTop="@dimen/film_details_director_padding"
         android:layout_marginBottom="@dimen/film_details_director_padding"
-        android:textSize="@dimen/film_details_director_text_size"/>
+        android:textSize="@dimen/film_details_director_text_size"
+        android:textColor="@color/film_details_director_text_color"/>
     <TextView
         android:id="@+id/actors"
         android:layout_width="match_parent"
@@ -145,13 +188,15 @@
         android:layout_marginLeft="@dimen/film_details_padding"
         android:layout_marginRight="@dimen/film_details_padding"
         android:layout_marginBottom="@dimen/film_details_actors_padding_bottom"
-        android:textSize="@dimen/film_details_actors_text_size" />
+        android:textSize="@dimen/film_details_actors_text_size"
+        android:textColor="@color/film_details_actors_text_color" />
     <com.kvest.odessatoday.ui.widget.ExpandablePanel
         xmlns:example="http://schemas.android.com/apk/res/com.kvest.odessatoday"
         android:id="@+id/expand_panel"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_marginBottom="10dip"
         example:handle="@+id/expand_description"
         example:content="@+id/film_description"
         example:collapsedHeight="@dimen/film_description_collapsed_height"
@@ -164,6 +209,7 @@
             android:layout_marginRight="@dimen/film_details_padding"
             android:layout_marginBottom="@dimen/film_details_description_padding_bottom"
             android:textSize="@dimen/film_details_description_text_size"
+            android:textColor="@color/film_details_description_text_color"
             android:autoLink="all"
             android:linksClickable="true"/>
         <LinearLayout
@@ -173,9 +219,9 @@
             android:weightSum="2">
             <View
                 android:layout_width="0dip"
-                android:layout_height="@dimen/film_details_divider_height"
+                android:layout_height="@dimen/film_expand_text_divider_height"
                 android:layout_weight="1"
-                android:background="@color/film_details_divider_color"
+                android:background="@color/film_expand_text_divider_color"
                 android:layout_gravity="center_vertical" />
             <ImageButton
                 android:id="@+id/expand_description"
@@ -183,56 +229,55 @@
                 android:layout_height="wrap_content"
                 style="?android:attr/borderlessButtonStyle"
                 android:minHeight="20dip"
-                android:src="@drawable/expand_arrow" />
+                android:src="@drawable/ic_expand_arrow" />
             <View
                 android:layout_width="0dip"
-                android:layout_height="@dimen/film_details_divider_height"
+                android:layout_height="@dimen/film_expand_text_divider_height"
                 android:layout_weight="1"
-                android:background="@color/film_details_divider_color"
+                android:background="@color/film_expand_text_divider_color"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
     </com.kvest.odessatoday.ui.widget.ExpandablePanel>
-    <RelativeLayout
-        android:id="@+id/comments_count_container"
+    <LinearLayout
+        android:id="@+id/timetable_date_container"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/film_details_comments_count_height"
-        android:layout_marginLeft="@dimen/film_details_padding"
-        android:layout_marginRight="@dimen/film_details_padding">
-        <TextView
-            android:id="@+id/comments_count_label"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:textSize="@dimen/film_details_comments_count_text_size"
-            android:text="@string/comments" />
-        <TextView
-            android:id="@+id/comments_count_value"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/film_details_comments_count_margin_left"
-            android:textSize="@dimen/film_details_comments_count_text_size"
-            android:textColor="@color/film_details_comments_count_text_color"
-            android:layout_toRightOf="@id/comments_count_label" />
-        <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_arrow_details"/>
-    </RelativeLayout>
-    <TextView
-        android:id="@+id/timetable_date"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:paddingLeft="@dimen/timetable_date_padding_horizontal"
-        android:paddingRight="@dimen/timetable_date_padding_horizontal"
-        android:paddingTop="@dimen/timetable_date_padding_vertical"
-        android:paddingBottom="@dimen/timetable_date_padding_vertical"
-        android:gravity="left"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/timetable_date_text_size"
-        android:textStyle="bold"
-        android:background="@color/timetable_date_bg" />
+        android:weightSum="1"
+        android:layout_marginLeft="@dimen/film_details_padding"
+        android:layout_marginRight="@dimen/film_details_padding"
+        android:layout_marginBottom="@dimen/timetable_date_margin_vertical"
+        android:padding="@dimen/complex_date_padding"
+        android:gravity="center_vertical"
+        android:background="@drawable/complex_date_bg">
+        <TextView
+            android:id="@+id/is_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today_marker"
+            android:textColor="@color/complex_date_text_color"
+            android:textSize="@dimen/complex_date_text_size"/>
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/complex_date_text_color"
+            android:textSize="@dimen/complex_date_text_size" />
+        <TextView
+            android:id="@+id/week_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/complex_date_week_text_color"
+            android:textSize="@dimen/complex_date_week_text_size" />
+        <View
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <ImageView
+            android:id="@+id/show_calendar"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_calendar" />
+    </LinearLayout>
 </LinearLayout>

@@ -23,7 +23,7 @@
     <string name="cinema_phones">Телефоны:</string>
     <string name="cinema_address">Адрес:</string>
     <string name="map_not_found">Приложение-карта не найдено</string>
-    <string name="cinema_comments"><![CDATA[Отзывы <b>%1$d</b>]]></string>
+    <string name="comments_with_count"><![CDATA[Отзывы <b>%1$d</b>]]></string>
     <string name="cinema_photos"><![CDATA[Фото <b>%1$d</b>]]></string>
     <string name="format_unknown">\?</string>
     <string name="format_thirty_fife_mm">35мм</string>
@@ -35,6 +35,7 @@
     <string name="format_four_dx">i4DX</string>
     <string name="share">Поделиться...</string>
     <string name="image_caching_progress">Идет сохранение изображения...</string>
+    <string name="tickets">Билеты</string>
 
     <string-array name="formats">
         <item>@string/format_unknown</item>

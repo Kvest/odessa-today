@@ -49,23 +49,20 @@
     <dimen name="film_details_director_padding">8dip</dimen>
     <dimen name="film_details_actors_padding_bottom">8dip</dimen>
     <dimen name="film_description_collapsed_height">50dip</dimen>
-    <dimen name="film_details_director_text_size">14sp</dimen>
-    <dimen name="film_details_actors_text_size">14sp</dimen>
+    <dimen name="film_details_director_text_size">15sp</dimen>
+    <dimen name="film_details_actors_text_size">15sp</dimen>
     <dimen name="film_details_description_padding_bottom">8dip</dimen>
-    <dimen name="film_details_description_text_size">14sp</dimen>
-    <dimen name="film_details_comments_count_height">50dip</dimen>
-    <dimen name="film_details_comments_count_text_size">14sp</dimen>
-    <dimen name="timetable_date_text_size">14sp</dimen>
-    <dimen name="film_details_comments_count_margin_left">6dip</dimen>
+    <dimen name="film_details_description_text_size">15sp</dimen>
     <dimen name="film_duration_margin_top">3dip</dimen>
     <dimen name="film_duration_margin_left">6dip</dimen>
     <dimen name="film_details_posters_height">120dip</dimen>
     <dimen name="film_details_posters_margin">8dip</dimen>
-    <dimen name="timetable_date_padding_horizontal">@dimen/film_details_padding</dimen>
-    <dimen name="timetable_date_padding_vertical">6dip</dimen>
+    <dimen name="timetable_date_margin_vertical">10dip</dimen>
     <dimen name="min_max_prices_icon_margin_top">7dip</dimen>
     <dimen name="min_max_prices_icon_margin_right">7dip</dimen>
     <dimen name="min_max_prices_text_size">16sp</dimen>
+    <dimen name="film_details_button_icon_margin_left">12dip</dimen>
+    <dimen name="film_expand_text_divider_height">2dip</dimen>
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>
@@ -96,9 +93,8 @@
     <dimen name="phones_container_margin_bottom">10dip</dimen>
     <dimen name="address_container_margin_bottom">10dip</dimen>
     <dimen name="show_on_map_min_size">40dip</dimen>
-    <dimen name="cinema_details_date_text_size">18sp</dimen>
-    <dimen name="cinema_details_week_text_size">15sp</dimen>
-    <dimen name="cinema_details_date_padding">8dip</dimen>
+
+
     <dimen name="cinema_details_film_name_text_size">16sp</dimen>
     <dimen name="cinema_details_film_name_padding_top">14dip</dimen>
     <dimen name="cinema_details_film_name_padding_bottom">6dip</dimen>
@@ -108,6 +104,11 @@
     <dimen name="cinema_details_row_format_text_size">14dip</dimen>
     <dimen name="cinema_details_row_prices_text_size">12dip</dimen>
     <dimen name="cinema_details_row_date_margin_right">8dip</dimen>
+
+    <!--complex date dimensions-->
+    <dimen name="complex_date_padding">8dip</dimen>
+    <dimen name="complex_date_text_size">18sp</dimen>
+    <dimen name="complex_date_week_text_size">15sp</dimen>
 
     <!--PhotoGalleryFragment-->
     <dimen name="pager_indicator_vertical_margin">10dip</dimen>

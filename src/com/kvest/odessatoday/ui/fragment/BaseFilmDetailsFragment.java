@@ -47,7 +47,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
     protected TextView description;
     protected TextView director;
     protected TextView actors;
-    protected TextView commentsCount;
+    protected Button showComments;
     protected LinearLayout postersContainer;
 
     protected YouTubePlayer youTubePlayer;
@@ -72,7 +72,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
         int postersMargin = (int)getResources().getDimension(R.dimen.film_details_posters_margin);
         postersLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                                                             (int)getResources().getDimension(R.dimen.film_details_posters_height));
-        postersLayoutParams.setMargins(0, postersMargin, postersMargin, postersMargin);
+        postersLayoutParams.setMargins(postersMargin, postersMargin, 0, postersMargin);
 
         //store views
         filmPoster = (NetworkImageView) view.findViewById(R.id.film_poster);
@@ -86,7 +86,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
         description = (TextView)view.findViewById(R.id.film_description);
         director = (TextView)view.findViewById(R.id.director);
         actors = (TextView)view.findViewById(R.id.actors);
-        commentsCount = (TextView)view.findViewById(R.id.comments_count);
+        showComments = (Button)view.findViewById(R.id.show_comments);
         postersContainer = (LinearLayout)view.findViewById(R.id.posters_container);
 
         youTubePlayerFragmentContainer = view.findViewById(R.id.youtube_fragment_container);
@@ -97,16 +97,16 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
         ((ExpandablePanel)view.findViewById(R.id.expand_panel)).setOnExpandListener(new ExpandablePanel.OnExpandListener() {
             @Override
             public void onExpand(View handle, View content) {
-                ((ImageButton)handle).setImageResource(R.drawable.collapse_arrow);
+                ((ImageButton)handle).setImageResource(R.drawable.ic_collapse_arrow);
             }
 
             @Override
             public void onCollapse(View handle, View content) {
-                ((ImageButton)handle).setImageResource(R.drawable.expand_arrow);
+                ((ImageButton)handle).setImageResource(R.drawable.ic_expand_arrow);
             }
         });
 
-        view.findViewById(R.id.comments_count_container).setOnClickListener(new View.OnClickListener() {
+        showComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showComments();
@@ -201,7 +201,9 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
             actors.setText(Html.fromHtml(value));
 
             description.setText(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.DESCRIPTION)) + "\n");
-            commentsCount.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT))));
+
+            int commentsCount = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT));
+            showComments.setText(Html.fromHtml(getString(R.string.comments_with_count, commentsCount)));
 
             //setTrailer
             setTrailer(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.VIDEO)));

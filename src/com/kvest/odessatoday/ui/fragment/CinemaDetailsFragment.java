@@ -375,7 +375,7 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             int commentsCount = cursor.getInt(cursor.getColumnIndex(Tables.Comments.COMMENTS_COUNT));
-            showComments.setText(Html.fromHtml(getString(R.string.cinema_comments, commentsCount)));
+            showComments.setText(Html.fromHtml(getString(R.string.comments_with_count, commentsCount)));
         }
     }
 

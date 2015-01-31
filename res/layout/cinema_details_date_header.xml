@@ -12,28 +12,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1"
-        android:padding="@dimen/cinema_details_date_padding"
+        android:padding="@dimen/complex_date_padding"
         android:gravity="center_vertical"
-        android:background="@drawable/cinema_date_bg">
+        android:background="@drawable/complex_date_bg">
         <TextView
             android:id="@+id/is_today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/today_marker"
-            android:textColor="@color/cinema_details_date_text_color"
-            android:textSize="@dimen/cinema_details_date_text_size"/>
+            android:textColor="@color/complex_date_text_color"
+            android:textSize="@dimen/complex_date_text_size"/>
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cinema_details_date_text_color"
-            android:textSize="@dimen/cinema_details_date_text_size" />
+            android:textColor="@color/complex_date_text_color"
+            android:textSize="@dimen/complex_date_text_size" />
         <TextView
             android:id="@+id/week_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cinema_details_week_text_color"
-            android:textSize="@dimen/cinema_details_week_text_size" />
+            android:textColor="@color/complex_date_week_text_color"
+            android:textSize="@dimen/complex_date_week_text_size" />
         <View
             android:layout_width="0dip"
             android:layout_height="wrap_content"

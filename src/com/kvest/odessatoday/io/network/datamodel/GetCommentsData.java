@@ -13,4 +13,5 @@ import java.util.List;
  */
 public class GetCommentsData {
     public List<Comment> comments;
+    public int comments_remained;
 }

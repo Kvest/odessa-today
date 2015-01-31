@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.kvest.odessatoday.R;
@@ -49,18 +48,22 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     private static final Pattern PRICES_PATTERN = Pattern.compile("(\\d+)");
     private static final int PRICES_GROUP = 1;
 
-    private static final String TIMETABLE_DATE_FORMAT_PATTERN = "dd MMMM yyyy";
-    private static final SimpleDateFormat TIMETABLE_DATE_FORMAT = new SimpleDateFormat(TIMETABLE_DATE_FORMAT_PATTERN);
+    private static final String DATE_FORMAT_PATTERN = " dd MMM. yyyy, ";
+    private static final String WEEK_DAY_FORMAT_PATTERN = "cccc";
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+    private static final SimpleDateFormat WEEK_DAY_FORMAT = new SimpleDateFormat(WEEK_DAY_FORMAT_PATTERN);
 
     private static final int FILM_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
 
     private ImageView minMaxPricesIcon;
     private TextView minMaxPricesView;
-    private TextView timetableDate;
     private TimetableAdapter timetableAdapter;
     private String shareTitle, shareText;
 
+    private TextView isToday;
+    private TextView dateTextView;
+    private TextView weekDayTextView;
     private long shownTimetableDate;
 
     public static FilmDetailsFragment getInstance(long filmId, long timetableDate) {
@@ -109,9 +112,11 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     protected void initFilmInfoView(View view) {
         super.initFilmInfoView(view);
 
-        timetableDate = (TextView)view.findViewById(R.id.timetable_date);
         minMaxPricesIcon = (ImageView) view.findViewById(R.id.min_max_prices_icon);
         minMaxPricesView = (TextView)view.findViewById(R.id.min_max_prices);
+        isToday = (TextView)view.findViewById(R.id.is_today);
+        dateTextView = (TextView)view.findViewById(R.id.date);
+        weekDayTextView = (TextView)view.findViewById(R.id.week_day);
     }
 
     private void initTimetableList(ListView rootView, View headerView) {
@@ -127,7 +132,10 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
             }
         });
 
-        timetableDate.setText(TIMETABLE_DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(shownTimetableDate)));
+        //set date
+        isToday.setVisibility(TimeUtils.isCurrentDay(shownTimetableDate) ? View.VISIBLE : View.GONE);
+        dateTextView.setText(DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(shownTimetableDate)));
+        weekDayTextView.setText(WEEK_DAY_FORMAT.format(TimeUnit.SECONDS.toMillis(shownTimetableDate)).toLowerCase());
     }
 
     @Override
