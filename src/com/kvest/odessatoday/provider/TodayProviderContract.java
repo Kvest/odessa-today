@@ -79,29 +79,33 @@ public class TodayProviderContract {
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
         }
 
-        interface FilmsFullTimetable {
-            String TABLE_NAME = FilmsTimetable.TABLE_NAME + " LEFT OUTER JOIN " + Cinemas.TABLE_NAME + " ON " +
-                                FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.CINEMA_ID + "=" +
-                                Cinemas.TABLE_NAME + "." + Cinemas.Columns.CINEMA_ID;
+        interface FilmsFullTimetableView {
+            String VIEW_NAME = "films_full_timetable_view";
+            String CREATE_VIEW_SQL = "CREATE VIEW IF NOT EXISTS " + VIEW_NAME + " AS SELECT * FROM " +
+                        FilmsTimetable.TABLE_NAME + " LEFT OUTER JOIN " + Cinemas.TABLE_NAME + " ON " +
+                        FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.CINEMA_ID + "=" +
+                        Cinemas.TABLE_NAME + "." + Cinemas.Columns.CINEMA_ID;
 
             interface Columns extends BaseColumns {
-                String _ID = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns._ID;
-                String TIMETABLE_ID = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.TIMETABLE_ID;
-                String FILM_ID = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.FILM_ID;
-                String CINEMA_ID = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.CINEMA_ID;
-                String DATE = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.DATE;
-                String PRICES = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.PRICES;
-                String FORMAT = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.FORMAT;
-                String CINEMA_NAME = Cinemas.TABLE_NAME + "." + Cinemas.Columns.NAME;
-                String CINEMA_ADDRESS = Cinemas.TABLE_NAME + "." + Cinemas.Columns.ADDRESS;
-                String CINEMA_PHONES = Cinemas.TABLE_NAME + "." + Cinemas.Columns.PHONES;
-                String CINEMA_TRANSPORT = Cinemas.TABLE_NAME + "." + Cinemas.Columns.TRANSPORT;
-                String CINEMA_DESCRIPTION = Cinemas.TABLE_NAME + "." + Cinemas.Columns.DESCRIPTION;
-                String CINEMA_WORK_TIME = Cinemas.TABLE_NAME + "." + Cinemas.Columns.WORK_TIME;
-                String CINEMA_IMAGE = Cinemas.TABLE_NAME + "." + Cinemas.Columns.IMAGE;
+                String TIMETABLE_ID = "timetable_id";
+                String FILM_ID = "film_id";
+                String CINEMA_ID = "cinema_id";
+                String DATE = "date";
+                String PRICES = "prices";
+                String FORMAT = "format";
+                String _ID1 = "_id:1";
+                String CINEMA_ID1 = "cinema_id:1";
+                String CINEMA_NAME = "name";
+                String CINEMA_ADDRESS = "address";
+                String CINEMA_PHONES = "phones";
+                String CINEMA_TRANSPORT = "transport";
+                String CINEMA_DESCRIPTION = "description";
+                String CINEMA_WORK_TIME = "worktime";
+                String CINEMA_IMAGE = "image";
+                String CINEMA_COMMENTS_COUNT = "comments_count";
             }
 
-            String TIMETABLE_ORDER_ASC = FilmsTimetable.TABLE_NAME + "." + FilmsTimetable.Columns.DATE + " ASC";
+            String TIMETABLE_ORDER_ASC = Columns.DATE + " ASC";
         }
 
         interface CinemaTimetableView {

@@ -86,7 +86,7 @@ public class TodayProvider extends ContentProvider {
                         Tables.Cinemas.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
             case FULL_TIMETABLE_LIST_URI_INDICATOR :
-                return queryFullTable(Tables.FilmsFullTimetable.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
+                return queryFullTable(Tables.FilmsFullTimetableView.VIEW_NAME , uri, projection, selection, selectionArgs, sortOrder);
             case COMMENT_LIST_URI_INDICATOR :
                 return queryFullTable(Tables.Comments.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
             case COMMENT_ITEM_URI_INDICATOR :

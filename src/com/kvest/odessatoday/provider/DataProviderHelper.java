@@ -38,9 +38,9 @@ public abstract class DataProviderHelper {
 
     public static CursorLoader getFilmsFullTimetableLoader(Context context, long filmId, long timetableStartDate,
                                                            long timetableEndDate, String[] projection, String order) {
-        String selection = Tables.FilmsFullTimetable.Columns.FILM_ID + "=? AND " +
-                           Tables.FilmsFullTimetable.Columns.DATE + ">= ? AND " +
-                           Tables.FilmsFullTimetable.Columns.DATE + "<= ?";
+        String selection = Tables.FilmsFullTimetableView.Columns.FILM_ID + "=? AND " +
+                           Tables.FilmsFullTimetableView.Columns.DATE + ">= ? AND " +
+                           Tables.FilmsFullTimetableView.Columns.DATE + "<= ?";
         return new CursorLoader(context, FULL_TIMETABLE_URI, projection,
                                 selection, new String[]{Long.toString(filmId), Long.toString(timetableStartDate), Long.toString(timetableEndDate)},
                                 order);

@@ -84,7 +84,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         shownTimetableDate = getTimetableDate();
 
         initFilmInfoView(headerView);
-        initTimetableList((ListView)rootView, headerView);
+        initTimetableList((ListView) rootView, headerView);
 
         setHasOptionsMenu(true);
 
@@ -178,7 +178,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
 
     private String calculateMinMaxPrices(Cursor cursor) {
         //get column index
-        int pricesColumnIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.PRICES);
+        int pricesColumnIndex = cursor.getColumnIndex(Tables.FilmsFullTimetableView.Columns.PRICES);
         if (pricesColumnIndex == -1) {
             return "";
         }
@@ -225,7 +225,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
             case TIMETABLE_LOADER_ID :
                 long endDate = TimeUtils.getEndOfTheDay(shownTimetableDate);
                 return DataProviderHelper.getFilmsFullTimetableLoader(getActivity(), getFilmId(), shownTimetableDate, endDate,
-                                                                  TimetableAdapter.PROJECTION, Tables.FilmsFullTimetable.TIMETABLE_ORDER_ASC);
+                                                                  TimetableAdapter.PROJECTION, Tables.FilmsFullTimetableView.TIMETABLE_ORDER_ASC);
         }
 
         return null;

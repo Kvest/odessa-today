@@ -25,10 +25,10 @@ import static com.kvest.odessatoday.utils.Constants.*;
  * To change this template use File | Settings | File Templates.
  */
 public class TimetableAdapter extends CursorAdapter {
-    public static final String[] PROJECTION = new String[]{Tables.FilmsFullTimetable.Columns._ID, Tables.FilmsFullTimetable.Columns.CINEMA_NAME,
-                                                           Tables.FilmsFullTimetable.Columns.DATE, Tables.FilmsFullTimetable.Columns.PRICES,
-                                                           Tables.FilmsFullTimetable.Columns.CINEMA_ADDRESS, Tables.FilmsFullTimetable.Columns.FORMAT,
-                                                           Tables.FilmsFullTimetable.Columns.CINEMA_ID};
+    public static final String[] PROJECTION = new String[]{Tables.FilmsFullTimetableView.Columns._ID, Tables.FilmsFullTimetableView.Columns.CINEMA_NAME,
+                                                           Tables.FilmsFullTimetableView.Columns.DATE, Tables.FilmsFullTimetableView.Columns.PRICES,
+                                                           Tables.FilmsFullTimetableView.Columns.CINEMA_ADDRESS, Tables.FilmsFullTimetableView.Columns.FORMAT,
+                                                           Tables.FilmsFullTimetableView.Columns.CINEMA_ID};
     private static final String TIME_FORMAT_PATTERN = "HH:mm";
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
 
@@ -124,12 +124,12 @@ public class TimetableAdapter extends CursorAdapter {
     }
 
     private void calculateColumnIndexes(Cursor cursor) {
-        cinemaIdIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.CINEMA_ID);
-        cinemaNameIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.CINEMA_NAME);
-        dateIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.DATE);
-        pricesIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.PRICES);
-        formatIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.FORMAT);
-        cinemaAddressIndex = cursor.getColumnIndex(Tables.FilmsFullTimetable.Columns.CINEMA_ADDRESS);
+        cinemaIdIndex = cursor.getColumnIndex(Tables.FilmsFullTimetableView.Columns.CINEMA_ID);
+        cinemaNameIndex = cursor.getColumnIndex(Tables.FilmsFullTimetableView.Columns.CINEMA_NAME);
+        dateIndex = cursor.getColumnIndex(Tables.FilmsFullTimetableView.Columns.DATE);
+        pricesIndex = cursor.getColumnIndex(Tables.FilmsFullTimetableView.Columns.PRICES);
+        formatIndex = cursor.getColumnIndex(Tables.FilmsFullTimetableView.Columns.FORMAT);
+        cinemaAddressIndex = cursor.getColumnIndex(Tables.FilmsFullTimetableView.Columns.CINEMA_ADDRESS);
     }
 
     private static class ViewHolder {

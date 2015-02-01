@@ -12,7 +12,6 @@ import com.kvest.odessatoday.datamodel.TimetableItem;
 import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.io.network.request.GetFilmsRequest;
 import com.kvest.odessatoday.io.network.response.GetFilmsResponse;
-import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;
 
@@ -20,18 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static com.kvest.odessatoday.provider.TodayProviderContract.CONTENT_AUTHORITY;
-import static com.kvest.odessatoday.provider.TodayProviderContract.FILMS_URI;
-import static com.kvest.odessatoday.provider.TodayProviderContract.TIMETABLE_URI;
+import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
  * Created by Kvest on 10.01.2015.
  */
 public class LoadFilmsHandler extends RequestHandler {
+    private static final long EMPTY_CINEMA_ID = -1;
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
     private static final String CINEMA_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.CINEMA_ID";
+
+    private static final String SELECTION_WITH_CINEMA_ID = Tables.FilmsTimetable.Columns.DATE + ">=? AND " + Tables.FilmsTimetable.Columns.DATE + "<=? AND " +  Tables.FilmsTimetable.Columns.CINEMA_ID + "=?";
+    private static final String SELECTION_WITHOUT_CINEMA_ID = Tables.FilmsTimetable.Columns.DATE + ">=? AND " + Tables.FilmsTimetable.Columns.DATE + "<=?";
 
     public static void putExtras(Intent intent, long startDate, long endDate, long cinemaId) {
         intent.putExtra(START_DATE_EXTRA, startDate);
@@ -44,7 +45,7 @@ public class LoadFilmsHandler extends RequestHandler {
         //get extra data
         long startDate = intent.getLongExtra(START_DATE_EXTRA, -1);
         long endDate = intent.getLongExtra(END_DATE_EXTRA, -1);
-        long cinemaId = intent.getLongExtra(CINEMA_ID_EXTRA, -1);
+        long cinemaId = intent.getLongExtra(CINEMA_ID_EXTRA, EMPTY_CINEMA_ID);
 
         //send request
         RequestFuture<GetFilmsResponse> future = RequestFuture.newFuture();
@@ -54,7 +55,7 @@ public class LoadFilmsHandler extends RequestHandler {
             GetFilmsResponse response = future.get();
             if (response.isSuccessful()) {
                 //save films
-                saveFilms(context, response.data.films, request.getStartDate(), request.getEndDate());
+                saveFilms(context, response.data.films, request.getStartDate(), request.getEndDate(), cinemaId);
 
                 //notify listeners about successful loading films
                 sendLocalBroadcast(context, LoadFilmsNotification.createSuccessResult());
@@ -80,15 +81,21 @@ public class LoadFilmsHandler extends RequestHandler {
         }
     }
 
-    private void saveFilms(Context context, List<FilmWithTimetable> films, long startDate, long endDate) {
+    private void saveFilms(Context context, List<FilmWithTimetable> films, long startDate, long endDate, long cinemaId) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
         //delete timetable from startDate to endDate
-        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(TIMETABLE_URI)
-                .withSelection(TodayProviderContract.Tables.FilmsTimetable.Columns.DATE + ">=? AND " + TodayProviderContract.Tables.FilmsTimetable.Columns.DATE + "<=?",
-                        new String[]{Long.toString(startDate), Long.toString(endDate)})
-                .build();
-        operations.add(deleteOperation);
+        if (cinemaId != EMPTY_CINEMA_ID) {
+            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(TIMETABLE_URI)
+                    .withSelection(SELECTION_WITH_CINEMA_ID, new String[]{Long.toString(startDate), Long.toString(endDate), Long.toString(cinemaId)})
+                    .build();
+            operations.add(deleteOperation);
+        } else {
+            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(TIMETABLE_URI)
+                    .withSelection(SELECTION_WITHOUT_CINEMA_ID, new String[]{Long.toString(startDate), Long.toString(endDate)})
+                    .build();
+            operations.add(deleteOperation);
+        }
 
         for (FilmWithTimetable film : films) {
             //insert film

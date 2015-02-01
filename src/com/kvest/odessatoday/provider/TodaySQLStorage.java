@@ -31,6 +31,7 @@ class TodaySQLStorage extends SQLiteOpenHelper {
         db.execSQL(AnnouncementsMetadata.CREATE_TABLE_SQL);
         db.execSQL(CinemaTimetableView.CREATE_VIEW_SQL);
         db.execSQL(AnnouncementFilmsView.CREATE_VIEW_SQL);
+        db.execSQL(FilmsFullTimetableView.CREATE_VIEW_SQL);
     }
 
     @Override

@@ -42,6 +42,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
     protected TextView filmName;
     protected TextView genre;
     protected RatingBar filmRating;
+    protected TextView commentsCount;
     protected TextView filmDuration;
     protected ImageView filmDurationIcon;
     protected TextView description;
@@ -81,6 +82,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
         filmName = (TextView) view.findViewById(R.id.film_name);
         genre = (TextView) view.findViewById(R.id.genre);
         filmRating = (RatingBar) view.findViewById(R.id.film_rating);
+        commentsCount = (TextView) view.findViewById(R.id.comments_count);
         filmDuration = (TextView) view.findViewById(R.id.film_duration);
         filmDurationIcon = (ImageView) view.findViewById(R.id.film_duration_icon);
         description = (TextView)view.findViewById(R.id.film_description);
@@ -202,8 +204,9 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
 
             description.setText(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.DESCRIPTION)) + "\n");
 
-            int commentsCount = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT));
-            showComments.setText(Html.fromHtml(getString(R.string.comments_with_count, commentsCount)));
+            int commentsCountValue = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT));
+            commentsCount.setText(Integer.toString(commentsCountValue));
+            showComments.setText(Html.fromHtml(getString(R.string.comments_with_count, commentsCountValue)));
 
             //setTrailer
             setTrailer(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.VIDEO)));
