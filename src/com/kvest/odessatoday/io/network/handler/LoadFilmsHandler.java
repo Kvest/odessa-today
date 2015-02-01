@@ -55,7 +55,7 @@ public class LoadFilmsHandler extends RequestHandler {
             GetFilmsResponse response = future.get();
             if (response.isSuccessful()) {
                 //save films
-                saveFilms(context, response.data.films, request.getStartDate(), request.getEndDate(), cinemaId);
+                saveFilms(context, response.data.films, request.getStartDate(), request.getEndDate(), request.getCinemaId());
 
                 //notify listeners about successful loading films
                 sendLocalBroadcast(context, LoadFilmsNotification.createSuccessResult());

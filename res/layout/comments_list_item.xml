@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/comment_author_name_text_size"
-            android:textColor="@color/comment_author_name_text_color"/>
+            android:textColor="@color/comment_author_name_text_color"
+            android:textStyle="bold"/>
         <TextView
             android:id="@+id/comment_date"
             android:layout_width="match_parent"

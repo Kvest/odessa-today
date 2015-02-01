@@ -33,7 +33,7 @@
     <color name="film_expand_text_divider_color">#454954</color>
 
     <!--comments-->
-    <color name="comments_list_divider_color">#e6e6e6</color>
+    <color name="comments_list_divider_color">#888888</color>
     <color name="comment_author_name_text_color">#040404</color>
     <color name="comment_date_text_color">#a2a2a2</color>
     <color name="comment_text_text_color">#040404</color>

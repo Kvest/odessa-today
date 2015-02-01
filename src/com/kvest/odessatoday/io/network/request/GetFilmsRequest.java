@@ -22,6 +22,7 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
     private long startDate;
     private long endDate;
+    private long cinemaId;
 
     public GetFilmsRequest(long startDate, long endDate, long cinemaId, Response.Listener<GetFilmsResponse> listener,
                            Response.ErrorListener errorListener) {
@@ -29,6 +30,7 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
         this.startDate = startDate;
         this.endDate = endDate;
+        this.cinemaId = cinemaId;
     };
 
     @Override
@@ -50,6 +52,10 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
 
     public long getEndDate() {
         return endDate;
+    }
+
+    public long getCinemaId() {
+        return cinemaId;
     }
 
     private static String generateUrl(long startDate, long endDate, long cinemaId) {
