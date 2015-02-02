@@ -17,10 +17,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
 import com.kvest.odessatoday.service.NetworkService;
-import com.kvest.odessatoday.ui.fragment.AnnouncementFilmsListFragment;
-import com.kvest.odessatoday.ui.fragment.CalendarFragment;
-import com.kvest.odessatoday.ui.fragment.CinemasListFragment;
-import com.kvest.odessatoday.ui.fragment.FilmsListFragment;
+import com.kvest.odessatoday.ui.fragment.*;
 import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.util.Calendar;
@@ -57,8 +54,16 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
         init();
 
         if (savedInstanceState == null) {
-            //set content fragment
+            //set menu fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            try {
+                transaction.add(R.id.menu_container, MainMenuFragment.getInstance());
+            } finally {
+                transaction.commit();
+            }
+
+            //set content fragment
+            transaction = getFragmentManager().beginTransaction();
             try {
                 shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                 FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, true);
@@ -66,9 +71,6 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
             } finally {
                 transaction.commit();
             }
-
-            //set menu fragment
-            //TODO
         }
 
         //sync data

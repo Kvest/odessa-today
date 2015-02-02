@@ -116,4 +116,7 @@
 
     <!--main menu-->
     <dimen name="main_menu_behind_offset">100dip</dimen>
+
+    <!--main menu-->
+    <dimen name="main_menu_divider_height">1dip</dimen>
 </resources>

@@ -47,4 +47,7 @@
         <item>@string/format_five_d</item>
         <item>@string/format_four_dx</item>
     </string-array>
+
+    <!--main menu-->
+    <string name="menu_cinema">Кинотеатры</string>
 </resources>
