@@ -113,4 +113,7 @@
     <!--PhotoGalleryFragment-->
     <dimen name="pager_indicator_vertical_margin">10dip</dimen>
     <dimen name="pager_indicator_margin_between_circles">4dip</dimen>
+
+    <!--main menu-->
+    <dimen name="main_menu_behind_offset">100dip</dimen>
 </resources>

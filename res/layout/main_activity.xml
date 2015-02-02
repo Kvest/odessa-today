@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@android:color/white">
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RadioGroup
-            android:id="@+id/category_selector"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/category_selector_height"
-            android:weightSum="3" >
+            android:layout_height="match_parent">
+        <RadioGroup
+                android:id="@+id/category_selector"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/category_selector_height"
+                android:weightSum="3" >
             <RadioButton
-                android:id="@+id/timetable"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:checked="true"
-                style="@style/CategorySelectorRadioButton"
-                android:text="@string/timetable" />
+                    android:id="@+id/timetable"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    style="@style/CategorySelectorRadioButton"
+                    android:text="@string/timetable" />
             <RadioButton
-                android:id="@+id/cinemas"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/CategorySelectorRadioButton"
-                android:text="@string/cinemas" />
+                    android:id="@+id/cinemas"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/CategorySelectorRadioButton"
+                    android:text="@string/cinemas" />
             <RadioButton
-                android:id="@+id/announcements"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/CategorySelectorRadioButton"
-                android:text="@string/announcements" />
+                    android:id="@+id/announcements"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/CategorySelectorRadioButton"
+                    android:text="@string/announcements" />
         </RadioGroup>
         <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
     </LinearLayout>
     <FrameLayout
-        android:id="@+id/calendar_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            android:id="@+id/calendar_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 </FrameLayout>

@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
 import com.kvest.odessatoday.service.NetworkService;
@@ -56,6 +57,7 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
         init();
 
         if (savedInstanceState == null) {
+            //set content fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
                 shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
@@ -64,6 +66,9 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
             } finally {
                 transaction.commit();
             }
+
+            //set menu fragment
+            //TODO
         }
 
         //sync data
@@ -87,6 +92,13 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
     }
 
     private void init() {
+        //setup sliding menu
+        SlidingMenu slidingMenu = new SlidingMenu(this, SlidingMenu.SLIDING_WINDOW);
+        slidingMenu.setMenu(R.layout.menu_layout);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slidingMenu.setBehindOffsetRes(R.dimen.main_menu_behind_offset);
+        slidingMenu.setFadeEnabled(false);
+
         calendarContainer = (FrameLayout)findViewById(R.id.calendar_container);
         calendarContainer.setVisibility(View.INVISIBLE);
         calendarContainer.setOnClickListener(new View.OnClickListener() {
