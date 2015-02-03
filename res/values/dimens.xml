@@ -119,4 +119,11 @@
 
     <!--main menu-->
     <dimen name="main_menu_divider_height">1dip</dimen>
+    <dimen name="main_menu_category_vertical_padding">8dip</dimen>
+    <dimen name="main_menu_category_horizontal_padding">10dip</dimen>
+    <dimen name="main_menu_category_text_size">14sp</dimen>
+    <dimen name="main_menu_item_padding">12dip</dimen>
+    <dimen name="main_menu_item_padding_right">4dip</dimen>
+    <dimen name="main_menu_item_text_size">16sp</dimen>
+    <dimen name="main_menu_item_icon_padding">12dip</dimen>
 </resources>
