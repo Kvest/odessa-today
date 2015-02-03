@@ -24,10 +24,10 @@ public class MainMenuFragment extends ListFragment {
         //setup lit view
         ListView listView = getListView();
         listView.setBackgroundResource(R.color.main_menu_bg);
-        listView.setDivider(getResources().getDrawable(R.color.main_menu_divider_color));
-        listView.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.main_menu_divider_height));
         listView.setFooterDividersEnabled(false);
         listView.setHeaderDividersEnabled(false);
+        listView.setDivider(getResources().getDrawable(R.color.main_menu_divider_color));
+        listView.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.main_menu_divider_height));
 
         //set adapter
         setListAdapter(new MainMenuAdapter(getActivity()));

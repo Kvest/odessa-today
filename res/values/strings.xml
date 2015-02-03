@@ -49,5 +49,29 @@
     </string-array>
 
     <!--main menu-->
+    <string name="menu_films">Фильмы</string>
+    <string name="menu_concert">Концерты (Скоро)</string>
+    <string name="menu_party">Вечеринки (Скоро)</string>
+    <string name="menu_spectacle">Спектакли (Скоро)</string>
+    <string name="menu_exhibition">Выставки (Скоро)</string>
+    <string name="menu_sport">Спорт (Скоро)</string>
+    <string name="menu_workshop">Семинары, акции (Скоро)</string>
     <string name="menu_cinema">Кинотеатры</string>
+    <string name="menu_theatre">Театры (Скоро)</string>
+    <string name="menu_concert_hall">Концертные залы (Скоро)</string>
+    <string name="menu_club">Клубы (Скоро)</string>
+    <string name="menu_museum">Музеи (Скоро)</string>
+    <string name="menu_gallery">Галереи (Скоро)</string>
+    <string name="menu_zoo">Цирк, дельфинарий, зоопарк (Скоро)</string>
+    <string name="menu_quest">Квесты (Скоро)</string>
+    <string name="menu_restaurant">Рестораны (Скоро)</string>
+    <string name="menu_cafe">Кафе (Скоро)</string>
+    <string name="menu_pizza">Пиццерии (Скоро)</string>
+    <string name="menu_sushi">Суши (Скоро)</string>
+    <string name="menu_karaoke">Караоке-клубы (Скоро)</string>
+    <string name="menu_skating_rink">Катки (Скоро)</string>
+    <string name="menu_bowling">Боулинг (Скоро)</string>
+    <string name="menu_billiard">Бильярдные залы (Скоро)</string>
+    <string name="menu_sauna">Сауны (Скоро)</string>
+    <string name="menu_bath">Бани (Скоро)</string>
 </resources>
