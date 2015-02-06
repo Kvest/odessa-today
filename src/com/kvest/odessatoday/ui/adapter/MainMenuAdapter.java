@@ -118,28 +118,27 @@ public class MainMenuAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
+        //create item view if needed
+        if (view == null) {
+            view = new TextView(context);
+            view.setLayoutParams(itemLayoutParams);
+        }
+
         //get item description
         MainMenuItem item = getItem(position);
 
-        //create item view if needed
-        if (view == null) {
-            switch (item.type) {
-                case MainMenuItem.TYPE_CATEGORY :
-                    view = createCategoryView();
-                    break;
-                case MainMenuItem.TYPE_SUBCATEGORY :
-                    view = createSubcategoryView();
-                    break;
-            }
-
-        }
-
         //bind data to the view
-        switch (item.type) {
+        switch (getItemViewType(position)) {
             case MainMenuItem.TYPE_CATEGORY :
                 bindCategoryView((TextView) view, (CategoryItem) item);
                 break;
             case MainMenuItem.TYPE_SUBCATEGORY :
+                //common properties
+                view.setPadding(itemPadding, itemPadding, itemPaddingRight, itemPadding);
+                ((TextView) view).setTextSize(TypedValue.COMPLEX_UNIT_PX, itemTextSize);
+                ((TextView) view).setCompoundDrawablePadding(itemIconPadding);
+
+                //specific properties
                 if (item.enable) {
                     if (position == selectedItemPosition) {
                         bindSelectedItem((TextView) view, (SubcategoryItem) item);
@@ -162,34 +161,18 @@ public class MainMenuAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return getItem(position).type;
-    }
-
-    private View createCategoryView() {
-        TextView view = new TextView(context);
-
-        view.setLayoutParams(itemLayoutParams);
-        view.setBackgroundColor(categoryBg);
-        view.setPadding(categoryHorizontalPadding, categoryVerticalPadding, categoryHorizontalPadding, categoryVerticalPadding);
-        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, categoryTextSiz);
-        view.setTextColor(categoryTextColor);
-
-        return view;
-    }
-
-    private View createSubcategoryView() {
-        TextView view = new TextView(context);
-
-        view.setLayoutParams(itemLayoutParams);
-        view.setPadding(itemPadding, itemPadding, itemPaddingRight, itemPadding);
-        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, itemTextSize);
-        view.setCompoundDrawablePadding(itemIconPadding);
-
-        return view;
+        return items[position].type;
     }
 
     private void bindCategoryView(TextView view, CategoryItem item) {
         view.setText(item.textRes);
+
+        view.setBackgroundColor(categoryBg);
+        view.setPadding(categoryHorizontalPadding, categoryVerticalPadding, categoryHorizontalPadding, categoryVerticalPadding);
+        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, categoryTextSiz);
+        view.setTextColor(categoryTextColor);
+        view.setCompoundDrawablePadding(0);
+        view.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
 
     private void bindDisabledItem(TextView view, SubcategoryItem item) {
