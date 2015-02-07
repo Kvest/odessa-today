@@ -59,7 +59,7 @@
     <color name="main_menu_category_bg">#212121</color>
     <color name="main_menu_category_text_color">#909090</color>
     <color name="main_menu_bg">#454954</color>
-    <color name="main_menu_divider_color">#666666</color>
+    <color name="main_menu_divider_color">#454954</color>
     <color name="main_menu_disabled_item_bg">#5a5a5a</color>
     <color name="main_menu_selected_item_bg">#99cc01</color>
     <color name="main_menu_item_bg">#333333</color>

@@ -19,6 +19,7 @@ import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 import com.kvest.odessatoday.provider.TodayProviderContract;
+import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
 import com.kvest.odessatoday.utils.Constants;
 
@@ -50,6 +51,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
     protected TextView actors;
     protected Button showComments;
     protected LinearLayout postersContainer;
+    private View.OnClickListener onPosterClickListener;
 
     protected YouTubePlayer youTubePlayer;
     protected View youTubePlayerFragmentContainer;
@@ -114,6 +116,14 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
                 showComments();
             }
         });
+        onPosterClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] urls = new String[]{((NetworkImageView)view).getUrl()};
+                Intent startIntent = PhotoGalleryActivity.getStartIntent(getActivity(), urls);
+                startActivity(startIntent);
+            }
+        };
     }
 
     private void initYoutubePlayer() {
@@ -267,6 +277,9 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
 
                 //start loading
                 imageView.setImageUrl(posterUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
+
+                //set click listener
+                imageView.setOnClickListener(onPosterClickListener);
             }
         }
     }
