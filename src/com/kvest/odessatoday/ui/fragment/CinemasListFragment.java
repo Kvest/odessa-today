@@ -7,9 +7,7 @@ import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -54,6 +52,12 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //workaround - we need to clear menu manually
+        menu.clear();
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -62,17 +66,6 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
         } catch (ClassCastException cce) {
             LOGE(Constants.TAG, "Host activity for CinemasListFragment should implements CinemasListFragment.CinemaSelectedListener");
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        cinemaSelectedListener = null;
-    }
-
-    public void setCinemaSelectedListener(CinemaSelectedListener cinemaSelectedListener) {
-        this.cinemaSelectedListener = cinemaSelectedListener;
     }
 
     private void init(View rootView) {

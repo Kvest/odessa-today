@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -13,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.activity.AnnouncementFilmDetailsActivity;
-import com.kvest.odessatoday.ui.activity.CinemaDetailsActivity;
 import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
 import com.kvest.odessatoday.utils.TimeUtils;
 
@@ -26,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSelectedListener,
                                                         FilmsListFragment.FilmSelectedListener,
                                                         FilmsListFragment.ShowCalendarListener,
-                                                        CinemasListFragment.CinemaSelectedListener,
                                                         AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener {
     private long shownFilmsDate;
     private final Calendar calendar = Calendar.getInstance();
@@ -178,7 +175,6 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
 
     private void switchToCinemas() {
         CinemasListFragment cinemasListFragment = CinemasListFragment.getInstance();
-        cinemasListFragment.setCinemaSelectedListener(this);
         replaceFragment(cinemasListFragment);
     }
 
@@ -219,10 +215,5 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
     @Override
     public void onAnnouncementFilmSelected(long filmId) {
         startActivity(AnnouncementFilmDetailsActivity.getStartIntent(getActivity(), filmId));
-    }
-
-    @Override
-    public void onCinemaSelected(long cinemaId) {
-        startActivity(CinemaDetailsActivity.getStartIntent(getActivity(), cinemaId));
     }
 }

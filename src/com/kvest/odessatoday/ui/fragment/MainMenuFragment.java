@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
@@ -7,11 +8,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.adapter.MainMenuAdapter;
+import com.kvest.odessatoday.utils.Constants;
+
+import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
  * Created by Kvest on 02.02.2015.
  */
 public class MainMenuFragment extends ListFragment implements AdapterView.OnItemClickListener {
+    private static final String ARGUMENT_DEFAULT_SELECTED_ITEM_ID = "com.kvest.odessatoday.argument.DEFAULT_SELECTED_ITEM_ID";
+
     public static final int MENU_FILMS_ID = 0;
     public static final int MENU_CONCERT_ID = 1;
     public static final int MENU_PARTY_ID = 2;
@@ -41,8 +47,12 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
     private MainMenuAdapter adapter;
     private MainMenuItemSelectedListener mainMenuItemSelectedListener;
 
-    public static MainMenuFragment getInstance() {
+    public static MainMenuFragment getInstance(int defaultSelectedItemId) {
+        Bundle arguments = new Bundle(1);
+        arguments.putInt(ARGUMENT_DEFAULT_SELECTED_ITEM_ID, defaultSelectedItemId);
+
         MainMenuFragment result = new MainMenuFragment();
+        result.setArguments(arguments);
         return result;
     }
 
@@ -52,6 +62,7 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
 
         //set adapter
         adapter = new MainMenuAdapter(getActivity());
+        adapter.setSelectedItemById(getDefaultSelectedItemId());
         setListAdapter(adapter);
 
         //setup lit view
@@ -62,6 +73,17 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
         listView.setDivider(getResources().getDrawable(R.color.main_menu_divider_color));
         listView.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.main_menu_divider_height));
         listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            mainMenuItemSelectedListener = (MainMenuItemSelectedListener) activity;
+        } catch (ClassCastException cce) {
+            LOGE(Constants.TAG, "Host activity for MainMenuFragment should implements MainMenuFragment.MainMenuItemSelectedListener");
+        }
     }
 
     @Override
@@ -79,6 +101,15 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
                     mainMenuItemSelectedListener.onMainMenuItemSelected((int)id);
                 }
             }
+        }
+    }
+
+    private int getDefaultSelectedItemId() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getInt(ARGUMENT_DEFAULT_SELECTED_ITEM_ID, MainMenuAdapter.NO_SELECTION);
+        } else {
+            return MainMenuAdapter.NO_SELECTION;
         }
     }
 

@@ -8,34 +8,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
-import android.widget.RadioGroup;
+import android.view.Menu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.*;
-import com.kvest.odessatoday.utils.TimeUtils;
 
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
-
-public class MainActivity extends Activity implements FilmsListFragment.ShowCalendarListener,
-                                                               CalendarFragment.OnDateSelectedListener,
-                                                               FilmsListFragment.FilmSelectedListener,
-                                                               CinemasListFragment.CinemaSelectedListener,
-                                                               AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener {
-    private long shownFilmsDate;
-    private final Calendar calendar = Calendar.getInstance();
-    private FrameLayout calendarContainer;
-
-    private Animation showCalendarAnimation;
-    private Animation hideCalendarAnimation;
-
+public class MainActivity extends Activity implements MainMenuFragment.MainMenuItemSelectedListener,
+                                                        CinemasListFragment.CinemaSelectedListener{
     private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
+    private SlidingMenu slidingMenu;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -49,7 +32,7 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.fragment_container);
 
         init();
 
@@ -57,20 +40,23 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
             //set menu fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             try {
-                transaction.add(R.id.menu_container, MainMenuFragment.getInstance());
+                MainMenuFragment mainMenuFragment = MainMenuFragment.getInstance(MainMenuFragment.MENU_FILMS_ID);
+                transaction.add(R.id.menu_container, mainMenuFragment);
             } finally {
                 transaction.commit();
             }
 
-            //set content fragment
+            //show films fragment
             transaction = getFragmentManager().beginTransaction();
             try {
-                shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-                FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, true);
-                transaction.add(R.id.fragment_container, filmsListFragment);
+                FilmsFragment filmsFragment = FilmsFragment.getInstance();
+                transaction.add(R.id.fragment_container, filmsFragment);
             } finally {
                 transaction.commit();
             }
+
+            //set title
+            setTitle(R.string.menu_films);
         }
 
         //sync data
@@ -95,158 +81,51 @@ public class MainActivity extends Activity implements FilmsListFragment.ShowCale
 
     private void init() {
         //setup sliding menu
-        SlidingMenu slidingMenu = new SlidingMenu(this, SlidingMenu.SLIDING_WINDOW);
+        slidingMenu = new SlidingMenu(this, SlidingMenu.SLIDING_WINDOW);
         slidingMenu.setMenu(R.layout.menu_layout);
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         slidingMenu.setBehindOffsetRes(R.dimen.main_menu_behind_offset);
         slidingMenu.setFadeEnabled(false);
-
-        calendarContainer = (FrameLayout)findViewById(R.id.calendar_container);
-        calendarContainer.setVisibility(View.INVISIBLE);
-        calendarContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideCalendar();
-            }
-        });
-
-        showCalendarAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-        hideCalendarAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-        hideCalendarAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                calendarContainer.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        //category selector
-        RadioGroup categorySelector = (RadioGroup)findViewById(R.id.category_selector);
-        categorySelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.timetable :
-                        switchToTimetable();
-                        break;
-                    case R.id.cinemas :
-                        switchToCinemas();
-                        break;
-                    case R.id.announcements :
-                        switchToAnnouncements();
-                        break;
-                }
-            }
-        });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isCalendarShown()) {
-            hideCalendar();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private void showFilmsByDate(long date) {
-        shownFilmsDate = Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-        Fragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, TimeUtils.isCurrentDay(shownFilmsDate));
-        replaceFragment(filmsListFragment);
-    }
+    //TODO
+//    @Override
+//    public void onBackPressed() {
+//        if (isCalendarShown()) {
+//            hideCalendar();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
-            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out);
+            transaction.setCustomAnimations(R.anim.slide_right_in, R.anim.slide_right_out);
             transaction.replace(R.id.fragment_container, fragment);
         } finally {
             transaction.commit();
         }
+
+        //workaround - we need to update options menu
+        invalidateOptionsMenu();
     }
 
     @Override
-    public void onShowCalendar() {
-        if (isCalendarShown()) {
-            hideCalendar();
-        } else {
-            showCalendar(shownFilmsDate);
+    public void onMainMenuItemSelected(int menuItemId) {
+        switch (menuItemId) {
+            case MainMenuFragment.MENU_FILMS_ID :
+                replaceFragment(FilmsFragment.getInstance());
+                setTitle(R.string.menu_films);
+                break;
+            case MainMenuFragment.MENU_CINEMA_ID :
+                replaceFragment(CinemasListFragment.getInstance());
+                setTitle(R.string.menu_cinema);
+                break;
         }
-    }
 
-    private void showCalendar(long selectedDate) {
-        //set fragment
-        if (calendarContainer != null && !isCalendarShown()) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            try {
-                calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(selectedDate));
-                CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
-                                                                                 calendar.get(Calendar.MONTH),
-                                                                                 calendar.get(Calendar.YEAR));
-                transaction.replace(R.id.calendar_container, calendarFragment);
-            } finally {
-                transaction.commit();
-            }
-
-            //set calendar visible
-            calendarContainer.setVisibility(View.VISIBLE);
-
-            //animate
-            calendarContainer.clearAnimation();
-            calendarContainer.startAnimation(showCalendarAnimation);
-        }
-    }
-
-    private void switchToTimetable() {
-        showFilmsByDate(shownFilmsDate);
-    }
-
-    private void switchToCinemas() {
-        CinemasListFragment cinemasListFragment = CinemasListFragment.getInstance();
-        replaceFragment(cinemasListFragment);
-    }
-
-    private void switchToAnnouncements() {
-        AnnouncementFilmsListFragment announcementFilmsListFragment = AnnouncementFilmsListFragment.getInstance();
-        replaceFragment(announcementFilmsListFragment);
-    }
-
-    private void hideCalendar() {
-        //animate
-        calendarContainer.clearAnimation();
-        calendarContainer.startAnimation(hideCalendarAnimation);
-    }
-
-    private boolean isCalendarShown() {
-        return calendarContainer.getVisibility() == View.VISIBLE;
-    }
-
-    @Override
-    public void onDateSelected(int day, int month, int year) {
-        //hide calendar
-        hideCalendar();
-
-        //show films by selected date
-        calendar.clear();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        showFilmsByDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
-    }
-
-    @Override
-    public void onFilmSelected(long filmId) {
-        startActivity(FilmDetailsActivity.getStartIntent(this, filmId, shownFilmsDate));
-    }
-
-    @Override
-    public void onAnnouncementFilmSelected(long filmId) {
-        startActivity(AnnouncementFilmDetailsActivity.getStartIntent(this, filmId));
+        //close menu
+        slidingMenu.showContent();
     }
 
     @Override
