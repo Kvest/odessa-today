@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.view.Menu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
@@ -88,15 +87,18 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
         slidingMenu.setFadeEnabled(false);
     }
 
-    //TODO
-//    @Override
-//    public void onBackPressed() {
-//        if (isCalendarShown()) {
-//            hideCalendar();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+        boolean processed = false;
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment instanceof OnBackPressedListener) {
+            processed = ((OnBackPressedListener)fragment).onBackPressed();
+        }
+
+        if (!processed) {
+            super.onBackPressed();
+        }
+    }
 
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -106,9 +108,6 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
         } finally {
             transaction.commit();
         }
-
-        //workaround - we need to update options menu
-        invalidateOptionsMenu();
     }
 
     @Override
@@ -123,6 +122,9 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
                 setTitle(R.string.menu_cinema);
                 break;
         }
+
+        //workaround - we need to update options menu
+        invalidateOptionsMenu();
 
         //close menu
         slidingMenu.showContent();

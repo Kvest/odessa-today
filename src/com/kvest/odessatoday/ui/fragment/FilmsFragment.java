@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.activity.AnnouncementFilmDetailsActivity;
 import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
+import com.kvest.odessatoday.ui.activity.OnBackPressedListener;
 import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.util.Calendar;
@@ -24,7 +25,8 @@ import java.util.concurrent.TimeUnit;
 public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSelectedListener,
                                                         FilmsListFragment.FilmSelectedListener,
                                                         FilmsListFragment.ShowCalendarListener,
-                                                        AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener {
+                                                        AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
+                                                        OnBackPressedListener {
     private long shownFilmsDate;
     private final Calendar calendar = Calendar.getInstance();
     private FrameLayout calendarContainer;
@@ -107,14 +109,15 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
         });
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if (isCalendarShown()) {
-//            hideCalendar();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
+    @Override
+    public boolean onBackPressed() {
+        if (isCalendarShown()) {
+            hideCalendar();
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private void showFilmsByDate(long date) {
         shownFilmsDate = Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
