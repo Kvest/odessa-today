@@ -73,6 +73,13 @@ public class CalendarFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        onDateSelectedListener = null;
+    }
+
     public void setOnDateSelectedListener(OnDateSelectedListener onDateSelectedListener) {
         this.onDateSelectedListener = onDateSelectedListener;
     }

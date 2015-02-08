@@ -64,6 +64,17 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        cinemaSelectedListener = null;
+    }
+
+    public void setCinemaSelectedListener(CinemaSelectedListener cinemaSelectedListener) {
+        this.cinemaSelectedListener = cinemaSelectedListener;
+    }
+
     private void init(View rootView) {
         cinemasList = (ListView) rootView.findViewById(R.id.cinemas_list);
         cinemasList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -77,7 +77,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        View root = inflater.inflate(R.layout.films_fragment, container, false);
+        View root = inflater.inflate(R.layout.films_list_fragment, container, false);
 
         init(root);
 
@@ -105,6 +105,22 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
         long endDate = TimeUtils.getEndOfTheDay(startDate);
 
         NetworkService.loadFilms(activity, startDate, endDate);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        showCalendarListener = null;
+        filmSelectedListener = null;
+    }
+
+    public void setShowCalendarListener(ShowCalendarListener showCalendarListener) {
+        this.showCalendarListener = showCalendarListener;
+    }
+
+    public void setFilmSelectedListener(FilmSelectedListener filmSelectedListener) {
+        this.filmSelectedListener = filmSelectedListener;
     }
 
     @Override

@@ -88,6 +88,17 @@ public class AnnouncementFilmsListFragment extends Fragment implements LoaderMan
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+
+        announcementFilmSelectedListener = null;
+    }
+
+    public void setAnnouncementFilmSelectedListener(AnnouncementFilmSelectedListener announcementFilmSelectedListener) {
+        this.announcementFilmSelectedListener = announcementFilmSelectedListener;
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ANNOUNCEMENTS_LOADER_ID :
