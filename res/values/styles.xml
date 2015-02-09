@@ -7,6 +7,10 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_ab_back_white</item>
     </style>
 
+    <style name="MainActivityTheme" parent="OdessaTodayTheme">
+        <item name="android:homeAsUpIndicator">@drawable/ic_navigation_drawer</item>
+    </style>
+
     <!-- ActionBar styles -->
     <style name="OdessaTodayActionBar"
            parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">

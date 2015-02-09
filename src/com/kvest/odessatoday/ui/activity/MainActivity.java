@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
@@ -32,6 +33,9 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
+
+        //setup action bar
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         init();
 
@@ -60,6 +64,16 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
 
         //sync data
         NetworkService.sync(getApplicationContext());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            slidingMenu.toggle();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
