@@ -3,9 +3,7 @@ package com.kvest.odessatoday.ui.fragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -62,9 +60,26 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
         return root;
     }
 
-    private void init(View view) {
-        setHasOptionsMenu(true);
+    @Override
+    public void onDestroy() {
+        //workaround - we need to delete subfragments manually
+        if (!getActivity().isFinishing()) {
+            //delete subfragment
+            Fragment subfragment = getFragmentManager().findFragmentById(R.id.subfragment_container);
+            if (subfragment != null) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                try {
+                    transaction.detach(subfragment);
+                } finally {
+                    transaction.commitAllowingStateLoss();
+                }
+            }
+        }
 
+        super.onDestroy();
+    }
+
+    private void init(View view) {
         calendarContainer = (FrameLayout)view.findViewById(R.id.calendar_container);
         calendarContainer.setVisibility(View.INVISIBLE);
         calendarContainer.setOnClickListener(new View.OnClickListener() {

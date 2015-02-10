@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
             return true;
         }
 
-        return super.onOptionsItemSelected(item);    //To change body of overridden methods use File | Settings | File Templates.
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         try {
-            transaction.setCustomAnimations(R.anim.slide_right_in, R.anim.slide_right_out);
+            transaction.setCustomAnimations(R.anim.fade_in, 0);
             transaction.replace(R.id.fragment_container, fragment);
         } finally {
             transaction.commit();
@@ -136,9 +136,6 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
                 setTitle(R.string.menu_cinema);
                 break;
         }
-
-        //workaround - we need to update options menu
-        invalidateOptionsMenu();
 
         //close menu
         slidingMenu.showContent();

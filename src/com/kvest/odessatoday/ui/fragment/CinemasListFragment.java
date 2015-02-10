@@ -52,12 +52,6 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //workaround - we need to clear menu manually
-        menu.clear();
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
