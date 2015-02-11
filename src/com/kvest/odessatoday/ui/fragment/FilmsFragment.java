@@ -72,7 +72,7 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
                 if (subfragment != null) {
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     try {
-                        transaction.detach(subfragment);
+                        transaction.remove(subfragment);
                     } finally {
                         transaction.commitAllowingStateLoss();
                     }
