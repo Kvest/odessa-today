@@ -63,6 +63,8 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
     }
 
     private void init(View rootView) {
+        setHasOptionsMenu(true);
+
         cinemasList = (ListView) rootView.findViewById(R.id.cinemas_list);
         cinemasList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

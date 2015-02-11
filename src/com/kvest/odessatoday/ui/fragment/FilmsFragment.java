@@ -1,7 +1,9 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 import android.view.animation.Animation;
@@ -45,7 +47,7 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
 
         if (savedInstanceState == null) {
             //set content fragment
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getNestedFragmentManager().beginTransaction();
             try {
                 shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                 FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, true);
@@ -62,16 +64,18 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
 
     @Override
     public void onDestroy() {
-        //workaround - we need to delete subfragments manually
-        if (!getActivity().isFinishing()) {
-            //delete subfragment
-            Fragment subfragment = getFragmentManager().findFragmentById(R.id.subfragment_container);
-            if (subfragment != null) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                try {
-                    transaction.detach(subfragment);
-                } finally {
-                    transaction.commitAllowingStateLoss();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            //workaround - we need to delete subfragments manually
+            if (!getActivity().isFinishing()) {
+                //delete subfragment
+                Fragment subfragment = getFragmentManager().findFragmentById(R.id.subfragment_container);
+                if (subfragment != null) {
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    try {
+                        transaction.detach(subfragment);
+                    } finally {
+                        transaction.commitAllowingStateLoss();
+                    }
                 }
             }
         }
@@ -110,13 +114,13 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.timetable :
+                    case R.id.timetable:
                         switchToTimetable();
                         break;
-                    case R.id.cinemas :
+                    case R.id.cinemas:
                         switchToCinemas();
                         break;
-                    case R.id.announcements :
+                    case R.id.announcements:
                         switchToAnnouncements();
                         break;
                 }
@@ -134,6 +138,14 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
         }
     }
 
+    private FragmentManager getNestedFragmentManager() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return getChildFragmentManager();
+        } else {
+            return getFragmentManager();
+        }
+    }
+
     private void showFilmsByDate(long date) {
         shownFilmsDate = Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
         FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, TimeUtils.isCurrentDay(shownFilmsDate));
@@ -143,7 +155,7 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
     }
 
     private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getNestedFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out);
             transaction.replace(R.id.subfragment_container, fragment);
@@ -164,7 +176,7 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
     private void showCalendar(long selectedDate) {
         //set fragment
         if (calendarContainer != null && !isCalendarShown()) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getNestedFragmentManager().beginTransaction();
             try {
                 //create calendar fragment
                 calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(selectedDate));
