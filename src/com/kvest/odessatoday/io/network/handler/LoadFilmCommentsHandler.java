@@ -3,15 +3,12 @@ package com.kvest.odessatoday.io.network.handler;
 import android.content.Context;
 import android.content.Intent;
 import com.android.volley.toolbox.RequestFuture;
-import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
+import com.kvest.odessatoday.io.network.request.GetCommentsRequest;
 import com.kvest.odessatoday.io.network.request.GetFilmCommentsRequest;
 import com.kvest.odessatoday.io.network.response.GetCommentsResponse;
 import com.kvest.odessatoday.utils.Constants;
 
-import java.util.concurrent.ExecutionException;
-
-import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
  * Created by Kvest on 10.01.2015.
@@ -24,37 +21,27 @@ public class LoadFilmCommentsHandler extends LoadCommentsHandler {
     }
 
     @Override
-    public void processIntent(Context context, Intent intent) {
+    protected GetCommentsRequest createRequest(Intent intent, int offset, int limit, RequestFuture<GetCommentsResponse> future) {
         //get extra data
         long filmId = intent.getLongExtra(FILM_ID_EXTRA, -1);
 
-        RequestFuture<GetCommentsResponse> future = RequestFuture.newFuture();
-        GetFilmCommentsRequest request = new GetFilmCommentsRequest(filmId, future, future);
-        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
-        try {
-            GetCommentsResponse response = future.get();
-            if (response.isSuccessful()) {
-                //save comments
-                saveComments(context, response.data.comments, request.getTargetId(), request.getTargetType());
+        GetFilmCommentsRequest request = new GetFilmCommentsRequest(filmId, offset, limit, future, future);
+        return request;
+    }
 
-                //notify listeners about successful loading comments
-                sendLocalBroadcast(context, LoadCommentsNotification.createSuccessResult(filmId, Constants.CommentTargetType.FILM));
-            } else {
-                LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
+    @Override
+    protected void notifyError(Context context, String message, Intent intent) {
+        //get extra data
+        long filmId = intent.getLongExtra(FILM_ID_EXTRA, -1);
 
-                //notify listeners about unsuccessful loading comments
-                sendLocalBroadcast(context, LoadCommentsNotification.createErrorsResult(response.error, filmId, Constants.CommentTargetType.FILM));
-            }
-        } catch (InterruptedException e) {
-            LOGE(Constants.TAG, e.getLocalizedMessage());
+        sendLocalBroadcast(context, LoadCommentsNotification.createErrorsResult(message, filmId, Constants.CommentTargetType.FILM));
+    }
 
-            //notify listeners about unsuccessful loading comments
-            sendLocalBroadcast(context, LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), filmId, Constants.CommentTargetType.FILM));
-        } catch (ExecutionException e) {
-            LOGE(Constants.TAG, e.getLocalizedMessage());
+    @Override
+    protected void notifySuccess(Context context, Intent intent) {
+        //get extra data
+        long filmId = intent.getLongExtra(FILM_ID_EXTRA, -1);
 
-            //notify listeners about unsuccessful loading comments
-            sendLocalBroadcast(context, LoadCommentsNotification.createErrorsResult(e.getLocalizedMessage(), filmId, Constants.CommentTargetType.FILM));
-        }
+        sendLocalBroadcast(context, LoadCommentsNotification.createSuccessResult(filmId, Constants.CommentTargetType.FILM));
     }
 }

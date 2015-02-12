@@ -50,7 +50,27 @@ public class NetworkContract {
         return Uri.parse(BASE_URL + FILMS_PATH + "/" + Long.toString(filmId) + "/" + COMMENTS_PATH);
     }
 
+    public interface FilmCommentsRequest {
+        public int DEFAULT_OFFSET = 0;
+        public int MAX_LIMIT = 100;
+
+        public interface Params {
+            String OFFSET = "offset";
+            String LIMIT = "limit";
+        }
+    }
+
     public static Uri createCinemaCommentsUri(long cinemaId) {
         return Uri.parse(BASE_URL + CINEMAS_PATH + "/" + Long.toString(cinemaId) + "/" + COMMENTS_PATH);
+    }
+
+    public interface CinemaCommentsRequest {
+        public int DEFAULT_OFFSET = 0;
+        public int MAX_LIMIT = 100;
+
+        public interface Params {
+            String OFFSET = "offset";
+            String LIMIT = "limit";
+        }
     }
 }

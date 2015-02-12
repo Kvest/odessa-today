@@ -45,7 +45,7 @@ public class GetAnnouncementsRequest extends BaseRequest<GetAnnouncementsRespons
             builder.appendQueryParameter(NetworkContract.AnnouncementRequest.Params.OFFSET, Integer.toString(offset));
         }
         if (limit >= 0) {
-            builder.appendQueryParameter(NetworkContract.AnnouncementRequest.Params.LIMIT, Long.toString(limit));
+            builder.appendQueryParameter(NetworkContract.AnnouncementRequest.Params.LIMIT, Integer.toString(limit));
         }
 
         return builder.build().toString();

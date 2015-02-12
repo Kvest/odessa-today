@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.io.network.request;
 
+import android.net.Uri;
 import com.android.volley.Response;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.GetCommentsResponse;
@@ -15,9 +16,9 @@ import com.kvest.odessatoday.utils.Constants;
 public class GetCinemaCommentsRequest extends GetCommentsRequest {
     private long cinemaId;
 
-    public GetCinemaCommentsRequest(long cinemaId,Response.Listener<GetCommentsResponse> listener,
+    public GetCinemaCommentsRequest(long cinemaId, int offset, int limit, Response.Listener<GetCommentsResponse> listener,
                                     Response.ErrorListener errorListener) {
-        super(NetworkContract.createCinemaCommentsUri(cinemaId).toString(), listener, errorListener);
+        super(generateUrl(cinemaId, offset, limit).toString(), listener, errorListener);
 
         this.cinemaId = cinemaId;
     }
@@ -30,5 +31,18 @@ public class GetCinemaCommentsRequest extends GetCommentsRequest {
     @Override
     public int getTargetType() {
         return Constants.CommentTargetType.CINEMA;
+    }
+
+    private static String generateUrl(long cinemaId, int offset, int limit) {
+        Uri.Builder builder = NetworkContract.createCinemaCommentsUri(cinemaId).buildUpon();
+
+        if (offset >= 0) {
+            builder.appendQueryParameter(NetworkContract.CinemaCommentsRequest.Params.OFFSET, Integer.toString(offset));
+        }
+        if (limit >= 0) {
+            builder.appendQueryParameter(NetworkContract.CinemaCommentsRequest.Params.LIMIT, Integer.toString(limit));
+        }
+
+        return builder.build().toString();
     }
 }
