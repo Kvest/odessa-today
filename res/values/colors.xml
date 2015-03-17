@@ -49,7 +49,7 @@
     <color name="cinema_details_name_text_color">#000000</color>
     <color name="cinema_details_bg">#ffffff</color>
     <color name="cinema_details_list_bg">#e8e9eb</color>
-    <color name="cinema_details_row_date2_text_color">#98cb00</color>
+    <color name="cinema_details_row_date_text_color">#98cb00</color>
 
     <!--complex date colors-->
     <color name="complex_date_text_color">#ffffff</color>
