@@ -126,6 +126,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
                 startActivity(startIntent);
             }
         };
+        filmPoster.setOnClickListener(onPosterClickListener);
     }
 
     private void initYoutubePlayer() {
