@@ -55,7 +55,11 @@ public class FilmDetailsActivity extends Activity implements FilmDetailsFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            if (getFragmentManager().getBackStackEntryCount() == 0) {
+                finish();
+            } else {
+                getFragmentManager().popBackStack();
+            }
             return true;
         }
 
