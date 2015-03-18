@@ -8,7 +8,7 @@
     </style>
 
     <style name="MainActivityTheme" parent="OdessaTodayTheme">
-        <item name="android:homeAsUpIndicator">@drawable/ic_navigation_drawer</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_navigation_drawer_with_padding</item>
     </style>
 
     <!-- ActionBar styles -->

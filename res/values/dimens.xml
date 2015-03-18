@@ -23,6 +23,7 @@
     <dimen name="film_duration_text_size">16sp</dimen>
     <dimen name="comments_count_margin_right">4dip</dimen>
     <dimen name="film_format_icon_size">32dip</dimen>
+    <dimen name="menu_icon_size">24dip</dimen>
 
     <dimen name="films_date_label_height">30dip</dimen>
     <dimen name="films_date_label_horizontal_padding">12dip</dimen>
