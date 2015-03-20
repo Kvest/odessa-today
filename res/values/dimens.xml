@@ -81,7 +81,9 @@
     <dimen name="cinemas_list_divider_height">1dip</dimen>
     <dimen name="cinemas_list_item_padding">12dip</dimen>
     <dimen name="cinema_name_text_size">18sp</dimen>
-    <dimen name="cinema_address_text_size">16sp</dimen>
+    <dimen name="cinema_address_text_size">14sp</dimen>
+    <dimen name="cinemas_list_comments_count_text_size">14dip</dimen>
+    <dimen name="cinemas_list_comments_count_margin_top">8dip</dimen>
 
     <!--cinema details-->
     <dimen name="cinema_details_name_text_size">24sp</dimen>

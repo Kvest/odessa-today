@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.FontUtils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -22,18 +23,20 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  */
 public class CinemasAdapter extends CursorAdapter {
     public static final String[] PROJECTION = new String[]{Tables.Cinemas.Columns.CINEMA_ID + " as " + Tables.Cinemas.Columns._ID,
-                                                           Tables.Cinemas.Columns.NAME, Tables.Cinemas.Columns.ADDRESS};
+                                                           Tables.Cinemas.Columns.NAME, Tables.Cinemas.Columns.ADDRESS,
+                                                           Tables.Cinemas.Columns.COMMENTS_COUNT};
 
     private int nameColumnIndex = -1;
     private int addressColumnIndex = -1;
+    private int commentsCountColumnIndex = -1;
 
-    private Typeface robotoLightTypeface;
+    private Typeface verandaRegularTypeface;
 
     public CinemasAdapter(Context context) {
         super(context, null, 0);
 
-        //create typeface
-        robotoLightTypeface = Typeface.create(Constants.ROBOTO_LIGHT_FONT_NAME, Typeface.NORMAL);
+        //retrieve font for address and comments
+        verandaRegularTypeface = FontUtils.getFont(context.getAssets(), FontUtils.VERANDA_REGULAR_FONT);
     }
 
     @Override
@@ -45,8 +48,14 @@ public class CinemasAdapter extends CursorAdapter {
         //create holder
         ViewHolder holder = new ViewHolder();
         holder.name = (TextView)view.findViewById(R.id.cinema_name);
-        holder.name.setTypeface(robotoLightTypeface);
         holder.address = (TextView)view.findViewById(R.id.cinema_address);
+        holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
+
+        //set fonts
+        holder.address.setTypeface(verandaRegularTypeface);
+        holder.commentsCount.setTypeface(verandaRegularTypeface);
+        ((TextView)view.findViewById(R.id.comments_count_label)).setTypeface(verandaRegularTypeface);
+
         view.setTag(holder);
 
         return view;
@@ -61,6 +70,7 @@ public class CinemasAdapter extends CursorAdapter {
 
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.address.setText(cursor.getString(addressColumnIndex));
+        holder.commentsCount.setText(Integer.toString(cursor.getInt(commentsCountColumnIndex)));
     }
 
     private boolean isColumnIndexesCalculated() {
@@ -70,10 +80,12 @@ public class CinemasAdapter extends CursorAdapter {
     private void calculateColumnIndexes(Cursor cursor) {
         nameColumnIndex = cursor.getColumnIndex(Tables.Cinemas.Columns.NAME);
         addressColumnIndex = cursor.getColumnIndex(Tables.Cinemas.Columns.ADDRESS);
+        commentsCountColumnIndex = cursor.getColumnIndex(Tables.Cinemas.Columns.COMMENTS_COUNT);
     }
 
     private static class ViewHolder {
         private TextView name;
         private TextView address;
+        private TextView commentsCount;
     }
 }

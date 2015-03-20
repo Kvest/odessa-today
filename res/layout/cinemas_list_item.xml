@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:weightSum="1"
     android:padding="@dimen/cinemas_list_item_padding" >
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1">
@@ -15,18 +14,45 @@
             android:id="@+id/cinema_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
             android:textSize="@dimen/cinema_name_text_size"
-            android:textColor="@color/cinema_name_text_color"/>
+            android:textColor="@color/cinema_name_text_color" />
         <TextView
             android:id="@+id/cinema_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/cinema_address_text_size"/>
-    </LinearLayout>
+            android:layout_below="@id/cinema_name"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="-4dip"
+            android:textSize="@dimen/cinema_address_text_size"
+            android:textColor="@color/cinema_address_text_color"/>
+        <TextView
+            android:id="@+id/comments_count"
+            android:layout_below="@id/cinema_address"
+            android:layout_alignParentLeft="true"
+            style="@style/CommentsCountLabel"
+            android:textSize="@dimen/cinemas_list_comments_count_text_size"
+            android:textColor="@color/cinemas_list_comments_count_text_color"
+            android:layout_marginRight="@dimen/comments_count_margin_right"
+            android:layout_marginTop="@dimen/cinemas_list_comments_count_margin_top"/>
+        <TextView
+            android:id="@+id/comments_count_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/comments_count"
+            android:layout_toRightOf="@id/comments_count"
+            android:textSize="@dimen/cinemas_list_comments_count_text_size"
+            android:textColor="@color/cinemas_list_comments_count_bg_color"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="@string/comments"/>
+    </RelativeLayout>
     <ImageView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="4dip"
+        android:tint="@color/cinemas_list_arrow_tint"
         android:src="@drawable/ic_arrow_details" />
 </LinearLayout>
