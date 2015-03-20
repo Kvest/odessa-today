@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Odessa Today</string>
+    <string name="app_name">Одесса Сегодня</string>
     <string name="premiere">ПРЕМЬЕРА</string>
     <string name="select_date">Выбрать дату</string>
     <string name="today_marker">Сегодня,</string>
