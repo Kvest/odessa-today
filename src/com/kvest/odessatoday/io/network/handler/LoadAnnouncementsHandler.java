@@ -4,7 +4,7 @@ import android.content.*;
 import android.os.RemoteException;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.datamodel.Film;
+import com.kvest.odessatoday.datamodel.AnnouncementFilm;
 import com.kvest.odessatoday.io.network.notification.LoadAnnouncementFilmsNotification;
 import com.kvest.odessatoday.io.network.request.GetAnnouncementsRequest;
 import com.kvest.odessatoday.io.network.response.GetAnnouncementsResponse;
@@ -79,7 +79,7 @@ public class LoadAnnouncementsHandler extends RequestHandler {
         }
     }
 
-    private void saveAnnouncementFilms(Context context, List<Film> films, boolean deletePreviousAnnouncement) {
+    private void saveAnnouncementFilms(Context context, List<AnnouncementFilm> films, boolean deletePreviousAnnouncement) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(films.size() * 2 + (deletePreviousAnnouncement ? 1 : 0));
 
         if (deletePreviousAnnouncement) {
@@ -87,13 +87,16 @@ public class LoadAnnouncementsHandler extends RequestHandler {
             operations.add(deleteOperation);
         }
 
-        for (Film film : films) {
+        for (AnnouncementFilm film : films) {
             //insert film
             operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
 
-            //insert film id to metadata
-            ContentValues cv = new ContentValues(1);
+            //insert film id and premiere date to metadata
+            ContentValues cv = new ContentValues(2);
             cv.put(TodayProviderContract.Tables.AnnouncementsMetadata.Columns.FILM_ID, film.id);
+            if (film.premiere_date > 0) {
+                cv.put(TodayProviderContract.Tables.AnnouncementsMetadata.Columns.PREMIERE_DATE, film.premiere_date);
+            }
             operations.add(ContentProviderOperation.newInsert(ANNOUNCEMENT_FILMS_URI).withValues(cv).build());
         }
 

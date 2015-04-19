@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.io.network.datamodel;
 
+import com.kvest.odessatoday.datamodel.AnnouncementFilm;
 import com.kvest.odessatoday.datamodel.Film;
 
 import java.util.List;
@@ -13,5 +14,5 @@ import java.util.List;
  */
 public class GetAnnouncementsData {
     public int total_count;
-    public List<Film> films;
+    public List<AnnouncementFilm> films;
 }

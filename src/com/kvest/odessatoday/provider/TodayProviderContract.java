@@ -234,11 +234,13 @@ public class TodayProviderContract {
             String TABLE_NAME = "announcements_metadata";
             interface Columns extends BaseColumns {
                 String FILM_ID = "film_id";
+                String PREMIERE_DATE = "premiere_date";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
                     + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Columns.FILM_ID + " INTEGER,"
+                    + Columns.PREMIERE_DATE + " INTEGER,"
                     + "UNIQUE(" + Columns.FILM_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -270,6 +272,7 @@ public class TodayProviderContract {
                 String POSTERS = "posters";
                 String _ID1 = "_id:1";
                 String FILM_ID1 = "film_id:1";
+                String PREMIERE_DATE = "premiere_date";
             }
         }
     }
