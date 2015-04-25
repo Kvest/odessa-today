@@ -210,8 +210,7 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
     }
 
     protected void setFilmData(Cursor cursor) {
-        cursor.moveToFirst();
-        if (!cursor.isAfterLast()) {
+        if (cursor.moveToFirst()) {
             //set data
             String imageUrl = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.IMAGE));
             filmPoster.setImageUrl(imageUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());

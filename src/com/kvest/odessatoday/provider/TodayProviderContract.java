@@ -22,7 +22,7 @@ public class TodayProviderContract {
     static final String CINEMAS_PATH = "cinemas";
     static final String COMMENTS_PATH = "comments";
     static final String ANNOUNCEMENTS_PATH = "announcements";
-    static final String FILM_VIEW_PATH = "film_view";
+    static final String ANNOUNCEMENT_FILMS_VIEW_PATH = "announcement_films_view";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
     public static final Uri TIMETABLE_URI = Uri.withAppendedPath(FILMS_URI, TIMETABLE_PATH);
@@ -31,7 +31,7 @@ public class TodayProviderContract {
     public static final Uri CINEMAS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, CINEMAS_PATH);
     public static final Uri COMMENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, COMMENTS_PATH);
     public static final Uri ANNOUNCEMENT_FILMS_URI = Uri.withAppendedPath(FILMS_URI, ANNOUNCEMENTS_PATH);
-    public static final Uri ANNOUNCEMENT_FILMS_VIEW_URI = Uri.withAppendedPath(ANNOUNCEMENT_FILMS_URI, FILM_VIEW_PATH);
+    public static final Uri ANNOUNCEMENT_FILMS_VIEW_URI = Uri.withAppendedPath(ANNOUNCEMENT_FILMS_URI, ANNOUNCEMENT_FILMS_VIEW_PATH);
 
     public interface Tables {
         interface Films {

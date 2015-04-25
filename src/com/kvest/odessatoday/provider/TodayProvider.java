@@ -34,7 +34,7 @@ public class TodayProvider extends ContentProvider {
     private static final int CINEMA_TIMETABLE_LIST_URI_INDICATOR = 10;
     private static final int ANNOUNCEMENTS_LIST_URI_INDICATOR = 11;
     private static final int ANNOUNCEMENTS_ITEM_URI_INDICATOR = 12;
-    private static final int ANNOUNCEMENT_FILMS_LIST_URI_INDICATOR = 13;
+    private static final int ANNOUNCEMENT_FILMS_LIST_VIEW_URI_INDICATOR = 13;
 
     private static final UriMatcher uriMatcher;
     static {
@@ -51,7 +51,7 @@ public class TodayProvider extends ContentProvider {
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/" + CINEMA_VIEW_PATH, CINEMA_TIMETABLE_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + ANNOUNCEMENTS_PATH, ANNOUNCEMENTS_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + ANNOUNCEMENTS_PATH + "/#", ANNOUNCEMENTS_ITEM_URI_INDICATOR);
-        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + ANNOUNCEMENTS_PATH + "/" + FILM_VIEW_PATH, ANNOUNCEMENT_FILMS_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + ANNOUNCEMENTS_PATH + "/" + ANNOUNCEMENT_FILMS_VIEW_PATH, ANNOUNCEMENT_FILMS_LIST_VIEW_URI_INDICATOR);
     }
 
     @Override
@@ -68,41 +68,41 @@ public class TodayProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case FILM_LIST_URI_INDICATOR :
-                return queryFullTable( Tables.Films.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
+                return simpleQuery(Tables.Films.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
             case FILM_ITEM_URI_INDICATOR :
-                return queryFullTable(Tables.Films.TABLE_NAME , uri, projection,
+                return simpleQuery(Tables.Films.TABLE_NAME, uri, projection,
                         Tables.Films.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
             case TIMETABLE_LIST_URI_INDICATOR :
-                return queryFullTable(Tables.FilmsTimetable.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
+                return simpleQuery(Tables.FilmsTimetable.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
             case TIMETABLE_ITEM_URI_INDICATOR :
-                return queryFullTable(Tables.FilmsTimetable.TABLE_NAME , uri, projection,
+                return simpleQuery(Tables.FilmsTimetable.TABLE_NAME, uri, projection,
                         Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
             case CINEMA_LIST_URI_INDICATOR :
-                return queryFullTable(Tables.Cinemas.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
+                return simpleQuery(Tables.Cinemas.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
             case CINEMA_ITEM_URI_INDICATOR :
-                return queryFullTable(Tables.Cinemas.TABLE_NAME , uri, projection,
+                return simpleQuery(Tables.Cinemas.TABLE_NAME, uri, projection,
                         Tables.Cinemas.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
             case FULL_TIMETABLE_LIST_URI_INDICATOR :
-                return queryFullTable(Tables.FilmsFullTimetableView.VIEW_NAME , uri, projection, selection, selectionArgs, sortOrder);
+                return simpleQuery(Tables.FilmsFullTimetableView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
             case COMMENT_LIST_URI_INDICATOR :
-                return queryFullTable(Tables.Comments.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
+                return simpleQuery(Tables.Comments.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
             case COMMENT_ITEM_URI_INDICATOR :
-                return queryFullTable(Tables.Comments.TABLE_NAME, uri, projection,
+                return simpleQuery(Tables.Comments.TABLE_NAME, uri, projection,
                         Tables.Comments.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
             case CINEMA_TIMETABLE_LIST_URI_INDICATOR :
-                return queryFullTable(Tables.CinemaTimetableView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
+                return simpleQuery(Tables.CinemaTimetableView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
             case ANNOUNCEMENTS_LIST_URI_INDICATOR :
-                return queryFullTable(Tables.AnnouncementsMetadata.TABLE_NAME , uri, projection, selection, selectionArgs, sortOrder);
+                return simpleQuery(Tables.AnnouncementsMetadata.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
             case ANNOUNCEMENTS_ITEM_URI_INDICATOR :
-                return queryFullTable(Tables.AnnouncementsMetadata.TABLE_NAME, uri, projection,
+                return simpleQuery(Tables.AnnouncementsMetadata.TABLE_NAME, uri, projection,
                         Tables.AnnouncementsMetadata.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
-            case ANNOUNCEMENT_FILMS_LIST_URI_INDICATOR :
-                return queryFullTable(Tables.AnnouncementFilmsView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
+            case ANNOUNCEMENT_FILMS_LIST_VIEW_URI_INDICATOR :
+                return simpleQuery(Tables.AnnouncementFilmsView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
         }
 
         throw new IllegalArgumentException("Unknown uri for query : " + uri);
@@ -237,7 +237,7 @@ public class TodayProvider extends ContentProvider {
      * @param sortOrder How the rows in the cursor should be sorted. If null then the provider is free to define the sort order
      * @return Cursor to the data
      */
-    protected Cursor queryFullTable(String tableName, Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    private Cursor simpleQuery(String tableName, Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(tableName);
 
@@ -258,7 +258,7 @@ public class TodayProvider extends ContentProvider {
      * @param values A set of column_name/value pairs to add to the database. This must not be null.
      * @return The URI for the newly inserted item
      */
-    protected Uri simpleInsert(String tableName, Uri uri, ContentValues values) {
+    private Uri simpleInsert(String tableName, Uri uri, ContentValues values) {
         SQLiteDatabase db = sqlStorage.getWritableDatabase();
 
         long rowId = db.insert(tableName, null, values);
@@ -280,7 +280,7 @@ public class TodayProvider extends ContentProvider {
      * @param selectionArgs You may include ?s in selection, which will be replaced by the values from selectionArgs, in order that they appear in the selection. The values will be bound as Strings
      * @return The number of rows affected
      */
-    protected int simpleDelete(String tableName, Uri uri, String selection, String[] selectionArgs) {
+    private int simpleDelete(String tableName, Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = sqlStorage.getWritableDatabase();
 
         int rowsDeleted = db.delete(tableName, selection, selectionArgs);
@@ -300,7 +300,7 @@ public class TodayProvider extends ContentProvider {
      * @param selectionArgs You may include ?s in selection, which will be replaced by the values from selectionArgs, in order that they appear in the selection. The values will be bound as Strings
      * @return The number of rows affected
      */
-    protected int simpleUpdate(String tableName, Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    private int simpleUpdate(String tableName, Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase db = sqlStorage.getWritableDatabase();
         int rowsUpdated = db.update(tableName, values, selection, selectionArgs);
 

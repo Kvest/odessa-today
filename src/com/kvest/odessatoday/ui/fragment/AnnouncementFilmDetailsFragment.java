@@ -7,9 +7,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
+import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
+
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,10 +24,14 @@ import com.kvest.odessatoday.service.NetworkService;
  * To change this template use File | Settings | File Templates.
  */
 public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String PREMIERE_DATE_FORMAT_PATTERN = "dd MMMM yyyy";
+    private static final SimpleDateFormat PREMIERE_DATE_FORMAT = new SimpleDateFormat(PREMIERE_DATE_FORMAT_PATTERN);
     private static final int FILM_LOADER_ID = 1;
 
+    private TextView premiereDate;
+
     public static AnnouncementFilmDetailsFragment getInstance(long filmId) {
-        Bundle arguments = new Bundle(2);
+        Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
 
         AnnouncementFilmDetailsFragment result = new AnnouncementFilmDetailsFragment();
@@ -40,6 +49,32 @@ public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  im
     }
 
     @Override
+    protected void initFilmInfoView(View view) {
+        super.initFilmInfoView(view);
+
+        premiereDate = (TextView)view.findViewById(R.id.premiere_date);
+    }
+
+    @Override
+    public void setFilmData(Cursor cursor) {
+        super.setFilmData(cursor);
+
+        //generate data for share
+        if (!cursor.isAfterLast()) {
+            int premiereDateColumnIndex  = cursor.getColumnIndex(TodayProviderContract.Tables.AnnouncementFilmsView.Columns.PREMIERE_DATE);
+            if (!cursor.isNull(premiereDateColumnIndex)) {
+                long premiereDateValue = TimeUnit.SECONDS.toMillis(cursor.getLong(premiereDateColumnIndex));
+                String text = getString(R.string.premiere_date, PREMIERE_DATE_FORMAT.format(premiereDateValue));
+
+                premiereDate.setVisibility(View.VISIBLE);
+                premiereDate.setText(text);
+            } else {
+                premiereDate.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -50,17 +85,9 @@ public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  im
     }
 
     @Override
-    protected void initFilmInfoView(View view) {
-        super.initFilmInfoView(view);
-
-        //timetable date is used only for usual film details - hide it
-        view.findViewById(R.id.timetable_date_container).setVisibility(View.GONE);
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == FILM_LOADER_ID) {
-            return DataProviderHelper.getFilmLoader(getActivity(), getFilmId(), null);
+            return DataProviderHelper.getAnnouncementFilmLoader(getActivity(), getFilmId(), null);
         }
 
         return null;

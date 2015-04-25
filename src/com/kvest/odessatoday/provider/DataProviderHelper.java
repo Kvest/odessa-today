@@ -87,4 +87,10 @@ public abstract class DataProviderHelper {
     public static CursorLoader getAnnouncementFilmsLoader(Context context, String[] projection) {
         return new CursorLoader(context, ANNOUNCEMENT_FILMS_VIEW_URI, projection, null, null, null);
     }
+
+    public static CursorLoader getAnnouncementFilmLoader(Context context, long filmId, String[] projection) {
+        String selection = Tables.AnnouncementFilmsView.Columns.FILM_ID + "=?";
+        String[] selectionArgs = new String[]{Long.toString(filmId)};
+        return new CursorLoader(context, ANNOUNCEMENT_FILMS_VIEW_URI, projection, selection, selectionArgs, null);
+    }
 }
