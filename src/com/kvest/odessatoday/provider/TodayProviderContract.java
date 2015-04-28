@@ -274,6 +274,9 @@ public class TodayProviderContract {
                 String FILM_ID1 = "film_id:1";
                 String PREMIERE_DATE = "premiere_date";
             }
+
+            String PREMIERE_DATE_ORDER_DESC = AnnouncementFilmsView.Columns.PREMIERE_DATE + " DESC";
+            String PREMIERE_DATE_ORDER_ASC = AnnouncementFilmsView.Columns.PREMIERE_DATE + " ASC";
         }
     }
 }

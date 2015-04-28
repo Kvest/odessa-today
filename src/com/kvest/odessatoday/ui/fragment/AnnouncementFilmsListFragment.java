@@ -18,6 +18,7 @@ import com.kvest.odessatoday.ui.adapter.AnnouncementFilmsAdapter;
 import com.kvest.odessatoday.utils.Constants;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
+import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -102,7 +103,8 @@ public class AnnouncementFilmsListFragment extends Fragment implements LoaderMan
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ANNOUNCEMENTS_LOADER_ID :
-                return DataProviderHelper.getAnnouncementFilmsLoader(getActivity(), AnnouncementFilmsAdapter.PROJECTION);
+                return DataProviderHelper.getAnnouncementFilmsLoader(getActivity(), AnnouncementFilmsAdapter.PROJECTION,
+                                                                    Tables.AnnouncementFilmsView.PREMIERE_DATE_ORDER_ASC);
         }
         return null;
     }

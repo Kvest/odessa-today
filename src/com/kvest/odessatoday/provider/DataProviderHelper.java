@@ -84,8 +84,8 @@ public abstract class DataProviderHelper {
         return new CursorLoader(context, CINEMAS_URI, projection, selection, new String[]{Long.toString(cinemaId)}, null);
     }
 
-    public static CursorLoader getAnnouncementFilmsLoader(Context context, String[] projection) {
-        return new CursorLoader(context, ANNOUNCEMENT_FILMS_VIEW_URI, projection, null, null, null);
+    public static CursorLoader getAnnouncementFilmsLoader(Context context, String[] projection, String order) {
+        return new CursorLoader(context, ANNOUNCEMENT_FILMS_VIEW_URI, projection, null, null, order);
     }
 
     public static CursorLoader getAnnouncementFilmLoader(Context context, long filmId, String[] projection) {
