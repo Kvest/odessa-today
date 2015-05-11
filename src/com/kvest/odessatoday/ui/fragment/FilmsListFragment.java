@@ -21,7 +21,6 @@ import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.utils.LogUtils.*;
@@ -39,12 +38,16 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     private static final String DATE_FORMAT_PATTERN = "cccc, dd MMMM";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
+    private long date = 0;
+    private boolean isForToday = false;
+
     private FilmsAdapter adapter;
 
     private ShowCalendarListener showCalendarListener;
     private FilmSelectedListener filmSelectedListener;
 
     private LoadFilmsNotificationReceiver receiver = new LoadFilmsNotificationReceiver();
+    private TextView dateTextView;
 
     public static FilmsListFragment getInstance(long date, boolean isForToday) {
         Bundle arguments = new Bundle(2);
@@ -88,6 +91,13 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+        //get initial data
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            date = arguments.getLong(ARGUMENT_DATE, 0);
+            isForToday = arguments.getBoolean(ARGUMENT_FOR_TODAY, false);
+        }
+
         try {
             showCalendarListener = (ShowCalendarListener) activity;
         } catch (ClassCastException cce) {
@@ -100,11 +110,15 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
             LOGE(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.FilmSelectedListener");
         }
 
-        //reload films data
-        long startDate = getDate();
+        //load films data
+        loadFilmsData(activity);
+    }
+
+    private void loadFilmsData(Context context) {
+        long startDate = date;
         long endDate = TimeUtils.getEndOfTheDay(startDate);
 
-        NetworkService.loadFilms(activity, startDate, endDate);
+        NetworkService.loadFilms(context, startDate, endDate);
     }
 
     @Override
@@ -154,7 +168,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case FILMS_LOADER_ID :
-                long startDate = getDate();
+                long startDate = date;
                 long endDate = TimeUtils.getEndOfTheDay(startDate);
 
                 return DataProviderHelper.getFilmsForPeriodLoader(getActivity(), startDate, endDate, FilmsAdapter.PROJECTION, null);
@@ -194,36 +208,40 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
         });
 
         //set date
-        Date date = new Date(TimeUnit.SECONDS.toMillis(getDate()));
-        StringBuilder sb = new StringBuilder();
-        if (isForToday()) {
-            sb.append(getActivity().getString(R.string.today_marker)).append(" ");
-        }
-        sb.append(DATE_FORMAT.format(date).toLowerCase());
-        TextView dateTextView = (TextView)root.findViewById(R.id.date);
-        dateTextView.setText(sb.toString());
+        dateTextView = (TextView)root.findViewById(R.id.date);
+        dateTextView.setText(createDateString());
 
         //create and set an adapter
         adapter = new FilmsAdapter(getActivity());
         filmsList.setAdapter(adapter);
     }
 
-    private boolean isForToday() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            return arguments.getBoolean(ARGUMENT_FOR_TODAY, false);
-        } else {
-            return false;
+    public void changeDate(long date, boolean isForToday) {
+        this.date = date;
+        this.isForToday = isForToday;
+
+        //set date
+        dateTextView.setText(createDateString());
+
+        //reload content
+        getLoaderManager().restartLoader(FILMS_LOADER_ID, null, this);
+
+        //load films data
+        Activity activity = getActivity();
+        if (activity != null) {
+            loadFilmsData(activity);
         }
     }
 
-    private long getDate() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            return arguments.getLong(ARGUMENT_DATE, 0);
-        } else {
-            return 0;
+    private String createDateString() {
+        StringBuilder sb = new StringBuilder();
+
+        if (isForToday) {
+            sb.append(getActivity().getString(R.string.today_marker)).append(" ");
         }
+        sb.append(DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(date)).toLowerCase());
+
+        return sb.toString();
     }
 
     private class LoadFilmsNotificationReceiver extends BroadcastReceiver {

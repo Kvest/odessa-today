@@ -16,7 +16,8 @@ import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.*;
 
 public class MainActivity extends Activity implements MainMenuFragment.MainMenuItemSelectedListener,
-                                                        CinemasListFragment.CinemaSelectedListener{
+                                                        CinemasListFragment.CinemaSelectedListener,
+                                                        MainMenuController{
     private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
     private SlidingMenu slidingMenu;
 
@@ -99,6 +100,16 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         slidingMenu.setBehindOffsetRes(R.dimen.main_menu_behind_offset);
         slidingMenu.setFadeEnabled(false);
+    }
+
+    @Override
+    public void lockMenuSliding() {
+        slidingMenu.setSlidingEnabled(false);
+    }
+
+    @Override
+    public void unlockMenuSliding() {
+        slidingMenu.setSlidingEnabled(true);
     }
 
     @Override
