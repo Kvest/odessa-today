@@ -13,12 +13,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
 import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +33,8 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * Time: 11:26
  * To change this template use File | Settings | File Templates.
  */
-public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                          SlidingUpPanelLayout.PanelSlideListener {
     private static final String STORAGE_NAME = "com.skylion.quezzle.SettingsSPStorage.SETTINGS";
 
 
@@ -42,13 +45,14 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     private ListView commentsList;
     private CommentsAdapter adapter;
 
-    private View addCommentPanel;
-    private Animation showCommentPanelAnimation;
-    private Animation hideCommentPanelAnimation;
+    private Animation openPanelIconUp;
+    private Animation openPanelIconDown;
+
+    private SlidingUpPanelLayout slidingUpPanelLayout;
 
     private EditText commentName;
     private EditText commentText;
-    private ImageButton hideCommentPanelButton;
+    private ImageView openPanelIcon;
     private ImageButton sendCommentButton;
 
     public static CommentsFragment getInstance(int targetType, long targetId) {
@@ -66,26 +70,8 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
         View rootView = inflater.inflate(R.layout.comments_fragment, container, false);
 
         init(rootView);
-        setHasOptionsMenu(true);
 
         return rootView;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.comments_fragment_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_comment:
-                showAddCommentPanel();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -97,10 +83,11 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void init(View rootView) {
         //store widgets
-        addCommentPanel = rootView.findViewById(R.id.add_comment_panel);
+        slidingUpPanelLayout = (SlidingUpPanelLayout) rootView.findViewById(R.id.sliding_layout);
+        slidingUpPanelLayout.setPanelSlideListener(this);
         commentName = (EditText)rootView.findViewById(R.id.comment_name);
         commentText = (EditText)rootView.findViewById(R.id.comment_text);
-        hideCommentPanelButton = (ImageButton)rootView.findViewById(R.id.hide);
+        openPanelIcon = (ImageView)rootView.findViewById(R.id.open_panel_icon);
         sendCommentButton = (ImageButton)rootView.findViewById(R.id.send);
 
         commentName.setText(SettingsSPStorage.getCommentAuthorName(getActivity()));
@@ -112,66 +99,67 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
         adapter = new CommentsAdapter(getActivity());
         commentsList.setAdapter(adapter);
 
-        //create animations
-        showCommentPanelAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.add_comment_panel_up);
-        showCommentPanelAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                //open keyboard
-                Context context = getActivity();
-                if (context != null) {
-                    if (TextUtils.isEmpty(commentName.getText())) {
-                        commentName.requestFocus();
-                        KeyboardUtils.showKeyboard(context, commentName);
-                    } else {
-                        commentText.requestFocus();
-                        KeyboardUtils.showKeyboard(context, commentText);
-                    }
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        hideCommentPanelAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.add_comment_panel_down);
-        hideCommentPanelAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                addCommentPanel.setVisibility(View.INVISIBLE);
-
-                Activity activity = getActivity();
-                if (activity != null) {
-                    KeyboardUtils.hideKeyboard(activity, activity.getCurrentFocus());
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
+        //load animations
+        openPanelIconUp = AnimationUtils.loadAnimation(getActivity(), R.anim.open_panel_icon_up);
+        openPanelIconDown = AnimationUtils.loadAnimation(getActivity(), R.anim.open_panel_icon_down);
 
         sendCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (sendComment()) {
-                    hideAddCommentPanel();
+                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
             }
         });
-
-        hideCommentPanelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideAddCommentPanel();
-            }
-        });
     }
+
+    @Override
+    public void onPanelSlide(View panel, float slideOffset) {}
+
+    @Override
+    public void onPanelCollapsed(View panel) {
+        sendCommentButton.setVisibility(View.INVISIBLE);
+
+        Activity activity = getActivity();
+        if (activity != null) {
+            KeyboardUtils.hideKeyboard(activity, activity.getCurrentFocus());
+        }
+
+        //workaround - update the size of the comments list. Otherwise it will be shown only on the part of the screen
+        commentsList.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+        commentsList.requestLayout();
+
+        //animate arrow
+        openPanelIcon.clearAnimation();
+        openPanelIcon.startAnimation(openPanelIconDown);
+    }
+
+    @Override
+    public void onPanelExpanded(View panel) {
+        sendCommentButton.setVisibility(View.VISIBLE);
+
+        //open keyboard
+        Context context = getActivity();
+        if (context != null) {
+            if (TextUtils.isEmpty(commentName.getText())) {
+                commentName.requestFocus();
+                KeyboardUtils.showKeyboard(context, commentName);
+            } else {
+                commentText.requestFocus();
+                KeyboardUtils.showKeyboard(context, commentText);
+            }
+        }
+
+        //animate arrow
+        openPanelIcon.clearAnimation();
+        openPanelIcon.startAnimation(openPanelIconUp);
+    }
+
+    @Override
+    public void onPanelAnchored(View panel) {}
+
+    @Override
+    public void onPanelHidden(View panel) {}
 
     private boolean sendComment() {
         Context context = getActivity();
@@ -214,29 +202,6 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     private String getCommentName() {
         return commentName.getText().toString().trim();
-    }
-
-    private void showAddCommentPanel() {
-        if (!isAddCommentPanelShown()) {
-            //set visible
-            addCommentPanel.setVisibility(View.VISIBLE);
-
-            //animate
-            addCommentPanel.clearAnimation();
-            addCommentPanel.startAnimation(showCommentPanelAnimation);
-        }
-    }
-
-    private void hideAddCommentPanel() {
-        if (isAddCommentPanelShown()) {
-            //animate
-            addCommentPanel.clearAnimation();
-            addCommentPanel.startAnimation(hideCommentPanelAnimation);
-        }
-    }
-
-    private boolean isAddCommentPanelShown() {
-        return addCommentPanel.getVisibility() == View.VISIBLE;
     }
 
     private long getTargetId() {

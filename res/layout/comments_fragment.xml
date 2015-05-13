@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="@dimen/add_comment_panel_header_height">
     <ListView
         android:id="@+id/comments_list"
         android:layout_width="match_parent"
@@ -17,18 +22,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/application_green"
-        android:visibility="invisible"
         android:layout_gravity="bottom">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/add_comment_panel_header_height"
             android:orientation="horizontal"
             android:weightSum="1">
-            <ImageButton
-                android:id="@+id/hide"
+            <ImageView
+                android:id="@+id/open_panel_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/hide_comment_panel"
+                android:src="@drawable/ic_open_comment_panel"
+                android:scaleType="center"
                 android:background="@null"
                 android:minWidth="@dimen/add_comment_button_min_size"
                 android:minHeight="@dimen/add_comment_button_min_size"
@@ -46,7 +51,8 @@
                 android:id="@+id/send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/send_comment"
+                android:visibility="invisible"
+                android:src="@drawable/ic_send_comment"
                 android:background="@null"
                 android:minWidth="@dimen/add_comment_button_min_size"
                 android:minHeight="@dimen/add_comment_button_min_size"
@@ -74,4 +80,4 @@
             android:inputType="textMultiLine"
             android:scrollbars="vertical"/>
     </LinearLayout>
-</FrameLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

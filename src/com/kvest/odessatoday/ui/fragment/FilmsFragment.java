@@ -21,6 +21,7 @@ import com.kvest.odessatoday.ui.adapter.FragmentPagerAdapter;
 import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
