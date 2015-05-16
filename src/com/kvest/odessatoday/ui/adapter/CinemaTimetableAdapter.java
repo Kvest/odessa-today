@@ -33,7 +33,7 @@ public class CinemaTimetableAdapter extends BaseAdapter {
                                                            CinemaTimetableView.Columns.DATE, CinemaTimetableView.Columns.PRICES,
                                                            CinemaTimetableView.Columns.FORMAT, CinemaTimetableView.Columns.FILM_ID};
     private static final String TIME_FORMAT_PATTERN = "HH:mm";
-    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
+    private final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
 
     private List<AbsItem> items;
     private LayoutInflater inflater;

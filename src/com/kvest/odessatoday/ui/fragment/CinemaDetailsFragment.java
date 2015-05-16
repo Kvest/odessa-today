@@ -45,8 +45,8 @@ public class CinemaDetailsFragment extends Fragment implements LoaderManager.Loa
 
     private static final String DATE_FORMAT_PATTERN = " dd MMM. yyyy, ";
     private static final String WEEK_DAY_FORMAT_PATTERN = "cccc";
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
-    private static final SimpleDateFormat WEEK_DAY_FORMAT = new SimpleDateFormat(WEEK_DAY_FORMAT_PATTERN);
+    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+    private final SimpleDateFormat WEEK_DAY_FORMAT = new SimpleDateFormat(WEEK_DAY_FORMAT_PATTERN);
 
     private static final int CINEMA_LOADER_ID = 1;
     private static final int COMMENTS_COUNT_LOADER_ID = 2;

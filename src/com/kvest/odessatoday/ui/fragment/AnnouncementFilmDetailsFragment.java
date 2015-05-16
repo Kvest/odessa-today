@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String PREMIERE_DATE_FORMAT_PATTERN = "dd MMMM yyyy";
-    private static final SimpleDateFormat PREMIERE_DATE_FORMAT = new SimpleDateFormat(PREMIERE_DATE_FORMAT_PATTERN);
+    private final SimpleDateFormat PREMIERE_DATE_FORMAT = new SimpleDateFormat(PREMIERE_DATE_FORMAT_PATTERN);
     private static final int FILM_LOADER_ID = 1;
 
     private TextView premiereDate;

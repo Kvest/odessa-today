@@ -30,7 +30,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  */
 public class AnnouncementFilmsAdapter extends CursorAdapter {
     private static final String PREMIERE_DATE_FORMAT_PATTERN = "dd MMMM yyyy";
-    private static final SimpleDateFormat PREMIERE_DATE_FORMAT = new SimpleDateFormat(PREMIERE_DATE_FORMAT_PATTERN);
+    private final SimpleDateFormat PREMIERE_DATE_FORMAT = new SimpleDateFormat(PREMIERE_DATE_FORMAT_PATTERN);
 
     public static final String[] PROJECTION = new String[]{Tables.AnnouncementFilmsView.Columns.FILM_ID + " as " + Tables.AnnouncementFilmsView.Columns._ID,
                                                            Tables.AnnouncementFilmsView.Columns.IMAGE, Tables.AnnouncementFilmsView.Columns.NAME,

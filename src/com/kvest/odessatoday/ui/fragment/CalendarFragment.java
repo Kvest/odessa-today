@@ -31,7 +31,7 @@ public class CalendarFragment extends Fragment {
     private static final String ARGUMENT_SELECTED_DATE_MONTH = "com.kvest.odessatoday.argument.SELECTED_DATE_MONTH";
     private static final String ARGUMENT_SELECTED_DATE_YEAR = "com.kvest.odessatoday.argument.SELECTED_DATE_YEAR";
     private static final String DATE_FORMAT_PATTERN = "LLLL yyyy";
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
     private Calendar calendar;
     private CalendarAdapter adapter;

@@ -36,7 +36,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
     private static final int FILMS_LOADER_ID = 1;
     private static final String DATE_FORMAT_PATTERN = "cccc, dd MMMM";
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
     private long date = 0;
     private boolean isForToday = false;

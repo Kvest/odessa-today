@@ -30,7 +30,7 @@ public class TimetableAdapter extends CursorAdapter {
                                                            Tables.FilmsFullTimetableView.Columns.CINEMA_ADDRESS, Tables.FilmsFullTimetableView.Columns.FORMAT,
                                                            Tables.FilmsFullTimetableView.Columns.CINEMA_ID};
     private static final String TIME_FORMAT_PATTERN = "HH:mm";
-    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
+    private final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
 
     private int cinemaIdIndex = -1;
     private int cinemaNameIndex = -1;

@@ -35,9 +35,6 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  */
 public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
                                                           SlidingUpPanelLayout.PanelSlideListener {
-    private static final String STORAGE_NAME = "com.skylion.quezzle.SettingsSPStorage.SETTINGS";
-
-
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
     private static final int COMMENTS_LOADER_ID = 1;

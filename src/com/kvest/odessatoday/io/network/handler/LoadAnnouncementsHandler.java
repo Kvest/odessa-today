@@ -5,6 +5,7 @@ import android.os.RemoteException;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.AnnouncementFilm;
+import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.notification.LoadAnnouncementFilmsNotification;
 import com.kvest.odessatoday.io.network.request.GetAnnouncementsRequest;
 import com.kvest.odessatoday.io.network.response.GetAnnouncementsResponse;
@@ -34,7 +35,7 @@ public class LoadAnnouncementsHandler extends RequestHandler {
         boolean loadedWithoutErrors = true;
         do {
             RequestFuture<GetAnnouncementsResponse> future = RequestFuture.newFuture();
-            GetAnnouncementsRequest request = new GetAnnouncementsRequest(offset, DEFAULT_ANNOUNCEMENTS_LIMIT, future, future);
+            GetAnnouncementsRequest request = new GetAnnouncementsRequest(offset, DEFAULT_ANNOUNCEMENTS_LIMIT, NetworkContract.AnnouncementRequest.ORDER_ASC, future, future);
             TodayApplication.getApplication().getVolleyHelper().addRequest(request);
             try {
                 GetAnnouncementsResponse response = future.get();

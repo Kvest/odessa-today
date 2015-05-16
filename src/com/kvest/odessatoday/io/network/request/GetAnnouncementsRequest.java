@@ -1,6 +1,7 @@
 package com.kvest.odessatoday.io.network.request;
 
 import android.net.Uri;
+import android.text.TextUtils;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -21,9 +22,9 @@ import java.io.UnsupportedEncodingException;
 public class GetAnnouncementsRequest extends BaseRequest<GetAnnouncementsResponse> {
     private static Gson gson = new Gson();
 
-    public GetAnnouncementsRequest(int offset, int limit, Response.Listener<GetAnnouncementsResponse> listener,
+    public GetAnnouncementsRequest(int offset, int limit, String order, Response.Listener<GetAnnouncementsResponse> listener,
                                    Response.ErrorListener errorListener) {
-        super(Method.GET, generateUrl(offset, limit), null, listener, errorListener);
+        super(Method.GET, generateUrl(offset, limit, order), null, listener, errorListener);
     }
 
     @Override
@@ -39,13 +40,16 @@ public class GetAnnouncementsRequest extends BaseRequest<GetAnnouncementsRespons
         }
     }
 
-    private static String generateUrl(int offset, int limit) {
+    private static String generateUrl(int offset, int limit, String order) {
         Uri.Builder builder = NetworkContract.AnnouncementRequest.url.buildUpon();
         if (offset >= 0) {
             builder.appendQueryParameter(NetworkContract.AnnouncementRequest.Params.OFFSET, Integer.toString(offset));
         }
         if (limit >= 0) {
             builder.appendQueryParameter(NetworkContract.AnnouncementRequest.Params.LIMIT, Integer.toString(limit));
+        }
+        if (!TextUtils.isEmpty(order)) {
+            builder.appendQueryParameter(NetworkContract.AnnouncementRequest.Params.ORDER, order);
         }
 
         return builder.build().toString();

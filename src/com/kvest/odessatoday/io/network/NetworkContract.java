@@ -35,7 +35,11 @@ public class NetworkContract {
         public interface Params {
             String OFFSET = "offset";
             String LIMIT = "limit";
+            String ORDER = "order";
         }
+
+        public static final String ORDER_ASC = "asc";
+        public static final String ORDER_DESC = "desc";
     }
 
     public interface CinemasRequest {
