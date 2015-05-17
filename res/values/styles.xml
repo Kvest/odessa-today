@@ -49,4 +49,13 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
+
+    <style name="WeekDayNameStyle" parent="android:Widget.TextView" >
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/week_day_name_text_color</item>
+        <item name="android:textSize">@dimen/calendar_days_text_size</item>
+    </style>
 </resources>

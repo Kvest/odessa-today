@@ -30,6 +30,43 @@
             android:layout_toRightOf="@id/previous_month"
             android:layout_toLeftOf="@id/next_month" />
     </RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/calendar_days_spacing"
+        android:paddingLeft="@dimen/calendar_padding"
+        android:paddingRight="@dimen/calendar_padding"
+        android:background="@color/calendar_bg"
+        android:weightSum="7">
+        <TextView
+            android:id="@+id/day_name_0"
+            style="@style/WeekDayNameStyle"
+            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+        <TextView
+            android:id="@+id/day_name_1"
+            style="@style/WeekDayNameStyle"
+            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+        <TextView
+            android:id="@+id/day_name_2"
+            style="@style/WeekDayNameStyle"
+            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+        <TextView
+            android:id="@+id/day_name_3"
+            style="@style/WeekDayNameStyle"
+            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+        <TextView
+            android:id="@+id/day_name_4"
+            style="@style/WeekDayNameStyle"
+            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+        <TextView
+            android:id="@+id/day_name_5"
+            style="@style/WeekDayNameStyle"
+            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+        <TextView
+            android:id="@+id/day_name_6"
+            style="@style/WeekDayNameStyle"/>
+    </LinearLayout>
     <GridView
         android:id="@+id/calendar_grid"
         android:layout_width="match_parent"
