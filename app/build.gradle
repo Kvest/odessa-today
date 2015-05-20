@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.kvest.odessatoday"
+        minSdkVersion 14
+        targetSdkVersion 21
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
+    compile files('libs/bugsense-3.6.1.jar')
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.sothree.slidinguppanel:library:3.0.0'
+    compile 'com.android.support:support-v4:22.1.1'
+    compile project(':slidingMenu')
+    compile project(':volley')
+}
