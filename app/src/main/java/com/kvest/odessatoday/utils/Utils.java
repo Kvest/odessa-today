@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -23,8 +24,8 @@ import java.lang.reflect.Method;
 public class Utils {
     public static String getDeviceId(Context context)
     {
-        //Android id
-        String deviceId = Settings.System.getString(context.getContentResolver(),Settings.System.ANDROID_ID);
+        //Serial number
+        String deviceId = Build.SERIAL;
         if (!TextUtils.isEmpty(deviceId)) {
             return deviceId;
         }
@@ -36,12 +37,8 @@ public class Utils {
             return deviceId;
         }
 
-        //Device serial id
-        try {
-            Class<?> c = Class.forName("android.os.SystemProperties");
-            Method get = c.getMethod("get", String.class);
-            deviceId = (String) get.invoke(c, "ro.serialno");
-        } catch (Exception ignored) { }
+        //Android id
+        deviceId = Settings.System.getString(context.getContentResolver(),Settings.System.ANDROID_ID);
         if (!TextUtils.isEmpty(deviceId)) {
             return deviceId;
         }
