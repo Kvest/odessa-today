@@ -1,11 +1,10 @@
 package com.kvest.odessatoday.ui.activity;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CommentsFragment;
@@ -19,7 +18,7 @@ import com.kvest.odessatoday.utils.Constants;
  * Time: 22:57
  * To change this template use File | Settings | File Templates.
  */
-public class FilmDetailsActivity extends Activity implements FilmDetailsFragment.OnShowFilmCommentsListener {
+public class FilmDetailsActivity extends AppCompatActivity implements FilmDetailsFragment.OnShowFilmCommentsListener {
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
     private static final String EXTRA_TIMETABLE_DATE = "com.kvest.odessatoday.extra.FILM_TIMETABLE_DATE";
 
@@ -36,13 +35,13 @@ public class FilmDetailsActivity extends Activity implements FilmDetailsFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {
             long filmId = intent.getLongExtra(EXTRA_FILM_ID, -1);
             long timetableDate = intent.getLongExtra(EXTRA_TIMETABLE_DATE, 0);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
                 FilmDetailsFragment filmDetailsFragment = FilmDetailsFragment.getInstance(filmId, timetableDate);
                 transaction.add(R.id.fragment_container, filmDetailsFragment);
@@ -68,7 +67,7 @@ public class FilmDetailsActivity extends Activity implements FilmDetailsFragment
 
     @Override
     public void onShowFilmComments(long filmId) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
             CommentsFragment commentsFragment = CommentsFragment.getInstance(Constants.CommentTargetType.FILM, filmId);

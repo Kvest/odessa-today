@@ -1,10 +1,10 @@
 package com.kvest.odessatoday.ui.activity;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.AnnouncementFilmDetailsFragment;
@@ -18,7 +18,7 @@ import com.kvest.odessatoday.utils.Constants;
  * Time: 12:08
  * To change this template use File | Settings | File Templates.
  */
-public class AnnouncementFilmDetailsActivity extends Activity implements AnnouncementFilmDetailsFragment.OnShowFilmCommentsListener {
+public class AnnouncementFilmDetailsActivity extends AppCompatActivity implements AnnouncementFilmDetailsFragment.OnShowFilmCommentsListener {
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
 
     public static Intent getStartIntent(Context context, long filmId) {
@@ -33,12 +33,12 @@ public class AnnouncementFilmDetailsActivity extends Activity implements Announc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {
             long filmId = intent.getLongExtra(EXTRA_FILM_ID, -1);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
                 AnnouncementFilmDetailsFragment fragment = AnnouncementFilmDetailsFragment.getInstance(filmId);
                 transaction.add(R.id.fragment_container, fragment);
@@ -64,7 +64,7 @@ public class AnnouncementFilmDetailsActivity extends Activity implements Announc
 
     @Override
     public void onShowFilmComments(long filmId) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
             CommentsFragment commentsFragment = CommentsFragment.getInstance(Constants.CommentTargetType.FILM, filmId);

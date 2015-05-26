@@ -1,11 +1,11 @@
 package com.kvest.odessatoday.ui.activity;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CinemaDetailsFragment;
@@ -20,7 +20,7 @@ import com.kvest.odessatoday.utils.Constants;
  * Time: 22:44
  * To change this template use File | Settings | File Templates.
  */
-public class CinemaDetailsActivity extends Activity implements CinemaDetailsFragment.CinemaDetailsActionsListener {
+public class CinemaDetailsActivity extends AppCompatActivity implements CinemaDetailsFragment.CinemaDetailsActionsListener {
     private static final String EXTRA_CINEMA_ID = "com.kvest.odessatoday.extra.CINEMA_ID";
 
     public static Intent getStartIntent(Context context, long cinemaId) {
@@ -35,12 +35,12 @@ public class CinemaDetailsActivity extends Activity implements CinemaDetailsFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {
             long cinemaId = intent.getLongExtra(EXTRA_CINEMA_ID, -1);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
                 CinemaDetailsFragment cinemaDetailsFragment = CinemaDetailsFragment.getInstance(cinemaId);
 
@@ -67,7 +67,7 @@ public class CinemaDetailsActivity extends Activity implements CinemaDetailsFrag
 
     @Override
     public void onShowCinemaComments(long cinemaId) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
             CommentsFragment commentsFragment = CommentsFragment.getInstance(Constants.CommentTargetType.CINEMA, cinemaId);
@@ -80,7 +80,7 @@ public class CinemaDetailsActivity extends Activity implements CinemaDetailsFrag
 
     @Override
     public void onShowCinemaPhotos(String[] photoURLs) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
             PhotoGalleryFragment photoGalleryFragment = PhotoGalleryFragment.getInstance(photoURLs);
@@ -93,7 +93,7 @@ public class CinemaDetailsActivity extends Activity implements CinemaDetailsFrag
 
     @Override
     public void onBackPressed() {
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (currentFragment != null && currentFragment instanceof CinemaDetailsFragment) {
             if (((CinemaDetailsFragment)currentFragment).onBackPressed()) {
                 return;

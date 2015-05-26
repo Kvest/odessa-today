@@ -8,13 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/calendar_header_height"
         android:background="@color/calendar_header_bg" >
-        <Button
+        <ImageView
             android:id="@+id/previous_month"
             android:layout_width="@dimen/calendar_navigation_button_width"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:background="@drawable/calendar_previous_month_bg" />
-        <Button
+        <ImageView
             android:id="@+id/next_month"
             android:layout_width="@dimen/calendar_navigation_button_width"
             android:layout_height="match_parent"

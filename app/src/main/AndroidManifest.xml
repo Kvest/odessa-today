@@ -19,7 +19,7 @@
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.NoActionBar">
+            android:theme="@style/OdessaTodayTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -42,6 +42,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.PhotoGalleryActivity"
+            android:theme="@style/OdessaTodayTheme.NoActionBar"
             android:screenOrientation="portrait"/>
 
         <provider

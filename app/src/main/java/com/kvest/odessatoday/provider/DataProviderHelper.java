@@ -2,7 +2,7 @@ package com.kvest.odessatoday.provider;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.CursorLoader;
+import android.support.v4.content.CursorLoader;
 import android.net.Uri;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;

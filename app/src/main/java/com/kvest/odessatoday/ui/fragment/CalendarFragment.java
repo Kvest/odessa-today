@@ -1,11 +1,11 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,7 +41,7 @@ public class CalendarFragment extends Fragment {
     private int shownMonthNumber;
     private int currentMonthNumber;
     private TextView shownMonthLabel;
-    private Button showPreviousMonthButton;
+    private View showPreviousMonthButton;
     private TextView[] dayNamesView;
 
     private OnDateSelectedListener onDateSelectedListener;
@@ -116,7 +116,7 @@ public class CalendarFragment extends Fragment {
                 showNextMonth();
             }
         });
-        showPreviousMonthButton = (Button) root.findViewById(R.id.previous_month);
+        showPreviousMonthButton = root.findViewById(R.id.previous_month);
         showPreviousMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,13 +1,13 @@
 package com.kvest.odessatoday.ui.activity;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kvest.odessatoday.R;
@@ -15,7 +15,7 @@ import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.*;
 
-public class MainActivity extends Activity implements MainMenuFragment.MainMenuItemSelectedListener,
+public class MainActivity extends AppCompatActivity implements MainMenuFragment.MainMenuItemSelectedListener,
                                                         CinemasListFragment.CinemaSelectedListener,
                                                         MainMenuController{
     private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
@@ -36,13 +36,13 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
         setContentView(R.layout.fragment_container);
 
         //setup action bar
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         init();
 
         if (savedInstanceState == null) {
             //set menu fragment
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
                 MainMenuFragment mainMenuFragment = MainMenuFragment.getInstance(MainMenuFragment.MENU_FILMS_ID);
                 transaction.add(R.id.menu_container, mainMenuFragment);
@@ -51,7 +51,7 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
             }
 
             //show films fragment
-            transaction = getFragmentManager().beginTransaction();
+            transaction = getSupportFragmentManager().beginTransaction();
             try {
                 FilmsFragment filmsFragment = FilmsFragment.getInstance();
                 transaction.add(R.id.fragment_container, filmsFragment);
@@ -115,7 +115,7 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
     @Override
     public void onBackPressed() {
         boolean processed = false;
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment instanceof OnBackPressedListener) {
             processed = ((OnBackPressedListener)fragment).onBackPressed();
         }
@@ -126,7 +126,7 @@ public class MainActivity extends Activity implements MainMenuFragment.MainMenuI
     }
 
     private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.fade_in, 0);
             transaction.replace(R.id.fragment_container, fragment);

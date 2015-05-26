@@ -1,8 +1,9 @@
 package com.kvest.odessatoday.ui.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+
 import com.kvest.odessatoday.R;
 
 /**
@@ -12,7 +13,7 @@ import com.kvest.odessatoday.R;
  * Time: 20:23
  * To change this template use File | Settings | File Templates.
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends AppCompatActivity {
     private static final int SPLASH_DELAY = 2000;
 
     private boolean isCanceled = false;

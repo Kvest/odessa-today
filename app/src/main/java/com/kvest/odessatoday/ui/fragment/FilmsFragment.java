@@ -1,11 +1,11 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.view.animation.Animation;
@@ -17,7 +17,6 @@ import com.kvest.odessatoday.ui.activity.AnnouncementFilmDetailsActivity;
 import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
 import com.kvest.odessatoday.ui.activity.MainMenuController;
 import com.kvest.odessatoday.ui.activity.OnBackPressedListener;
-import com.kvest.odessatoday.ui.adapter.FragmentPagerAdapter;
 import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.util.Calendar;
@@ -60,43 +59,8 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
 
         init(root);
 
-//        if (savedInstanceState == null) {
-//            //set content fragment
-//            FragmentTransaction transaction = getNestedFragmentManager().beginTransaction();
-//            try {
-//                shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-//                FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(shownFilmsDate, true);
-//                filmsListFragment.setFilmSelectedListener(this);
-//                filmsListFragment.setShowCalendarListener(this);
-//                transaction.add(R.id.subfragment_container, filmsListFragment);
-//            } finally {
-//                transaction.commit();
-//            }
-//        }
-
         return root;
     }
-
-//    @Override
-//    public void onDestroy() {
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            //workaround - we need to delete subfragments manually
-//            if (!getActivity().isFinishing()) {
-//                //delete subfragment
-//                Fragment subfragment = getFragmentManager().findFragmentById(R.id.subfragment_container);
-//                if (subfragment != null) {
-//                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                    try {
-//                        transaction.remove(subfragment);
-//                    } finally {
-//                        transaction.commitAllowingStateLoss();
-//                    }
-//                }
-//            }
-//        }
-//
-//        super.onDestroy();
-//    }
 
     private void init(View view) {
         fragmentsPager = (ViewPager) view.findViewById(R.id.view_pager);
@@ -134,7 +98,7 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
             public void onPageScrollStateChanged(int i) {}
         });
 
-        pagerAdapter = new FilmsFragmentPagerAdapter(getNestedFragmentManager());
+        pagerAdapter = new FilmsFragmentPagerAdapter(getChildFragmentManager());
         fragmentsPager.setAdapter(pagerAdapter);
 
         calendarContainer = (FrameLayout)view.findViewById(R.id.calendar_container);
@@ -212,14 +176,6 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
         }
     }
 
-    private FragmentManager getNestedFragmentManager() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return getChildFragmentManager();
-        } else {
-            return getFragmentManager();
-        }
-    }
-
     private void showFilmsByDate(long date) {
 
         shownFilmsDate = Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
@@ -242,7 +198,7 @@ public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSe
     private void showCalendar(long selectedDate) {
         //set fragment
         if (calendarContainer != null && !isCalendarShown()) {
-            FragmentTransaction transaction = getNestedFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             try {
                 //create calendar fragment
                 calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(selectedDate));

@@ -1,14 +1,13 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,7 +15,7 @@ import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
@@ -130,13 +129,13 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
     }
 
     private void initYoutubePlayer() {
-        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment)getNestedFragmentManager().findFragmentById(R.id.youtube_fragment_container);
+        YouTubePlayerSupportFragment youTubePlayerFragment = (YouTubePlayerSupportFragment)getChildFragmentManager().findFragmentById(R.id.youtube_fragment_container);
 
         //add new fragment if it is not exists
         if (youTubePlayerFragment == null) {
-            youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+            youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
 
-            FragmentTransaction transaction = getNestedFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             try {
                 transaction.add(R.id.youtube_fragment_container, youTubePlayerFragment);
             } finally {
@@ -146,27 +145,6 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
 
         //initialize player
         youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
-    }
-
-    @Override
-    public void onDestroyView() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            //workaround - we need to delete youtube fragment manually
-            if (!getActivity().isFinishing()) {
-                //delete subfragment
-                Fragment subfragment = getFragmentManager().findFragmentById(R.id.youtube_fragment_container);
-                if (subfragment != null) {
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    try {
-                        transaction.remove(subfragment);
-                    } finally {
-                        transaction.commitAllowingStateLoss();
-                    }
-                }
-            }
-        }
-
-        super.onDestroyView();
     }
 
     @Override
@@ -198,14 +176,6 @@ public abstract class BaseFilmDetailsFragment extends Fragment implements YouTub
             if (postersContainer.getChildCount() <= 1) {
                 postersContainer.setVisibility(View.GONE);
             }
-        }
-    }
-
-    private FragmentManager getNestedFragmentManager() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return getChildFragmentManager();
-        } else {
-            return getFragmentManager();
         }
     }
 

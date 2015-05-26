@@ -1,9 +1,8 @@
 package com.kvest.odessatoday.ui.fragment;
 
-import android.app.*;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,6 +10,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.*;
 import android.widget.*;
