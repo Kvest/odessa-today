@@ -2,9 +2,9 @@
 <resources>
     <!--Application style-->
     <style name="OdessaTodayTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/OdessaTodayActionBar</item>
+        <item name="actionBarStyle">@style/OdessaTodayActionBar</item>
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_ab_back_white</item>
+        <item name="homeAsUpIndicator">@drawable/ic_ab_back_white</item>
     </style>
 
     <style name="OdessaTodayTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -12,13 +12,13 @@
     </style>
 
     <style name="MainActivityTheme" parent="OdessaTodayTheme">
-        <item name="android:homeAsUpIndicator">@drawable/ic_navigation_drawer_with_padding</item>
+        <!--<item name="homeAsUpIndicator">@drawable/ic_navigation_drawer</item>-->
     </style>
 
     <!-- ActionBar styles -->
     <style name="OdessaTodayActionBar"
-           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/application_green</item>
+           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/application_green</item>
         <!--Hide app icon-->
         <item name="android:displayOptions">showTitle</item>
     </style>
