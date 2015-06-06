@@ -5,6 +5,7 @@
         <item name="actionBarStyle">@style/OdessaTodayActionBar</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="homeAsUpIndicator">@drawable/ic_ab_back_white</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="OdessaTodayTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -12,7 +13,7 @@
     </style>
 
     <style name="MainActivityTheme" parent="OdessaTodayTheme">
-        <!--<item name="homeAsUpIndicator">@drawable/ic_navigation_drawer</item>-->
+        <item name="homeAsUpIndicator">@drawable/ic_navigation_drawer</item>
     </style>
 
     <!-- ActionBar styles -->
