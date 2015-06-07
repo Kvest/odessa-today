@@ -47,7 +47,7 @@
 
     <!--film details-->
     <dimen name="film_details_padding">@dimen/application_padding</dimen>
-    <dimen name="film_details_poster__margin_right">12dip</dimen>
+    <dimen name="film_details_poster_margin_right">12dip</dimen>
     <dimen name="film_details_duration_text_size">14sp</dimen>
     <dimen name="film_details_divider_height">1dip</dimen>
     <dimen name="film_details_director_padding">8dip</dimen>
@@ -67,6 +67,7 @@
     <dimen name="min_max_prices_text_size">16sp</dimen>
     <dimen name="film_details_button_icon_margin_left">12dip</dimen>
     <dimen name="film_expand_text_divider_height">2dip</dimen>
+    <dimen name="film_details_button_text_size">18dip</dimen>
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>
@@ -100,7 +101,7 @@
     <dimen name="phones_container_margin_bottom">10dip</dimen>
     <dimen name="address_container_margin_bottom">10dip</dimen>
     <dimen name="show_on_map_min_size">40dip</dimen>
-
+    <dimen name="cinema_details_button_text_size">18dip</dimen>
 
     <dimen name="cinema_details_film_name_text_size">16sp</dimen>
     <dimen name="cinema_details_film_name_padding_top">14dip</dimen>

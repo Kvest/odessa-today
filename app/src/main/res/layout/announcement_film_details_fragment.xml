@@ -16,7 +16,7 @@
                 android:id="@+id/film_poster"
                 android:layout_width="@dimen/film_thumbnail_image_width"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/film_details_poster__margin_right" />
+                android:layout_marginRight="@dimen/film_details_poster_margin_right" />
             <TextView
                 android:id="@+id/film_name"
                 android:layout_width="match_parent"
@@ -121,11 +121,13 @@
                     android:gravity="center"
                     android:background="@drawable/green_button"
                     android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/film_details_button_text_size"
                     android:text="@string/comments"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
+                    android:elevation="3dip"
                     android:layout_marginLeft="@dimen/film_details_button_icon_margin_left"
                     android:src="@drawable/ic_add_comment"/>
             </FrameLayout>
@@ -142,11 +144,13 @@
                     android:gravity="center"
                     android:background="@drawable/green_button"
                     android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/film_details_button_text_size"
                     android:text="@string/tickets"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
+                    android:elevation="3dip"
                     android:layout_marginLeft="@dimen/film_details_button_icon_margin_left"
                     android:src="@drawable/ic_arrow_tickets"/>
             </FrameLayout>

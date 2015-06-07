@@ -86,7 +86,8 @@
             android:layout_weight="1"
             android:layout_marginRight="4dip"
             android:background="@drawable/green_button"
-            android:textColor="@color/button_text_color"/>
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/cinema_details_button_text_size"/>
         <Button
             android:id="@+id/show_photos"
             android:layout_width="0dip"
@@ -94,6 +95,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="4dip"
             android:background="@drawable/green_button"
-            android:textColor="@color/button_text_color"/>
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/cinema_details_button_text_size"/>
     </LinearLayout>
 </LinearLayout>

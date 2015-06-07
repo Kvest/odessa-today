@@ -30,14 +30,13 @@
             android:textSize="@dimen/complex_date_text_size" />
         <TextView
             android:id="@+id/week_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/complex_date_week_text_color"
-            android:textSize="@dimen/complex_date_week_text_size" />
-        <View
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:textColor="@color/complex_date_week_text_color"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_weight="1"
+            android:textSize="@dimen/complex_date_week_text_size" />
         <ImageView
             android:id="@+id/show_calendar"
             android:layout_width="wrap_content"
