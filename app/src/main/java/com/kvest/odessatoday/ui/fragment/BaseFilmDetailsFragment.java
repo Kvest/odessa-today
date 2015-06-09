@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.TextUtils;
@@ -33,7 +31,7 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  * Time: 17:07
  * To change this template use File | Settings | File Templates.
  */
-public abstract class BaseFilmDetailsFragment extends Fragment implements YouTubePlayer.OnInitializedListener {
+public abstract class BaseFilmDetailsFragment extends BaseFragment implements YouTubePlayer.OnInitializedListener {
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private static final String VIDEO_ID_PARAM = "v";
 

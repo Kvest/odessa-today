@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Kvest on 08.02.2015.
  */
-public class FilmsFragment extends Fragment implements CalendarFragment.OnDateSelectedListener,
+public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDateSelectedListener,
                                                         FilmsListFragment.FilmSelectedListener,
                                                         FilmsListFragment.ShowCalendarListener,
                                                         AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,

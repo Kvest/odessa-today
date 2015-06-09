@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
@@ -33,7 +32,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * Time: 11:26
  * To change this template use File | Settings | File Templates.
  */
-public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+public class CommentsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
                                                           SlidingUpPanelLayout.PanelSlideListener {
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";

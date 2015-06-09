@@ -3,7 +3,6 @@ package com.kvest.odessatoday.ui.fragment;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -27,7 +26,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * Time: 11:40
  * To change this template use File | Settings | File Templates.
  */
-public class AnnouncementFilmsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AnnouncementFilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int ANNOUNCEMENTS_LOADER_ID = 1;
 
     private AnnouncementFilmsAdapter adapter;

@@ -17,7 +17,7 @@ import com.kvest.odessatoday.ui.widget.CirclePagerIndicator;
  * Time: 16:39
  * To change this template use File | Settings | File Templates.
  */
-public class PhotoGalleryFragment extends Fragment {
+public class PhotoGalleryFragment extends BaseFragment {
     private static final String ARGUMENT_PHOTO_URLS = "com.kvest.odessatoday.argument.PHOTO_URLS";
 
     public static PhotoGalleryFragment getInstance(String[] photoURLs) {

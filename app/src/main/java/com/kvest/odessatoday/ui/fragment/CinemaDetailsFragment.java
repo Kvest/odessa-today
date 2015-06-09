@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -39,7 +38,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * Time: 21:45
  * To change this template use File | Settings | File Templates.
  */
-public class CinemaDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,CalendarFragment.OnDateSelectedListener {
+public class CinemaDetailsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,CalendarFragment.OnDateSelectedListener {
     private static final String ARGUMENT_CINEMA_ID = "com.kvest.odessatoday.argument.CINEMA_ID";
     public static final String[] COMMENTS_COUNT_PROJECTION = new String[]{Tables.Comments.COMMENTS_COUNT};
 

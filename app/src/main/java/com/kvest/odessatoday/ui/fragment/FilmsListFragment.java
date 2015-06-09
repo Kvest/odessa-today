@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
@@ -16,7 +16,6 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
@@ -36,7 +35,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * Time: 11:09
  * To change this template use File | Settings | File Templates.
  */
-public class FilmsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class FilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     private static final String ARGUMENT_FOR_TODAY = "com.kvest.odessatoday.argiment.FOR_TODAY";
     private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
     private static final int FILMS_LOADER_ID = 1;
@@ -119,6 +118,14 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
 
         //load films data
         loadFilmsData(activity);
+
+        //workaround - start showing progress
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(true);
+            }
+        });
     }
 
     private void loadFilmsData(Context context) {
@@ -212,6 +219,8 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
 
     private void init(View root) {
         refreshLayout = (SwipeRefreshLayout)root.findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setColorSchemeResources(R.color.application_green);
 
         //get list view for films
         ListView filmsList = (ListView) root.findViewById(R.id.films_list);
@@ -261,6 +270,15 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
         return sb.toString();
     }
 
+    @Override
+    public void onRefresh() {
+        //reload films data
+        Activity activity = getActivity();
+        if (activity != null) {
+            loadFilmsData(activity);
+        }
+    }
+
     private class LoadFilmsNotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -268,7 +286,7 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
 
             Activity activity = getActivity();
             if (!LoadFilmsNotification.isSuccessful(intent) && activity != null) {
-                Toast.makeText(activity, R.string.error_loading_films, Toast.LENGTH_SHORT).show();
+                showErrorSnackbar(activity, R.string.error_loading_cinemas);
             }
         }
     }

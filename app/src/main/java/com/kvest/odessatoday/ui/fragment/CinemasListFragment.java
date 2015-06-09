@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.notification.LoadCinemasNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
@@ -31,7 +29,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * Time: 22:29
  * To change this template use File | Settings | File Templates.
  */
-public class CinemasListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CinemasListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int CINEMAS_LOADER_ID = 1;
 
     private ListView cinemasList;
@@ -141,7 +139,7 @@ public class CinemasListFragment extends Fragment implements LoaderManager.Loade
         public void onReceive(Context context, Intent intent) {
             Activity activity = getActivity();
             if (!LoadCinemasNotification.isSuccessful(intent) && activity != null) {
-                Toast.makeText(activity, R.string.error_loading_cinemas, Toast.LENGTH_SHORT).show();
+                showErrorSnackbar(activity, R.string.error_loading_cinemas);
             }
         }
     }

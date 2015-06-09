@@ -30,6 +30,7 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:3.0.0'
     compile 'com.android.support:support-v4:22.+'
     compile 'com.android.support:appcompat-v7:22.+'
+    compile 'com.nispok:snackbar:2.10.+'
     compile project(':slidingMenu')
     compile project(':volley')
 }
