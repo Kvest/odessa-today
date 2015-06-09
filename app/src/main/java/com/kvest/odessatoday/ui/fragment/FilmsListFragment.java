@@ -120,12 +120,12 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         loadFilmsData(activity);
 
         //workaround - start showing progress
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.setRefreshing(true);
-            }
-        });
+//        new Handler().post(new Runnable() {
+//            @Override
+//            public void run() {
+//                refreshLayout.setRefreshing(true);
+//            }
+//        });
     }
 
     private void loadFilmsData(Context context) {
@@ -286,7 +286,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
 
             Activity activity = getActivity();
             if (!LoadFilmsNotification.isSuccessful(intent) && activity != null) {
-                showErrorSnackbar(activity, R.string.error_loading_cinemas);
+                showErrorSnackbar(activity, R.string.error_loading_films);
             }
         }
     }

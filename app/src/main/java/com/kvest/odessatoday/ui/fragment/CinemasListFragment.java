@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -29,7 +31,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * Time: 22:29
  * To change this template use File | Settings | File Templates.
  */
-public class CinemasListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CinemasListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     private static final int CINEMAS_LOADER_ID = 1;
 
     private ListView cinemasList;
@@ -38,6 +40,8 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     private CinemaSelectedListener cinemaSelectedListener;
 
     private LoadCinemasNotificationReceiver receiver = new LoadCinemasNotificationReceiver();
+
+    private SwipeRefreshLayout refreshLayout;
 
     public static CinemasListFragment getInstance() {
         CinemasListFragment result = new CinemasListFragment();
@@ -62,10 +66,25 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
         } catch (ClassCastException cce) {
             LOGE(Constants.TAG, "Host activity for CinemasListFragment should implements CinemasListFragment.CinemaSelectedListener");
         }
+
+        //Request all cinemas
+        NetworkService.loadCinemas(getActivity());
+
+//        //workaround - start showing progress
+//        new Handler().post(new Runnable() {
+//            @Override
+//            public void run() {
+//                refreshLayout.setRefreshing(true);
+//            }
+//        });
     }
 
     private void init(View rootView) {
         setHasOptionsMenu(true);
+
+        refreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setColorSchemeResources(R.color.application_green);
 
         cinemasList = (ListView) rootView.findViewById(R.id.cinemas_list);
         cinemasList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -93,6 +112,9 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     public void onPause() {
         super.onPause();
 
+        //stop progress
+        refreshLayout.setRefreshing(false);
+
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
@@ -100,9 +122,6 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //Request all cinemas
-        NetworkService.loadCinemas(getActivity());
 
         getLoaderManager().initLoader(CINEMAS_LOADER_ID, null, this);
     }
@@ -134,9 +153,17 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
         }
     }
 
+    @Override
+    public void onRefresh() {
+        //Request all cinemas
+        NetworkService.loadCinemas(getActivity());
+    }
+
     private class LoadCinemasNotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            refreshLayout.setRefreshing(false);
+
             Activity activity = getActivity();
             if (!LoadCinemasNotification.isSuccessful(intent) && activity != null) {
                 showErrorSnackbar(activity, R.string.error_loading_cinemas);

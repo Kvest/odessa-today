@@ -3,8 +3,10 @@ package com.kvest.odessatoday.ui.fragment;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +28,14 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * Time: 11:40
  * To change this template use File | Settings | File Templates.
  */
-public class AnnouncementFilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AnnouncementFilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     private static final int ANNOUNCEMENTS_LOADER_ID = 1;
 
     private AnnouncementFilmsAdapter adapter;
 
     private AnnouncementFilmSelectedListener announcementFilmSelectedListener;
+
+    private SwipeRefreshLayout refreshLayout;
 
     public static AnnouncementFilmsListFragment getInstance() {
         AnnouncementFilmsListFragment result = new AnnouncementFilmsListFragment();
@@ -50,6 +54,10 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
     }
 
     private void init(View rootView) {
+        refreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setColorSchemeResources(R.color.application_green);
+
         //get list view for announcement films
         ListView filmsList = (ListView) rootView.findViewById(R.id.announcement_films_list);
         filmsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,6 +82,14 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        //stop progress
+        refreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -85,6 +101,14 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
 
         //Request all announcements
         NetworkService.loadAnnouncements(getActivity());
+
+        //workaround - start showing progress
+//        new Handler().post(new Runnable() {
+//            @Override
+//            public void run() {
+//                refreshLayout.setRefreshing(true);
+//            }
+//        });
     }
 
     @Override
@@ -124,6 +148,12 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
                 adapter.swapCursor(null);
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        //Request all announcements
+        NetworkService.loadAnnouncements(getActivity());
     }
 
     public interface AnnouncementFilmSelectedListener {

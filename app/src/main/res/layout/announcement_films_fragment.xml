@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/announcement_films_list"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:divider="@color/films_list_divider_color"
-    android:dividerHeight="@dimen/films_list_divider_height"
-    android:listSelector="@drawable/application_list_item_selector" />
+    android:layout_height="match_parent">
+    <ListView
+        android:id="@+id/announcement_films_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/films_list_divider_color"
+        android:dividerHeight="@dimen/films_list_divider_height"
+        android:listSelector="@drawable/application_list_item_selector" />
+</android.support.v4.widget.SwipeRefreshLayout>
