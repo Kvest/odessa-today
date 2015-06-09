@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -52,6 +53,8 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
 
     private LoadFilmsNotificationReceiver receiver = new LoadFilmsNotificationReceiver();
     private TextView dateTextView;
+
+    private SwipeRefreshLayout refreshLayout;
 
     public static FilmsListFragment getInstance(long date, boolean isForToday) {
         Bundle arguments = new Bundle(2);
@@ -122,6 +125,11 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
         long startDate = date;
         long endDate = TimeUtils.getEndOfTheDay(startDate);
 
+        //show progress
+        if (refreshLayout != null) {
+            refreshLayout.setRefreshing(true);
+        }
+
         NetworkService.loadFilms(context, startDate, endDate);
     }
 
@@ -151,6 +159,9 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onPause() {
         super.onPause();
+
+        //stop progress
+        refreshLayout.setRefreshing(false);
 
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
@@ -200,6 +211,8 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     private void init(View root) {
+        refreshLayout = (SwipeRefreshLayout)root.findViewById(R.id.refresh_layout);
+
         //get list view for films
         ListView filmsList = (ListView) root.findViewById(R.id.films_list);
         filmsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -251,6 +264,8 @@ public class FilmsListFragment extends Fragment implements LoaderManager.LoaderC
     private class LoadFilmsNotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            refreshLayout.setRefreshing(false);
+
             Activity activity = getActivity();
             if (!LoadFilmsNotification.isSuccessful(intent) && activity != null) {
                 Toast.makeText(activity, R.string.error_loading_films, Toast.LENGTH_SHORT).show();
