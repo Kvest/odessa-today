@@ -1,11 +1,15 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.network.notification.LoadAnnouncementFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.AnnouncementFilmsAdapter;
@@ -34,6 +39,7 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
     private AnnouncementFilmsAdapter adapter;
 
     private AnnouncementFilmSelectedListener announcementFilmSelectedListener;
+    private LoadAnnouncementFilmsNotificationReceiver receiver = new LoadAnnouncementFilmsNotificationReceiver();
 
     private SwipeRefreshLayout refreshLayout;
 
@@ -82,11 +88,20 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(LoadAnnouncementFilmsNotification.ACTION));
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
 
         //stop progress
         refreshLayout.setRefreshing(false);
+
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
     @Override
@@ -154,6 +169,18 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
     public void onRefresh() {
         //Request all announcements
         NetworkService.loadAnnouncements(getActivity());
+    }
+
+    private class LoadAnnouncementFilmsNotificationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refreshLayout.setRefreshing(false);
+
+            Activity activity = getActivity();
+            if (!LoadAnnouncementFilmsNotification.isSuccessful(intent) && activity != null) {
+                showErrorSnackbar(activity, R.string.error_loading_announcement_films);
+            }
+        }
     }
 
     public interface AnnouncementFilmSelectedListener {
