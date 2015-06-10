@@ -8,8 +8,6 @@
     <string name="timetable">Расписание</string>
     <string name="cinemas">Кинотеатры</string>
     <string name="announcements">Анонсы</string>
-    <string name="error_loading_films">Произошла ошибка при загрузке фильмов</string>
-    <string name="error_loading_announcement_films">Произошла ошибка при загрузке анонсов фильмов</string>
     <string name="film_duration">%1$d мин.</string>
     <string name="film_director"><![CDATA[<b>Режиссер: </b>%1$s]]></string>
     <string name="film_actors"><![CDATA[<b>Актеры: </b>%1$s]]></string>
@@ -20,7 +18,11 @@
     <string name="comment_text">Текст комментария</string>
     <string name="write_comment">Написать отзыв</string>
     <string name="fill_field">Заполните поле</string>
-    <string name="error_loading_cinemas">Не удалось обновить список кинотеатров</string>
+    <string name="error_loading_cinemas">Не удалось загрузить список кинотеатров</string>
+    <string name="error_loading_films">Не удалось загрузить списк фильмов</string>
+    <string name="error_loading_comments">Не удалось загрузить коментарии</string>
+    <string name="error_loading_announcement_films">Не удалось загрузить списк анонсов фильмов</string>
+    <string name="error_loading_films_timetable">Не удалось загрузить расписание фильмов</string>
     <string name="cinema_info">Информация о кинотеатре</string>
     <string name="cinema_phones">Телефоны:</string>
     <string name="cinema_address">Адрес:</string>

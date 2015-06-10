@@ -1,11 +1,15 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +21,7 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
+import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
@@ -57,6 +62,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     protected String trailerVideoId;
 
     private OnShowFilmCommentsListener onShowFilmCommentsListener;
+    private LoadCommentsNotificationReceiver commentsErrorReceiver = new LoadCommentsNotificationReceiver();
 
     @Override
     public void onAttach(Activity activity) {
@@ -143,6 +149,20 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
         //initialize player
         youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(commentsErrorReceiver, new IntentFilter(LoadCommentsNotification.ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(commentsErrorReceiver);
     }
 
     @Override
@@ -300,5 +320,18 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     public interface OnShowFilmCommentsListener {
         public void onShowFilmComments(long filmId);
+    }
+
+    private class LoadCommentsNotificationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (LoadCommentsNotification.getTargetType(intent) == Constants.CommentTargetType.FILM
+                && LoadCommentsNotification.getTargetId(intent) == getFilmId()) {
+                Activity activity = getActivity();
+                if (!LoadCommentsNotification.isSuccessful(intent) && activity != null) {
+                    showErrorSnackbar(activity, R.string.error_loading_comments);
+                }
+            }
+        }
     }
 }

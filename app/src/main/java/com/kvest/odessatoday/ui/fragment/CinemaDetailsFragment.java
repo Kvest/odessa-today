@@ -1,13 +1,17 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,6 +22,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.datamodel.Cinema;
+import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
+import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CinemaTimetableAdapter;
@@ -76,6 +82,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private Animation hideCalendarAnimation;
 
     private CinemaDetailsActionsListener cinemaDetailsActionsListener;
+    private LoadCommentsNotificationReceiver commentsErrorReceiver = new LoadCommentsNotificationReceiver();
+    private LoadFilmsNotificationReceiver filmsErrorReceiver = new LoadFilmsNotificationReceiver();
 
     public static CinemaDetailsFragment getInstance(long cinemaId) {
         Bundle arguments = new Bundle(1);
@@ -102,6 +110,22 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         init(rootView, headerView, dateHeaderView);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(commentsErrorReceiver, new IntentFilter(LoadCommentsNotification.ACTION));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(filmsErrorReceiver, new IntentFilter(LoadFilmsNotification.ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(commentsErrorReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(filmsErrorReceiver);
     }
 
     private void init(View rootView, View headerView, View dateHeaderView) {
@@ -390,6 +414,29 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         calendar.set(Calendar.DAY_OF_MONTH, day);
 
         setShownDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
+    }
+
+    private class LoadCommentsNotificationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (LoadCommentsNotification.getTargetType(intent) == Constants.CommentTargetType.CINEMA
+                && LoadCommentsNotification.getTargetId(intent) == getCinemaId()) {
+                Activity activity = getActivity();
+                if (!LoadCommentsNotification.isSuccessful(intent) && activity != null) {
+                    showErrorSnackbar(activity, R.string.error_loading_comments);
+                }
+            }
+        }
+    }
+
+    private class LoadFilmsNotificationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Activity activity = getActivity();
+            if (!LoadFilmsNotification.isSuccessful(intent) && activity != null) {
+                showErrorSnackbar(activity, R.string.error_loading_films);
+            }
+        }
     }
 
     public interface CinemaDetailsActionsListener {

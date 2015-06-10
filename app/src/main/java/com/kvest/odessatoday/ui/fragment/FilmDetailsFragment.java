@@ -1,8 +1,11 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,10 +15,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.*;
 import android.widget.*;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.network.notification.LoadTimetableNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
@@ -67,6 +72,8 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     private TextView weekDayTextView;
     private long shownTimetableDate;
 
+    private LoadTimetableNotificationReceiver timetableErrorReceiver = new LoadTimetableNotificationReceiver();
+
     public static FilmDetailsFragment getInstance(long filmId, long timetableDate) {
         Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
@@ -107,6 +114,20 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(timetableErrorReceiver, new IntentFilter(LoadTimetableNotification.ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(timetableErrorReceiver);
     }
 
     @Override
@@ -355,6 +376,16 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
             }
 
             return result;
+        }
+    }
+
+    private class LoadTimetableNotificationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Activity activity = getActivity();
+            if (!LoadTimetableNotification.isSuccessful(intent) && activity != null) {
+                showErrorSnackbar(activity, R.string.error_loading_films_timetable);
+            }
         }
     }
 }
