@@ -79,6 +79,13 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
 //        });
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        cinemaSelectedListener = null;
+    }
+
     private void init(View rootView) {
         setHasOptionsMenu(true);
 

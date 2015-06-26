@@ -87,6 +87,13 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mainMenuItemSelectedListener = null;
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainMenuAdapter.MainMenuItem item = adapter.getItem(position);
         if (item.enable) {

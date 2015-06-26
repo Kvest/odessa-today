@@ -279,6 +279,13 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        cinemaDetailsActionsListener = null;
+    }
+
     public boolean onBackPressed() {
         if (isCalendarShown()) {
             hideCalendar();
