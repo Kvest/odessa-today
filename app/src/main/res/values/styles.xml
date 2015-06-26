@@ -8,6 +8,10 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="OdessaTodaySplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
     <style name="OdessaTodayTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/white</item>
     </style>
