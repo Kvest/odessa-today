@@ -25,7 +25,9 @@ public class TodayApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        BugSenseHandler.initAndStartSession(this, Constants.BUGSENS_API_KEY);
+        if (!BuildConfig.DEBUG) {
+            BugSenseHandler.initAndStartSession(this, Constants.BUGSENS_API_KEY);
+        }
 
         //save application instance
         applicaion = this;
