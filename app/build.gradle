@@ -10,11 +10,21 @@ android {
         targetSdkVersion 21
     }
 
+    signingConfigs {
+        release {
+            storeFile file(relese_keystore)
+            keyAlias release_key_alias
+            storePassword relese_store_password
+            keyPassword relese_key_password
+        }
+    }
+
     buildTypes {
         release {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
