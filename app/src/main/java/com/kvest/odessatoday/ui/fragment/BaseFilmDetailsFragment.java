@@ -26,6 +26,7 @@ import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.YoutubeApiConstants;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
@@ -148,7 +149,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         }
 
         //initialize player
-        youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, this);
+        youTubePlayerFragment.initialize(YoutubeApiConstants.YOUTUBE_API_KEY, this);
     }
 
     @Override

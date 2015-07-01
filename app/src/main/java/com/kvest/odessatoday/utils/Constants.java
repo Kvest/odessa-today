@@ -12,8 +12,6 @@ public abstract class Constants {
     public static final String NETWORK_API_KEY = "key4debug";
     public static final String TAG = "odessa-today";
     public static final String ROBOTO_LIGHT_FONT_NAME = "sans-serif-light";
-    //TODO change
-    public static final String YOUTUBE_API_KEY = "AIzaSyBwr9XXxG0ZQ2teBqiveaIO-i98dHTsFf0";
 
     public interface Premiere {
         int NOT_PREMIERE = 0;
