@@ -11,6 +11,10 @@ android {
     }
 
     signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+        }
+
         release {
             storeFile file(relese_keystore)
             keyAlias release_key_alias
@@ -20,6 +24,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
         release {
             shrinkResources true
             minifyEnabled true
