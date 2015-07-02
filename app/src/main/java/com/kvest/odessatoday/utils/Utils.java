@@ -2,6 +2,8 @@ package com.kvest.odessatoday.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -11,8 +13,8 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-
-import java.lang.reflect.Method;
+import android.util.Base64;
+import java.security.MessageDigest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,5 +68,19 @@ public class Utils {
             values.put(MediaStore.Images.Media.DATA, filePath);
             return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         }
+    }
+
+    public static String getCertificateSignature(Context context){
+        try {
+            Signature[] sigs = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES).signatures;
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(sigs[0].toByteArray());
+            String result = new String(Base64.encode(md.digest(), 0));
+
+            return result.trim();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

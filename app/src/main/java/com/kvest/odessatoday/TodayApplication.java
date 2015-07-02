@@ -4,6 +4,7 @@ import android.app.Application;
 import com.bugsense.trace.BugSenseHandler;
 import com.kvest.odessatoday.io.network.VolleyHelper;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.Utils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +16,7 @@ import com.kvest.odessatoday.utils.Constants;
 public class TodayApplication extends Application {
     private static TodayApplication applicaion;
 
+    private String todayApiKey;
     private VolleyHelper volleyHelper = new VolleyHelper();
 
     public static TodayApplication getApplication() {
@@ -32,8 +34,15 @@ public class TodayApplication extends Application {
         //save application instance
         applicaion = this;
 
+        //get api key
+        todayApiKey = Utils.getCertificateSignature(this);
+
         //init volley
         volleyHelper.init(getApplicationContext());
+    }
+
+    public String getTodayApiKey() {
+        return todayApiKey;
     }
 
     public VolleyHelper getVolleyHelper() {
