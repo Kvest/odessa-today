@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.io.network.datamodel;
 
+import com.google.gson.annotations.SerializedName;
 import com.kvest.odessatoday.datamodel.TimetableItem;
 
 import java.util.List;
@@ -12,5 +13,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GetTimetableData {
+    @SerializedName("timetable")
     public List<TimetableItem> timetable;
 }

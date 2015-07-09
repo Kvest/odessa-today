@@ -3,6 +3,8 @@ package com.kvest.odessatoday.datamodel;
 import android.content.ContentValues;
 import android.text.TextUtils;
 
+import com.google.gson.annotations.SerializedName;
+
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
 import java.util.List;
@@ -15,5 +17,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class FilmWithTimetable extends Film {
+    @SerializedName("timetable")
     public List<TimetableItem> timetable;
 }

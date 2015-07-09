@@ -1,5 +1,7 @@
 package com.kvest.odessatoday.io.network.response;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Kvest
@@ -10,8 +12,11 @@ package com.kvest.odessatoday.io.network.response;
 public abstract class BaseResponse<T> {
     public static final int SUCCESS_CODE = 0;
 
+    @SerializedName("code")
     public int code;
+    @SerializedName("data")
     public T data;
+    @SerializedName("error")
     public String error;
 
     public boolean isSuccessful() {

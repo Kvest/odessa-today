@@ -1,6 +1,9 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
+
+import com.google.gson.annotations.SerializedName;
+
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
 /**
@@ -11,10 +14,15 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
  * To change this template use File | Settings | File Templates.
  */
 public class TimetableItem {
+    @SerializedName("id")
     public long id;
+    @SerializedName("cinema_id")
     public long cinema_id;
+    @SerializedName("date")
     public long date;
+    @SerializedName("prices")
     public String prices;
+    @SerializedName("format")
     public int format;
 
     public ContentValues getContentValues(long filmId) {

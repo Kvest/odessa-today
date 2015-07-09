@@ -1,6 +1,9 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
+
+import com.google.gson.annotations.SerializedName;
+
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 /**
  * Created with IntelliJ IDEA.
@@ -10,9 +13,13 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
  * To change this template use File | Settings | File Templates.
  */
 public class Comment {
+    @SerializedName("id")
     public long id;
+    @SerializedName("date")
     public long date;
+    @SerializedName("name")
     public String name;
+    @SerializedName("text")
     public String text;
 
     public ContentValues getContentValues(long targetId, int targetType) {

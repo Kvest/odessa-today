@@ -2,6 +2,8 @@ package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
 import android.text.TextUtils;
+
+import com.google.gson.annotations.SerializedName;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 
 /**
@@ -13,21 +15,37 @@ import com.kvest.odessatoday.provider.TodayProviderContract;
  */
 public class Film {
     private static final String POSTER_SEPARATOR = ",";
+    @SerializedName("id")
     public long id;
+    @SerializedName("filmname")
     public String filmname;
+    @SerializedName("country")
     public String country;
+    @SerializedName("year")
     public String year;
+    @SerializedName("director")
     public String director;
+    @SerializedName("actors")
     public String actors;
+    @SerializedName("description")
     public String description;
+    @SerializedName("image")
     public String image;
+    @SerializedName("video")
     public String video;
+    @SerializedName("genre")
     public String genre;
+    @SerializedName("rating")
     public float rating;
+    @SerializedName("comments_count")
     public int comments_count;
+    @SerializedName("is_premiere")
     public int is_premiere;
+    @SerializedName("film_duration")
     public int film_duration;
+    @SerializedName("posters")
     public String[] posters;
+    @SerializedName("share_text")
     public String share_text;
 
     public ContentValues getContentValues() {

@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.io.network.datamodel;
 
+import com.google.gson.annotations.SerializedName;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GetFilmsData {
+    @SerializedName("date")
     public long date;
+    @SerializedName("films")
     public List<FilmWithTimetable> films;
 }
