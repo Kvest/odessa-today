@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import java.security.MessageDigest;
@@ -28,13 +27,6 @@ public class Utils {
     {
         //Serial number
         String deviceId = Build.SERIAL;
-        if (!TextUtils.isEmpty(deviceId)) {
-            return deviceId;
-        }
-
-        //IMEI
-        TelephonyManager tManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        deviceId = tManager.getDeviceId();
         if (!TextUtils.isEmpty(deviceId)) {
             return deviceId;
         }
