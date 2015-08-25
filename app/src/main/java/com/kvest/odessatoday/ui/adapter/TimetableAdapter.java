@@ -2,7 +2,6 @@ package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
@@ -39,13 +37,8 @@ public class TimetableAdapter extends CursorAdapter {
     private int formatIndex = -1;
     private int cinemaAddressIndex = -1;
 
-    private Typeface robotoLightTypeface;
-
     public TimetableAdapter(Context context) {
         super(context, null, 0);
-
-        //create typeface
-        robotoLightTypeface = Typeface.create(Constants.ROBOTO_LIGHT_FONT_NAME, Typeface.NORMAL);
     }
 
     @Override
@@ -61,9 +54,6 @@ public class TimetableAdapter extends CursorAdapter {
         holder.cinemaName = (TextView)view.findViewById(R.id.cinema_name);
         holder.time = (TextView)view.findViewById(R.id.time);
         holder.prices = (TextView)view.findViewById(R.id.prices);
-
-        //set typefaces
-        holder.cinemaName.setTypeface(robotoLightTypeface);
 
         view.setTag(holder);
 

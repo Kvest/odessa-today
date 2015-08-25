@@ -4,6 +4,7 @@ import android.app.Application;
 import com.bugsense.trace.BugSenseHandler;
 import com.kvest.odessatoday.io.network.VolleyHelper;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.SettingsSPStorage;
 import com.kvest.odessatoday.utils.Utils;
 
 /**
@@ -18,6 +19,7 @@ public class TodayApplication extends Application {
 
     private String todayApiKey;
     private VolleyHelper volleyHelper = new VolleyHelper();
+    private int currentTheme;
 
     public static TodayApplication getApplication() {
         return applicaion;
@@ -26,6 +28,10 @@ public class TodayApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //load and apply theme
+        currentTheme = SettingsSPStorage.getCurrentTheme(this);
+        applyTheme();
 
         if (!BuildConfig.DEBUG) {
             BugSenseHandler.initAndStartSession(this, Constants.BUGSENS_API_KEY);
@@ -47,5 +53,27 @@ public class TodayApplication extends Application {
 
     public VolleyHelper getVolleyHelper() {
         return volleyHelper;
+    }
+
+    public int getCurrentTheme() {
+        return currentTheme;
+    }
+
+    public void setCurrentTheme(int currentTheme) {
+        if (this.currentTheme != currentTheme) {
+            this.currentTheme = currentTheme;
+
+            applyTheme();
+
+            SettingsSPStorage.setCurrentTheme(this, this.currentTheme);
+        }
+    }
+
+    private void applyTheme() {
+        if (currentTheme == Constants.ThemeType.NIGHT) {
+            setTheme(R.style.NightOdessaTodayTheme);
+        } else {
+            setTheme(R.style.DayOdessaTodayTheme);
+        }
     }
 }

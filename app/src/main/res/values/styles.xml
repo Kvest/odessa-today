@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Application style-->
-    <style name="OdessaTodayTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="BaseOdessaTodayTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarStyle">@style/OdessaTodayActionBar</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">?attr/MainBGColor</item>
         <item name="homeAsUpIndicator">@drawable/ic_ab_back_white</item>
         <item name="textAllCaps">false</item>
     </style>
@@ -16,7 +16,7 @@
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
-    <style name="MainActivityTheme" parent="OdessaTodayTheme">
+    <style name="MainActivityTheme" parent="BaseOdessaTodayTheme">
         <item name="homeAsUpIndicator">@drawable/ic_navigation_drawer</item>
     </style>
 

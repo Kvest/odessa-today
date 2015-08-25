@@ -17,6 +17,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:textSize="@dimen/cinema_name_text_size"
+            android:fontFamily="sans-serif-light"
             android:textColor="@color/cinema_name_text_color" />
         <TextView
             android:id="@+id/cinema_address"

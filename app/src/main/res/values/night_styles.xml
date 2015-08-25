@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NightOdessaTodayTheme" parent="BaseOdessaTodayTheme">
+        <item name="MainBGColor">#2d2d2d</item>
+    </style>
+</resources>

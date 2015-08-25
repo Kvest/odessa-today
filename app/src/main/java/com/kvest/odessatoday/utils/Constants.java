@@ -10,7 +10,11 @@ package com.kvest.odessatoday.utils;
 public abstract class Constants {
     public static final String BUGSENS_API_KEY = "ae43aa1c";
     public static final String TAG = "odessa-today";
-    public static final String ROBOTO_LIGHT_FONT_NAME = "sans-serif-light";
+
+    public interface ThemeType {
+        int DAY = 0;
+        int NIGHT = 1;
+    }
 
     public interface Premiere {
         int NOT_PREMIERE = 0;
