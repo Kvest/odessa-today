@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
@@ -20,7 +19,7 @@ import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.*;
 import com.kvest.odessatoday.utils.Constants;
 
-public class MainActivity extends AppCompatActivity implements MainMenuFragment.MainMenuItemSelectedListener,
+public class MainActivity extends BaseActivity implements MainMenuFragment.MainMenuItemSelectedListener,
                                                         CinemasListFragment.CinemaSelectedListener,
                                                         MainMenuController{
     private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
@@ -118,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements MainMenuFragment.
                 } else {
                     TodayApplication.getApplication().setCurrentTheme(Constants.ThemeType.NIGHT);
                 }
+
+                recreate();
             }
         });
     }

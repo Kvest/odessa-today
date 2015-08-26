@@ -31,7 +31,6 @@ public class TodayApplication extends Application {
 
         //load and apply theme
         currentTheme = SettingsSPStorage.getCurrentTheme(this);
-        applyTheme();
 
         if (!BuildConfig.DEBUG) {
             BugSenseHandler.initAndStartSession(this, Constants.BUGSENS_API_KEY);
@@ -63,17 +62,10 @@ public class TodayApplication extends Application {
         if (this.currentTheme != currentTheme) {
             this.currentTheme = currentTheme;
 
-            applyTheme();
+            //TODO
+            //applyTheme();
 
             SettingsSPStorage.setCurrentTheme(this, this.currentTheme);
-        }
-    }
-
-    private void applyTheme() {
-        if (currentTheme == Constants.ThemeType.NIGHT) {
-            setTheme(R.style.NightOdessaTodayTheme);
-        } else {
-            setTheme(R.style.DayOdessaTodayTheme);
         }
     }
 }

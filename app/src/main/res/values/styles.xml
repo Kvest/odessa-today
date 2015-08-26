@@ -16,10 +16,6 @@
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
-    <style name="MainActivityTheme" parent="BaseOdessaTodayTheme">
-        <item name="homeAsUpIndicator">@drawable/ic_navigation_drawer</item>
-    </style>
-
     <!-- ActionBar styles -->
     <style name="OdessaTodayActionBar"
            parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">

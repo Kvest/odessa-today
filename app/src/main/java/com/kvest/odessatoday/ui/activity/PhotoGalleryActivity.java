@@ -4,16 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.WindowCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.PhotoGalleryFragment;
 
 /**
  * Created by Kvest on 07.02.2015.
  */
-public class PhotoGalleryActivity extends AppCompatActivity {
+public class PhotoGalleryActivity extends BaseActivity {
     private static final String EXTRA_PHOTO_URLS = "com.kvest.odessatoday.extra.PHOTO_URLS";
 
     public static Intent getStartIntent(Context context, String[] urls) {

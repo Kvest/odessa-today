@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CommentsFragment;
@@ -18,7 +17,7 @@ import com.kvest.odessatoday.utils.Constants;
  * Time: 22:57
  * To change this template use File | Settings | File Templates.
  */
-public class FilmDetailsActivity extends AppCompatActivity implements FilmDetailsFragment.OnShowFilmCommentsListener {
+public class FilmDetailsActivity extends BaseActivity implements FilmDetailsFragment.OnShowFilmCommentsListener {
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
     private static final String EXTRA_TIMETABLE_DATE = "com.kvest.odessatoday.extra.FILM_TIMETABLE_DATE";
 
