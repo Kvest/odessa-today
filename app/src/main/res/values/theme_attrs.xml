@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr format="color" name="MainBGColor"/>
+    <attr format="color" name="MainMenuBgColor"/>
+    <attr format="color" name="MainMenuDividerColor"/>
+    <attr format="color" name="MainMenuCategoryTextColor"/>
     <attr format="reference" name="img"/>
 </resources>

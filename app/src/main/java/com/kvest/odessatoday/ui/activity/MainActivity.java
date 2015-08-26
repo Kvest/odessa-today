@@ -8,12 +8,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.*;
+import com.kvest.odessatoday.utils.Constants;
 
 public class MainActivity extends AppCompatActivity implements MainMenuFragment.MainMenuItemSelectedListener,
                                                         CinemasListFragment.CinemaSelectedListener,
@@ -100,6 +105,21 @@ public class MainActivity extends AppCompatActivity implements MainMenuFragment.
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         slidingMenu.setBehindOffsetRes(R.dimen.main_menu_behind_offset);
         slidingMenu.setFadeEnabled(false);
+
+        //setup theme switcher
+        SwitchCompat themeSwitch = (SwitchCompat) findViewById(R.id.theme_switcher);
+        themeSwitch.setTrackDrawable(getResources().getDrawable(R.drawable.theme_switcher_track));
+        themeSwitch.setChecked(TodayApplication.getApplication().getCurrentTheme() == Constants.ThemeType.DAY);
+        themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    TodayApplication.getApplication().setCurrentTheme(Constants.ThemeType.DAY);
+                } else {
+                    TodayApplication.getApplication().setCurrentTheme(Constants.ThemeType.NIGHT);
+                }
+            }
+        });
     }
 
     @Override

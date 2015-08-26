@@ -53,8 +53,8 @@
     </string-array>
 
     <!--main menu-->
-    <string name="menu_category_event">СОБЫТИЯ</string>
-    <string name="menu_category_place">МЕСТА</string>
+    <string name="menu_category_event">События</string>
+    <string name="menu_category_place">Места</string>
     <string name="menu_films">Фильмы</string>
     <string name="menu_concert">Концерты (Скоро)</string>
     <string name="menu_party">Вечеринки (Скоро)</string>

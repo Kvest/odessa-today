@@ -2,5 +2,8 @@
 <resources>
     <style name="DayOdessaTodayTheme" parent="BaseOdessaTodayTheme">
         <item name="MainBGColor">#ffffff</item>
+        <item name="MainMenuBgColor">#e8e8e8</item>
+        <item name="MainMenuDividerColor">#bcbcbc</item>
+        <item name="MainMenuCategoryTextColor">#24282b</item>
     </style>
 </resources>

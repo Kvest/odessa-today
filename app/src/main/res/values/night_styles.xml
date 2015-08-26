@@ -2,5 +2,8 @@
 <resources>
     <style name="NightOdessaTodayTheme" parent="BaseOdessaTodayTheme">
         <item name="MainBGColor">#2d2d2d</item>
+        <item name="MainMenuBgColor">@color/application_green</item>
+        <item name="MainMenuDividerColor">#1b1b1b</item>
+        <item name="MainMenuCategoryTextColor">#24282b</item>
     </style>
 </resources>
