@@ -23,7 +23,7 @@ public class PhotoGalleryActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_container);
+        setContentView(R.layout.fragment_container_layout);
 
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {

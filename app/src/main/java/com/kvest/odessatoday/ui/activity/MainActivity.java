@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_container);
+        setContentView(R.layout.fragment_container_layout);
 
         //setup action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

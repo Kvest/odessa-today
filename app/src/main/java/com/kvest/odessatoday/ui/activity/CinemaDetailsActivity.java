@@ -32,7 +32,7 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_container);
+        setContentView(R.layout.fragment_container_layout);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
