@@ -2,5 +2,10 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/main_menu_item_horizontal_padding"
+    android:paddingRight="@dimen/main_menu_item_horizontal_padding"
+    android:paddingTop="@dimen/main_menu_category_padding_top"
+    android:paddingBottom="@dimen/main_menu_category_padding_bottom"
     android:textSize="@dimen/main_menu_category_text_size"
-    android:textColor="?attr/MainMenuCategoryTextColor" />
+    android:textColor="?attr/MainMenuCategoryTextColor"
+    android:textStyle="bold"/>

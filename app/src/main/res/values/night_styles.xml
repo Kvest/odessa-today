@@ -5,5 +5,13 @@
         <item name="MainMenuBgColor">@color/application_green</item>
         <item name="MainMenuDividerColor">#1b1b1b</item>
         <item name="MainMenuCategoryTextColor">#24282b</item>
+        <item name="MainMenuSubcategoryTextColor">#1b1b1b</item>
+        <item name="MainMenuDisabledSubcategoryTextColor">#5c823d</item>
+        <item name="MainMenuSelectedSubcategoryTextColor">#ffffff</item>
+        <item name="MainMenuSubcategoryIconTintColor">#1b1b1b</item>
+        <item name="MainMenuDisabledSubcategoryIconTintColor">#1b1b1b</item>
+        <item name="MainMenuSelectedSubcategoryIconTintColor">#ffffff</item>
+        <item name="MainMenuSubcategoryBg">@drawable/main_menu_subcategory_bg_night</item>
+        <item name="MainMenuSubcategoryOverlayBg">@drawable/main_menu_subcategory_overlay_bg_night</item>
     </style>
 </resources>

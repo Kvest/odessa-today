@@ -67,7 +67,7 @@
     <dimen name="min_max_prices_text_size">16sp</dimen>
     <dimen name="film_details_button_icon_margin_left">12dip</dimen>
     <dimen name="film_expand_text_divider_height">2dip</dimen>
-    <dimen name="film_details_button_text_size">18dip</dimen>
+    <dimen name="film_details_button_text_size">18sp</dimen>
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>
@@ -87,7 +87,7 @@
     <dimen name="cinemas_list_item_padding">12dip</dimen>
     <dimen name="cinema_name_text_size">18sp</dimen>
     <dimen name="cinema_address_text_size">14sp</dimen>
-    <dimen name="cinemas_list_comments_count_text_size">14dip</dimen>
+    <dimen name="cinemas_list_comments_count_text_size">14sp</dimen>
     <dimen name="cinemas_list_comments_count_margin_top">8dip</dimen>
 
     <!--cinema details-->
@@ -101,16 +101,16 @@
     <dimen name="phones_container_margin_bottom">10dip</dimen>
     <dimen name="address_container_margin_bottom">10dip</dimen>
     <dimen name="show_on_map_min_size">40dip</dimen>
-    <dimen name="cinema_details_button_text_size">18dip</dimen>
+    <dimen name="cinema_details_button_text_size">18sp</dimen>
 
     <dimen name="cinema_details_film_name_text_size">16sp</dimen>
     <dimen name="cinema_details_film_name_padding_top">14dip</dimen>
     <dimen name="cinema_details_film_name_padding_bottom">6dip</dimen>
     <dimen name="cinema_details_row_item_margin">6dip</dimen>
     <dimen name="cinema_details_row_item_vertical_padding">4dip</dimen>
-    <dimen name="cinema_details_row_date_text_size">20dip</dimen>
-    <dimen name="cinema_details_row_format_text_size">14dip</dimen>
-    <dimen name="cinema_details_row_prices_text_size">12dip</dimen>
+    <dimen name="cinema_details_row_date_text_size">20sp</dimen>
+    <dimen name="cinema_details_row_format_text_size">14sp</dimen>
+    <dimen name="cinema_details_row_prices_text_size">12sp</dimen>
     <dimen name="cinema_details_row_date_margin_right">8dip</dimen>
 
     <!--complex date dimensions-->
@@ -127,11 +127,13 @@
 
     <!--main menu-->
     <dimen name="main_menu_divider_height">1dip</dimen>
-    <dimen name="main_menu_category_vertical_padding">8dip</dimen>
-    <dimen name="main_menu_category_horizontal_padding">10dip</dimen>
-    <dimen name="main_menu_category_text_size">14sp</dimen>
-    <dimen name="main_menu_item_padding">12dip</dimen>
-    <dimen name="main_menu_item_padding_right">4dip</dimen>
-    <dimen name="main_menu_item_text_size">16sp</dimen>
-    <dimen name="main_menu_item_icon_padding">12dip</dimen>
+    <dimen name="main_menu_item_horizontal_padding">10dip</dimen>
+    <dimen name="main_menu_category_padding_top">12dip</dimen>
+    <dimen name="main_menu_category_padding_bottom">18dip</dimen>
+    <dimen name="main_menu_category_text_size">18sp</dimen>
+    <dimen name="main_menu_subcategory_height">60dip</dimen>
+    <dimen name="main_menu_subcategory_text_padding_left">12dip</dimen>
+    <dimen name="main_menu_subcategory_text_size">16sp</dimen>
+    <dimen name="main_menu_subcategory_icon_size">50dip</dimen>
+    <dimen name="main_menu_subcategory_overlay_text_size">12sp</dimen>
 </resources>

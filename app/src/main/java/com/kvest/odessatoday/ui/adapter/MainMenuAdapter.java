@@ -1,12 +1,15 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
-import android.util.TypedValue;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.MainMenuFragment;
@@ -17,67 +20,77 @@ import com.kvest.odessatoday.ui.fragment.MainMenuFragment;
 public class MainMenuAdapter extends BaseAdapter {
     private static final int EMPTY_SELECTED_POSITION = -1;
     private static final int VIEW_TYPE_COUNT = 3;
-    private static final MainMenuItem[] items = new MainMenuItem[]{
+    private static final MainMenuItem[] items = {
             new CategoryItem(R.string.menu_category_event),
             new DividerItem(),
-            new SubcategoryItem(MainMenuFragment.MENU_FILMS_ID, R.string.menu_films, R.drawable.ic_menu_films, R.drawable.ic_menu_films_selected, true),
-            new SubcategoryItem(MainMenuFragment.MENU_CONCERT_ID, R.string.menu_concert, R.drawable.ic_menu_concert, R.drawable.ic_menu_concert_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_PARTY_ID, R.string.menu_party, R.drawable.ic_menu_party, R.drawable.ic_menu_party_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_SPECTACLE_ID, R.string.menu_spectacle, R.drawable.ic_menu_spectacle, R.drawable.ic_menu_spectacle_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_EXHIBITION_ID, R.string.menu_exhibition, R.drawable.ic_menu_exhibition, R.drawable.ic_menu_exhibition_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_SPORT_ID, R.string.menu_sport, R.drawable.ic_menu_sport, R.drawable.ic_menu_sport_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_WORKSHOP_ID, R.string.menu_workshop, R.drawable.ic_menu_workshop, R.drawable.ic_menu_workshop_selected, false),
+            new SubcategoryItem(MainMenuFragment.MENU_FILMS_ID, R.string.menu_films, R.drawable.ic_menu_films, true),
+            new SubcategoryItem(MainMenuFragment.MENU_CONCERT_ID, R.string.menu_concert, R.drawable.ic_menu_concert, false),
+            new SubcategoryItem(MainMenuFragment.MENU_PARTY_ID, R.string.menu_party, R.drawable.ic_menu_party, false),
+            new SubcategoryItem(MainMenuFragment.MENU_SPECTACLE_ID, R.string.menu_spectacle, R.drawable.ic_menu_spectacle, false),
+            new SubcategoryItem(MainMenuFragment.MENU_EXHIBITION_ID, R.string.menu_exhibition, R.drawable.ic_menu_exhibition, false),
+            new SubcategoryItem(MainMenuFragment.MENU_SPORT_ID, R.string.menu_sport, R.drawable.ic_menu_sport, false),
+            new SubcategoryItem(MainMenuFragment.MENU_WORKSHOP_ID, R.string.menu_workshop, R.drawable.ic_menu_workshop, false),
             new DividerItem(),
             new CategoryItem(R.string.menu_category_place),
             new DividerItem(),
-            new SubcategoryItem(MainMenuFragment.MENU_CINEMA_ID, R.string.menu_cinema, R.drawable.ic_menu_cinema, R.drawable.ic_menu_cinema_selected, true),
-            new SubcategoryItem(MainMenuFragment.MENU_THEATRE_ID, R.string.menu_theatre, R.drawable.ic_menu_theatre, R.drawable.ic_menu_theatre_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_CONCERT_HALL_ID, R.string.menu_concert_hall, R.drawable.ic_menu_concert_hall, R.drawable.ic_menu_concert_hall_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_CLUB_ID, R.string.menu_club, R.drawable.ic_menu_club, R.drawable.ic_menu_club_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_MUSEUM_ID, R.string.menu_museum, R.drawable.ic_menu_museum, R.drawable.ic_menu_museum_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_GALLERY_ID, R.string.menu_gallery, R.drawable.ic_menu_gallery, R.drawable.ic_menu_gallery_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_ZOO_ID, R.string.menu_zoo, R.drawable.ic_menu_zoo, R.drawable.ic_menu_zoo_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_QUEST_ID, R.string.menu_quest, R.drawable.ic_menu_quest, R.drawable.ic_menu_quest_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_RESTAURANT_ID, R.string.menu_restaurant, R.drawable.ic_menu_restaurant, R.drawable.ic_menu_restaurant_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_CAFE_ID, R.string.menu_cafe, R.drawable.ic_menu_cafe, R.drawable.ic_menu_cafe_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_PIZZA_ID, R.string.menu_pizza, R.drawable.ic_menu_pizza, R.drawable.ic_menu_pizza_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_SUSHI_ID, R.string.menu_sushi, R.drawable.ic_menu_sushi, R.drawable.ic_menu_sushi_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_KARAOKE_ID, R.string.menu_karaoke, R.drawable.ic_menu_karaoke, R.drawable.ic_menu_karaoke_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_SKATING_RINK_ID, R.string.menu_skating_rink, R.drawable.ic_menu_skating_rink, R.drawable.ic_menu_skating_rink_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_BOWLING_ID, R.string.menu_bowling, R.drawable.ic_menu_bowling, R.drawable.ic_menu_bowling_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_BILLIARD_ID, R.string.menu_billiard, R.drawable.ic_menu_billiard, R.drawable.ic_menu_billiard_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_SAUNA_ID, R.string.menu_sauna, R.drawable.ic_menu_sauna, R.drawable.ic_menu_sauna_selected, false),
-            new SubcategoryItem(MainMenuFragment.MENU_BATH_ID, R.string.menu_bath, R.drawable.ic_menu_bath, R.drawable.ic_menu_bath_selected, false)
+            new SubcategoryItem(MainMenuFragment.MENU_CINEMA_ID, R.string.menu_cinema, R.drawable.ic_menu_cinema, true),
+            new SubcategoryItem(MainMenuFragment.MENU_THEATRE_ID, R.string.menu_theatre, R.drawable.ic_menu_theatre, false),
+            new SubcategoryItem(MainMenuFragment.MENU_CONCERT_HALL_ID, R.string.menu_concert_hall, R.drawable.ic_menu_concert_hall, false),
+            new SubcategoryItem(MainMenuFragment.MENU_CLUB_ID, R.string.menu_club, R.drawable.ic_menu_club, false),
+            new SubcategoryItem(MainMenuFragment.MENU_MUSEUM_ID, R.string.menu_museum, R.drawable.ic_menu_museum, false),
+            new SubcategoryItem(MainMenuFragment.MENU_GALLERY_ID, R.string.menu_gallery, R.drawable.ic_menu_gallery, false),
+            new SubcategoryItem(MainMenuFragment.MENU_ZOO_ID, R.string.menu_zoo, R.drawable.ic_menu_zoo, false),
+            new SubcategoryItem(MainMenuFragment.MENU_QUEST_ID, R.string.menu_quest, R.drawable.ic_menu_quest, false),
+            new SubcategoryItem(MainMenuFragment.MENU_RESTAURANT_ID, R.string.menu_restaurant, R.drawable.ic_menu_restaurant, false),
+            new SubcategoryItem(MainMenuFragment.MENU_CAFE_ID, R.string.menu_cafe, R.drawable.ic_menu_cafe, false),
+            new SubcategoryItem(MainMenuFragment.MENU_PIZZA_ID, R.string.menu_pizza, R.drawable.ic_menu_pizza, false),
+            new SubcategoryItem(MainMenuFragment.MENU_SUSHI_ID, R.string.menu_sushi, R.drawable.ic_menu_sushi, false),
+            new SubcategoryItem(MainMenuFragment.MENU_KARAOKE_ID, R.string.menu_karaoke, R.drawable.ic_menu_karaoke, false),
+            new SubcategoryItem(MainMenuFragment.MENU_SKATING_RINK_ID, R.string.menu_skating_rink, R.drawable.ic_menu_skating_rink, false),
+            new SubcategoryItem(MainMenuFragment.MENU_BOWLING_ID, R.string.menu_bowling, R.drawable.ic_menu_bowling, false),
+            new SubcategoryItem(MainMenuFragment.MENU_BILLIARD_ID, R.string.menu_billiard, R.drawable.ic_menu_billiard, false),
+            new SubcategoryItem(MainMenuFragment.MENU_SAUNA_ID, R.string.menu_sauna, R.drawable.ic_menu_sauna, false),
+            new SubcategoryItem(MainMenuFragment.MENU_BATH_ID, R.string.menu_bath, R.drawable.ic_menu_bath, false)
     };
 
     private int selectedItemPosition;
     private Context context;
-    private int itemPadding, itemPaddingRight, itemTextSize, itemIconPadding;
-    private int disabledItemBg, selectedItemBg, itemBg, itemTextColor, selectedItemTextColor;
-    private int categoryBg, categoryTextColor;
-    private int categoryVerticalPadding, categoryHorizontalPadding, categoryTextSiz;
+    private int disabledSubcategoryTextColor, subcategoryTextColor, selectedSubcategoryTextColor;
+    private int disabledSubcategoryIconTintColor, subcategoryIconTintColor, selectedSubcategoryIconTintColor;
+    private Drawable subcategoryBg;
 
     public MainMenuAdapter(Context context) {
         super();
 
         this.context = context;
-
-        //init other fields
         selectedItemPosition = EMPTY_SELECTED_POSITION;
-        categoryVerticalPadding = context.getResources().getDimensionPixelSize(R.dimen.main_menu_category_vertical_padding);
-        categoryHorizontalPadding = context.getResources().getDimensionPixelSize(R.dimen.main_menu_category_horizontal_padding);
-        categoryTextSiz = context.getResources().getDimensionPixelSize(R.dimen.main_menu_category_text_size);
-        categoryBg = context.getResources().getColor(R.color.main_menu_category_bg);
-        categoryTextColor = context.getResources().getColor(R.color.main_menu_category_text_color);
-        itemPadding = context.getResources().getDimensionPixelSize(R.dimen.main_menu_item_padding);
-        itemPaddingRight = context.getResources().getDimensionPixelSize(R.dimen.main_menu_item_padding_right);
-        itemTextSize = context.getResources().getDimensionPixelSize(R.dimen.main_menu_item_text_size);
-        itemIconPadding = context.getResources().getDimensionPixelSize(R.dimen.main_menu_item_icon_padding);
-        disabledItemBg = context.getResources().getColor(R.color.main_menu_disabled_item_bg);
-        selectedItemBg = context.getResources().getColor(R.color.main_menu_selected_item_bg);
-        itemBg = context.getResources().getColor(R.color.main_menu_item_bg);
-        itemTextColor = context.getResources().getColor(R.color.main_menu_item_text_color);
-        selectedItemTextColor = context.getResources().getColor(R.color.main_menu_selected_item_text_color);
+
+        initResources();
+    }
+
+    private void initResources() {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.MainMenuSubcategoryTextColor,
+                       R.attr.MainMenuDisabledSubcategoryTextColor,
+                       R.attr.MainMenuSelectedSubcategoryTextColor,
+                       R.attr.MainMenuSubcategoryIconTintColor,
+                       R.attr.MainMenuDisabledSubcategoryIconTintColor,
+                       R.attr.MainMenuSelectedSubcategoryIconTintColor,
+                       R.attr.MainMenuSubcategoryBg};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        // Fetching the resources defined in the style
+        subcategoryTextColor = ta.getColor(0, Color.BLACK);
+        disabledSubcategoryTextColor = ta.getColor(1, Color.BLACK);
+        selectedSubcategoryTextColor = ta.getColor(2, Color.BLACK);
+        subcategoryIconTintColor = ta.getColor(3, Color.BLACK);
+        disabledSubcategoryIconTintColor = ta.getColor(4, Color.BLACK);
+        selectedSubcategoryIconTintColor = ta.getColor(5, Color.BLACK);
+        subcategoryBg = ta.getDrawable(6);
+
+        ta.recycle();
     }
 
     public int getSelectedItemPosition() {
@@ -133,21 +146,16 @@ public class MainMenuAdapter extends BaseAdapter {
                 bindCategoryView((TextView) view, (CategoryItem) item);
                 break;
             case MainMenuItem.TYPE_SUBCATEGORY :
-                //common properties
-//                view.setPadding(itemPadding, itemPadding, itemPaddingRight, itemPadding);
-//                ((TextView) view).setTextSize(TypedValue.COMPLEX_UNIT_PX, itemTextSize);
-//                ((TextView) view).setCompoundDrawablePadding(itemIconPadding);
-//
-//                //specific properties
-//                if (item.enable) {
-//                    if (position == selectedItemPosition) {
-//                        bindSelectedItem((TextView) view, (SubcategoryItem) item);
-//                    } else {
-//                        bindItem((TextView) view, (SubcategoryItem) item);
-//                    }
-//                } else {
-//                    bindDisabledItem((TextView) view, (SubcategoryItem) item);
-//                }
+                //specific properties
+                if (item.enable) {
+                    if (position == selectedItemPosition) {
+                        bindSelectedSubcategory((SubcategoryViewHolder) view.getTag(), (SubcategoryItem) item);
+                    } else {
+                        bindSubcategory((SubcategoryViewHolder) view.getTag(), (SubcategoryItem) item);
+                    }
+                } else {
+                    bindDisabledSubcategory((SubcategoryViewHolder) view.getTag(), (SubcategoryItem) item);
+                }
                 break;
         }
 
@@ -181,43 +189,58 @@ public class MainMenuAdapter extends BaseAdapter {
 
     private void bindCategoryView(TextView view, CategoryItem item) {
         view.setText(item.textRes);
-//        view.setBackgroundColor(categoryBg);
-//        view.setPadding(categoryHorizontalPadding, categoryVerticalPadding, categoryHorizontalPadding, categoryVerticalPadding);
-//        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, categoryTextSiz);
-//        view.setTextColor(categoryTextColor);
-//        view.setCompoundDrawablePadding(0);
-//        view.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
 
-    private void bindDisabledItem(TextView view, SubcategoryItem item) {
-        view.setBackgroundColor(disabledItemBg);
-        view.setTextColor(itemTextColor);
-        view.setText(item.textRes);
-        view.setCompoundDrawablesWithIntrinsicBounds(item.iconRes, 0, 0, 0);
+    private void bindDisabledSubcategory(SubcategoryViewHolder holder, SubcategoryItem item) {
+        //text
+        holder.text.setTypeface(null, Typeface.NORMAL);
+        holder.text.setTextColor(disabledSubcategoryTextColor);
+        holder.text.setText(item.textRes);
+
+        //icon
+        holder.icon.setImageResource(item.iconRes);
+        holder.icon.setColorFilter(disabledSubcategoryIconTintColor);
+        holder.icon.setBackgroundDrawable(null);
+
+        holder.disableOverlay.setVisibility(View.VISIBLE);
     }
 
-    private void bindItem(TextView view, SubcategoryItem item) {
-        view.setBackgroundColor(itemBg);
-        view.setTextColor(itemTextColor);
-        view.setText(item.textRes);
-        view.setCompoundDrawablesWithIntrinsicBounds(item.iconRes, 0, 0, 0);
+    private void bindSubcategory(SubcategoryViewHolder holder, SubcategoryItem item) {
+        //text
+        holder.text.setTypeface(null, Typeface.NORMAL);
+        holder.text.setTextColor(subcategoryTextColor);
+        holder.text.setText(item.textRes);
+
+        //icon
+        holder.icon.setImageResource(item.iconRes);
+        holder.icon.setColorFilter(subcategoryIconTintColor);
+        holder.icon.setBackgroundDrawable(subcategoryBg);
+
+        holder.disableOverlay.setVisibility(View.INVISIBLE);
     }
 
-    private void bindSelectedItem(TextView view, SubcategoryItem item) {
-        view.setBackgroundColor(selectedItemBg);
-        view.setTextColor(selectedItemTextColor);
-        view.setText(item.textRes);
-        view.setCompoundDrawablesWithIntrinsicBounds(item.iconSelectedRes, 0, 0, 0);
+    private void bindSelectedSubcategory(SubcategoryViewHolder holder, SubcategoryItem item) {
+        //text
+        holder.text.setTypeface(null, Typeface.BOLD);
+        holder.text.setTextColor(selectedSubcategoryTextColor);
+        holder.text.setText(item.textRes);
+
+        //icon
+        holder.icon.setImageResource(item.iconRes);
+        holder.icon.setColorFilter(selectedSubcategoryIconTintColor);
+        holder.icon.setBackgroundResource(R.drawable.main_menu_selected_subcategory_bg);
+
+        holder.disableOverlay.setVisibility(View.INVISIBLE);
     }
 
     public static class MainMenuItem {
-        protected static final int TYPE_CATEGORY = 0;
-        protected static final int TYPE_SUBCATEGORY = 1;
-        protected static final int TYPE_DIVIDER = 2;
+        public static final int TYPE_CATEGORY = 0;
+        public static final int TYPE_SUBCATEGORY = 1;
+        public static final int TYPE_DIVIDER = 2;
 
-        public final int id;
-        private final int type;
-        public final boolean enable;
+        private int id;
+        private int type;
+        public boolean enable;
 
         public MainMenuItem(int id, int type, boolean enable) {
             this.id = id;
@@ -226,14 +249,14 @@ public class MainMenuAdapter extends BaseAdapter {
         }
     }
 
-    public static class DividerItem extends MainMenuItem {
+    private static class DividerItem extends MainMenuItem {
         public DividerItem() {
             super(-1, TYPE_DIVIDER, false);
         }
     }
 
-    public static class CategoryItem extends MainMenuItem {
-        private int textRes;
+    private static class CategoryItem extends MainMenuItem {
+        public int textRes;
 
         public CategoryItem(int textRes) {
             super(-1, TYPE_CATEGORY, false);
@@ -242,22 +265,26 @@ public class MainMenuAdapter extends BaseAdapter {
         }
     }
 
-    public static class SubcategoryItem extends MainMenuItem {
-        private int textRes;
-        private int iconRes;
-        private int iconSelectedRes;
+    private static class SubcategoryItem extends MainMenuItem {
+        public int textRes;
+        public int iconRes;
 
-        public SubcategoryItem(int id, int textRes, int iconRes, int iconSelectedRes, boolean enable) {
+        public SubcategoryItem(int id, int textRes, int iconRes, boolean enable) {
             super(id, TYPE_SUBCATEGORY, enable);
             this.textRes = textRes;
             this.iconRes = iconRes;
-            this.iconSelectedRes = iconSelectedRes;
         }
     }
 
-    public static class SubcategoryViewHolder {
+    private static class SubcategoryViewHolder {
+        public TextView text;
+        public ImageView icon;
+        public TextView disableOverlay;
+
         public SubcategoryViewHolder(View view) {
-            //TODO
+            text = (TextView) view.findViewById(R.id.text);
+            icon = (ImageView) view.findViewById(R.id.icon);
+            disableOverlay = (TextView) view.findViewById(R.id.disable_overlay);
         }
     }
 }

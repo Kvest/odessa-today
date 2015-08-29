@@ -4,5 +4,12 @@
     <attr format="color" name="MainMenuBgColor"/>
     <attr format="color" name="MainMenuDividerColor"/>
     <attr format="color" name="MainMenuCategoryTextColor"/>
-    <attr format="reference" name="img"/>
+    <attr format="color" name="MainMenuSubcategoryTextColor"/>
+    <attr format="color" name="MainMenuDisabledSubcategoryTextColor"/>
+    <attr format="color" name="MainMenuSelectedSubcategoryTextColor"/>
+    <attr format="color" name="MainMenuSubcategoryIconTintColor"/>
+    <attr format="color" name="MainMenuDisabledSubcategoryIconTintColor"/>
+    <attr format="color" name="MainMenuSelectedSubcategoryIconTintColor"/>
+    <attr format="reference" name="MainMenuSubcategoryBg"/>
+    <attr format="reference" name="MainMenuSubcategoryOverlayBg"/>
 </resources>
