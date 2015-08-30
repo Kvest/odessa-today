@@ -8,7 +8,6 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.adapter.MainMenuAdapter;
 import com.kvest.odessatoday.utils.Constants;
 

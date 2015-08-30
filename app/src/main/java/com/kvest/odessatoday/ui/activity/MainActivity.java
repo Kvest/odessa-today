@@ -7,10 +7,10 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kvest.odessatoday.R;
@@ -107,8 +107,8 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         slidingMenu.setFadeEnabled(false);
 
         //setup theme switcher
-        SwitchCompat themeSwitch = (SwitchCompat) findViewById(R.id.theme_switcher);
-        themeSwitch.setTrackDrawable(getResources().getDrawable(R.drawable.theme_switcher_track));
+        Switch themeSwitch = (Switch) findViewById(R.id.theme_switcher);
+        //themeSwitch.setTrackDrawable(getResources().getDrawable(R.drawable.theme_switcher_track));
         themeSwitch.setChecked(TodayApplication.getApplication().getCurrentTheme() == Constants.ThemeType.DAY);
         themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

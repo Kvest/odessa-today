@@ -15,16 +15,16 @@
             android:layout_gravity="left|center_vertical"
             android:src="@drawable/ic_close"
             android:tint="?attr/CloseIconTintColor"/>
-        <android.support.v7.widget.SwitchCompat
+        <Switch
             android:id="@+id/theme_switcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="200dip"
-            android:maxHeight="200dip"
             android:textOn=""
             android:textOff=""
+            android:thumbTextPadding="25dp"
             android:background="@null"
             android:layout_gravity="right|center_vertical"
+            android:track="@drawable/theme_switcher_track"
             android:thumb="@drawable/theme_switcher_thumb" />
     </FrameLayout>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
