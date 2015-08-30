@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="application_padding">12dip</dimen>
+    <dimen name="action_bar_height">70dip</dimen>
     <dimen name="films_list_item_padding">12dip</dimen>
     <dimen name="films_list_item_arrow_margin">4dip</dimen>
     <dimen name="category_selector_height">50dip</dimen>
@@ -126,6 +127,7 @@
     <dimen name="main_menu_behind_offset">100dip</dimen>
 
     <!--main menu-->
+    <dimen name="main_menu_header_horizontal_padding">10dip</dimen>
     <dimen name="main_menu_divider_height">1dip</dimen>
     <dimen name="main_menu_item_horizontal_padding">10dip</dimen>
     <dimen name="main_menu_category_padding_top">12dip</dimen>

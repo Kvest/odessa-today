@@ -1,6 +1,8 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -68,6 +70,7 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
         //setup lit view
         ListView listView = getListView();
         listView.setDivider(null);
+        listView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         listView.setOnItemClickListener(this);
     }
 

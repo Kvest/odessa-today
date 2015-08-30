@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -119,6 +120,13 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 }
 
                 recreate();
+            }
+        });
+
+        findViewById(R.id.close) .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slidingMenu.toggle();
             }
         });
     }

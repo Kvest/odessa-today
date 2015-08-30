@@ -5,7 +5,16 @@
     android:orientation="vertical">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:paddingLeft="@dimen/main_menu_header_horizontal_padding"
+        android:paddingRight="@dimen/main_menu_header_horizontal_padding">
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:src="@drawable/ic_close"
+            android:tint="?attr/CloseIconTintColor"/>
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/theme_switcher"
             android:layout_width="wrap_content"
@@ -14,6 +23,7 @@
             android:maxHeight="200dip"
             android:textOn=""
             android:textOff=""
+            android:background="@null"
             android:layout_gravity="right|center_vertical"
             android:thumb="@drawable/theme_switcher_thumb" />
     </FrameLayout>

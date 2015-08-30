@@ -5,6 +5,7 @@
         <item name="actionBarStyle">@style/OdessaTodayActionBar</item>
         <item name="android:windowBackground">?attr/MainBGColor</item>
         <item name="homeAsUpIndicator">@drawable/ic_ab_back_white</item>
+        <item name="actionBarSize">@dimen/action_bar_height</item>
         <item name="textAllCaps">false</item>
     </style>
 

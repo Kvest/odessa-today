@@ -13,5 +13,6 @@
         <item name="MainMenuSelectedSubcategoryIconTintColor">#ffffff</item>
         <item name="MainMenuSubcategoryBg">@drawable/main_menu_subcategory_bg_night</item>
         <item name="MainMenuSubcategoryOverlayBg">@drawable/main_menu_subcategory_overlay_bg_night</item>
+        <item name="CloseIconTintColor">@color/application_green</item>
     </style>
 </resources>
