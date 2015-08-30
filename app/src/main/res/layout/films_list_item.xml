@@ -7,10 +7,12 @@
     android:paddingLeft="@dimen/films_list_item_padding"
     android:paddingBottom="@dimen/films_list_item_padding"
     android:paddingRight="@dimen/films_list_item_arrow_margin" >
-    <com.android.volley.toolbox.NetworkImageView
+    <com.kvest.odessatoday.ui.widget.RoundNetworkImageView
+        xmlns:app="http://schemas.android.com/apk/res/com.kvest.odessatoday"
         android:id="@+id/film_image"
         android:layout_width="@dimen/film_thumbnail_image_width"
         android:layout_height="wrap_content"
+        app:cornerRadius="@dimen/image_corner_radius"
         android:layout_marginRight="@dimen/film_thumbnail_margin_right"/>
     <ImageView
         android:id="@+id/arrow_image"

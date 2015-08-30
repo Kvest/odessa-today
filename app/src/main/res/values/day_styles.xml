@@ -14,5 +14,7 @@
         <item name="MainMenuSubcategoryBg">@drawable/main_menu_subcategory_bg_day</item>
         <item name="MainMenuSubcategoryOverlayBg">@drawable/main_menu_subcategory_overlay_bg_day</item>
         <item name="CloseIconTintColor">@android:color/white</item>
+        <item name="FilmsListEvenItemBg">@android:color/white</item>
+        <item name="FilmsListOddItemBg">#f5f5f5</item>
     </style>
 </resources>

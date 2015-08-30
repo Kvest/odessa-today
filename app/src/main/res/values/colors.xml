@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="application_green">#85ce49</color>
-    <color name="films_list_divider_color">#d9dadb</color>
     <color name="films_list_bg_color">#e8e9eb</color>
     <color name="premiere_label_bg">#FF4444</color>
     <color name="premiere_date_text_color">#323232</color>

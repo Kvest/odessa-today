@@ -1,7 +1,9 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -47,8 +49,12 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
     private int filmDurationColumnIndex = -1;
     private int premiereDateColumnIndex = -1;
 
+    private int evenItemBgColor, oddItemBgColor;
+
     public AnnouncementFilmsAdapter(Context context) {
         super(context, null, 0);
+
+        initResources(context);
     }
 
     @Override
@@ -73,11 +79,16 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         return view;
     }
 
-
-
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder)view.getTag();
+
+        //set view background
+        if (cursor.getPosition() % 2 == 0) {
+            view.setBackgroundColor(evenItemBgColor);
+        } else {
+            view.setBackgroundColor(oddItemBgColor);
+        }
 
         if (!isColumnIndexesCalculated()) {
             calculateColumnIndexes(cursor);
@@ -111,6 +122,21 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         } else {
             holder.premiereDate.setVisibility(View.GONE);
         }
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.FilmsListEvenItemBg,
+                R.attr.FilmsListOddItemBg};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        // Fetching the resources defined in the style
+        evenItemBgColor = ta.getColor(0, Color.BLACK);
+        oddItemBgColor = ta.getColor(1, Color.BLACK);
+
+        ta.recycle();
     }
 
     private boolean isColumnIndexesCalculated() {

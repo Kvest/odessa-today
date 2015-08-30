@@ -13,4 +13,6 @@
     <attr format="reference" name="MainMenuSubcategoryBg"/>
     <attr format="reference" name="MainMenuSubcategoryOverlayBg"/>
     <attr format="color" name="CloseIconTintColor"/>
+    <attr format="color" name="FilmsListEvenItemBg"/>
+    <attr format="color" name="FilmsListOddItemBg"/>
 </resources>

@@ -1,7 +1,9 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -29,11 +31,6 @@ public class FilmsAdapter extends CursorAdapter {
                                                            Tables.Films.Columns.GENRE, Tables.Films.Columns.FILM_DURATION,
                                                            Tables.Films.Columns.GENRE, Tables.Films.Columns.RATING,
                                                            Tables.Films.Columns.COMMENTS_COUNT, Tables.Films.Columns.IS_PREMIERE};
-
-    public FilmsAdapter(Context context) {
-        super(context, null, 0);
-    }
-
     private int imageColumnIndex = -1;
     private int nameColumnIndex = -1;
     private int genreColumnIndex = -1;
@@ -41,6 +38,14 @@ public class FilmsAdapter extends CursorAdapter {
     private int filmDurationColumnIndex = -1;
     private int commentsCountColumnIndex = -1;
     private int isPremiereColumnIndex = -1;
+
+    private int evenItemBgColor, oddItemBgColor;
+
+    public FilmsAdapter(Context context) {
+        super(context, null, 0);
+
+        initResources(context);
+    }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
@@ -69,6 +74,13 @@ public class FilmsAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder)view.getTag();
 
+        //set view background
+        if (cursor.getPosition() % 2 == 0) {
+            view.setBackgroundColor(evenItemBgColor);
+        } else {
+            view.setBackgroundColor(oddItemBgColor);
+        }
+
         if (!isColumnIndexesCalculated()) {
             calculateColumnIndexes(cursor);
         }
@@ -90,6 +102,21 @@ public class FilmsAdapter extends CursorAdapter {
         holder.commentsCount.setText(Integer.toString(cursor.getInt(commentsCountColumnIndex)));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.FilmsListEvenItemBg,
+                       R.attr.FilmsListOddItemBg};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        // Fetching the resources defined in the style
+        evenItemBgColor = ta.getColor(0, Color.BLACK);
+        oddItemBgColor = ta.getColor(1, Color.BLACK);
+
+        ta.recycle();
     }
 
     private boolean isColumnIndexesCalculated() {
