@@ -24,7 +24,7 @@
                 android:layout_toRightOf="@id/film_poster"
                 android:layout_alignParentTop="true"
                 android:textSize="@dimen/film_name_text_size"
-                android:textColor="@color/films_name_text_color"
+                android:textColor="?attr/FilmNameTextColor"
                 android:textStyle="bold"
                 android:maxLines="2"
                 android:ellipsize="end" />
@@ -35,7 +35,7 @@
                 android:layout_toRightOf="@id/film_poster"
                 android:layout_below="@id/film_name"
                 android:textSize="@dimen/genre_text_size"
-                android:textColor="@color/films_genre_text_color"/>
+                android:textColor="?attr/GenreNameTextColor"/>
             <TextView
                 android:id="@+id/premiere_date"
                 android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                     android:id="@+id/comments_count"
                     style="@style/CommentsCountLabel"
                     android:layout_gravity="top"
-                    android:layout_marginRight="@dimen/comments_count_margin_right"/>
+                    android:layout_marginRight="4dip"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:textColor="@color/film_duration_text_color"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:text="@string/comments"/>
+                    android:text="@string/comments_count"/>
             </LinearLayout>
         </RelativeLayout>
         <LinearLayout
@@ -122,7 +122,7 @@
                     android:background="@drawable/green_button"
                     android:textColor="@color/button_text_color"
                     android:textSize="@dimen/film_details_button_text_size"
-                    android:text="@string/comments"/>
+                    android:text="@string/comments_count"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

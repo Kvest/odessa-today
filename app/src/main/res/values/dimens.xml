@@ -3,14 +3,15 @@
     <dimen name="application_padding">12dip</dimen>
     <dimen name="image_corner_radius">8dip</dimen>
     <dimen name="action_bar_height">70dip</dimen>
-    <dimen name="films_list_item_padding">12dip</dimen>
-    <dimen name="films_list_item_arrow_margin">4dip</dimen>
+    <dimen name="films_list_item_vertical_padding">16dip</dimen>
+    <dimen name="films_list_item_horizontal_padding">10dip</dimen>
+    <dimen name="films_list_item_arrow_margin_left">4dip</dimen>
     <dimen name="category_selector_height">50dip</dimen>
     <dimen name="category_selector_text_size">16sp</dimen>
     <dimen name="film_thumbnail_image_width">120dip</dimen>
-    <dimen name="film_thumbnail_margin_right">12dip</dimen>
-    <dimen name="film_name_text_size">22sp</dimen>
-    <dimen name="genre_text_size">14sp</dimen>
+    <dimen name="film_thumbnail_margin_right">25dip</dimen>
+    <dimen name="film_name_text_size">20sp</dimen>
+    <dimen name="genre_text_size">12sp</dimen>
     <dimen name="film_description_text_size">14sp</dimen>
     <dimen name="premiere_label_text_size">14sp</dimen>
     <dimen name="premiere_label_margin_top">2dip</dimen>
@@ -18,24 +19,22 @@
     <dimen name="premiere_date_text_size">14sp</dimen>
     <dimen name="premiere_date_padding">4dip</dimen>
     <dimen name="premiere_date_margin_top">6dip</dimen>
-    <dimen name="films_ratingbar_min_height">18dip</dimen>
+    <dimen name="films_ratingbar_min_height">12dip</dimen>
     <dimen name="films_ratingbar_margin">4dip</dimen>
     <dimen name="films_ratingbar_margin_top">16dip</dimen>
+    <dimen name="films_comments_count_margin_top">14dip</dimen>
+    <dimen name="films_comments_count_margin_left">4dip</dimen>
     <dimen name="films_ratingbar_margin_bottom">10dip</dimen>
     <dimen name="film_duration_icon_margin_right">7dip</dimen>
     <dimen name="film_duration_margin_right">12dip</dimen>
     <dimen name="film_duration_text_size">16sp</dimen>
-    <dimen name="comments_count_margin_right">4dip</dimen>
     <dimen name="film_format_icon_size">32dip</dimen>
     <dimen name="menu_icon_size">24dip</dimen>
 
     <dimen name="films_date_label_height">30dip</dimen>
     <dimen name="films_date_label_horizontal_padding">12dip</dimen>
     <dimen name="films_date_text_size">20sp</dimen>
-    <dimen name="comments_count_height">28dip</dimen>
-    <dimen name="comments_count_min_width">32dip</dimen>
-    <dimen name="comments_count_horizontal_padding">8dip</dimen>
-    <dimen name="comments_count_text_size">14sp</dimen>
+    <dimen name="comments_count_text_size">10sp</dimen>
 
     <!--Calendar fragment-->
     <dimen name="calendar_header_height">50dip</dimen>

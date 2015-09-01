@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.FontUtils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 /**
@@ -40,6 +42,7 @@ public class FilmsAdapter extends CursorAdapter {
     private int isPremiereColumnIndex = -1;
 
     private int evenItemBgColor, oddItemBgColor;
+    private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
     public FilmsAdapter(Context context) {
         super(context, null, 0);
@@ -59,11 +62,14 @@ public class FilmsAdapter extends CursorAdapter {
         holder.image.setDefaultImageResId(R.drawable.loading_poster);
         holder.image.setErrorImageResId(R.drawable.no_poster);
         holder.name = (TextView)view.findViewById(R.id.film_name);
+        holder.name.setTypeface(helveticaneuecyrRoman);
         holder.genre = (TextView)view.findViewById(R.id.genre);
         holder.rating = (RatingBar)view.findViewById(R.id.film_rating);
         holder.filmDurationIcon = (ImageView) view.findViewById(R.id.film_duration_icon);
         holder.filmDuration = (TextView) view.findViewById(R.id.film_duration);
+        holder.filmDuration.setTypeface(helveticaneuecyrRoman);
         holder.commentsCount = (TextView) view.findViewById(R.id.comments_count);
+        holder.commentsCount.setTypeface(helveticaneuecyrBold);
         holder.isPremiere = (TextView)view.findViewById(R.id.is_premiere);
         view.setTag(holder);
 
@@ -99,7 +105,7 @@ public class FilmsAdapter extends CursorAdapter {
         }
 
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
-        holder.commentsCount.setText(Integer.toString(cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(context.getString(R.string.comments_count, cursor.getInt(commentsCountColumnIndex)));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
     }
@@ -117,6 +123,10 @@ public class FilmsAdapter extends CursorAdapter {
         oddItemBgColor = ta.getColor(1, Color.BLACK);
 
         ta.recycle();
+
+        //retrieve font
+        helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
+        helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
     }
 
     private boolean isColumnIndexesCalculated() {

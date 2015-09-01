@@ -35,7 +35,7 @@
             style="@style/CommentsCountLabel"
             android:textSize="@dimen/cinemas_list_comments_count_text_size"
             android:textColor="@color/cinemas_list_comments_count_text_color"
-            android:layout_marginRight="@dimen/comments_count_margin_right"
+            android:layout_marginRight="4dip"
             android:layout_marginTop="@dimen/cinemas_list_comments_count_margin_top"/>
         <TextView
             android:id="@+id/comments_count_label"
@@ -47,7 +47,7 @@
             android:textColor="@color/cinemas_list_comments_count_bg_color"
             android:singleLine="true"
             android:ellipsize="end"
-            android:text="@string/comments"/>
+            android:text="@string/comments_count"/>
     </RelativeLayout>
     <ImageView
         android:layout_height="wrap_content"

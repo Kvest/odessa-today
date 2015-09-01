@@ -2,6 +2,7 @@
 <resources>
     <style name="NightOdessaTodayTheme" parent="BaseOdessaTodayTheme">
         <item name="MainBGColor">#2d2d2d</item>
+        <!--Main menu-->
         <item name="MainMenuBgColor">@color/application_green</item>
         <item name="MainMenuDividerColor">#1b1b1b</item>
         <item name="MainMenuCategoryTextColor">#24282b</item>
@@ -14,7 +15,12 @@
         <item name="MainMenuSubcategoryBg">@drawable/main_menu_subcategory_bg_night</item>
         <item name="MainMenuSubcategoryOverlayBg">@drawable/main_menu_subcategory_overlay_bg_night</item>
         <item name="CloseIconTintColor">@color/application_green</item>
+        <!--Films list-->
         <item name="FilmsListEvenItemBg">#2d2d2d</item>
         <item name="FilmsListOddItemBg">#1b1b1b</item>
+        <item name="FilmNameTextColor">#e1e1e1</item>
+        <item name="GenreNameTextColor">#828282</item>
+        <item name="FilmsRatingBar">@drawable/films_ratingbar_night</item>
+        <item name="CommentsCountTextColor">#1b1b1b</item>
     </style>
 </resources>

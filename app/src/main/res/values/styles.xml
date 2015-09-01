@@ -27,19 +27,16 @@
 
     <!--Films rating-->
     <style name="FilmsRatingBarTheme" parent="android:Widget.Holo.Light.RatingBar">
-        <item name="android:progressDrawable">@drawable/films_ratingbar</item>
-        <item name="android:indeterminateDrawable">@drawable/films_ratingbar</item>
+        <item name="android:progressDrawable">?attr/FilmsRatingBar</item>
+        <item name="android:indeterminateDrawable">?attr/FilmsRatingBar</item>
         <item name="android:minHeight">@dimen/films_ratingbar_min_height</item>
     </style>
 
     <style name="CommentsCountLabel">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/comments_count_height</item>
-        <item name="android:minWidth">@dimen/comments_count_min_width</item>
-        <item name="android:paddingLeft">@dimen/comments_count_horizontal_padding</item>
-        <item name="android:paddingRight">@dimen/comments_count_horizontal_padding</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/comments_count_bg</item>
-        <item name="android:textColor">@color/comments_count_text_color</item>
+        <item name="android:textColor">?attr/CommentsCountTextColor</item>
         <item name="android:textSize">@dimen/comments_count_text_size</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>

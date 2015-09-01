@@ -2,6 +2,7 @@
 <resources>
     <style name="DayOdessaTodayTheme" parent="BaseOdessaTodayTheme">
         <item name="MainBGColor">#ffffff</item>
+        <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuDividerColor">#bcbcbc</item>
         <item name="MainMenuCategoryTextColor">#24282b</item>
@@ -14,7 +15,12 @@
         <item name="MainMenuSubcategoryBg">@drawable/main_menu_subcategory_bg_day</item>
         <item name="MainMenuSubcategoryOverlayBg">@drawable/main_menu_subcategory_overlay_bg_day</item>
         <item name="CloseIconTintColor">@android:color/white</item>
+        <!--Films list-->
         <item name="FilmsListEvenItemBg">@android:color/white</item>
         <item name="FilmsListOddItemBg">#f5f5f5</item>
+        <item name="FilmNameTextColor">#24282b</item>
+        <item name="GenreNameTextColor">#828282</item>
+        <item name="FilmsRatingBar">@drawable/films_ratingbar_day</item>
+        <item name="CommentsCountTextColor">#ffffff</item>
     </style>
 </resources>
