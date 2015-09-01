@@ -20,7 +20,6 @@
     <dimen name="premiere_date_padding">4dip</dimen>
     <dimen name="premiere_date_margin_top">6dip</dimen>
     <dimen name="films_ratingbar_min_height">12dip</dimen>
-    <dimen name="films_ratingbar_margin">4dip</dimen>
     <dimen name="films_ratingbar_margin_top">16dip</dimen>
     <dimen name="films_comments_count_margin_top">14dip</dimen>
     <dimen name="films_comments_count_margin_left">4dip</dimen>
