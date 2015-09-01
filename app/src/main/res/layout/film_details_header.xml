@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginRight="@dimen/film_duration_margin_right"
+                android:layout_marginRight="12dip"
                 android:textSize="@dimen/film_duration_text_size"
                 android:textColor="@color/film_duration_text_color" />
             <TextView

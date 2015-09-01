@@ -78,6 +78,8 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         holder.rating = (RatingBar)view.findViewById(R.id.film_rating);
         holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
         holder.commentsCount.setTypeface(helveticaneuecyrBold);
+        holder.filmDuration = (TextView) view.findViewById(R.id.film_duration);
+        holder.filmDuration.setTypeface(helveticaneuecyrRoman);
         holder.isPremiere = (TextView)view.findViewById(R.id.is_premiere);
         view.setTag(holder);
 
@@ -102,20 +104,15 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         holder.genre.setText(cursor.getString(genreColumnIndex));
         holder.genre.setVisibility(TextUtils.isEmpty(holder.genre.getText()) ? View.GONE : View.VISIBLE);
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
-        holder.filmDurationIcon = (ImageView) view.findViewById(R.id.film_duration_icon);
-        holder.filmDuration = (TextView) view.findViewById(R.id.film_duration);
         holder.commentsCount.setText(context.getString(R.string.comments_count, cursor.getInt(commentsCountColumnIndex)));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
 
         int filmDurationValue = cursor.getInt(filmDurationColumnIndex);
         if (filmDurationValue > 0) {
-            holder.filmDuration.setVisibility(View.VISIBLE);
-            holder.filmDurationIcon.setVisibility(View.VISIBLE);
             holder.filmDuration.setText(context.getString(R.string.film_duration, filmDurationValue));
         } else {
-            holder.filmDuration.setVisibility(View.GONE);
-            holder.filmDurationIcon.setVisibility(View.GONE);
+            holder.filmDuration.setText(R.string.film_duration_unknown);
         }
 
         if (!cursor.isNull(premiereDateColumnIndex)) {
@@ -169,7 +166,6 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         private TextView genre;
         private TextView premiereDate;
         private RatingBar rating;
-        private ImageView filmDurationIcon;
         private TextView filmDuration;
         private TextView commentsCount;
         private TextView isPremiere;

@@ -65,7 +65,6 @@ public class FilmsAdapter extends CursorAdapter {
         holder.name.setTypeface(helveticaneuecyrRoman);
         holder.genre = (TextView)view.findViewById(R.id.genre);
         holder.rating = (RatingBar)view.findViewById(R.id.film_rating);
-        holder.filmDurationIcon = (ImageView) view.findViewById(R.id.film_duration_icon);
         holder.filmDuration = (TextView) view.findViewById(R.id.film_duration);
         holder.filmDuration.setTypeface(helveticaneuecyrRoman);
         holder.commentsCount = (TextView) view.findViewById(R.id.comments_count);
@@ -96,12 +95,9 @@ public class FilmsAdapter extends CursorAdapter {
 
         int filmDurationValue = cursor.getInt(filmDurationColumnIndex);
         if (filmDurationValue > 0) {
-            holder.filmDuration.setVisibility(View.VISIBLE);
-            holder.filmDurationIcon.setVisibility(View.VISIBLE);
             holder.filmDuration.setText(context.getString(R.string.film_duration, filmDurationValue));
         } else {
-            holder.filmDuration.setVisibility(View.GONE);
-            holder.filmDurationIcon.setVisibility(View.GONE);
+            holder.filmDuration.setText(R.string.film_duration_unknown);
         }
 
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
@@ -148,7 +144,6 @@ public class FilmsAdapter extends CursorAdapter {
         private TextView name;
         private TextView genre;
         private RatingBar rating;
-        private ImageView filmDurationIcon;
         private TextView filmDuration;
         private TextView commentsCount;
         private TextView isPremiere;

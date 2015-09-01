@@ -9,6 +9,7 @@
     <string name="cinemas">Кинотеатры</string>
     <string name="announcements">Анонсы</string>
     <string name="film_duration">%1$d мин.</string>
+    <string name="film_duration_unknown">продолжительность неизвестна</string>
     <string name="film_director"><![CDATA[<b>Режиссер: </b>%1$s]]></string>
     <string name="film_actors"><![CDATA[<b>Актеры: </b>%1$s]]></string>
     <string name="comments_count">%1$d отзыва</string>

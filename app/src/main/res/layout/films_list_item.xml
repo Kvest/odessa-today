@@ -69,18 +69,16 @@
         android:layout_toLeftOf="@id/arrow_image"
         android:layout_below="@id/film_rating">
         <ImageView
-            android:id="@+id/film_duration_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
+            android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/film_duration_icon_margin_right"
             android:src="@drawable/ic_film_duration" />
         <TextView
             android:id="@+id/film_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginRight="@dimen/film_duration_margin_right"
+            android:layout_gravity="center_vertical"
             android:textSize="@dimen/film_duration_text_size"
             android:textColor="@color/film_duration_text_color" />
     </LinearLayout>
