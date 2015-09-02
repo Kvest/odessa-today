@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -75,12 +76,14 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         holder.name.setTypeface(helveticaneuecyrRoman);
         holder.genre = (TextView)view.findViewById(R.id.genre);
         holder.premiereDate = (TextView)view.findViewById(R.id.premiere_date);
+        holder.premiereDate.setTypeface(helveticaneuecyrRoman);
         holder.rating = (RatingBar)view.findViewById(R.id.film_rating);
         holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
         holder.commentsCount.setTypeface(helveticaneuecyrBold);
         holder.filmDuration = (TextView) view.findViewById(R.id.film_duration);
         holder.filmDuration.setTypeface(helveticaneuecyrRoman);
         holder.isPremiere = (TextView)view.findViewById(R.id.is_premiere);
+        holder.isPremiere.setTypeface(helveticaneuecyrBold);
         view.setTag(holder);
 
         return view;
@@ -120,7 +123,7 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
             String text = context.getString(R.string.premiere_date, PREMIERE_DATE_FORMAT.format(premiereDateValue));
 
             holder.premiereDate.setVisibility(View.VISIBLE);
-            holder.premiereDate.setText(text);
+            holder.premiereDate.setText(Html.fromHtml(text));
         } else {
             holder.premiereDate.setVisibility(View.GONE);
         }

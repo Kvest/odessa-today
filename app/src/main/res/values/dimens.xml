@@ -13,21 +13,22 @@
     <dimen name="film_name_text_size">20sp</dimen>
     <dimen name="genre_text_size">12sp</dimen>
     <dimen name="film_description_text_size">14sp</dimen>
-    <dimen name="premiere_label_text_size">14sp</dimen>
-    <dimen name="premiere_label_margin_top">2dip</dimen>
+    <dimen name="premiere_label_text_size">11sp</dimen>
+    <dimen name="premiere_label_margin_top">8dip</dimen>
     <dimen name="premiere_label_padding">2dip</dimen>
-    <dimen name="premiere_date_text_size">14sp</dimen>
+    <dimen name="premiere_date_text_size">11sp</dimen>
     <dimen name="premiere_date_padding">4dip</dimen>
     <dimen name="premiere_date_margin_top">6dip</dimen>
     <dimen name="films_ratingbar_min_height">12dip</dimen>
-    <dimen name="films_ratingbar_margin_top">16dip</dimen>
+    <dimen name="films_ratingbar_vertical_margin">16dip</dimen>
     <dimen name="films_comments_count_margin_top">14dip</dimen>
     <dimen name="films_comments_count_margin_left">4dip</dimen>
-    <dimen name="films_ratingbar_margin_bottom">10dip</dimen>
     <dimen name="film_duration_icon_margin_right">10dip</dimen>
     <dimen name="film_duration_text_size">11sp</dimen>
     <dimen name="film_format_icon_size">32dip</dimen>
     <dimen name="menu_icon_size">24dip</dimen>
+    <dimen name="announcement_ratingbar_margin_top">10dip</dimen>
+    <dimen name="announcement_comments_count_margin_top">8dip</dimen>
 
     <dimen name="films_date_label_height">30dip</dimen>
     <dimen name="films_date_label_horizontal_padding">12dip</dimen>

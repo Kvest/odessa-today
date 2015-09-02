@@ -70,6 +70,7 @@ public class FilmsAdapter extends CursorAdapter {
         holder.commentsCount = (TextView) view.findViewById(R.id.comments_count);
         holder.commentsCount.setTypeface(helveticaneuecyrBold);
         holder.isPremiere = (TextView)view.findViewById(R.id.is_premiere);
+        holder.isPremiere.setTypeface(helveticaneuecyrBold);
         view.setTag(holder);
 
         return view;

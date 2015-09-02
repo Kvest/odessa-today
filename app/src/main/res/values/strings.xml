@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Одесса Сегодня</string>
     <string name="premiere">ПРЕМЬЕРА</string>
-    <string name="premiere_date">Премьера: %1$s</string>
+    <string name="premiere_date"><![CDATA[<b>премьера: </b>%1$s]]></string>
     <string name="select_date">Выбрать дату</string>
     <string name="today_marker">Сегодня,</string>
     <string name="timetable">Расписание</string>

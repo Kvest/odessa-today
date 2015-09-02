@@ -58,8 +58,8 @@
                 android:layout_below="@id/premiere_date"
                 android:numStars="5"
                 android:stepSize="0.1"
-                android:layout_marginTop="@dimen/films_ratingbar_margin_top"
-                android:layout_marginBottom="@dimen/films_ratingbar_margin_bottom"
+                android:layout_marginTop="@dimen/films_ratingbar_vertical_margin"
+                android:layout_marginBottom="@dimen/films_ratingbar_vertical_margin"
                 style="@style/FilmsRatingBarTheme"
                 android:isIndicator="true"/>
             <LinearLayout

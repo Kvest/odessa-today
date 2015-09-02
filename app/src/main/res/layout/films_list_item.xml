@@ -13,7 +13,7 @@
         android:layout_width="@dimen/film_thumbnail_image_width"
         android:layout_height="wrap_content"
         app:cornerRadius="@dimen/image_corner_radius"
-        android:layout_marginRight="@dimen/film_thumbnail_margin_right"/>!
+        android:layout_marginRight="@dimen/film_thumbnail_margin_right"/>
     <ImageView
         android:id="@+id/arrow_image"
         android:layout_width="wrap_content"
@@ -49,8 +49,8 @@
         android:layout_below="@id/genre"
         android:numStars="5"
         android:stepSize="0.1"
-        android:layout_marginTop="@dimen/films_ratingbar_margin_top"
-        android:layout_marginBottom="@dimen/films_ratingbar_margin_bottom"
+        android:layout_marginTop="@dimen/films_ratingbar_vertical_margin"
+        android:layout_marginBottom="@dimen/films_ratingbar_vertical_margin"
         style="@style/FilmsRatingBarTheme"
         android:isIndicator="true"/>
     <TextView
@@ -61,7 +61,7 @@
         android:layout_marginTop="@dimen/films_comments_count_margin_top"
         android:layout_marginLeft="@dimen/films_comments_count_margin_left"/>
     <LinearLayout
-        android:id="@+id/duration_and_comments_container"
+        android:id="@+id/duration_container"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,10 +90,9 @@
         android:padding="@dimen/premiere_label_padding"
         android:layout_marginTop="@dimen/premiere_label_margin_top"
         android:layout_toRightOf="@id/film_image"
-        android:layout_below="@id/duration_and_comments_container"
+        android:layout_below="@id/duration_container"
         android:background="@color/premiere_label_bg"
         android:textColor="@color/premiere_label_text_color"
         android:textSize="@dimen/premiere_label_text_size"
-        android:textStyle="bold"
         android:text="@string/premiere" />
 </RelativeLayout>

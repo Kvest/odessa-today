@@ -41,42 +41,48 @@
         android:layout_below="@id/film_name"
         android:textSize="@dimen/genre_text_size"
         android:textColor="?attr/GenreNameTextColor"/>
-    <TextView
-        android:id="@+id/premiere_date"
+    <FrameLayout
+        android:id="@+id/premiere_date_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/film_image"
         android:layout_toLeftOf="@id/arrow_image"
-        android:layout_below="@id/genre"
-        android:textColor="@color/premiere_date_text_color"
-        android:textSize="@dimen/premiere_date_text_size"
-        android:textStyle="bold"
-        android:background="@drawable/premiere_date_bg"
-        android:padding="@dimen/premiere_date_padding"
-        android:layout_marginTop="@dimen/premiere_date_margin_top"
-        android:singleLine="true"
-        android:ellipsize="start"/>
+        android:layout_below="@id/genre">
+        <TextView
+            android:id="@+id/premiere_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_premiere_date"
+            android:drawablePadding="4dip"
+            android:textColor="@color/premiere_date_text_color"
+            android:textSize="@dimen/premiere_date_text_size"
+            android:background="@drawable/premiere_date_bg"
+            android:padding="@dimen/premiere_date_padding"
+            android:layout_marginTop="@dimen/premiere_date_margin_top"
+            android:singleLine="true"
+            android:ellipsize="start"/>
+    </FrameLayout>
     <RatingBar
         android:id="@+id/film_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/film_image"
-        android:layout_below="@id/premiere_date"
+        android:layout_below="@id/premiere_date_container"
         android:numStars="5"
         android:stepSize="0.1"
-        android:layout_marginTop="@dimen/films_ratingbar_margin_top"
-        android:layout_marginBottom="@dimen/films_ratingbar_margin_bottom"
+        android:layout_marginTop="@dimen/announcement_ratingbar_margin_top"
+        android:layout_marginBottom="@dimen/films_ratingbar_vertical_margin"
         style="@style/FilmsRatingBarTheme"
         android:isIndicator="true"/>
     <TextView
         android:id="@+id/comments_count"
         style="@style/CommentsCountLabel"
         android:layout_toRightOf="@id/film_rating"
-        android:layout_below="@id/premiere_date"
-        android:layout_marginTop="@dimen/films_comments_count_margin_top"
+        android:layout_below="@id/premiere_date_container"
+        android:layout_marginTop="@dimen/announcement_comments_count_margin_top"
         android:layout_marginLeft="@dimen/films_comments_count_margin_left"/>
     <LinearLayout
-        android:id="@+id/duration_and_comments_container"
+        android:id="@+id/duration_container"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,10 +111,9 @@
         android:padding="@dimen/premiere_label_padding"
         android:layout_marginTop="@dimen/premiere_label_margin_top"
         android:layout_toRightOf="@id/film_image"
-        android:layout_below="@id/duration_and_comments_container"
+        android:layout_below="@id/duration_container"
         android:background="@color/premiere_label_bg"
         android:textColor="@color/premiere_label_text_color"
         android:textSize="@dimen/premiere_label_text_size"
-        android:textStyle="bold"
         android:text="@string/premiere" />
 </RelativeLayout>
