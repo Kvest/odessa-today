@@ -7,5 +7,4 @@
     android:paddingTop="@dimen/main_menu_category_padding_top"
     android:paddingBottom="@dimen/main_menu_category_padding_bottom"
     android:textSize="@dimen/main_menu_category_text_size"
-    android:textColor="?attr/MainMenuCategoryTextColor"
-    android:textStyle="bold"/>
+    android:textColor="?attr/MainMenuCategoryTextColor" />

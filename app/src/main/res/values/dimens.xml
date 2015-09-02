@@ -133,7 +133,7 @@
     <dimen name="main_menu_category_text_size">18sp</dimen>
     <dimen name="main_menu_subcategory_height">60dip</dimen>
     <dimen name="main_menu_subcategory_text_padding_left">12dip</dimen>
-    <dimen name="main_menu_subcategory_text_size">16sp</dimen>
+    <dimen name="main_menu_subcategory_text_size">14sp</dimen>
     <dimen name="main_menu_subcategory_icon_size">50dip</dimen>
-    <dimen name="main_menu_subcategory_overlay_text_size">12sp</dimen>
+    <dimen name="main_menu_subcategory_overlay_text_size">11sp</dimen>
 </resources>

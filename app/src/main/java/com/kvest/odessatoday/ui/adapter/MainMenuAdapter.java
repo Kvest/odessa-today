@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.MainMenuFragment;
+import com.kvest.odessatoday.utils.FontUtils;
 
 /**
  * Created by Kvest on 02.02.2015.
@@ -58,6 +59,7 @@ public class MainMenuAdapter extends BaseAdapter {
     private int disabledSubcategoryTextColor, subcategoryTextColor, selectedSubcategoryTextColor;
     private int disabledSubcategoryIconTintColor, subcategoryIconTintColor, selectedSubcategoryIconTintColor;
     private Drawable subcategoryBg;
+    private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
     public MainMenuAdapter(Context context) {
         super();
@@ -91,6 +93,10 @@ public class MainMenuAdapter extends BaseAdapter {
         subcategoryBg = ta.getDrawable(6);
 
         ta.recycle();
+
+        //retrieve font
+        helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
+        helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
     }
 
     public int getSelectedItemPosition() {
@@ -177,7 +183,9 @@ public class MainMenuAdapter extends BaseAdapter {
             case MainMenuItem.TYPE_DIVIDER :
                 return LayoutInflater.from(context).inflate(R.layout.main_menu_item_divider, parent, false);
             case MainMenuItem.TYPE_CATEGORY :
-                return LayoutInflater.from(context).inflate(R.layout.main_menu_item_category, parent, false);
+                TextView categoryView = (TextView) LayoutInflater.from(context).inflate(R.layout.main_menu_item_category, parent, false);
+                categoryView.setTypeface(helveticaneuecyrBold);
+                return categoryView;
             case MainMenuItem.TYPE_SUBCATEGORY :
                 View view  = LayoutInflater.from(context).inflate(R.layout.main_menu_item_subcategory, parent, false);
                 view.setTag(new SubcategoryViewHolder(view));
@@ -193,7 +201,7 @@ public class MainMenuAdapter extends BaseAdapter {
 
     private void bindDisabledSubcategory(SubcategoryViewHolder holder, SubcategoryItem item) {
         //text
-        holder.text.setTypeface(null, Typeface.NORMAL);
+        holder.text.setTypeface(helveticaneuecyrRoman);
         holder.text.setTextColor(disabledSubcategoryTextColor);
         holder.text.setText(item.textRes);
 
@@ -207,7 +215,7 @@ public class MainMenuAdapter extends BaseAdapter {
 
     private void bindSubcategory(SubcategoryViewHolder holder, SubcategoryItem item) {
         //text
-        holder.text.setTypeface(null, Typeface.NORMAL);
+        holder.text.setTypeface(helveticaneuecyrRoman);
         holder.text.setTextColor(subcategoryTextColor);
         holder.text.setText(item.textRes);
 
@@ -221,7 +229,7 @@ public class MainMenuAdapter extends BaseAdapter {
 
     private void bindSelectedSubcategory(SubcategoryViewHolder holder, SubcategoryItem item) {
         //text
-        holder.text.setTypeface(null, Typeface.BOLD);
+        holder.text.setTypeface(helveticaneuecyrBold);
         holder.text.setTextColor(selectedSubcategoryTextColor);
         holder.text.setText(item.textRes);
 
@@ -276,7 +284,7 @@ public class MainMenuAdapter extends BaseAdapter {
         }
     }
 
-    private static class SubcategoryViewHolder {
+    private class SubcategoryViewHolder {
         public TextView text;
         public ImageView icon;
         public TextView disableOverlay;
@@ -285,6 +293,7 @@ public class MainMenuAdapter extends BaseAdapter {
             text = (TextView) view.findViewById(R.id.text);
             icon = (ImageView) view.findViewById(R.id.icon);
             disableOverlay = (TextView) view.findViewById(R.id.disable_overlay);
+            disableOverlay.setTypeface(helveticaneuecyrRoman);
         }
     }
 }
