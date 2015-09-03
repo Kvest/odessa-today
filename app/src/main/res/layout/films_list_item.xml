@@ -21,8 +21,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/films_list_item_arrow_margin_left"
-        android:tint="@color/films_list_arrow_tint"
-        android:src="@drawable/big_arrow" />
+        android:tint="@color/details_arrow_tint"
+        android:src="@drawable/ic_arrow_details" />
     <TextView
         android:id="@+id/film_name"
         android:layout_width="match_parent"

@@ -1,7 +1,9 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
@@ -29,14 +31,14 @@ public class CinemasAdapter extends CursorAdapter {
     private int nameColumnIndex = -1;
     private int addressColumnIndex = -1;
     private int commentsCountColumnIndex = -1;
+    private int evenItemBgColor, oddItemBgColor;
 
-    private Typeface verandaRegularTypeface;
+    private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
     public CinemasAdapter(Context context) {
         super(context, null, 0);
 
-        //retrieve font for address and comments
-        verandaRegularTypeface = FontUtils.getFont(context.getAssets(), FontUtils.VERANDA_REGULAR_FONT);
+        initResources(context);
     }
 
     @Override
@@ -48,13 +50,11 @@ public class CinemasAdapter extends CursorAdapter {
         //create holder
         ViewHolder holder = new ViewHolder();
         holder.name = (TextView)view.findViewById(R.id.cinema_name);
+        holder.name.setTypeface(helveticaneuecyrRoman);
         holder.address = (TextView)view.findViewById(R.id.cinema_address);
+        holder.address.setTypeface(helveticaneuecyrRoman);
         holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
-
-        //set fonts
-        holder.address.setTypeface(verandaRegularTypeface);
-        holder.commentsCount.setTypeface(verandaRegularTypeface);
-        ((TextView)view.findViewById(R.id.comments_count_label)).setTypeface(verandaRegularTypeface);
+        holder.commentsCount.setTypeface(helveticaneuecyrBold);
 
         view.setTag(holder);
 
@@ -64,13 +64,38 @@ public class CinemasAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder)view.getTag();
 
+        //set view background
+        if (cursor.getPosition() % 2 == 0) {
+            view.setBackgroundColor(evenItemBgColor);
+        } else {
+            view.setBackgroundColor(oddItemBgColor);
+        }
+
         if (!isColumnIndexesCalculated()) {
             calculateColumnIndexes(cursor);
         }
 
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.address.setText(cursor.getString(addressColumnIndex));
-        holder.commentsCount.setText(Integer.toString(cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(context.getString(R.string.comments_count, cursor.getInt(commentsCountColumnIndex)));
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        // Fetching the resources defined in the style
+        evenItemBgColor = ta.getColor(0, Color.BLACK);
+        oddItemBgColor = ta.getColor(1, Color.BLACK);
+
+        ta.recycle();
+
+        //retrieve font
+        helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
+        helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
     }
 
     private boolean isColumnIndexesCalculated() {

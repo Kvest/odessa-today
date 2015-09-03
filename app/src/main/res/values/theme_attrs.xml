@@ -13,10 +13,12 @@
     <attr format="reference" name="MainMenuSubcategoryBg"/>
     <attr format="reference" name="MainMenuSubcategoryOverlayBg"/>
     <attr format="color" name="CloseIconTintColor"/>
-    <attr format="color" name="FilmsListEvenItemBg"/>
-    <attr format="color" name="FilmsListOddItemBg"/>
+    <attr format="color" name="ListEvenItemBg"/>
+    <attr format="color" name="ListOddItemBg"/>
     <attr format="color" name="FilmNameTextColor"/>
     <attr format="color" name="GenreNameTextColor"/>
     <attr format="reference" name="FilmsRatingBar"/>
     <attr format="color" name="CommentsCountTextColor"/>
+    <attr format="color" name="CinemaNameTextColor"/>
+    <attr format="reference" name="MapPin"/>
 </resources>

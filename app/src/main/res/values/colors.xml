@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="application_green">#85ce49</color>
-    <color name="films_list_arrow_tint">#bcbcbc</color>
+    <color name="details_arrow_tint">#bcbcbc</color>
     <color name="premiere_label_bg">#FF4444</color>
     <color name="premiere_date_text_color">#24282b</color>
     <color name="premiere_label_text_color">#ffffff</color>
@@ -40,13 +40,8 @@
     <color name="write_comment_text_color">#ffffff</color>
 
     <!--cinemas-->
-    <color name="cinemas_list_bg_color">#e8e9eb</color>
-    <color name="cinemas_list_divider_color">#dadadc</color>
-    <color name="cinemas_list_arrow_tint">#aeafb0</color>
-    <color name="cinema_name_text_color">#323232</color>
-    <color name="cinema_address_text_color">#323232</color>
-    <color name="cinemas_list_comments_count_text_color">#e8e9eb</color>
-    <color name="cinemas_list_comments_count_bg_color">#454954</color>
+    <color name="cinema_address_text_color">#828282</color>
+    <color name="cinemas_list_comments_count_text_color">#ffffff</color>
 
     <!--cinema details-->
     <color name="cinema_details_name_text_color">#000000</color>

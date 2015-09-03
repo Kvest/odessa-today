@@ -43,6 +43,17 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="CinemaCommentsCountLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/cinemas_list_comments_count_bg</item>
+        <item name="android:textColor">@color/cinemas_list_comments_count_text_color</item>
+        <item name="android:textSize">@dimen/cinemas_list_comments_count_text_size</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="CategorySelectorRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton" >
         <item name="android:button">@null</item>
         <item name="android:background">@drawable/category_selector_bg</item>

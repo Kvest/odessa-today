@@ -1,59 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="1"
-    android:padding="@dimen/cinemas_list_item_padding" >
-    <RelativeLayout
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-        <TextView
-            android:id="@+id/cinema_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:textSize="@dimen/cinema_name_text_size"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/cinema_name_text_color" />
-        <TextView
-            android:id="@+id/cinema_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cinema_name"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="-4dip"
-            android:textSize="@dimen/cinema_address_text_size"
-            android:textColor="@color/cinema_address_text_color"/>
-        <TextView
-            android:id="@+id/comments_count"
-            android:layout_below="@id/cinema_address"
-            android:layout_alignParentLeft="true"
-            style="@style/CommentsCountLabel"
-            android:textSize="@dimen/cinemas_list_comments_count_text_size"
-            android:textColor="@color/cinemas_list_comments_count_text_color"
-            android:layout_marginRight="4dip"
-            android:layout_marginTop="@dimen/cinemas_list_comments_count_margin_top"/>
-        <TextView
-            android:id="@+id/comments_count_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/comments_count"
-            android:layout_toRightOf="@id/comments_count"
-            android:textSize="@dimen/cinemas_list_comments_count_text_size"
-            android:textColor="@color/cinemas_list_comments_count_bg_color"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:text="@string/comments_count"/>
-    </RelativeLayout>
+    android:paddingTop="@dimen/cinemas_list_item_padding_top"
+    android:paddingBottom="@dimen/cinemas_list_item_padding_bottom"
+    android:paddingLeft="@dimen/cinemas_list_item_horizontal_padding"
+    android:paddingRight="@dimen/cinemas_list_item_horizontal_padding">
     <ImageView
-        android:layout_height="wrap_content"
+        android:id="@+id/arrow_image"
         android:layout_width="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="4dip"
-        android:tint="@color/cinemas_list_arrow_tint"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/cinemas_list_item_arrow_margin_left"
+        android:tint="@color/details_arrow_tint"
         android:src="@drawable/ic_arrow_details" />
-</LinearLayout>
+    <TextView
+        android:id="@+id/cinema_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/arrow_image"
+        android:textSize="@dimen/cinema_name_text_size"
+        android:textColor="?attr/CinemaNameTextColor"/>
+    <TextView
+        android:id="@+id/cinema_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cinema_name"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/arrow_image"
+        android:drawableLeft="?attr/MapPin"
+        android:layout_marginTop="@dimen/cinema_address_margin_top"
+        android:drawablePadding="@dimen/cinema_address_drawable_padding"
+        android:textSize="@dimen/cinema_address_text_size"
+        android:textColor="@color/cinema_address_text_color"/>
+    <TextView
+        android:id="@+id/comments_count"
+        android:layout_below="@id/cinema_address"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/cinemas_list_comments_count_margin_top"
+        style="@style/CinemaCommentsCountLabel"/>
+</RelativeLayout>

@@ -10,7 +10,6 @@ import java.util.Map;
  * Created by Kvest on 20.03.2015.
  */
 public class FontUtils {
-    public static final String VERANDA_REGULAR_FONT = "fonts/veranda_regular.ttf";
     public static final String HELVETICANEUECYR_BLACK_FONT = "fonts/helveticaneuecyr-black.ttf";
     public static final String HELVETICANEUECYR_BOLD_FONT = "fonts/helveticaneuecyr-bold.ttf";
     public static final String HELVETICANEUECYR_LIGHT_FONT = "fonts/helveticaneuecyr-light.ttf";

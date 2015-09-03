@@ -11,9 +11,6 @@
             android:id="@+id/cinemas_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/cinemas_list_bg_color"
-            android:divider="@color/cinemas_list_divider_color"
-            android:dividerHeight="@dimen/cinemas_list_divider_height"
-            android:listSelector="@drawable/application_list_item_selector" />
+            android:divider="@null"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>
