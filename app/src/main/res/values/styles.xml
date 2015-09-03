@@ -56,7 +56,7 @@
 
     <style name="CategorySelectorRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton" >
         <item name="android:button">@null</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">?attr/SelectorTextColor</item>
         <item name="android:textSize">@dimen/category_selector_text_size</item>
         <item name="android:gravity">center</item>
         <item name="android:singleLine">true</item>

@@ -21,4 +21,10 @@
     <attr format="color" name="CommentsCountTextColor"/>
     <attr format="color" name="CinemaNameTextColor"/>
     <attr format="reference" name="MapPin"/>
+    <attr format="color" name="CategorySelectorBgColor"/>
+    <attr format="color" name="CategorySelectorDividerColor"/>
+    <attr format="reference" name="LeftSelectorBg"/>
+    <attr format="reference" name="MiddleSelectorBg"/>
+    <attr format="reference" name="RightSelectorBg"/>
+    <attr format="color" name="SelectorTextColor"/>
 </resources>

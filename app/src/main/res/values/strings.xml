@@ -5,9 +5,9 @@
     <string name="premiere_date"><![CDATA[<b>премьера: </b>%1$s]]></string>
     <string name="select_date">Выбрать дату</string>
     <string name="today_marker">Сегодня,</string>
-    <string name="timetable">Расписание</string>
-    <string name="cinemas">Кинотеатры</string>
-    <string name="announcements">Анонсы</string>
+    <string name="selector_timetable">расписание</string>
+    <string name="selector_cinemas">кинотеатры</string>
+    <string name="selector_announcements">анонсы</string>
     <string name="film_duration">%1$d мин.</string>
     <string name="film_duration_unknown">продолжительность неизвестна</string>
     <string name="film_director"><![CDATA[<b>Режиссер: </b>%1$s]]></string>

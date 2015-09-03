@@ -2,12 +2,15 @@
 <resources>
     <dimen name="application_padding">12dip</dimen>
     <dimen name="image_corner_radius">8dip</dimen>
+    <dimen name="selector_corner_radius">8dip</dimen>
     <dimen name="action_bar_height">70dip</dimen>
     <dimen name="films_list_item_vertical_padding">16dip</dimen>
     <dimen name="films_list_item_horizontal_padding">10dip</dimen>
     <dimen name="films_list_item_arrow_margin_left">4dip</dimen>
-    <dimen name="category_selector_height">50dip</dimen>
-    <dimen name="category_selector_text_size">16sp</dimen>
+    <dimen name="category_selector_height">60dip</dimen>
+    <dimen name="category_selector_padding">10dip</dimen>
+    <dimen name="category_selector_divider_height">1dip</dimen>
+    <dimen name="category_selector_text_size">12sp</dimen>
     <dimen name="film_thumbnail_image_width">120dip</dimen>
     <dimen name="film_thumbnail_margin_right">25dip</dimen>
     <dimen name="film_name_text_size">20sp</dimen>

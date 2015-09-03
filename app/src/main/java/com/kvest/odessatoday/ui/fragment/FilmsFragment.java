@@ -1,6 +1,8 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,16 +13,17 @@ import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.activity.AnnouncementFilmDetailsActivity;
 import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
 import com.kvest.odessatoday.ui.activity.MainMenuController;
 import com.kvest.odessatoday.ui.activity.OnBackPressedListener;
+import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -63,6 +66,7 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
     }
 
     private void init(View view) {
+        Context context = getActivity();
         fragmentsPager = (ViewPager) view.findViewById(R.id.view_pager);
         fragmentsPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -80,13 +84,13 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
                 //set selected tab
                 switch (pageNumber) {
                     case FILMS_LIST_FRAGMENT_POSITION:
-                        categorySelector.check(R.id.timetable);
+                        categorySelector.check(R.id.selector_timetable);
                         break;
                     case CINEMAS_LIST_FRAGMENT_POSITION:
-                        categorySelector.check(R.id.cinemas);
+                        categorySelector.check(R.id.selector_cinemas);
                         break;
                     case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION:
-                        categorySelector.check(R.id.announcements);
+                        categorySelector.check(R.id.selector_announcements);
                         break;
                 }
             }
@@ -110,8 +114,8 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
             }
         });
 
-        showCalendarAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down);
-        hideCalendarAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
+        showCalendarAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+        hideCalendarAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_up);
         hideCalendarAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}
@@ -131,18 +135,24 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.timetable:
+                    case R.id.selector_timetable:
                         fragmentsPager.setCurrentItem(FILMS_LIST_FRAGMENT_POSITION, true);
                         break;
-                    case R.id.cinemas:
+                    case R.id.selector_cinemas:
                         fragmentsPager.setCurrentItem(CINEMAS_LIST_FRAGMENT_POSITION, true);
                         break;
-                    case R.id.announcements:
+                    case R.id.selector_announcements:
                         fragmentsPager.setCurrentItem(ANNOUNCEMENTS_LIST_FRAGMENT_POSITION, true);
                         break;
                 }
             }
         });
+
+        //set typeface for the selector's RadioButtons
+        Typeface helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
+        ((RadioButton)view.findViewById(R.id.selector_timetable)).setTypeface(helveticaneuecyrBold);
+        ((RadioButton)view.findViewById(R.id.selector_cinemas)).setTypeface(helveticaneuecyrBold);
+        ((RadioButton)view.findViewById(R.id.selector_announcements)).setTypeface(helveticaneuecyrBold);
     }
 
     @Override
