@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="NightOdessaTodayTheme" parent="BaseOdessaTodayTheme">
-        <item name="MainBGColor">#2d2d2d</item>
+        <item name="MainBGColor">@color/main_bg_color_night</item>
         <item name="MapPin">@drawable/ic_map_pin_night</item>
         <item name="CategorySelectorBgColor">#1a1a18</item>
         <item name="CategorySelectorDividerColor">#494949</item>
