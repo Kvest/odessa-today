@@ -3,7 +3,7 @@
     <style name="DayOdessaTodayTheme" parent="BaseOdessaTodayTheme">
         <item name="MainBGColor">@android:color/white</item>
         <item name="MapPin">@drawable/ic_map_pin_day</item>
-        <item name="CategorySelectorBgColor">#f8f8f6</item>
+        <item name="CategorySelectorBgColor">#f5f5f5</item>
         <item name="CategorySelectorDividerColor">#e1e1e1</item>
         <item name="LeftSelectorBg">@drawable/left_selector_bg_day</item>
         <item name="MiddleSelectorBg">@drawable/middle_selector_bg_day</item>
