@@ -2,6 +2,7 @@
 <resources>
     <attr format="color" name="MainBGColor"/>
     <attr format="color" name="MainMenuBgColor"/>
+    <attr format="color" name="MainMenuHeaderBgColor"/>
     <attr format="color" name="MainMenuDividerColor"/>
     <attr format="color" name="MainMenuCategoryTextColor"/>
     <attr format="color" name="MainMenuSubcategoryTextColor"/>
@@ -11,6 +12,7 @@
     <attr format="color" name="MainMenuDisabledSubcategoryIconTintColor"/>
     <attr format="color" name="MainMenuSelectedSubcategoryIconTintColor"/>
     <attr format="reference" name="MainMenuSubcategoryBg"/>
+    <attr format="reference" name="MainMenuSelectedSubcategoryBg"/>
     <attr format="reference" name="MainMenuSubcategoryOverlayBg"/>
     <attr format="color" name="CloseIconTintColor"/>
     <attr format="color" name="ListEvenItemBg"/>

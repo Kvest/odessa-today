@@ -58,7 +58,7 @@ public class MainMenuAdapter extends BaseAdapter {
     private Context context;
     private int disabledSubcategoryTextColor, subcategoryTextColor, selectedSubcategoryTextColor;
     private int disabledSubcategoryIconTintColor, subcategoryIconTintColor, selectedSubcategoryIconTintColor;
-    private Drawable subcategoryBg;
+    private Drawable subcategoryBg, selectedSubcategoryBg;
     private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
     public MainMenuAdapter(Context context) {
@@ -78,7 +78,8 @@ public class MainMenuAdapter extends BaseAdapter {
                        R.attr.MainMenuSubcategoryIconTintColor,
                        R.attr.MainMenuDisabledSubcategoryIconTintColor,
                        R.attr.MainMenuSelectedSubcategoryIconTintColor,
-                       R.attr.MainMenuSubcategoryBg};
+                       R.attr.MainMenuSubcategoryBg,
+                       R.attr.MainMenuSelectedSubcategoryBg};
 
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
@@ -91,6 +92,7 @@ public class MainMenuAdapter extends BaseAdapter {
         disabledSubcategoryIconTintColor = ta.getColor(4, Color.BLACK);
         selectedSubcategoryIconTintColor = ta.getColor(5, Color.BLACK);
         subcategoryBg = ta.getDrawable(6);
+        selectedSubcategoryBg = ta.getDrawable(7);
 
         ta.recycle();
 
@@ -236,7 +238,7 @@ public class MainMenuAdapter extends BaseAdapter {
         //icon
         holder.icon.setImageResource(item.iconRes);
         holder.icon.setColorFilter(selectedSubcategoryIconTintColor);
-        holder.icon.setBackgroundResource(R.drawable.main_menu_selected_subcategory_bg);
+        holder.icon.setBackgroundDrawable(selectedSubcategoryBg);
 
         holder.disableOverlay.setVisibility(View.INVISIBLE);
     }

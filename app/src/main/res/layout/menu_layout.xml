@@ -6,6 +6,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="?attr/MainMenuHeaderBgColor"
         android:paddingLeft="@dimen/main_menu_header_horizontal_padding"
         android:paddingRight="@dimen/main_menu_header_horizontal_padding">
         <ImageView

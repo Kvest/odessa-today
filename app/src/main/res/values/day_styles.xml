@@ -11,6 +11,7 @@
         <item name="SelectorTextColor">@color/selector_text_color_day</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
+        <item name="MainMenuHeaderBgColor">#24282b</item>
         <item name="MainMenuDividerColor">#bcbcbc</item>
         <item name="MainMenuCategoryTextColor">#24282b</item>
         <item name="MainMenuSubcategoryTextColor">#24282b</item>
@@ -20,6 +21,7 @@
         <item name="MainMenuDisabledSubcategoryIconTintColor">#666666</item>
         <item name="MainMenuSelectedSubcategoryIconTintColor">@color/application_green</item>
         <item name="MainMenuSubcategoryBg">@drawable/main_menu_subcategory_bg_day</item>
+        <item name="MainMenuSelectedSubcategoryBg">@drawable/main_menu_selected_subcategory_bg_day</item>
         <item name="MainMenuSubcategoryOverlayBg">@drawable/main_menu_subcategory_overlay_bg_day</item>
         <item name="CloseIconTintColor">@android:color/white</item>
         <!--Films list-->
