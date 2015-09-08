@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.activity.AnnouncementFilmDetailsActivity;
 import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
+import com.kvest.odessatoday.ui.activity.MainActivity;
 import com.kvest.odessatoday.ui.activity.MainMenuController;
 import com.kvest.odessatoday.ui.activity.OnBackPressedListener;
 import com.kvest.odessatoday.utils.FontUtils;
@@ -33,6 +34,7 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
                                                         FilmsListFragment.FilmSelectedListener,
                                                         FilmsListFragment.ShowCalendarListener,
                                                         AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
+                                                        MainActivity.ToolbarExtendable,
                                                         OnBackPressedListener {
     private static final int FILMS_LIST_FRAGMENT_POSITION = 0;
     private static final int CINEMAS_LIST_FRAGMENT_POSITION = 1;
@@ -50,6 +52,8 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
     private ViewPager fragmentsPager;
     private RadioGroup categorySelector;
     private FilmsFragmentPagerAdapter pagerAdapter;
+
+    private View toolbarExtension;
 
     public static FilmsFragment getInstance() {
         FilmsFragment result = new FilmsFragment();
@@ -137,12 +141,15 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
                 switch (checkedId) {
                     case R.id.selector_timetable:
                         fragmentsPager.setCurrentItem(FILMS_LIST_FRAGMENT_POSITION, true);
+                        setToolbarExtensionVisibility(View.VISIBLE);
                         break;
                     case R.id.selector_cinemas:
                         fragmentsPager.setCurrentItem(CINEMAS_LIST_FRAGMENT_POSITION, true);
+                        setToolbarExtensionVisibility(View.GONE);
                         break;
                     case R.id.selector_announcements:
                         fragmentsPager.setCurrentItem(ANNOUNCEMENTS_LIST_FRAGMENT_POSITION, true);
+                        setToolbarExtensionVisibility(View.GONE);
                         break;
                 }
             }
@@ -202,6 +209,12 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
             hideCalendar();
         } else {
             showCalendar(shownFilmsDate);
+        }
+    }
+
+    private void setToolbarExtensionVisibility(int visibility) {
+        if (toolbarExtension != null) {
+            toolbarExtension.setVisibility(visibility);
         }
     }
 
@@ -301,5 +314,15 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
         public FilmsListFragment getFilmsListFragmentCache() {
             return filmsListFragmentCache;
         }
+    }
+
+    @Override
+    public int getExtensionLayoutId() {
+        return R.layout.films_fragment_toolbar_extension;
+    }
+
+    @Override
+    public void setExtensionView(View extension ) {
+        toolbarExtension = extension;
     }
 }

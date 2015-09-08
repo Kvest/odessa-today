@@ -7,6 +7,8 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -25,6 +27,8 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                                                         MainMenuController{
     private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
     private SlidingMenu slidingMenu;
+    private Toolbar toolbar;
+    private View toolbarExtention;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -38,9 +42,11 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_container_layout);
+        setContentView(R.layout.main_activity_layout);
 
         //setup action bar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         init();
@@ -60,6 +66,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
             try {
                 FilmsFragment filmsFragment = FilmsFragment.getInstance();
                 transaction.add(R.id.fragment_container, filmsFragment);
+                updateToolbarForFragment(filmsFragment);
             } finally {
                 transaction.commit();
             }
@@ -162,6 +169,23 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         } finally {
             transaction.commit();
         }
+
+        updateToolbarForFragment(fragment);
+    }
+
+    private void updateToolbarForFragment(Fragment fragment) {
+        //remove previous extension
+        if (toolbarExtention != null) {
+            toolbar.removeView(toolbarExtention);
+            toolbarExtention = null;
+        }
+
+        if (fragment instanceof ToolbarExtendable) {
+            ToolbarExtendable toolbarExtendable = (ToolbarExtendable) fragment;
+            toolbarExtention = LayoutInflater.from(this).inflate(toolbarExtendable.getExtensionLayoutId(), toolbar, false);
+            toolbar.addView(toolbarExtention);
+            toolbarExtendable.setExtensionView(toolbarExtention);
+        }
     }
 
     @Override
@@ -184,5 +208,10 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     @Override
     public void onCinemaSelected(long cinemaId) {
         startActivity(CinemaDetailsActivity.getStartIntent(this, cinemaId));
+    }
+
+    public interface ToolbarExtendable {
+        int getExtensionLayoutId();
+        void setExtensionView(View view);
     }
 }

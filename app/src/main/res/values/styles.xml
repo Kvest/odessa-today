@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Application style-->
-    <style name="BaseOdessaTodayTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="BaseOdessaTodayTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="actionBarStyle">@style/OdessaTodayActionBar</item>
         <item name="android:windowBackground">?attr/MainBGColor</item>
         <item name="homeAsUpIndicator">@drawable/ic_ab_back_white</item>
@@ -18,8 +18,7 @@
     </style>
 
     <!-- ActionBar styles -->
-    <style name="OdessaTodayActionBar"
-           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="OdessaTodayActionBar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@color/application_green</item>
         <!--Hide app icon-->
         <item name="android:displayOptions">showTitle</item>
