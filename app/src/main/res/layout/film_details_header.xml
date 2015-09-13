@@ -147,7 +147,7 @@
         android:paddingLeft="@dimen/film_details_padding"
         android:paddingRight="@dimen/film_details_padding">
         <LinearLayout
-            android:id="@+id/posters_container"
+            android:id="@+id/images_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

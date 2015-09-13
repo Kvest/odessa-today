@@ -25,6 +25,7 @@ import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
+import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.YoutubeApiConstants;
 
@@ -54,7 +55,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     protected TextView director;
     protected TextView actors;
     protected Button showComments;
-    protected LinearLayout postersContainer;
+    protected LinearLayout imagesContainer;
     private View.OnClickListener onPosterClickListener;
 
     protected YouTubePlayer youTubePlayer;
@@ -95,7 +96,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         director = (TextView)view.findViewById(R.id.director);
         actors = (TextView)view.findViewById(R.id.actors);
         showComments = (Button)view.findViewById(R.id.show_comments);
-        postersContainer = (LinearLayout)view.findViewById(R.id.posters_container);
+        imagesContainer = (LinearLayout)view.findViewById(R.id.images_container);
 
         youTubePlayerFragmentContainer = view.findViewById(R.id.youtube_fragment_container);
 
@@ -190,8 +191,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             youTubeInitializationResult.getErrorDialog(activity, RECOVERY_DIALOG_REQUEST).show();
         } else {
             //if only 1 child - it is youtube fragment
-            if (postersContainer.getChildCount() <= 1) {
-                postersContainer.setVisibility(View.GONE);
+            if (imagesContainer.getChildCount() <= 1) {
+                imagesContainer.setVisibility(View.GONE);
             }
         }
     }
@@ -243,13 +244,13 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             //set visibility for Youtube player and posters
             if (TextUtils.isEmpty(trailerVideoId)) {
                 if (postersUrls.length == 0) {
-                    postersContainer.setVisibility(View.GONE);
+                    imagesContainer.setVisibility(View.GONE);
                 } else {
-                    postersContainer.setVisibility(View.VISIBLE);
+                    imagesContainer.setVisibility(View.VISIBLE);
                     youTubePlayerFragmentContainer.setVisibility(View.GONE);
                 }
             } else {
-                postersContainer.setVisibility(View.VISIBLE);
+                imagesContainer.setVisibility(View.VISIBLE);
                 youTubePlayerFragmentContainer.setVisibility(View.VISIBLE);
             }
         }
@@ -278,8 +279,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         boolean found;
         for (String posterUrl : posterUrls) {
             found = false;
-            for (int i = 1; i < postersContainer.getChildCount(); ++i) {
-                if (posterUrl.equals(((NetworkImageView)postersContainer.getChildAt(i)).getUrl())) {
+            for (int i = 1; i < imagesContainer.getChildCount(); ++i) {
+                if (posterUrl.equals(((RoundNetworkImageView) imagesContainer.getChildAt(i)).getUrl())) {
                     found = true;
                     break;
                 }
@@ -287,8 +288,9 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
             if (!found) {
                 //add image view
-                NetworkImageView imageView = new NetworkImageView(postersContainer.getContext());
-                postersContainer.addView(imageView, postersLayoutParams);
+                RoundNetworkImageView imageView = new RoundNetworkImageView(imagesContainer.getContext());
+                imageView.setCornersRadiusResource(R.dimen.image_corner_radius);
+                imagesContainer.addView(imageView, postersLayoutParams);
 
                 //start loading
                 imageView.setImageUrl(posterUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());

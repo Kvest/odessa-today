@@ -41,6 +41,18 @@ public class RoundNetworkImageView extends NetworkImageView {
         init(context, attrs);
     }
 
+    public float getCornersRadius() {
+        return radius;
+    }
+
+    public void setCornersRadius(float radius) {
+        this.radius = radius;
+    }
+
+    public void setCornersRadiusResource(int resId) {
+        this.radius = getResources().getDimension(resId);
+    }
+
     private void init(Context context, AttributeSet attrs) {
         paint = new Paint();
         paint.setAntiAlias(true);
