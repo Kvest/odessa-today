@@ -64,9 +64,9 @@
     <dimen name="film_details_posters_height">120dip</dimen>
     <dimen name="film_details_posters_margin">8dip</dimen>
     <dimen name="timetable_date_margin_vertical">10dip</dimen>
-    <dimen name="min_max_prices_icon_margin_top">7dip</dimen>
-    <dimen name="min_max_prices_icon_margin_right">7dip</dimen>
-    <dimen name="min_max_prices_text_size">16sp</dimen>
+    <dimen name="min_max_prices_margin_top">16dip</dimen>
+    <dimen name="min_max_prices_icon_padding">12dip</dimen>
+    <dimen name="min_max_prices_text_size">12sp</dimen>
     <dimen name="film_details_button_icon_margin_left">12dip</dimen>
     <dimen name="film_expand_text_divider_height">2dip</dimen>
     <dimen name="film_details_button_text_size">18sp</dimen>

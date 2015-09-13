@@ -18,6 +18,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.*;
+import android.view.animation.Animation;
 import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.notification.LoadTimetableNotification;
@@ -50,7 +51,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 public class FilmDetailsFragment extends BaseFilmDetailsFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_TIMETABLE_DATE = "com.kvest.odessatoday.argument.TIMETABLE_DATE";
 
-    private static final String MIN_MAX_PRICES_SEPARATOR = "-";
+    private static final String MIN_MAX_PRICES_SEPARATOR = " / ";
     private static final Pattern PRICES_PATTERN = Pattern.compile("(\\d+)");
     private static final int PRICES_GROUP = 1;
 
@@ -62,10 +63,10 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     private static final int FILM_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
 
-    private ImageView minMaxPricesIcon;
     private TextView minMaxPricesView;
     private TimetableAdapter timetableAdapter;
     private String shareTitle, shareText;
+    private String currencyStr;
 
     private TextView isToday;
     private TextView dateTextView;
@@ -82,6 +83,13 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         FilmDetailsFragment result = new FilmDetailsFragment();
         result.setArguments(arguments);
         return result;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        currencyStr = getString(R.string.currency);
     }
 
     @Override
@@ -134,7 +142,6 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     protected void initFilmInfoView(View view) {
         super.initFilmInfoView(view);
 
-        minMaxPricesIcon = (ImageView) view.findViewById(R.id.min_max_prices_icon);
         minMaxPricesView = (TextView)view.findViewById(R.id.min_max_prices);
         isToday = (TextView)view.findViewById(R.id.is_today);
         dateTextView = (TextView)view.findViewById(R.id.date);
@@ -189,12 +196,9 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         String minMaxPrices = calculateMinMaxPrices(cursor);
         if (!TextUtils.isEmpty(minMaxPrices)) {
             minMaxPricesView.setText(minMaxPrices);
-
             minMaxPricesView.setVisibility(View.VISIBLE);
-            minMaxPricesIcon.setVisibility(View.VISIBLE);
         } else {
             minMaxPricesView.setVisibility(View.GONE);
-            minMaxPricesIcon.setVisibility(View.GONE);
         }
     }
 
@@ -225,18 +229,18 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         }
 
         if (min == Integer.MAX_VALUE) {
-            return Integer.toString(max);
+            return Integer.toString(max) + currencyStr;
         }
 
         if (max == Integer.MIN_VALUE) {
-            return Integer.toString(min);
+            return Integer.toString(min) + currencyStr;
         }
 
         if (max == min) {
-            return Integer.toString(max);
+            return Integer.toString(max) + currencyStr;
         }
 
-        return Integer.toString(min) + MIN_MAX_PRICES_SEPARATOR + Integer.toString(max);
+        return Integer.toString(min) + currencyStr + MIN_MAX_PRICES_SEPARATOR + Integer.toString(max) + currencyStr;
     }
 
     @Override

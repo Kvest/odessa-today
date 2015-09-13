@@ -10,27 +10,27 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/film_details_padding"
         android:background="@android:color/white">
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/film_poster"
+        <com.kvest.odessatoday.ui.widget.RoundNetworkImageView
+            xmlns:app="http://schemas.android.com/apk/res/com.kvest.odessatoday"
+            android:id="@+id/film_image"
+            android:transitionName="film_image"
             android:layout_width="@dimen/film_thumbnail_image_width"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/film_details_poster_margin_right" />
+            app:cornerRadius="@dimen/image_corner_radius"
+            android:layout_marginRight="@dimen/film_thumbnail_margin_right"/>
         <TextView
             android:id="@+id/film_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/film_poster"
+            android:layout_toRightOf="@id/film_image"
             android:layout_alignParentTop="true"
             android:textSize="@dimen/film_name_text_size"
-            android:textColor="?attr/FilmNameTextColor"
-            android:textStyle="bold"
-            android:maxLines="2"
-            android:ellipsize="end" />
+            android:textColor="?attr/FilmNameTextColor"/>
         <TextView
             android:id="@+id/genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/film_poster"
+            android:layout_toRightOf="@id/film_image"
             android:layout_below="@id/film_name"
             android:textSize="@dimen/genre_text_size"
             android:textColor="?attr/GenreNameTextColor"/>
@@ -38,7 +38,7 @@
             android:id="@+id/film_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/film_poster"
+            android:layout_toRightOf="@id/film_image"
             android:layout_below="@id/genre"
             android:numStars="5"
             android:stepSize="0.1"
@@ -46,62 +46,45 @@
             android:layout_marginBottom="@dimen/films_ratingbar_vertical_margin"
             style="@style/FilmsRatingBarTheme"
             android:isIndicator="true"/>
+        <TextView
+            android:id="@+id/comments_count"
+            style="@style/CommentsCountLabel"
+            android:layout_toRightOf="@id/film_rating"
+            android:layout_below="@id/genre"
+            android:layout_marginTop="@dimen/films_comments_count_margin_top"
+            android:layout_marginLeft="@dimen/films_comments_count_margin_left"/>
         <LinearLayout
-            android:id="@+id/duration_and_comments_container"
+            android:id="@+id/duration_container"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/film_poster"
+            android:layout_toRightOf="@id/film_image"
             android:layout_below="@id/film_rating">
             <ImageView
-                android:id="@+id/film_duration_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/film_duration_icon_margin_right"
                 android:src="@drawable/ic_film_duration" />
             <TextView
                 android:id="@+id/film_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginRight="12dip"
+                android:layout_gravity="center_vertical"
                 android:textSize="@dimen/film_duration_text_size"
                 android:textColor="@color/film_duration_text_color" />
-            <TextView
-                android:id="@+id/comments_count"
-                style="@style/CommentsCountLabel"
-                android:layout_gravity="top"
-                android:layout_marginRight="4dip"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:textSize="@dimen/film_duration_text_size"
-                android:textColor="@color/film_duration_text_color"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:text="@string/comments_count"/>
         </LinearLayout>
-        <ImageView
-            android:id="@+id/min_max_prices_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/min_max_prices_icon_margin_top"
-            android:layout_marginRight="@dimen/min_max_prices_icon_margin_right"
-            android:layout_toRightOf="@id/film_poster"
-            android:layout_below="@id/duration_and_comments_container"
-            android:src="@drawable/ic_cash"/>
         <TextView
             android:id="@+id/min_max_prices"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_toRightOf="@id/min_max_prices_icon"
-            android:layout_alignTop="@id/min_max_prices_icon"
-            android:layout_alignBottom="@id/min_max_prices_icon"
+            android:layout_toRightOf="@id/film_image"
+            android:layout_below="@id/duration_container"
+            android:layout_marginTop="@dimen/min_max_prices_margin_top"
             android:textSize="@dimen/min_max_prices_text_size"
-            android:textColor="@color/min_max_prices_text_color"/>
+            android:textColor="@color/min_max_prices_text_color"
+            android:drawableLeft="@drawable/ic_cash"
+            android:drawablePadding="@dimen/min_max_prices_icon_padding"/>
     </RelativeLayout>
     <LinearLayout
         android:orientation="horizontal"

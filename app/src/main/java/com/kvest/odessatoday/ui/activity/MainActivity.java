@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity_layout);
+        setContentView(R.layout.fragment_container_with_toolbar_layout);
 
         //setup action bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);

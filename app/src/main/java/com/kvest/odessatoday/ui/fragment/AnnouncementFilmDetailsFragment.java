@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,7 @@ public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  im
                 String text = getString(R.string.premiere_date, PREMIERE_DATE_FORMAT.format(premiereDateValue));
 
                 premiereDate.setVisibility(View.VISIBLE);
-                premiereDate.setText(text);
+                premiereDate.setText(Html.fromHtml(text));
             } else {
                 premiereDate.setVisibility(View.GONE);
             }

@@ -50,7 +50,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     protected RatingBar filmRating;
     protected TextView commentsCount;
     protected TextView filmDuration;
-    protected ImageView filmDurationIcon;
     protected TextView description;
     protected TextView director;
     protected TextView actors;
@@ -84,7 +83,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         postersLayoutParams.setMargins(postersMargin, postersMargin, 0, postersMargin);
 
         //store views
-        filmPoster = (NetworkImageView) view.findViewById(R.id.film_poster);
+        filmPoster = (NetworkImageView) view.findViewById(R.id.film_image);
         filmPoster.setDefaultImageResId(R.drawable.loading_poster);
         filmPoster.setErrorImageResId(R.drawable.no_poster);
         filmName = (TextView) view.findViewById(R.id.film_name);
@@ -92,7 +91,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         filmRating = (RatingBar) view.findViewById(R.id.film_rating);
         commentsCount = (TextView) view.findViewById(R.id.comments_count);
         filmDuration = (TextView) view.findViewById(R.id.film_duration);
-        filmDurationIcon = (ImageView) view.findViewById(R.id.film_duration_icon);
         description = (TextView)view.findViewById(R.id.film_description);
         director = (TextView)view.findViewById(R.id.director);
         actors = (TextView)view.findViewById(R.id.actors);
@@ -218,12 +216,9 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
             int filmDurationValue = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.FILM_DURATION));
             if (filmDurationValue > 0) {
-                filmDuration.setVisibility(View.VISIBLE);
-                filmDurationIcon.setVisibility(View.VISIBLE);
                 filmDuration.setText(getString(R.string.film_duration, filmDurationValue));
             } else {
-                filmDuration.setVisibility(View.GONE);
-                filmDurationIcon.setVisibility(View.GONE);
+                filmDuration.setText(R.string.film_duration_unknown);
             }
 
             String value = getString(R.string.film_director, cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.DIRECTOR)));
