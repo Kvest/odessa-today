@@ -56,7 +56,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     protected TextView actors;
     protected Button showComments;
     protected LinearLayout imagesContainer;
-    private View.OnClickListener onPosterClickListener;
+    private View.OnClickListener onImageClickListener;
 
     protected YouTubePlayer youTubePlayer;
     protected View youTubePlayerFragmentContainer;
@@ -84,7 +84,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         postersLayoutParams.setMargins(postersMargin, postersMargin, 0, postersMargin);
 
         //store views
-        filmPoster = (NetworkImageView) view.findViewById(R.id.film_image);
+        filmPoster = (NetworkImageView) view.findViewById(R.id.film_poster);
         filmPoster.setDefaultImageResId(R.drawable.loading_poster);
         filmPoster.setErrorImageResId(R.drawable.no_poster);
         filmName = (TextView) view.findViewById(R.id.film_name);
@@ -121,15 +121,14 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
                 showComments();
             }
         });
-        onPosterClickListener = new View.OnClickListener() {
+        onImageClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String[] urls = new String[]{((NetworkImageView)view).getUrl()};
-                Intent startIntent = PhotoGalleryActivity.getStartIntent(getActivity(), urls);
-                startActivity(startIntent);
+                PhotoGalleryActivity.start(getActivity(), urls);
             }
         };
-        filmPoster.setOnClickListener(onPosterClickListener);
+        filmPoster.setOnClickListener(onImageClickListener);
     }
 
     private void initYoutubePlayer() {
@@ -239,7 +238,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
             //add new posters
             String[] postersUrls = FilmWithTimetable.string2Posters(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
-            mergePosters(postersUrls);
+            mergeImages(postersUrls);
 
             //set visibility for Youtube player and posters
             if (TextUtils.isEmpty(trailerVideoId)) {
@@ -275,12 +274,12 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         trailerVideoId = newTrailerVideoId;
     }
 
-    private void mergePosters(String[] posterUrls) {
+    private void mergeImages(String[] imageUrls) {
         boolean found;
-        for (String posterUrl : posterUrls) {
+        for (String imageUrl : imageUrls) {
             found = false;
             for (int i = 1; i < imagesContainer.getChildCount(); ++i) {
-                if (posterUrl.equals(((RoundNetworkImageView) imagesContainer.getChildAt(i)).getUrl())) {
+                if (imageUrl.equals(((RoundNetworkImageView) imagesContainer.getChildAt(i)).getUrl())) {
                     found = true;
                     break;
                 }
@@ -293,10 +292,10 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
                 imagesContainer.addView(imageView, postersLayoutParams);
 
                 //start loading
-                imageView.setImageUrl(posterUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
+                imageView.setImageUrl(imageUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
 
                 //set click listener
-                imageView.setOnClickListener(onPosterClickListener);
+                imageView.setOnClickListener(onImageClickListener);
             }
         }
     }

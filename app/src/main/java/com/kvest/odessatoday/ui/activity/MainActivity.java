@@ -30,10 +30,10 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     private Toolbar toolbar;
     private View toolbarExtention;
 
-    public static Intent getStartIntent(Context context) {
+    public static void start(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
 
-        return intent;
+        context.startActivity(intent);
     }
 
     /**
@@ -207,7 +207,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
     @Override
     public void onCinemaSelected(long cinemaId) {
-        startActivity(CinemaDetailsActivity.getStartIntent(this, cinemaId));
+        CinemaDetailsActivity.start(this, cinemaId);
     }
 
     public interface ToolbarExtendable {

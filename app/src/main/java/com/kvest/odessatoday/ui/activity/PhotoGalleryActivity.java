@@ -13,11 +13,11 @@ import com.kvest.odessatoday.ui.fragment.PhotoGalleryFragment;
 public class PhotoGalleryActivity extends BaseActivity {
     private static final String EXTRA_PHOTO_URLS = "com.kvest.odessatoday.extra.PHOTO_URLS";
 
-    public static Intent getStartIntent(Context context, String[] urls) {
+    public static void start(Context context, String[] urls) {
         Intent intent = new Intent(context, PhotoGalleryActivity.class);
         intent.putExtra(EXTRA_PHOTO_URLS, urls);
 
-        return intent;
+        context.startActivity(intent);
     }
 
     @Override

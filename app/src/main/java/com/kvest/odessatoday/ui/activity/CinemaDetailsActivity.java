@@ -22,11 +22,11 @@ import com.kvest.odessatoday.utils.Constants;
 public class CinemaDetailsActivity extends BaseActivity implements CinemaDetailsFragment.CinemaDetailsActionsListener {
     private static final String EXTRA_CINEMA_ID = "com.kvest.odessatoday.extra.CINEMA_ID";
 
-    public static Intent getStartIntent(Context context, long cinemaId) {
+    public static void start(Context context, long cinemaId) {
         Intent intent = new Intent(context, CinemaDetailsActivity.class);
         intent.putExtra(EXTRA_CINEMA_ID, cinemaId);
 
-        return intent;
+        context.startActivity(intent);
     }
 
     @Override

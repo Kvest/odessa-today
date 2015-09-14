@@ -22,12 +22,12 @@ public class FilmDetailsActivity extends BaseActivity implements FilmDetailsFrag
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
     private static final String EXTRA_TIMETABLE_DATE = "com.kvest.odessatoday.extra.FILM_TIMETABLE_DATE";
 
-    public static Intent getStartIntent(Context context, long filmId, long timetableDate) {
+    public static void start(Context context, long filmId, long timetableDate) {
         Intent intent = new Intent(context, FilmDetailsActivity.class);
         intent.putExtra(EXTRA_FILM_ID, filmId);
         intent.putExtra(EXTRA_TIMETABLE_DATE, timetableDate);
 
-        return intent;
+        context.startActivity(intent);
     }
 
     @Override

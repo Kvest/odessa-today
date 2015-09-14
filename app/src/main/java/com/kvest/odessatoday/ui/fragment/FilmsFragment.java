@@ -269,12 +269,12 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
 
     @Override
     public void onFilmSelected(long filmId) {
-        startActivity(FilmDetailsActivity.getStartIntent(getActivity(), filmId, shownFilmsDate));
+        FilmDetailsActivity.start(getActivity(), filmId, shownFilmsDate);
     }
 
     @Override
     public void onAnnouncementFilmSelected(long filmId) {
-        startActivity(AnnouncementFilmDetailsActivity.getStartIntent(getActivity(), filmId));
+        AnnouncementFilmDetailsActivity.start(getActivity(), filmId);
     }
 
     public class FilmsFragmentPagerAdapter extends FragmentPagerAdapter {

@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (!isCanceled) {
-                    startActivity(MainActivity.getStartIntent(SplashActivity.this));
+                    MainActivity.start(SplashActivity.this);
 
                     finish();
                 }

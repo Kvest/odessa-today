@@ -21,11 +21,11 @@ import com.kvest.odessatoday.utils.Constants;
 public class AnnouncementFilmDetailsActivity extends BaseActivity implements AnnouncementFilmDetailsFragment.OnShowFilmCommentsListener {
     private static final String EXTRA_FILM_ID = "com.kvest.odessatoday.extra.FILM_ID";
 
-    public static Intent getStartIntent(Context context, long filmId) {
+    public static void start(Context context, long filmId) {
         Intent intent = new Intent(context, AnnouncementFilmDetailsActivity.class);
         intent.putExtra(EXTRA_FILM_ID, filmId);
 
-        return intent;
+        context.startActivity(intent);
     }
 
     @Override
