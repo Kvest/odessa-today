@@ -9,6 +9,9 @@
         <item name="MiddleSelectorBg">@drawable/middle_selector_bg_night</item>
         <item name="RightSelectorBg">@drawable/right_selector_bg_night</item>
         <item name="SelectorTextColor">@color/selector_text_color_night</item>
+        <item name="TitleTextColor">#1b1b1b</item>
+        <item name="ABCalendarIcon">@drawable/ic_ab_calendar_night</item>
+        <item name="ABIconColor">@color/ab_icon_color_night</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">@color/application_green</item>
         <item name="MainMenuHeaderBgColor">#1b1b1b</item>

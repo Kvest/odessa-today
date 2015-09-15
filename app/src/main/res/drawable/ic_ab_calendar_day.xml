@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="ring"
+            android:innerRadius="23dip"
+            android:thickness="1dip"
+            android:useLevel="false">
+            <size
+                android:height="50dip"
+                android:width="50dip" />
+            <solid android:color="@color/ab_icon_color_day" />
+        </shape>
+    </item>
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/calendar_day"/>
+    </item>
+</layer-list>

@@ -6,11 +6,13 @@
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        style="@style/ToolBarStyle.OdessaToday"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:background="@color/application_green"
-        android:gravity="center_horizontal"
-        app:theme="@style/OdessaTodayActionBar" />
+        android:paddingLeft="@dimen/toolbar_horizontal_padding"
+        android:paddingRight="@dimen/toolbar_horizontal_padding"
+        android:gravity="center_horizontal"/>
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

@@ -37,6 +37,7 @@ public class AnnouncementFilmDetailsActivity extends BaseActivity implements Ann
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupToolbar(toolbar);
 
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {

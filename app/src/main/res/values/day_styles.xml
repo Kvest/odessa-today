@@ -9,6 +9,9 @@
         <item name="MiddleSelectorBg">@drawable/middle_selector_bg_day</item>
         <item name="RightSelectorBg">@drawable/right_selector_bg_day</item>
         <item name="SelectorTextColor">@color/selector_text_color_day</item>
+        <item name="TitleTextColor">#ffffff</item>
+        <item name="ABCalendarIcon">@drawable/ic_ab_calendar_day</item>
+        <item name="ABIconColor">@color/ab_icon_color_day</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuHeaderBgColor">#24282b</item>

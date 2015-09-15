@@ -11,6 +11,9 @@
     <attr format="color" name="MainMenuSubcategoryIconTintColor"/>
     <attr format="color" name="MainMenuDisabledSubcategoryIconTintColor"/>
     <attr format="color" name="MainMenuSelectedSubcategoryIconTintColor"/>
+    <attr format="color" name="TitleTextColor"/>
+    <attr format="color" name="ABIconColor"/>
+    <attr format="reference" name="ABCalendarIcon"/>
     <attr format="reference" name="MainMenuSubcategoryBg"/>
     <attr format="reference" name="MainMenuSelectedSubcategoryBg"/>
     <attr format="reference" name="MainMenuSubcategoryOverlayBg"/>

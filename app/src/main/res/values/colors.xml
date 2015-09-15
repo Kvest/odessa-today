@@ -11,6 +11,8 @@
     <color name="category_selector_checked_bg">#323232</color>
     <color name="category_selector_unchecked_bg">#454954</color>
     <color name="film_duration_text_color">#bcbcbc</color>
+    <color name="ab_icon_color_day">#ffffff</color>
+    <color name="ab_icon_color_night">#1b1b1b</color>
 
     <!--Calendar fragment-->
     <color name="calendar_header_bg">#444953</color>

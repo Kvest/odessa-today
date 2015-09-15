@@ -39,6 +39,7 @@ public class FilmDetailsActivity extends BaseActivity implements FilmDetailsFrag
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupToolbar(toolbar);
 
         Intent intent = getIntent();
         if (savedInstanceState == null && intent != null) {

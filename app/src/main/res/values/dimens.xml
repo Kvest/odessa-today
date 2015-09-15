@@ -32,6 +32,8 @@
     <dimen name="menu_icon_size">24dip</dimen>
     <dimen name="announcement_ratingbar_margin_top">10dip</dimen>
     <dimen name="announcement_comments_count_margin_top">8dip</dimen>
+    <dimen name="toolbar_horizontal_padding">10dip</dimen>
+    <dimen name="title_text_size">18sp</dimen>
 
     <dimen name="films_date_label_height">30dip</dimen>
     <dimen name="films_date_label_horizontal_padding">12dip</dimen>

@@ -3,6 +3,11 @@ package com.kvest.odessatoday.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,8 +51,10 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
         //setup action bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(getMainMenuIcon());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupToolbar(toolbar);
 
         init();
 
@@ -203,6 +210,19 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
         //close menu
         slidingMenu.showContent();
+    }
+
+    private Drawable getMainMenuIcon() {
+        //get color
+        int[] attrs = {R.attr.ABIconColor};
+        TypedArray ta = obtainStyledAttributes(attrs);
+
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_menu);
+        drawable.setColorFilter(new PorterDuffColorFilter(ta.getColor(0, Color.WHITE), PorterDuff.Mode.SRC_IN));
+
+        ta.recycle();
+
+        return drawable;
     }
 
     @Override

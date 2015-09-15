@@ -15,6 +15,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.activity.AnnouncementFilmDetailsActivity;
 import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
@@ -54,6 +56,9 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
     private FilmsFragmentPagerAdapter pagerAdapter;
 
     private View toolbarExtension;
+    private TextView extensionTitle;
+    private View previousDay;
+    private View nextDay;
 
     public static FilmsFragment getInstance() {
         FilmsFragment result = new FilmsFragment();
@@ -324,5 +329,12 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
     @Override
     public void setExtensionView(View extension ) {
         toolbarExtension = extension;
+        extensionTitle = (TextView) toolbarExtension.findViewById(R.id.title);
+        previousDay = toolbarExtension.findViewById(R.id.previous_day);
+        nextDay = toolbarExtension.findViewById(R.id.next_day);
+
+        //set title font
+        extensionTitle.setTypeface(FontUtils.getFont(extensionTitle.getContext().getAssets(),
+                                                     FontUtils.HELVETICANEUECYR_ROMAN_FONT));
     }
 }
