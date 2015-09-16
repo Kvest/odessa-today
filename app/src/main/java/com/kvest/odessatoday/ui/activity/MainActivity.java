@@ -107,9 +107,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     public void onPause() {
         super.onPause();
 
-        if (isFinishing()) {
-            unregisterReceiver(networkChangeReceiver);
-        }
+        unregisterReceiver(networkChangeReceiver);
     }
 
     private void init() {
