@@ -212,6 +212,8 @@ public class TodayProviderContract {
                 String WORK_TIME = "worktime";
                 String IMAGE = "image";
                 String COMMENTS_COUNT = "comments_count";
+                String LON = "lon";
+                String LAT = "lat";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
@@ -225,6 +227,8 @@ public class TodayProviderContract {
                     + Columns.WORK_TIME + " TEXT,"
                     + Columns.IMAGE + " TEXT,"
                     + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
+                    + Columns.LON + " REAL,"
+                    + Columns.LAT + " REAL,"
                     + "UNIQUE(" + Columns.CINEMA_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;

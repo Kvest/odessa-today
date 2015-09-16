@@ -35,9 +35,13 @@ public class Cinema {
     public String[] images;
     @SerializedName("comments_count")
     public int comments_count;
+    @SerializedName("lat")
+    public double lat;
+    @SerializedName("lon")
+    public double lon;
 
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues(8);
+        ContentValues values = new ContentValues(11);
         values.put(Cinemas.Columns.CINEMA_ID, id);
         values.put(Cinemas.Columns.NAME, name);
         values.put(Cinemas.Columns.ADDRESS, address);
@@ -47,6 +51,8 @@ public class Cinema {
         values.put(Cinemas.Columns.WORK_TIME, worktime);
         values.put(Cinemas.Columns.IMAGE, imagesToString());
         values.put(Cinemas.Columns.COMMENTS_COUNT, comments_count);
+        values.put(Cinemas.Columns.LON, lon);
+        values.put(Cinemas.Columns.LAT, lat);
 
         return values;
     }
