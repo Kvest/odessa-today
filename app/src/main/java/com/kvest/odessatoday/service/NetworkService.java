@@ -24,6 +24,7 @@ public class NetworkService extends IntentService {
     private static final int ACTION_UPLOAD_COMMENT = 5;
     private static final int ACTION_UPLOAD_ALL_COMMENTS = 6;
     private static final int ACTION_LOAD_ANNOUNCEMENTS = 7;
+    private static final int ACTION_LOAD_PLACES = 8;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
         loadFilms(context, startDate, endDate, -1);
@@ -82,6 +83,13 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
+    public static void loadPlaces(Context context, int placesType) {
+        Intent intent = createIntent(context, ACTION_LOAD_PLACES);
+        LoadPlacesHandler.putExtras(intent, placesType);
+
+        context.startService(intent);
+    }
+
     public static void sync(Context context) {
         if (Utils.isNetworkAvailable(context)) {
             uploadAllComments(context);
@@ -129,6 +137,8 @@ public class NetworkService extends IntentService {
                 return new UploadAllCommentsHandler();
             case ACTION_LOAD_ANNOUNCEMENTS:
                 return new LoadAnnouncementsHandler();
+            case ACTION_LOAD_PLACES :
+                return new LoadPlacesHandler();
         }
 
         return null;

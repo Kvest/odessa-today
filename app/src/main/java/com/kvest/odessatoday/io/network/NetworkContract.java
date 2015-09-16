@@ -16,6 +16,7 @@ public class NetworkContract {
     private static final String TIMETABLE_PATH = "timetable";
     private static final String COMMENTS_PATH = "comments";
     private static final String ANNOUNCEMENTS_PATH = "announcement";
+    private static final String PLACES_PATH = "places";
 
     public static final String API_KEY_HEADER_NAME = "api-key";
 
@@ -73,6 +74,19 @@ public class NetworkContract {
         public int MAX_LIMIT = 100;
 
         public interface Params {
+            String OFFSET = "offset";
+            String LIMIT = "limit";
+        }
+    }
+
+    public interface PlacesRequest {
+        Uri url = Uri.parse(BASE_URL + PLACES_PATH);
+
+        public int DEFAULT_OFFSET = 0;
+        public int MAX_LIMIT = 100;
+
+        public interface Params {
+            String TYPE = "type";
             String OFFSET = "offset";
             String LIMIT = "limit";
         }

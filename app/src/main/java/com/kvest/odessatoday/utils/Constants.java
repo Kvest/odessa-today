@@ -39,9 +39,29 @@ public abstract class Constants {
     }
 
     public interface SyncStatus {
-        public static final int UP_TO_DATE = 0;
-        public static final int NEED_UPLOAD = 1;
-        public static final int NEED_UPDATE = 2;
-        public static final int NEED_DELETE = 4;
+        int UP_TO_DATE = 0;
+        int NEED_UPLOAD = 1;
+        int NEED_UPDATE = 2;
+        int NEED_DELETE = 4;
+    }
+
+    public interface PlaceType {
+        int THEATRE= 1;
+        int CONCERT_HALL = 2;
+        int CLUB = 3;
+        int MUSEUM = 4;
+        int GALLERY = 5;
+        int ZOO = 6;
+        int QUEST = 7;
+        int RESTAURANT = 8;
+        int CAFE = 9;
+        int PIZZA = 10;
+        int SUSHI = 11;
+        int KARAOKE = 12;
+        int SKATING_RINK = 13;
+        int BOWLING = 14;
+        int BILLIARD = 15;
+        int SAUNA = 16;
+        int BATH = 17;
     }
 }
