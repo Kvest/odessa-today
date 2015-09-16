@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.FontUtils;
+import com.kvest.odessatoday.utils.Utils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -77,7 +78,7 @@ public class CinemasAdapter extends CursorAdapter {
 
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.address.setText(cursor.getString(addressColumnIndex));
-        holder.commentsCount.setText(context.getString(R.string.comments_count, cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
     }
 
     private void initResources(Context context) {

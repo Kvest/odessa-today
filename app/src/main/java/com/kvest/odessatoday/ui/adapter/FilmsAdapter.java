@@ -17,6 +17,7 @@ import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.FontUtils;
+import com.kvest.odessatoday.utils.Utils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 /**
@@ -101,7 +102,7 @@ public class FilmsAdapter extends CursorAdapter {
         }
 
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
-        holder.commentsCount.setText(context.getString(R.string.comments_count, cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
     }

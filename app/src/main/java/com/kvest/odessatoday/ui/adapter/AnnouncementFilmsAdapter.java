@@ -18,6 +18,7 @@ import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.FontUtils;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
@@ -105,7 +106,7 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         holder.genre.setText(cursor.getString(genreColumnIndex));
         holder.genre.setVisibility(TextUtils.isEmpty(holder.genre.getText()) ? View.GONE : View.VISIBLE);
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
-        holder.commentsCount.setText(context.getString(R.string.comments_count, cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
 

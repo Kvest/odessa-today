@@ -12,7 +12,9 @@
     <string name="film_duration_unknown">продолжительность неизвестна</string>
     <string name="film_director"><![CDATA[<b>Режиссер: </b>%1$s]]></string>
     <string name="film_actors"><![CDATA[<b>Актеры: </b>%1$s]]></string>
-    <string name="comments_count">%1$d отзыва</string>
+    <string name="comments_count">%1$d отзывов</string>
+    <string name="comments_count1">%1$d отзыв</string>
+    <string name="comments_count2">%1$d отзыва</string>
     <string name="comments_date_format">dd MMMM yyyy в HH:mm</string>
     <string name="add_comment">Добавить комментарий</string>
     <string name="name">Имя</string>

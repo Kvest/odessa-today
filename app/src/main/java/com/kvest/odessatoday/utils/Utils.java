@@ -13,6 +13,9 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
+
+import com.kvest.odessatoday.R;
+
 import java.security.MessageDigest;
 
 /**
@@ -74,5 +77,21 @@ public class Utils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String createCommentsString(Context context, int commentsCount) {
+        int tmp = commentsCount % 100;
+        if (tmp >= 11 && tmp <= 19) {
+            return context.getString(R.string.comments_count, commentsCount);
+        }
+        tmp %= 10;
+        if (tmp == 1) {
+            return context.getString(R.string.comments_count1, commentsCount);
+        }
+        if (tmp >= 2 && tmp <= 4) {
+            return context.getString(R.string.comments_count2, commentsCount);
+        }
+
+        return context.getString(R.string.comments_count, commentsCount);
     }
 }
