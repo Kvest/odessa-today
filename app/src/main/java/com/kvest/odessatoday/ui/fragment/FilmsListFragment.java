@@ -36,14 +36,12 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * To change this template use File | Settings | File Templates.
  */
 public class FilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
-    private static final String ARGUMENT_FOR_TODAY = "com.kvest.odessatoday.argiment.FOR_TODAY";
     private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
     private static final int FILMS_LOADER_ID = 1;
-    private static final String DATE_FORMAT_PATTERN = "cccc, dd MMMM";
-    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
-    private long date = 0;
-    private boolean isForToday = false;
+    //date of the shown films in seconds
+    private long date = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+    private DateChangedListener dateChangedListener;
 
     private FilmsAdapter adapter;
 
@@ -51,14 +49,12 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     private FilmSelectedListener filmSelectedListener;
 
     private LoadFilmsNotificationReceiver receiver = new LoadFilmsNotificationReceiver();
-    private TextView dateTextView;
 
     private SwipeRefreshLayout refreshLayout;
 
-    public static FilmsListFragment getInstance(long date, boolean isForToday) {
-        Bundle arguments = new Bundle(2);
+    public static FilmsListFragment getInstance(long date) {
+        Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_DATE, date);
-        arguments.putBoolean(ARGUMENT_FOR_TODAY, isForToday);
 
         FilmsListFragment result = new FilmsListFragment();
         result.setArguments(arguments);
@@ -100,8 +96,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         //get initial data
         Bundle arguments = getArguments();
         if (arguments != null) {
-            date = arguments.getLong(ARGUMENT_DATE, 0);
-            isForToday = arguments.getBoolean(ARGUMENT_FOR_TODAY, false);
+            setDate(arguments.getLong(ARGUMENT_DATE, date));
         }
 
         try {
@@ -148,12 +143,11 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         filmSelectedListener = null;
     }
 
-    public void setShowCalendarListener(ShowCalendarListener showCalendarListener) {
-        this.showCalendarListener = showCalendarListener;
-    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-    public void setFilmSelectedListener(FilmSelectedListener filmSelectedListener) {
-        this.filmSelectedListener = filmSelectedListener;
+        dateChangedListener = null;
     }
 
     @Override
@@ -180,9 +174,17 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         getLoaderManager().initLoader(FILMS_LOADER_ID, null, this);
     }
 
+    public DateChangedListener getDateChangedListener() {
+        return dateChangedListener;
+    }
+
+    public void setDateChangedListener(DateChangedListener dateChangedListener) {
+        this.dateChangedListener = dateChangedListener;
+    }
+
     private void onShowCalendar() {
         if (showCalendarListener != null) {
-            showCalendarListener.onShowCalendar();
+            showCalendarListener.onShowCalendar(date);
         }
     }
 
@@ -228,26 +230,18 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (filmSelectedListener != null) {
-                    filmSelectedListener.onFilmSelected(id);
+                    filmSelectedListener.onFilmSelected(id, date);
                 }
             }
         });
-
-        //set date
-        dateTextView = (TextView)root.findViewById(R.id.date);
-        dateTextView.setText(createDateString());
 
         //create and set an adapter
         adapter = new FilmsAdapter(getActivity());
         filmsList.setAdapter(adapter);
     }
 
-    public void changeDate(long date, boolean isForToday) {
-        this.date = date;
-        this.isForToday = isForToday;
-
-        //set date
-        dateTextView.setText(createDateString());
+    public void changeDate(long date) {
+        setDate(Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
 
         //reload content
         getLoaderManager().restartLoader(FILMS_LOADER_ID, null, this);
@@ -259,15 +253,22 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         }
     }
 
-    private String createDateString() {
-        StringBuilder sb = new StringBuilder();
+    public void showNextDay() {
+        long nextDay = TimeUtils.getBeginningOfTheDay(date) + TimeUnit.DAYS.toSeconds(1);
+        changeDate(nextDay);
+    }
 
-        if (isForToday) {
-            sb.append(getActivity().getString(R.string.today_marker)).append(" ");
+    public void showPreviousDay() {
+        long previousDay = TimeUtils.getBeginningOfTheDay(date) - TimeUnit.DAYS.toSeconds(1);
+        changeDate(previousDay);
+    }
+
+    private void setDate(long date) {
+        this.date = date;
+
+        if (dateChangedListener != null) {
+            dateChangedListener.onDateChanged(this.date);
         }
-        sb.append(DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(date)).toLowerCase());
-
-        return sb.toString();
     }
 
     @Override
@@ -292,10 +293,14 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     public interface ShowCalendarListener {
-        public void onShowCalendar();
+        void onShowCalendar(long selectedDate);
     }
 
     public interface FilmSelectedListener {
-        public void onFilmSelected(long filmId);
+        void onFilmSelected(long filmId, long date);
+    }
+
+    public interface DateChangedListener {
+        void onDateChanged(long date);
     }
 }

@@ -7,47 +7,31 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.*;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.ui.activity.AnnouncementFilmDetailsActivity;
-import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
 import com.kvest.odessatoday.ui.activity.MainActivity;
 import com.kvest.odessatoday.ui.activity.MainMenuController;
-import com.kvest.odessatoday.ui.activity.OnBackPressedListener;
 import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.TimeUtils;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Kvest on 08.02.2015.
  */
-public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDateSelectedListener,
-                                                        FilmsListFragment.FilmSelectedListener,
-                                                        FilmsListFragment.ShowCalendarListener,
-                                                        AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
-                                                        MainActivity.ToolbarExtendable,
-                                                        OnBackPressedListener {
+public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarExtendable, FilmsListFragment.DateChangedListener {
+    private static final String FILMS_LIST_DATE_FORMAT_PATTERN = "dd MMMM, cc.";
+    private final SimpleDateFormat FILMS_LIST_DATE_FORMAT = new SimpleDateFormat(FILMS_LIST_DATE_FORMAT_PATTERN);
+
     private static final int FILMS_LIST_FRAGMENT_POSITION = 0;
     private static final int CINEMAS_LIST_FRAGMENT_POSITION = 1;
     private static final int ANNOUNCEMENTS_LIST_FRAGMENT_POSITION = 2;
-
-    private long shownFilmsDate;
-    private final Calendar calendar = Calendar.getInstance();
-    private FrameLayout calendarContainer;
-
-    private Animation showCalendarAnimation;
-    private Animation hideCalendarAnimation;
 
     private MainMenuController mainMenuController;
 
@@ -114,30 +98,6 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
         pagerAdapter = new FilmsFragmentPagerAdapter(getChildFragmentManager());
         fragmentsPager.setAdapter(pagerAdapter);
 
-        calendarContainer = (FrameLayout)view.findViewById(R.id.calendar_container);
-        calendarContainer.setVisibility(View.INVISIBLE);
-        calendarContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideCalendar();
-            }
-        });
-
-        showCalendarAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-        hideCalendarAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_up);
-        hideCalendarAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                calendarContainer.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
         //category selector
         categorySelector = (RadioGroup)view.findViewById(R.id.category_selector);
         categorySelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -188,98 +148,32 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
         mainMenuController = null;
     }
 
-    @Override
-    public boolean onBackPressed() {
-        if (isCalendarShown()) {
-            hideCalendar();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void showFilmsByDate(long date) {
-
-        shownFilmsDate = Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-
+    public void showFilmsByDate(long date) {
         FilmsListFragment filmsListFragment = pagerAdapter.getFilmsListFragmentCache();
         if (filmsListFragment != null) {
-            filmsListFragment.changeDate(shownFilmsDate, TimeUtils.isCurrentDay(shownFilmsDate));
+            filmsListFragment.changeDate(date);
         }
     }
 
     @Override
-    public void onShowCalendar() {
-        if (isCalendarShown()) {
-            hideCalendar();
+    public void onDateChanged(long date) {
+        int previousDayVisibility = View.VISIBLE;
+        if (TimeUtils.isCurrentDay(date)) {
+            extensionTitle.setText(R.string.odessa_today);
+            previousDayVisibility = View.INVISIBLE;
+        } else if (TimeUtils.isTomorrow(date)) {
+            extensionTitle.setText(R.string.odessa_tomorrow);
         } else {
-            showCalendar(shownFilmsDate);
+            extensionTitle.setText(FILMS_LIST_DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(date)));
         }
+
+        previousDay.setVisibility(previousDayVisibility);
     }
 
     private void setToolbarExtensionVisibility(int visibility) {
         if (toolbarExtension != null) {
             toolbarExtension.setVisibility(visibility);
         }
-    }
-
-    private void showCalendar(long selectedDate) {
-        //set fragment
-        if (calendarContainer != null && !isCalendarShown()) {
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            try {
-                //create calendar fragment
-                calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(selectedDate));
-                CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.YEAR));
-                calendarFragment.setOnDateSelectedListener(this);
-
-                transaction.replace(R.id.calendar_container, calendarFragment);
-            } finally {
-                transaction.commit();
-            }
-
-            //set calendar visible
-            calendarContainer.setVisibility(View.VISIBLE);
-
-            //animate
-            calendarContainer.clearAnimation();
-            calendarContainer.startAnimation(showCalendarAnimation);
-        }
-    }
-
-    private void hideCalendar() {
-        //animate
-        calendarContainer.clearAnimation();
-        calendarContainer.startAnimation(hideCalendarAnimation);
-    }
-
-    private boolean isCalendarShown() {
-        return calendarContainer.getVisibility() == View.VISIBLE;
-    }
-
-    @Override
-    public void onDateSelected(int day, int month, int year) {
-        //hide calendar
-        hideCalendar();
-
-        //show films by selected date
-        calendar.clear();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        showFilmsByDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
-    }
-
-    @Override
-    public void onFilmSelected(long filmId) {
-        FilmDetailsActivity.start(getActivity(), filmId, shownFilmsDate);
-    }
-
-    @Override
-    public void onAnnouncementFilmSelected(long filmId) {
-        AnnouncementFilmDetailsActivity.start(getActivity(), filmId);
     }
 
     public class FilmsFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -295,16 +189,14 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
         public Fragment getItem(int index) {
             switch (index) {
                 case FILMS_LIST_FRAGMENT_POSITION:
-                    shownFilmsDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-                    filmsListFragmentCache = FilmsListFragment.getInstance(shownFilmsDate, true);
-                    filmsListFragmentCache.setFilmSelectedListener(FilmsFragment.this);
-                    filmsListFragmentCache.setShowCalendarListener(FilmsFragment.this);
+                    //TODO Проверить что не пересоздается при смене темы, и что дата старая остается, если ее уже изменил пользователь
+                    filmsListFragmentCache = FilmsListFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                    filmsListFragmentCache.setDateChangedListener(FilmsFragment.this);
                     return filmsListFragmentCache;
                 case CINEMAS_LIST_FRAGMENT_POSITION:
                     return CinemasListFragment.getInstance();
                 case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION:
                     AnnouncementFilmsListFragment announcementFilmsListFragment = AnnouncementFilmsListFragment.getInstance();
-                    announcementFilmsListFragment.setAnnouncementFilmSelectedListener(FilmsFragment.this);
                     return announcementFilmsListFragment;
                 default :
                     return null;
@@ -331,7 +223,25 @@ public class FilmsFragment extends BaseFragment implements CalendarFragment.OnDa
         toolbarExtension = extension;
         extensionTitle = (TextView) toolbarExtension.findViewById(R.id.title);
         previousDay = toolbarExtension.findViewById(R.id.previous_day);
+        previousDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FilmsListFragment filmsListFragment = pagerAdapter.getFilmsListFragmentCache();
+                if (filmsListFragment != null) {
+                    filmsListFragment.showPreviousDay();
+                }
+            }
+        });
         nextDay = toolbarExtension.findViewById(R.id.next_day);
+        nextDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FilmsListFragment filmsListFragment = pagerAdapter.getFilmsListFragmentCache();
+                if (filmsListFragment != null) {
+                    filmsListFragment.showNextDay();
+                }
+            }
+        });
 
         //set title font
         extensionTitle.setTypeface(FontUtils.getFont(extensionTitle.getContext().getAssets(),

@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -27,9 +28,18 @@ import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.*;
 import com.kvest.odessatoday.utils.Constants;
 
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends BaseActivity implements MainMenuFragment.MainMenuItemSelectedListener,
                                                         CinemasListFragment.CinemaSelectedListener,
-                                                        MainMenuController{
+                                                        FilmsListFragment.ShowCalendarListener,
+                                                        FilmsListFragment.FilmSelectedListener,
+                                                        AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
+                                                        MainMenuController, CalendarFragment.OnDateSelectedListener {
+    private static final String CALENDAR_FRAGMENT_TAG = "calendar";
+
+    private Calendar calendar = Calendar.getInstance();
     private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
     private SlidingMenu slidingMenu;
     private Toolbar toolbar;
@@ -47,7 +57,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_container_with_toolbar_layout);
+        setContentView(R.layout.main_activity);
 
         //setup action bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -154,16 +164,50 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     }
 
     @Override
-    public void onBackPressed() {
-        boolean processed = false;
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment instanceof OnBackPressedListener) {
-            processed = ((OnBackPressedListener)fragment).onBackPressed();
-        }
+    public void onShowCalendar(long selectedDate) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        try {
+            //create calendar fragment
+            calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(selectedDate));
+            CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
+                                                                             calendar.get(Calendar.MONTH),
+                                                                             calendar.get(Calendar.YEAR));
 
-        if (!processed) {
-            super.onBackPressed();
+            transaction.setCustomAnimations(R.anim.slide_down, R.anim.slide_up, R.anim.slide_down, R.anim.slide_up);
+            transaction.replace(R.id.calendar_fragment_container, calendarFragment);
+            transaction.addToBackStack(CALENDAR_FRAGMENT_TAG);
+        } finally {
+            transaction.commit();
         }
+    }
+
+    @Override
+    public void onDateSelected(int day, int month, int year) {
+        hideCalendar();
+
+        Fragment activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (activeFragment instanceof FilmsFragment) {
+            //show films by selected date
+            calendar.clear();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            ((FilmsFragment)activeFragment).showFilmsByDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
+        }
+    }
+
+    private void hideCalendar() {
+        getSupportFragmentManager().popBackStack(CALENDAR_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    @Override
+    public void onFilmSelected(long filmId, long date) {
+        FilmDetailsActivity.start(this, filmId, date);
+    }
+
+    @Override
+    public void onAnnouncementFilmSelected(long filmId) {
+        AnnouncementFilmDetailsActivity.start(this, filmId);
     }
 
     private void replaceFragment(Fragment fragment) {

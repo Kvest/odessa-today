@@ -62,9 +62,6 @@ public class TodayApplication extends Application {
         if (this.currentTheme != currentTheme) {
             this.currentTheme = currentTheme;
 
-            //TODO
-            //applyTheme();
-
             SettingsSPStorage.setCurrentTheme(this, this.currentTheme);
         }
     }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Одесса Сегодня</string>
+    <string name="odessa_today">Одесса сегодня</string>
+    <string name="odessa_tomorrow">Одесса завтра</string>
     <string name="premiere">ПРЕМЬЕРА</string>
     <string name="premiere_date"><![CDATA[<b>премьера: </b>%1$s]]></string>
     <string name="select_date">Выбрать дату</string>

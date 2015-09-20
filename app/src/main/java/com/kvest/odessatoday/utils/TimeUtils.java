@@ -55,4 +55,15 @@ public class TimeUtils {
     public static boolean isCurrentDay(long date) {
         return getBeginningOfTheDay(date) == getBeginningOfTheDay(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
     }
+
+    /**
+     * Method checks is the date - tomorrow
+     * @param date Date in seconds
+     * @return True if date is tomorrow, false otherwise
+     */
+    public static boolean isTomorrow(long date) {
+        long tomorrow = getBeginningOfTheDay(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()))
+                        + TimeUnit.DAYS.toSeconds(1);
+        return getBeginningOfTheDay(date) == tomorrow;
+    }
 }

@@ -35,9 +35,6 @@
     <dimen name="toolbar_horizontal_padding">10dip</dimen>
     <dimen name="title_text_size">18sp</dimen>
 
-    <dimen name="films_date_label_height">30dip</dimen>
-    <dimen name="films_date_label_horizontal_padding">12dip</dimen>
-    <dimen name="films_date_text_size">20sp</dimen>
     <dimen name="comments_count_text_size">10sp</dimen>
 
     <!--Calendar fragment-->

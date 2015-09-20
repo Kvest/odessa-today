@@ -133,10 +133,6 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
         announcementFilmSelectedListener = null;
     }
 
-    public void setAnnouncementFilmSelectedListener(AnnouncementFilmSelectedListener announcementFilmSelectedListener) {
-        this.announcementFilmSelectedListener = announcementFilmSelectedListener;
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {

@@ -18,7 +18,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.*;
-import android.view.animation.Animation;
 import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.notification.LoadTimetableNotification;
