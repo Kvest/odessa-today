@@ -80,7 +80,7 @@
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/week_day_name_text_color</item>
-        <item name="android:textSize">@dimen/calendar_days_text_size</item>
+        <item name="android:textColor">?attr/CalendarWeekDaysNameTextColor</item>
+        <item name="android:textSize">@dimen/calendar_week_days_name_text_size</item>
     </style>
 </resources>

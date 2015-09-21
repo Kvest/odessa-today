@@ -41,11 +41,16 @@
     <dimen name="calendar_header_padding_left">70dip</dimen>
     <dimen name="calendar_header_padding_right">10dip</dimen>
     <dimen name="calendar_shown_month_text_size">18sp</dimen>
+    <dimen name="calendar_week_days_name_text_size">13sp</dimen>
+    <dimen name="calendar_horizontal_padding">26dip</dimen>
 
-    <dimen name="calendar_padding">15dip</dimen>
-    <dimen name="calendar_days_spacing">12dip</dimen>
+    <dimen name="calendar_days_spacing">30dip</dimen>
+    <dimen name="calendar_day_names_vertical_padding">34dip</dimen>
+    <dimen name="calendar_days_padding_top">0dip</dimen>
+    <dimen name="calendar_days_padding_bottom">22dip</dimen>
+    <dimen name="calendar_days_text_size">15sp</dimen>
+
     <dimen name="calendar_selected_day_corner_radius">6dip</dimen>
-    <dimen name="calendar_days_text_size">18sp</dimen>
 
     <!--film details-->
     <dimen name="film_details_padding">@dimen/application_padding</dimen>

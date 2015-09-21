@@ -36,4 +36,10 @@
     <attr format="color" name="CalendarTitleBgColor"/>
     <attr format="color" name="CalendarTitleIconColor"/>
     <attr format="color" name="CalendarBgColor"/>
+    <attr format="color" name="CalendarWeekDaysNameTextColor"/>
+    <attr format="color" name="CalendarOtherMonthTextColor"/>
+    <attr format="color" name="CalendarPassedDaysTextColor"/>
+    <attr format="color" name="CalendarActiveDaysTextColor"/>
+    <attr format="reference" name="CalendarSelectedDayBg"/>
+    <attr format="color" name="CalendarSelectedDayTextColor"/>
 </resources>

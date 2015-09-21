@@ -40,5 +40,11 @@
         <item name="CalendarTitleIconColor">#1b1b1b</item>
         <item name="CalendarTitleBgColor">@color/application_green</item>
         <item name="CalendarBgColor">#2d2d2d</item>
+        <item name="CalendarWeekDaysNameTextColor">@color/application_green</item>
+        <item name="CalendarOtherMonthTextColor">#585858</item>
+        <item name="CalendarPassedDaysTextColor">#838383</item>
+        <item name="CalendarActiveDaysTextColor">#b2b2b2</item>
+        <item name="CalendarSelectedDayBg">@drawable/calendar_selected_day_bg_night</item>
+        <item name="CalendarSelectedDayTextColor">#1b1b1b</item>
     </style>
 </resources>

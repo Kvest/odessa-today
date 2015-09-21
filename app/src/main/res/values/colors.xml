@@ -12,13 +12,6 @@
     <color name="ab_icon_color_day">#ffffff</color>
     <color name="ab_icon_color_night">#1b1b1b</color>
 
-    <!--Calendar fragment-->
-    <color name="calendar_other_month_text_color">#444953</color>
-    <color name="calendar_passed_days_text_color">#838383</color>
-    <color name="calendar_active_days_text_color">#ffffff</color>
-    <color name="calendar_selected_day_bg_color">#8ab71b</color>
-    <color name="week_day_name_text_color">#98cc00</color>
-
     <!--film details-->
     <color name="film_details_header_bg">#e8e9eb</color>
     <color name="film_details_divider_color">#e6e6e6</color>

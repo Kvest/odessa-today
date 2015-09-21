@@ -2,8 +2,10 @@ package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
@@ -268,6 +270,8 @@ public class CalendarFragment extends Fragment {
         private int otherMonthTextColor;
         private int passedDaysTextColor;
         private int activeDaysTextColor;
+        private int selectedDayTextColor;
+        private Drawable selectedDayBg;
         private float dayTextSize;
         private Typeface helveticaneuecyrRoman;
 
@@ -275,12 +279,28 @@ public class CalendarFragment extends Fragment {
             super();
 
             this.context = context;
-            days = new ArrayList<CalendarDay>();
+            days = new ArrayList<>();
             calendar = Calendar.getInstance();
 
-            otherMonthTextColor = context.getResources().getColor(R.color.calendar_other_month_text_color);
-            passedDaysTextColor = context.getResources().getColor(R.color.calendar_passed_days_text_color);
-            activeDaysTextColor = context.getResources().getColor(R.color.calendar_active_days_text_color);
+            // The attributes you want retrieved
+            int[] attrs = {R.attr.CalendarOtherMonthTextColor,
+                           R.attr.CalendarPassedDaysTextColor,
+                           R.attr.CalendarActiveDaysTextColor,
+                           R.attr.CalendarSelectedDayTextColor,
+                           R.attr.CalendarSelectedDayBg};
+
+            // Parse style, using Context.obtainStyledAttributes()
+            TypedArray ta = context.obtainStyledAttributes(attrs);
+
+            otherMonthTextColor = ta.getColor(0, Color.BLACK);
+            passedDaysTextColor = ta.getColor(1, Color.BLACK);
+            activeDaysTextColor = ta.getColor(2, Color.BLACK);
+            selectedDayTextColor = ta.getColor(3, Color.BLACK);
+            selectedDayBg = ta.getDrawable(4);
+
+            //cleanup
+            ta.recycle();
+
             dayTextSize = context.getResources().getDimension(R.dimen.calendar_days_text_size);
             helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
         }
@@ -358,16 +378,15 @@ public class CalendarFragment extends Fragment {
             }
 
             CalendarDay calendarDay = days.get(position);
-            //set bg color
-            if (calendarDay.type == CalendarDay.DAY_TYPE_SELECTED) {
-                convertView.setBackgroundResource(R.drawable.calendar_selected_day_bg);
-            } else {
-                convertView.setBackgroundColor(Color.TRANSPARENT);
-            }
+            //set bg
+            convertView.setBackgroundDrawable(calendarDay.type == CalendarDay.DAY_TYPE_SELECTED ? selectedDayBg : null);
+
             //set text color
             switch (calendarDay.type) {
-                case CalendarDay.DAY_TYPE_ACTIVE :
                 case CalendarDay.DAY_TYPE_SELECTED :
+                    ((TextView)convertView).setTextColor(selectedDayTextColor);
+                    break;
+                case CalendarDay.DAY_TYPE_ACTIVE :
                     ((TextView)convertView).setTextColor(activeDaysTextColor);
                     break;
                 case CalendarDay.DAY_TYPE_PASSED :

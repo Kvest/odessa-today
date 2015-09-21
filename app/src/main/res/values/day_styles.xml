@@ -40,5 +40,11 @@
         <item name="CalendarTitleIconColor">@android:color/white</item>
         <item name="CalendarTitleBgColor">#24282b</item>
         <item name="CalendarBgColor">@color/application_green</item>
+        <item name="CalendarWeekDaysNameTextColor">#24282b</item>
+        <item name="CalendarOtherMonthTextColor">#6daa3a</item>
+        <item name="CalendarPassedDaysTextColor">#838383</item>
+        <item name="CalendarActiveDaysTextColor">@android:color/white</item>
+        <item name="CalendarSelectedDayBg">@drawable/calendar_selected_day_bg_day</item>
+        <item name="CalendarSelectedDayTextColor">@color/application_green</item>
     </style>
 </resources>

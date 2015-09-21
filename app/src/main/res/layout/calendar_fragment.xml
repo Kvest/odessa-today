@@ -50,34 +50,29 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/calendar_days_spacing"
-        android:paddingLeft="@dimen/calendar_padding"
-        android:paddingRight="@dimen/calendar_padding"
+        android:paddingTop="@dimen/calendar_day_names_vertical_padding"
+        android:paddingBottom="@dimen/calendar_day_names_vertical_padding"
+        android:paddingLeft="@dimen/calendar_horizontal_padding"
+        android:paddingRight="@dimen/calendar_horizontal_padding"
         android:weightSum="7">
         <TextView
             android:id="@+id/day_name_0"
-            style="@style/WeekDayNameStyle"
-            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+            style="@style/WeekDayNameStyle"/>
         <TextView
             android:id="@+id/day_name_1"
-            style="@style/WeekDayNameStyle"
-            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+            style="@style/WeekDayNameStyle"/>
         <TextView
             android:id="@+id/day_name_2"
-            style="@style/WeekDayNameStyle"
-            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+            style="@style/WeekDayNameStyle"/>
         <TextView
             android:id="@+id/day_name_3"
-            style="@style/WeekDayNameStyle"
-            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+            style="@style/WeekDayNameStyle"/>
         <TextView
             android:id="@+id/day_name_4"
-            style="@style/WeekDayNameStyle"
-            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+            style="@style/WeekDayNameStyle"/>
         <TextView
             android:id="@+id/day_name_5"
-            style="@style/WeekDayNameStyle"
-            android:layout_marginRight="@dimen/calendar_days_spacing"/>
+            style="@style/WeekDayNameStyle"/>
         <TextView
             android:id="@+id/day_name_6"
             style="@style/WeekDayNameStyle"/>
@@ -86,10 +81,12 @@
         android:id="@+id/calendar_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/calendar_padding"
+        android:paddingLeft="@dimen/calendar_horizontal_padding"
+        android:paddingRight="@dimen/calendar_horizontal_padding"
+        android:paddingTop="@dimen/calendar_days_padding_top"
+        android:paddingBottom="@dimen/calendar_days_padding_bottom"
         android:numColumns="7"
         android:verticalSpacing="@dimen/calendar_days_spacing"
-        android:horizontalSpacing="@dimen/calendar_days_spacing"
         android:stretchMode="columnWidth"
         android:listSelector="@android:color/transparent"
         android:gravity="center" />
