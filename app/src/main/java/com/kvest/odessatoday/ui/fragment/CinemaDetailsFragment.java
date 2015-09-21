@@ -44,7 +44,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * Time: 21:45
  * To change this template use File | Settings | File Templates.
  */
-public class CinemaDetailsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,CalendarFragment.OnDateSelectedListener {
+public class CinemaDetailsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_CINEMA_ID = "com.kvest.odessatoday.argument.CINEMA_ID";
     public static final String[] COMMENTS_COUNT_PROJECTION = new String[]{Tables.Comments.COMMENTS_COUNT};
 
@@ -238,7 +238,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
                 CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
                                                                                  calendar.get(Calendar.MONTH),
                                                                                  calendar.get(Calendar.YEAR));
-                calendarFragment.setOnDateSelectedListener(this);
                 transaction.replace(R.id.calendar_container, calendarFragment);
             } finally {
                 transaction.commit();
@@ -414,19 +413,19 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         }
     }
 
-    @Override
-    public void onDateSelected(int day, int month, int year) {
-        //hide calendar
-        hideCalendar();
-
-        //show films by selected date
-        calendar.clear();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-
-        setShownDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
-    }
+//    @Override
+//    public void onDateSelected(int day, int month, int year) {
+//        //hide calendar
+//        hideCalendar();
+//
+//        //show films by selected date
+//        calendar.clear();
+//        calendar.set(Calendar.YEAR, year);
+//        calendar.set(Calendar.MONTH, month);
+//        calendar.set(Calendar.DAY_OF_MONTH, day);
+//
+//        setShownDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
+//    }
 
     private class LoadCommentsNotificationReceiver extends BroadcastReceiver {
         @Override

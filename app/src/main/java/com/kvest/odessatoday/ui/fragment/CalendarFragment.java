@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.FontUtils;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -33,7 +34,7 @@ public class CalendarFragment extends Fragment {
     private static final String ARGUMENT_SELECTED_DATE_YEAR = "com.kvest.odessatoday.argument.SELECTED_DATE_YEAR";
     private static final int[] DAY_NAME_IDS = {R.id.day_name_0, R.id.day_name_1, R.id.day_name_2, R.id.day_name_3,
                                                R.id.day_name_4, R.id.day_name_5, R.id.day_name_6};
-    private static final String DATE_FORMAT_PATTERN = "LLLL yyyy";
+    private static final String DATE_FORMAT_PATTERN = "LLLL, yyyy";
     private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
     private Calendar calendar;
@@ -44,7 +45,7 @@ public class CalendarFragment extends Fragment {
     private View showPreviousMonthButton;
     private TextView[] dayNamesView;
 
-    private OnDateSelectedListener onDateSelectedListener;
+    private CalendarEventsListener calendarEventsListener;
 
     public static CalendarFragment getInstance(int day, int month, int year) {
         Bundle arguments = new Bundle(3);
@@ -71,7 +72,7 @@ public class CalendarFragment extends Fragment {
         super.onAttach(activity);
 
         try {
-            onDateSelectedListener = (OnDateSelectedListener) activity;
+            calendarEventsListener = (CalendarEventsListener) activity;
         } catch (ClassCastException cce) {
             LOGE(Constants.TAG, "Host activity for CalendarFragment should implements CalendarFragment.OnDateSelectedListener");
         }
@@ -81,11 +82,7 @@ public class CalendarFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
 
-        onDateSelectedListener = null;
-    }
-
-    public void setOnDateSelectedListener(OnDateSelectedListener onDateSelectedListener) {
-        this.onDateSelectedListener = onDateSelectedListener;
+        calendarEventsListener = null;
     }
 
     private void init(View root) {
@@ -93,6 +90,16 @@ public class CalendarFragment extends Fragment {
         currentMonthNumber = getMonthNumber(System.currentTimeMillis());
 
         shownMonthLabel = (TextView) root.findViewById(R.id.shown_month_label);
+        shownMonthLabel.setTypeface(FontUtils.getFont(root.getContext().getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT));
+
+        root.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (calendarEventsListener != null) {
+                    calendarEventsListener.onCalendarClose();
+                }
+            }
+        });
 
         //setup adapter
         adapter = new CalendarAdapter(root.getContext());
@@ -103,8 +110,8 @@ public class CalendarFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CalendarDay calendarDay = (CalendarDay)adapter.getItem(position);
                 if ((calendarDay.type == CalendarDay.DAY_TYPE_ACTIVE || calendarDay.type == CalendarDay.DAY_TYPE_SELECTED)
-                     && onDateSelectedListener != null) {
-                    onDateSelectedListener.onDateSelected(calendarDay.day, calendarDay.month, calendarDay.year);
+                     && calendarEventsListener != null) {
+                    calendarEventsListener.onDateSelected(calendarDay.day, calendarDay.month, calendarDay.year);
                 }
             }
         });
@@ -125,8 +132,10 @@ public class CalendarFragment extends Fragment {
         });
 
         dayNamesView = new TextView[DAY_NAME_IDS.length];
+        Typeface helveticaneuecyrBold = FontUtils.getFont(root.getContext().getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
         for (int i = 0; i < dayNamesView.length; ++i) {
             dayNamesView[i] = (TextView)root.findViewById(DAY_NAME_IDS[i]);
+            dayNamesView[i].setTypeface(helveticaneuecyrBold);
         }
 
         //show calendar starting from the month with selected day
@@ -221,8 +230,9 @@ public class CalendarFragment extends Fragment {
         return calendar.getTimeInMillis();
     }
 
-    public interface OnDateSelectedListener {
-        public void onDateSelected(int day, int month, int year);
+    public interface CalendarEventsListener {
+        void onDateSelected(int day, int month, int year);
+        void onCalendarClose();
     }
 
     private static class CalendarDay {
@@ -259,6 +269,7 @@ public class CalendarFragment extends Fragment {
         private int passedDaysTextColor;
         private int activeDaysTextColor;
         private float dayTextSize;
+        private Typeface helveticaneuecyrRoman;
 
         public CalendarAdapter(Context context) {
             super();
@@ -271,6 +282,7 @@ public class CalendarFragment extends Fragment {
             passedDaysTextColor = context.getResources().getColor(R.color.calendar_passed_days_text_color);
             activeDaysTextColor = context.getResources().getColor(R.color.calendar_active_days_text_color);
             dayTextSize = context.getResources().getDimension(R.dimen.calendar_days_text_size);
+            helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
         }
 
         public void setContent(long monthToShow, CalendarDay selectedDate)  {
@@ -376,6 +388,7 @@ public class CalendarFragment extends Fragment {
             view.setTypeface(Typeface.create(view.getTypeface(), Typeface.BOLD));
             view.setTextSize(TypedValue.COMPLEX_UNIT_PX, dayTextSize);
             view.setGravity(Gravity.CENTER);
+            view.setTypeface(helveticaneuecyrRoman);
 
             return view;
         }

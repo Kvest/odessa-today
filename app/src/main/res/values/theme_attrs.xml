@@ -32,4 +32,8 @@
     <attr format="reference" name="MiddleSelectorBg"/>
     <attr format="reference" name="RightSelectorBg"/>
     <attr format="color" name="SelectorTextColor"/>
+    <attr format="color" name="CalendarTitleTextColor"/>
+    <attr format="color" name="CalendarTitleBgColor"/>
+    <attr format="color" name="CalendarTitleIconColor"/>
+    <attr format="color" name="CalendarBgColor"/>
 </resources>

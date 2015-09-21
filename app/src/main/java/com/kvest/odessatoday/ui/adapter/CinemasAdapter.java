@@ -94,7 +94,7 @@ public class CinemasAdapter extends CursorAdapter {
 
         ta.recycle();
 
-        //retrieve font
+        //retrieve fonts
         helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
         helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
     }

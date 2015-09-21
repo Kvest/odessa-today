@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
-    <RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?attr/CalendarBgColor">
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/calendar_header_height"
-        android:background="@color/calendar_header_bg" >
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/CalendarTitleBgColor"
+        android:paddingLeft="@dimen/calendar_header_padding_left"
+        android:paddingRight="@dimen/calendar_header_padding_right"
+        android:gravity="center_vertical">
         <ImageView
             android:id="@+id/previous_month"
-            android:layout_width="@dimen/calendar_navigation_button_width"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/calendar_previous_month_bg" />
-        <ImageView
-            android:id="@+id/next_month"
-            android:layout_width="@dimen/calendar_navigation_button_width"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/calendar_next_month_bg"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="8dip"
+            android:tint="?attr/CalendarTitleIconColor"
+            android:rotation="180"
+            android:src="@drawable/ic_arrow_details"/>
         <TextView
             android:id="@+id/shown_month_label"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/calendar_shown_month_text_color"
+            android:layout_weight="1"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textSize="@dimen/calendar_shown_month_text_size"
-            android:layout_toRightOf="@id/previous_month"
-            android:layout_toLeftOf="@id/next_month" />
-    </RelativeLayout>
+            android:textColor="?attr/CalendarTitleTextColor"
+            android:singleLine="true"
+            android:ellipsize="start"/>
+        <ImageView
+            android:id="@+id/next_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dip"
+            android:paddingRight="20dip"
+            android:tint="?attr/CalendarTitleIconColor"
+            android:src="@drawable/ic_arrow_details"/>
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close"
+            android:tint="?attr/CalendarTitleIconColor"/>
+    </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -37,7 +53,6 @@
         android:paddingTop="@dimen/calendar_days_spacing"
         android:paddingLeft="@dimen/calendar_padding"
         android:paddingRight="@dimen/calendar_padding"
-        android:background="@color/calendar_bg"
         android:weightSum="7">
         <TextView
             android:id="@+id/day_name_0"
@@ -72,7 +87,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/calendar_padding"
-        android:background="@color/calendar_bg"
         android:numColumns="7"
         android:verticalSpacing="@dimen/calendar_days_spacing"
         android:horizontalSpacing="@dimen/calendar_days_spacing"

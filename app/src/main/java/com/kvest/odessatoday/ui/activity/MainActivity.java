@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                                                         FilmsListFragment.ShowCalendarListener,
                                                         FilmsListFragment.FilmSelectedListener,
                                                         AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
-                                                        MainMenuController, CalendarFragment.OnDateSelectedListener {
+                                                        MainMenuController, CalendarFragment.CalendarEventsListener {
     private static final String CALENDAR_FRAGMENT_TAG = "calendar";
 
     private Calendar calendar = Calendar.getInstance();
@@ -179,6 +179,11 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         } finally {
             transaction.commit();
         }
+    }
+
+    @Override
+    public void onCalendarClose() {
+        hideCalendar();
     }
 
     @Override

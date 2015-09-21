@@ -35,5 +35,10 @@
         <item name="FilmsRatingBar">@drawable/films_ratingbar_day</item>
         <item name="CommentsCountTextColor">#ffffff</item>
         <item name="CinemaNameTextColor">#24282b</item>
+        <!--calendar-->
+        <item name="CalendarTitleTextColor">#e8e8e8</item>
+        <item name="CalendarTitleIconColor">@android:color/white</item>
+        <item name="CalendarTitleBgColor">#24282b</item>
+        <item name="CalendarBgColor">@color/application_green</item>
     </style>
 </resources>

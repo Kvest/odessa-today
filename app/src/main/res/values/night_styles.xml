@@ -35,5 +35,10 @@
         <item name="FilmsRatingBar">@drawable/films_ratingbar_night</item>
         <item name="CommentsCountTextColor">#1b1b1b</item>
         <item name="CinemaNameTextColor">#e1e1e1</item>
+        <!--calendar-->
+        <item name="CalendarTitleTextColor">#1b1b1b</item>
+        <item name="CalendarTitleIconColor">#1b1b1b</item>
+        <item name="CalendarTitleBgColor">@color/application_green</item>
+        <item name="CalendarBgColor">#2d2d2d</item>
     </style>
 </resources>
