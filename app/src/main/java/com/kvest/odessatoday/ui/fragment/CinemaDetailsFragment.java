@@ -65,8 +65,9 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private Button showComments;
     private Button showPhotos;
     private ListView timetableList;
-    private String addressValue = "";
     private String[] photoUrls = null;
+    private double latitude = 0d;
+    private double longitude = 0d;
 
     private TextView isToday;
     private TextView dateTextView;
@@ -303,7 +304,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     }
 
     private void showCinemaOnMap() {
-        Uri geoLocation = Uri.parse("geo:0,0?q=" + addressValue);
+        Uri geoLocation = Uri.parse("geo:0,0?q=" + latitude + "," +longitude + "(" + cinemaName.getText() + ")");
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLocation);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -385,7 +386,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
                 phonesContainer.setVisibility(View.GONE);
             }
 
-            addressValue = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.ADDRESS));
+            String addressValue = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.ADDRESS));
             if (!TextUtils.isEmpty(addressValue)) {
                 addressContainer.setVisibility(View.VISIBLE);
                 address.setText(addressValue);
@@ -398,6 +399,10 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
             int photosCount = photoUrls != null ? photoUrls.length : 0;
             showPhotos.setText(Html.fromHtml(getString(R.string.cinema_photos, photosCount)));
             showPhotos.setEnabled(photosCount > 0);
+
+            //remember geo location
+            longitude = cursor.getDouble(cursor.getColumnIndex(Tables.Cinemas.Columns.LON));
+            latitude = cursor.getDouble(cursor.getColumnIndex(Tables.Cinemas.Columns.LAT));
         }
     }
 
