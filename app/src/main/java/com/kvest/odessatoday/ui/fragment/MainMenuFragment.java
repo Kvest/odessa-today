@@ -18,6 +18,7 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  */
 public class MainMenuFragment extends ListFragment implements AdapterView.OnItemClickListener {
     private static final String ARGUMENT_DEFAULT_SELECTED_ITEM_ID = "com.kvest.odessatoday.argument.DEFAULT_SELECTED_ITEM_ID";
+    private static final String KEY_SELECTED_ITEM_POSITION = "com.kvest.odessatoday.keys.SELECTED_ITEM_POSITION";
 
     public static final int MENU_FILMS_ID = 0;
     public static final int MENU_CONCERT_ID = 1;
@@ -63,7 +64,11 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
 
         //set adapter
         adapter = new MainMenuAdapter(getActivity());
-        adapter.setSelectedItemById(getDefaultSelectedItemId());
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SELECTED_ITEM_POSITION)) {
+            adapter.setSelectedItemPosition(savedInstanceState.getInt(KEY_SELECTED_ITEM_POSITION));
+        } else {
+            adapter.setSelectedItemById(getDefaultSelectedItemId());
+        }
         setListAdapter(adapter);
 
         //setup lit view
@@ -109,6 +114,13 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(KEY_SELECTED_ITEM_POSITION, adapter.getSelectedItemPosition());
+    }
+
     private int getDefaultSelectedItemId() {
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -119,6 +131,6 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
     }
 
     public interface MainMenuItemSelectedListener {
-        public void onMainMenuItemSelected(int menuItemId);
+        void onMainMenuItemSelected(int menuItemId);
     }
 }
