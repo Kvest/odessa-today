@@ -17,7 +17,7 @@
             android:id="@+id/previous_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="8dip"
+            android:paddingLeft="8dip"
             android:tint="?attr/CalendarTitleIconColor"
             android:rotation="180"
             android:src="@drawable/ic_arrow_details"/>
@@ -50,8 +50,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/calendar_day_names_vertical_padding"
-        android:paddingBottom="@dimen/calendar_day_names_vertical_padding"
+        android:paddingTop="@dimen/calendar_day_names_padding_top"
+        android:paddingBottom="@dimen/calendar_day_names_padding_bottom"
         android:paddingLeft="@dimen/calendar_horizontal_padding"
         android:paddingRight="@dimen/calendar_horizontal_padding"
         android:weightSum="7">

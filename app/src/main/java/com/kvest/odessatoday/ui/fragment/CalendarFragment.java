@@ -8,8 +8,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -374,7 +372,7 @@ public class CalendarFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = buildView();
+                convertView = createView(parent);
             }
 
             CalendarDay calendarDay = days.get(position);
@@ -402,11 +400,8 @@ public class CalendarFragment extends Fragment {
             return convertView;
         }
 
-        private View buildView() {
-            TextView view = new TextView(context);
-            view.setTypeface(Typeface.create(view.getTypeface(), Typeface.BOLD));
-            view.setTextSize(TypedValue.COMPLEX_UNIT_PX, dayTextSize);
-            view.setGravity(Gravity.CENTER);
+        private View createView(ViewGroup parent) {
+            TextView view = (TextView)LayoutInflater.from(context).inflate(R.layout.calendar_day_layout, parent, false);
             view.setTypeface(helveticaneuecyrRoman);
 
             return view;
