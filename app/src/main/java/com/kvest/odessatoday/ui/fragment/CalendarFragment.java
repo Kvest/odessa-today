@@ -29,6 +29,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * To change this template use File | Settings | File Templates.
  */
 public class CalendarFragment extends Fragment {
+    private static final String KEY_SHOWN_MONTH_NUMBER = "com.kvest.odessatoday.key.SHOWN_MONTH_NUMBER";
     private static final String ARGUMENT_SELECTED_DATE_DAY = "com.kvest.odessatoday.argument.SELECTED_DATE_DAY";
     private static final String ARGUMENT_SELECTED_DATE_MONTH = "com.kvest.odessatoday.argument.SELECTED_DATE_MONTH";
     private static final String ARGUMENT_SELECTED_DATE_YEAR = "com.kvest.odessatoday.argument.SELECTED_DATE_YEAR";
@@ -64,6 +65,14 @@ public class CalendarFragment extends Fragment {
 
         init(root);
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SHOWN_MONTH_NUMBER)) {
+            showMonth(savedInstanceState.getInt(KEY_SHOWN_MONTH_NUMBER));
+        } else {
+            //show calendar starting from the month with selected day
+            CalendarDay selectedDate = getSelectedDate();
+            showMonth(calculateMonthNumber(selectedDate.year, selectedDate.month));
+        }
+
         return root;
     }
 
@@ -83,6 +92,13 @@ public class CalendarFragment extends Fragment {
         super.onDetach();
 
         calendarEventsListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(KEY_SHOWN_MONTH_NUMBER, shownMonthNumber);
     }
 
     private void init(View root) {
@@ -137,24 +153,14 @@ public class CalendarFragment extends Fragment {
             dayNamesView[i] = (TextView)root.findViewById(DAY_NAME_IDS[i]);
             dayNamesView[i].setTypeface(helveticaneuecyrBold);
         }
-
-        //show calendar starting from the month with selected day
-        CalendarDay selectedDate = getSelectedDate();
-        showMonth(calculateMonthNumber(selectedDate.year, selectedDate.month));
     }
 
     private void showNextMonth() {
-        //increment month
-        ++shownMonthNumber;
-
-        showMonth(shownMonthNumber);
+        showMonth(shownMonthNumber + 1);
     }
 
     private void showPreviousMonth(){
-        //decrement month
-        --shownMonthNumber;
-
-        showMonth(shownMonthNumber);
+        showMonth(shownMonthNumber - 1);
     }
 
     private boolean canShowPreviousMonth() {
@@ -270,7 +276,6 @@ public class CalendarFragment extends Fragment {
         private int activeDaysTextColor;
         private int selectedDayTextColor;
         private Drawable selectedDayBg;
-        private float dayTextSize;
         private Typeface helveticaneuecyrRoman;
 
         public CalendarAdapter(Context context) {
@@ -299,7 +304,6 @@ public class CalendarFragment extends Fragment {
             //cleanup
             ta.recycle();
 
-            dayTextSize = context.getResources().getDimension(R.dimen.calendar_days_text_size);
             helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
         }
 

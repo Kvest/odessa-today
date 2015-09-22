@@ -12,7 +12,8 @@
         android:background="?attr/CalendarTitleBgColor"
         android:paddingLeft="@dimen/calendar_header_padding_left"
         android:paddingRight="@dimen/calendar_header_padding_right"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:clickable="true">
         <ImageView
             android:id="@+id/previous_month"
             android:layout_width="wrap_content"

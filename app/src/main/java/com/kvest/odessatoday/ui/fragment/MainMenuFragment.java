@@ -18,7 +18,7 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  */
 public class MainMenuFragment extends ListFragment implements AdapterView.OnItemClickListener {
     private static final String ARGUMENT_DEFAULT_SELECTED_ITEM_ID = "com.kvest.odessatoday.argument.DEFAULT_SELECTED_ITEM_ID";
-    private static final String KEY_SELECTED_ITEM_POSITION = "com.kvest.odessatoday.keys.SELECTED_ITEM_POSITION";
+    private static final String KEY_SELECTED_ITEM_POSITION = "com.kvest.odessatoday.key.SELECTED_ITEM_POSITION";
 
     public static final int MENU_FILMS_ID = 0;
     public static final int MENU_CONCERT_ID = 1;
