@@ -255,6 +255,8 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 break;
         }
 
+        hideCalendar();
+
         //close menu
         slidingMenu.showContent();
     }
