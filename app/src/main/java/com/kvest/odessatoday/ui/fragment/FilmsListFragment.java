@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
@@ -15,7 +14,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
@@ -24,7 +22,6 @@ import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.utils.LogUtils.*;
@@ -36,6 +33,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * To change this template use File | Settings | File Templates.
  */
 public class FilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+    private static final String KEY_DATE = "com.kvest.odessatoday.key.DATE";
     private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
     private static final int FILMS_LOADER_ID = 1;
 
@@ -79,6 +77,24 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_DATE)) {
+            setDate(savedInstanceState.getLong(KEY_DATE));
+        } else {
+            //get initial data
+            Bundle arguments = getArguments();
+            if (arguments != null) {
+                setDate(arguments.getLong(ARGUMENT_DATE, date));
+            }
+        }
+
+        //load films data
+        loadFilmsData(getActivity());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
@@ -93,12 +109,6 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        //get initial data
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            setDate(arguments.getLong(ARGUMENT_DATE, date));
-        }
-
         try {
             showCalendarListener = (ShowCalendarListener) activity;
         } catch (ClassCastException cce) {
@@ -110,17 +120,6 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         } catch (ClassCastException cce) {
             LOGE(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.FilmSelectedListener");
         }
-
-        //load films data
-        loadFilmsData(activity);
-
-        //workaround - start showing progress
-//        new Handler().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                refreshLayout.setRefreshing(true);
-//            }
-//        });
     }
 
     private void loadFilmsData(Context context) {
@@ -173,6 +172,14 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
 
         getLoaderManager().initLoader(FILMS_LOADER_ID, null, this);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong(KEY_DATE, date);
+    }
+
 
     public DateChangedListener getDateChangedListener() {
         return dateChangedListener;

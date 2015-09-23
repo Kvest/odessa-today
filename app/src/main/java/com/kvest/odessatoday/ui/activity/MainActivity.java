@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                                                         FilmsListFragment.FilmSelectedListener,
                                                         AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
                                                         MainMenuController, CalendarFragment.CalendarEventsListener {
+    private static final String KEY_TITLE = "com.kvest.odessatoday.key.TITLE";
     private static final String CALENDAR_FRAGMENT_TAG = "calendar";
 
     private Calendar calendar = Calendar.getInstance();
@@ -90,6 +91,13 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
             //set title
             setTitle(R.string.menu_films);
+        } else {
+            Fragment activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            updateToolbarForFragment(activeFragment);
+
+            if (savedInstanceState.containsKey(KEY_TITLE)) {
+                setTitle(savedInstanceState.getString(KEY_TITLE));
+            }
         }
 
         //sync data
@@ -201,10 +209,6 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         }
     }
 
-    private void hideCalendar() {
-        getSupportFragmentManager().popBackStack(CALENDAR_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
     @Override
     public void onFilmSelected(long filmId, long date) {
         FilmDetailsActivity.start(this, filmId, date);
@@ -213,6 +217,17 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     @Override
     public void onAnnouncementFilmSelected(long filmId) {
         AnnouncementFilmDetailsActivity.start(this, filmId);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(KEY_TITLE, getTitle().toString());
+    }
+
+    private void hideCalendar() {
+        getSupportFragmentManager().popBackStack(CALENDAR_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     private void replaceFragment(Fragment fragment) {

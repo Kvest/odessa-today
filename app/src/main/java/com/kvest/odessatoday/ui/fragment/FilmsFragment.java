@@ -55,6 +55,14 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
 
         init(root);
 
+        //reset date change listener
+        if (savedInstanceState != null) {
+            FilmsListFragment filmsListFragment = getFilmsListFragment();
+            if (filmsListFragment != null) {
+                filmsListFragment.setDateChangedListener(this);
+            }
+        }
+
         return root;
     }
 
@@ -149,7 +157,7 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
     }
 
     public void showFilmsByDate(long date) {
-        FilmsListFragment filmsListFragment = pagerAdapter.getFilmsListFragmentCache();
+        FilmsListFragment filmsListFragment = getFilmsListFragment();
         if (filmsListFragment != null) {
             filmsListFragment.changeDate(date);
         }
@@ -170,6 +178,11 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         previousDay.setVisibility(previousDayVisibility);
     }
 
+    private FilmsListFragment getFilmsListFragment() {
+        //workaround
+        return (FilmsListFragment)getChildFragmentManager().findFragmentByTag("android:switcher:" + fragmentsPager.getId() + ":" + FILMS_LIST_FRAGMENT_POSITION);
+    }
+
     private void setToolbarExtensionVisibility(int visibility) {
         if (toolbarExtension != null) {
             toolbarExtension.setVisibility(visibility);
@@ -179,8 +192,6 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
     public class FilmsFragmentPagerAdapter extends FragmentPagerAdapter {
         private static final int FRAGMENTS_COUNT = 3;
 
-        private FilmsListFragment filmsListFragmentCache;
-
         public FilmsFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -189,10 +200,9 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         public Fragment getItem(int index) {
             switch (index) {
                 case FILMS_LIST_FRAGMENT_POSITION:
-                    //TODO Проверить что не пересоздается при смене темы, и что дата старая остается, если ее уже изменил пользователь
-                    filmsListFragmentCache = FilmsListFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-                    filmsListFragmentCache.setDateChangedListener(FilmsFragment.this);
-                    return filmsListFragmentCache;
+                    FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                    filmsListFragment.setDateChangedListener(FilmsFragment.this);
+                    return filmsListFragment;
                 case CINEMAS_LIST_FRAGMENT_POSITION:
                     return CinemasListFragment.getInstance();
                 case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION:
@@ -206,10 +216,6 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         @Override
         public int getCount() {
             return FRAGMENTS_COUNT;
-        }
-
-        public FilmsListFragment getFilmsListFragmentCache() {
-            return filmsListFragmentCache;
         }
     }
 
@@ -226,7 +232,7 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         previousDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FilmsListFragment filmsListFragment = pagerAdapter.getFilmsListFragmentCache();
+                FilmsListFragment filmsListFragment = getFilmsListFragment();
                 if (filmsListFragment != null) {
                     filmsListFragment.showPreviousDay();
                 }
@@ -236,7 +242,7 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         nextDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FilmsListFragment filmsListFragment = pagerAdapter.getFilmsListFragmentCache();
+                FilmsListFragment filmsListFragment = getFilmsListFragment();
                 if (filmsListFragment != null) {
                     filmsListFragment.showNextDay();
                 }
