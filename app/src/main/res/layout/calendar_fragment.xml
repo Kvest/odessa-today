@@ -31,7 +31,7 @@
             android:textSize="@dimen/calendar_shown_month_text_size"
             android:textColor="?attr/CalendarTitleTextColor"
             android:singleLine="true"
-            android:ellipsize="start"/>
+            android:ellipsize="end"/>
         <ImageView
             android:id="@+id/next_month"
             android:layout_width="wrap_content"

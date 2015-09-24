@@ -22,7 +22,7 @@
         android:textSize="@dimen/title_text_size"
         android:textColor="?attr/TitleTextColor"
         android:singleLine="true"
-        android:ellipsize="start"/>
+        android:ellipsize="end"/>
     <ImageView
         android:id="@+id/next_day"
         android:layout_width="wrap_content"
