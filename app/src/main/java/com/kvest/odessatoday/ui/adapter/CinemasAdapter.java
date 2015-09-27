@@ -88,11 +88,13 @@ public class CinemasAdapter extends CursorAdapter {
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
 
-        // Fetching the resources defined in the style
-        evenItemBgColor = ta.getColor(0, Color.BLACK);
-        oddItemBgColor = ta.getColor(1, Color.BLACK);
-
-        ta.recycle();
+        try {
+            // Fetching the resources defined in the style
+            evenItemBgColor = ta.getColor(0, Color.BLACK);
+            oddItemBgColor = ta.getColor(1, Color.BLACK);
+        } finally {
+            ta.recycle();
+        }
 
         //retrieve fonts
         helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);

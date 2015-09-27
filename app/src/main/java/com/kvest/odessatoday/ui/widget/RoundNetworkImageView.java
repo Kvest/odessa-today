@@ -62,9 +62,11 @@ public class RoundNetworkImageView extends NetworkImageView {
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RoundNetworkImageView);
 
-            radius = a.getDimension(R.styleable.RoundNetworkImageView_cornerRadius, 0.0f);
-
-            a.recycle();
+            try {
+                radius = a.getDimension(R.styleable.RoundNetworkImageView_cornerRadius, 0.0f);
+            }finally {
+                a.recycle();
+            }
         }
     }
 

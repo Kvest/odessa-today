@@ -84,17 +84,19 @@ public class MainMenuAdapter extends BaseAdapter {
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
 
-        // Fetching the resources defined in the style
-        subcategoryTextColor = ta.getColor(0, Color.BLACK);
-        disabledSubcategoryTextColor = ta.getColor(1, Color.BLACK);
-        selectedSubcategoryTextColor = ta.getColor(2, Color.BLACK);
-        subcategoryIconTintColor = ta.getColor(3, Color.BLACK);
-        disabledSubcategoryIconTintColor = ta.getColor(4, Color.BLACK);
-        selectedSubcategoryIconTintColor = ta.getColor(5, Color.BLACK);
-        subcategoryBg = ta.getDrawable(6);
-        selectedSubcategoryBg = ta.getDrawable(7);
-
-        ta.recycle();
+        try {
+            // Fetching the resources defined in the style
+            subcategoryTextColor = ta.getColor(0, Color.BLACK);
+            disabledSubcategoryTextColor = ta.getColor(1, Color.BLACK);
+            selectedSubcategoryTextColor = ta.getColor(2, Color.BLACK);
+            subcategoryIconTintColor = ta.getColor(3, Color.BLACK);
+            disabledSubcategoryIconTintColor = ta.getColor(4, Color.BLACK);
+            selectedSubcategoryIconTintColor = ta.getColor(5, Color.BLACK);
+            subcategoryBg = ta.getDrawable(6);
+            selectedSubcategoryBg = ta.getDrawable(7);
+        } finally {
+            ta.recycle();
+        }
 
         //retrieve font
         helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);

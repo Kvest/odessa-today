@@ -295,14 +295,16 @@ public class CalendarFragment extends Fragment {
             // Parse style, using Context.obtainStyledAttributes()
             TypedArray ta = context.obtainStyledAttributes(attrs);
 
-            otherMonthTextColor = ta.getColor(0, Color.BLACK);
-            passedDaysTextColor = ta.getColor(1, Color.BLACK);
-            activeDaysTextColor = ta.getColor(2, Color.BLACK);
-            selectedDayTextColor = ta.getColor(3, Color.BLACK);
-            selectedDayBg = ta.getDrawable(4);
-
-            //cleanup
-            ta.recycle();
+            try {
+                otherMonthTextColor = ta.getColor(0, Color.BLACK);
+                passedDaysTextColor = ta.getColor(1, Color.BLACK);
+                activeDaysTextColor = ta.getColor(2, Color.BLACK);
+                selectedDayTextColor = ta.getColor(3, Color.BLACK);
+                selectedDayBg = ta.getDrawable(4);
+            }finally {
+                //cleanup
+                ta.recycle();
+            }
 
             helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
         }

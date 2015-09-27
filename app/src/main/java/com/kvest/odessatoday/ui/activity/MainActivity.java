@@ -281,12 +281,14 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         int[] attrs = {R.attr.ABIconColor};
         TypedArray ta = obtainStyledAttributes(attrs);
 
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_menu);
-        drawable.setColorFilter(new PorterDuffColorFilter(ta.getColor(0, Color.WHITE), PorterDuff.Mode.SRC_IN));
+        try {
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_menu);
+            drawable.setColorFilter(new PorterDuffColorFilter(ta.getColor(0, Color.WHITE), PorterDuff.Mode.SRC_IN));
 
-        ta.recycle();
-
-        return drawable;
+            return drawable;
+        } finally {
+            ta.recycle();
+        }
     }
 
     @Override
