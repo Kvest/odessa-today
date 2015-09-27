@@ -96,61 +96,6 @@
                     android:textColor="@color/film_duration_text_color" />
             </LinearLayout>
         </RelativeLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:paddingLeft="@dimen/film_details_padding"
-            android:paddingRight="@dimen/film_details_padding"
-            android:paddingBottom="6dip"
-            android:paddingTop="6dip">
-            <FrameLayout
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginRight="4dip">
-                <Button
-                    android:id="@+id/show_comments"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/green_button"
-                    android:textColor="@color/button_text_color"
-                    android:textSize="@dimen/film_details_button_text_size"
-                    android:text="@string/comments_count"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:elevation="3dip"
-                    android:layout_marginLeft="@dimen/film_details_button_icon_margin_left"
-                    android:src="@drawable/ic_add_comment"/>
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="4dip">
-                <Button
-                    android:id="@+id/tickets"
-                    android:enabled="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/green_button"
-                    android:textColor="@color/button_text_color"
-                    android:textSize="@dimen/film_details_button_text_size"
-                    android:text="@string/tickets"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:elevation="3dip"
-                    android:layout_marginLeft="@dimen/film_details_button_icon_margin_left"
-                    android:src="@drawable/ic_arrow_tickets"/>
-            </FrameLayout>
-        </LinearLayout>
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,14 +105,7 @@
                 android:id="@+id/images_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <FrameLayout
-                    android:id="@+id/youtube_fragment_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/film_details_posters_height"
-                    android:layout_marginTop="@dimen/film_details_posters_margin"
-                    android:layout_marginBottom="@dimen/film_details_posters_margin" />
-            </LinearLayout>
+                android:orientation="horizontal" />
         </HorizontalScrollView>
         <TextView
             android:id="@+id/director"

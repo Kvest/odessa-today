@@ -72,9 +72,7 @@
     <dimen name="min_max_prices_margin_top">16dip</dimen>
     <dimen name="min_max_prices_icon_padding">12dip</dimen>
     <dimen name="min_max_prices_text_size">12sp</dimen>
-    <dimen name="film_details_button_icon_margin_left">12dip</dimen>
     <dimen name="film_expand_text_divider_height">2dip</dimen>
-    <dimen name="film_details_button_text_size">18sp</dimen>
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>

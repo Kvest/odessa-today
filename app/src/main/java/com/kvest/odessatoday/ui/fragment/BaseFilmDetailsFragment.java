@@ -8,16 +8,12 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
@@ -27,7 +23,6 @@ import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
 import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
 import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.YoutubeApiConstants;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
@@ -38,8 +33,7 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  * Time: 17:07
  * To change this template use File | Settings | File Templates.
  */
-public abstract class BaseFilmDetailsFragment extends BaseFragment implements YouTubePlayer.OnInitializedListener {
-    private static final int RECOVERY_DIALOG_REQUEST = 1;
+public abstract class BaseFilmDetailsFragment extends BaseFragment {
     private static final String VIDEO_ID_PARAM = "v";
 
     protected static final String ARGUMENT_FILM_ID = "com.kvest.odessatoday.argument.FILM_ID";
@@ -54,12 +48,9 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     protected TextView description;
     protected TextView director;
     protected TextView actors;
-    protected Button showComments;
     protected LinearLayout imagesContainer;
     private View.OnClickListener onImageClickListener;
 
-    protected YouTubePlayer youTubePlayer;
-    protected View youTubePlayerFragmentContainer;
     protected String trailerVideoId;
 
     private OnShowFilmCommentsListener onShowFilmCommentsListener;
@@ -95,13 +86,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         description = (TextView)view.findViewById(R.id.film_description);
         director = (TextView)view.findViewById(R.id.director);
         actors = (TextView)view.findViewById(R.id.actors);
-        showComments = (Button)view.findViewById(R.id.show_comments);
         imagesContainer = (LinearLayout)view.findViewById(R.id.images_container);
-
-        youTubePlayerFragmentContainer = view.findViewById(R.id.youtube_fragment_container);
-
-        //init youtube player
-        initYoutubePlayer();
 
         ((ExpandablePanel)view.findViewById(R.id.expand_panel)).setOnExpandListener(new ExpandablePanel.OnExpandListener() {
             @Override
@@ -115,12 +100,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             }
         });
 
-        showComments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showComments();
-            }
-        });
         onImageClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,25 +108,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             }
         };
         filmPoster.setOnClickListener(onImageClickListener);
-    }
-
-    private void initYoutubePlayer() {
-        YouTubePlayerSupportFragment youTubePlayerFragment = (YouTubePlayerSupportFragment)getChildFragmentManager().findFragmentById(R.id.youtube_fragment_container);
-
-        //add new fragment if it is not exists
-        if (youTubePlayerFragment == null) {
-            youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            try {
-                transaction.add(R.id.youtube_fragment_container, youTubePlayerFragment);
-            } finally {
-                transaction.commit();
-            }
-        }
-
-        //initialize player
-        youTubePlayerFragment.initialize(YoutubeApiConstants.YOUTUBE_API_KEY, this);
     }
 
     @Override
@@ -162,38 +122,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         super.onPause();
 
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(commentsErrorReceiver);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RECOVERY_DIALOG_REQUEST && requestCode == Activity.RESULT_OK) {
-            // Retry initialization if user performed a recovery action
-            initYoutubePlayer();
-        }
-    }
-
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-        youTubePlayer = player;
-
-        if (!wasRestored && !TextUtils.isEmpty(trailerVideoId)) {
-            youTubePlayer.cueVideo(trailerVideoId);
-        }
-    }
-
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        LOGE(Constants.TAG, "YouTubePlayer onInitializationFailure");
-
-        Activity activity = getActivity();
-        if (youTubeInitializationResult.isUserRecoverableError() && activity != null) {
-            youTubeInitializationResult.getErrorDialog(activity, RECOVERY_DIALOG_REQUEST).show();
-        } else {
-            //if only 1 child - it is youtube fragment
-            if (imagesContainer.getChildCount() <= 1) {
-                imagesContainer.setVisibility(View.GONE);
-            }
-        }
     }
 
     protected void setFilmData(Cursor cursor) {
@@ -231,7 +159,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
             int commentsCountValue = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT));
             commentsCount.setText(Integer.toString(commentsCountValue));
-            showComments.setText(Html.fromHtml(getString(R.string.comments_with_count, commentsCountValue)));
 
             //setTrailer
             setTrailer(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.VIDEO)));
@@ -241,17 +168,16 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             mergeImages(postersUrls);
 
             //set visibility for Youtube player and posters
-            if (TextUtils.isEmpty(trailerVideoId)) {
+//            if (TextUtils.isEmpty(trailerVideoId)) {
                 if (postersUrls.length == 0) {
                     imagesContainer.setVisibility(View.GONE);
                 } else {
                     imagesContainer.setVisibility(View.VISIBLE);
-                    youTubePlayerFragmentContainer.setVisibility(View.GONE);
                 }
-            } else {
-                imagesContainer.setVisibility(View.VISIBLE);
-                youTubePlayerFragmentContainer.setVisibility(View.VISIBLE);
-            }
+//            } else {
+//                imagesContainer.setVisibility(View.VISIBLE);
+//                youTubePlayerFragmentContainer.setVisibility(View.VISIBLE);
+//            }
         }
     }
 
@@ -263,11 +189,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         }
         if (newTrailerVideoId == null) {
             newTrailerVideoId = "";
-        }
-
-        //start playing video
-        if (youTubePlayer != null && !newTrailerVideoId.equals(trailerVideoId)) {
-            youTubePlayer.cueVideo(newTrailerVideoId);
         }
 
         //store video id

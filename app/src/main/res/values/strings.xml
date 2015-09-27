@@ -44,7 +44,6 @@
     <string name="format_four_dx">i4DX</string>
     <string name="share">Поделиться...</string>
     <string name="image_caching_progress">Идет сохранение изображения...</string>
-    <string name="tickets">Билеты</string>
     <string name="currency">грн.</string>
 
     <string-array name="formats">
