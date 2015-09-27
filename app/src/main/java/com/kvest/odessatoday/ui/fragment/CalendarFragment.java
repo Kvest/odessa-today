@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -400,6 +401,14 @@ public class CalendarFragment extends Fragment {
                     ((TextView)convertView).setTextColor(otherMonthTextColor);
                     break;
             }
+
+            //set text style
+            if (calendarDay.type == CalendarDay.DAY_TYPE_ACTIVE) {
+                ((TextView)convertView).setPaintFlags(((TextView)convertView).getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            } else {
+                ((TextView)convertView).setPaintFlags(((TextView)convertView).getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            }
+
             //set text
             ((TextView)convertView).setText(Integer.toString(calendarDay.day));
 
