@@ -171,6 +171,13 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         super.onActivityCreated(savedInstanceState);
 
         getLoaderManager().initLoader(FILMS_LOADER_ID, null, this);
+
+        //send data once again after recreate to the date listener
+        if (savedInstanceState != null) {
+            if (dateChangedListener != null) {
+                dateChangedListener.onDateChanged(this.date);
+            }
+        }
     }
 
     @Override
