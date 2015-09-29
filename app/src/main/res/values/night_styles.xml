@@ -46,5 +46,7 @@
         <item name="CalendarActiveDaysTextColor">#b2b2b2</item>
         <item name="CalendarSelectedDayBg">@drawable/calendar_selected_day_bg_night</item>
         <item name="CalendarSelectedDayTextColor">#1b1b1b</item>
+        <!--film details-->
+        <item name="FilmDetailsBgColor">#2d2d2d</item>
     </style>
 </resources>

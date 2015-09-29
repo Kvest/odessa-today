@@ -101,26 +101,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         initFilmInfoView(headerView);
         initTimetableList((ListView) rootView, headerView);
 
-        setHasOptionsMenu(true);
-
         return rootView;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.film_details_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.share:
-                new CacheImageAsyncTask(Long.toString(getFilmId())).execute(filmPoster.getDrawable());
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

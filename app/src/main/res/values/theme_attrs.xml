@@ -42,4 +42,5 @@
     <attr format="color" name="CalendarActiveDaysTextColor"/>
     <attr format="reference" name="CalendarSelectedDayBg"/>
     <attr format="color" name="CalendarSelectedDayTextColor"/>
+    <attr format="color" name="FilmDetailsBgColor"/>
 </resources>

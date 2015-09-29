@@ -78,7 +78,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
         int postersMargin = (int)getResources().getDimension(R.dimen.film_details_posters_margin);
         postersLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                                                             (int)getResources().getDimension(R.dimen.film_details_posters_height));
-        postersLayoutParams.setMargins(postersMargin, postersMargin, 0, postersMargin);
+        postersLayoutParams.setMargins(postersMargin, 0, 0, 0);
 
         //store views
         filmPoster = (NetworkImageView) view.findViewById(R.id.film_poster);
@@ -115,44 +115,44 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
         };
         filmPoster.setOnClickListener(onImageClickListener);
 
-        ((YouTubeThumbnailView)view.findViewById(R.id.video_thumbnail)).initialize(YoutubeApiConstants.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
-                //TODO
-                //youTubeThumbnailLoader.release();
-
-                youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
-                    @Override
-                    public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-                        Drawable d = youTubeThumbnailView.getDrawable();
-
-
-                        ImageView iv = (ImageView) getView().findViewById(R.id.video_preview);
-                        // iv.getLayoutParams().width = (int)(((float)d.getIntrinsicWidth() / (float)d.getIntrinsicHeight()) * iv.getLayoutParams().height);
-                        iv.setImageDrawable(d);
-                    }
-
-                    @Override
-                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-                    }
-                });
-
-                youTubeThumbnailLoader.setVideo("o7VVHhK9zf0");
-            }
-
-
-            @Override
-            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-
-            }
-        });
-
-        view.findViewById(R.id.video_preview).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YoutubeFullscreenActivity.start(getActivity(), trailerVideoId);
-            }
-        });
+//        ((YouTubeThumbnailView)view.findViewById(R.id.video_thumbnail)).initialize(YoutubeApiConstants.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
+//            @Override
+//            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+//                //TODO
+//                //youTubeThumbnailLoader.release();
+//
+//                youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+//                    @Override
+//                    public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+//                        Drawable d = youTubeThumbnailView.getDrawable();
+//
+//
+//                        ImageView iv = (ImageView) getView().findViewById(R.id.video_preview);
+//                        // iv.getLayoutParams().width = (int)(((float)d.getIntrinsicWidth() / (float)d.getIntrinsicHeight()) * iv.getLayoutParams().height);
+//                        iv.setImageDrawable(d);
+//                    }
+//
+//                    @Override
+//                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+//                    }
+//                });
+//
+//                youTubeThumbnailLoader.setVideo("o7VVHhK9zf0");
+//            }
+//
+//
+//            @Override
+//            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+//
+//            }
+//        });
+//
+//        view.findViewById(R.id.video_preview).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                YoutubeFullscreenActivity.start(getActivity(), trailerVideoId);
+//            }
+//        });
     }
 
     @Override

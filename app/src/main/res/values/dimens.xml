@@ -53,9 +53,8 @@
     <dimen name="calendar_day_size">40dip</dimen>
 
     <!--film details-->
-    <dimen name="film_details_padding">@dimen/application_padding</dimen>
-    <dimen name="film_details_poster_margin_right">12dip</dimen>
-    <dimen name="film_details_duration_text_size">14sp</dimen>
+    <dimen name="film_details_padding">10dip</dimen>
+
     <dimen name="film_details_divider_height">1dip</dimen>
     <dimen name="film_details_director_padding">8dip</dimen>
     <dimen name="film_details_actors_padding_bottom">8dip</dimen>
@@ -64,9 +63,7 @@
     <dimen name="film_details_actors_text_size">15sp</dimen>
     <dimen name="film_details_description_padding_bottom">8dip</dimen>
     <dimen name="film_details_description_text_size">15sp</dimen>
-    <dimen name="film_duration_margin_top">3dip</dimen>
-    <dimen name="film_duration_margin_left">6dip</dimen>
-    <dimen name="film_details_posters_height">120dip</dimen>
+    <dimen name="film_details_posters_height">90dip</dimen>
     <dimen name="film_details_posters_margin">8dip</dimen>
     <dimen name="timetable_date_margin_vertical">10dip</dimen>
     <dimen name="min_max_prices_margin_top">16dip</dimen>

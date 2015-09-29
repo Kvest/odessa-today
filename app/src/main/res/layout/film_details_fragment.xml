@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/film_details_list"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:listSelector="@drawable/application_list_item_selector"
-    android:background="@android:color/white"
+    android:background="?attr/FilmDetailsBgColor"
     android:divider="@color/film_details_divider_color"
     android:dividerHeight="@dimen/film_details_divider_height" />

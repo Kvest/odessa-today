@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/film_details_header_bg">
+    android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/film_details_padding"
-        android:background="@android:color/white">
+        android:padding="@dimen/film_details_padding">
         <com.kvest.odessatoday.ui.widget.RoundNetworkImageView
             xmlns:app="http://schemas.android.com/apk/res/com.kvest.odessatoday"
             android:id="@+id/film_poster"
@@ -86,27 +83,17 @@
             android:drawableLeft="@drawable/ic_cash"
             android:drawablePadding="@dimen/min_max_prices_icon_padding"/>
     </RelativeLayout>
-    <com.google.android.youtube.player.YouTubeThumbnailView
-        android:id="@+id/video_thumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-    <ImageView
-        android:id="@+id/video_preview"
-        android:layout_width="wrap_content"
-        android:layout_height="120dip"
-        android:background="@color/application_green"/>
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/film_details_padding"
-        android:paddingRight="@dimen/film_details_padding">
+        android:padding="@dimen/film_details_padding">
         <LinearLayout
             android:id="@+id/images_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"/>
     </HorizontalScrollView>
+
     <TextView
         android:id="@+id/director"
         android:layout_width="match_parent"
@@ -173,6 +160,7 @@
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
     </com.kvest.odessatoday.ui.widget.ExpandablePanel>
+
     <LinearLayout
         android:id="@+id/timetable_date_container"
         android:orientation="horizontal"
