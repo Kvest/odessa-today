@@ -112,55 +112,17 @@
         android:layout_marginBottom="@dimen/film_details_actors_padding_bottom"
         android:textSize="@dimen/film_details_actors_text_size"
         android:textColor="@color/film_details_actors_text_color" />
-    <com.kvest.odessatoday.ui.widget.ExpandablePanel
-        xmlns:example="http://schemas.android.com/apk/res/com.kvest.odessatoday"
-        android:id="@+id/expand_panel"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/film_description"
         android:layout_width="fill_parent"
-        android:layout_marginBottom="10dip"
-        example:handle="@+id/expand_description"
-        example:content="@+id/film_description"
-        example:collapsedHeight="@dimen/film_description_collapsed_height"
-        example:animationDuration="300">
-        <TextView
-            android:id="@id/film_description"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/film_details_padding"
-            android:layout_marginRight="@dimen/film_details_padding"
-            android:layout_marginBottom="@dimen/film_details_description_padding_bottom"
-            android:textSize="@dimen/film_details_description_text_size"
-            android:textColor="@color/film_details_description_text_color"
-            android:autoLink="all"
-            android:linksClickable="true"/>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-            <View
-                android:layout_width="0dip"
-                android:layout_height="@dimen/film_expand_text_divider_height"
-                android:layout_weight="1"
-                android:background="@color/film_expand_text_divider_color"
-                android:layout_gravity="center_vertical" />
-            <ImageButton
-                android:id="@+id/expand_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="?android:attr/borderlessButtonStyle"
-                android:minHeight="20dip"
-                android:src="@drawable/ic_expand_arrow" />
-            <View
-                android:layout_width="0dip"
-                android:layout_height="@dimen/film_expand_text_divider_height"
-                android:layout_weight="1"
-                android:background="@color/film_expand_text_divider_color"
-                android:layout_gravity="center_vertical" />
-        </LinearLayout>
-    </com.kvest.odessatoday.ui.widget.ExpandablePanel>
-
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/film_details_padding"
+        android:layout_marginRight="@dimen/film_details_padding"
+        android:layout_marginBottom="@dimen/film_details_description_padding_bottom"
+        android:textSize="@dimen/film_details_description_text_size"
+        android:textColor="@color/film_details_description_text_color"
+        android:autoLink="all"
+        android:linksClickable="true"/>
     <LinearLayout
         android:id="@+id/timetable_date_container"
         android:orientation="horizontal"

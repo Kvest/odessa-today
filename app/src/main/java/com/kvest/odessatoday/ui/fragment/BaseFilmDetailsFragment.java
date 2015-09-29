@@ -15,20 +15,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubeThumbnailLoader;
-import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
-import com.kvest.odessatoday.ui.activity.YoutubeFullscreenActivity;
-import com.kvest.odessatoday.ui.widget.ExpandablePanel;
 import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
 import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.YoutubeApiConstants;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
@@ -93,18 +87,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
         director = (TextView)view.findViewById(R.id.director);
         actors = (TextView)view.findViewById(R.id.actors);
         imagesContainer = (LinearLayout)view.findViewById(R.id.images_container);
-
-        ((ExpandablePanel)view.findViewById(R.id.expand_panel)).setOnExpandListener(new ExpandablePanel.OnExpandListener() {
-            @Override
-            public void onExpand(View handle, View content) {
-                ((ImageButton)handle).setImageResource(R.drawable.ic_collapse_arrow);
-            }
-
-            @Override
-            public void onCollapse(View handle, View content) {
-                ((ImageButton)handle).setImageResource(R.drawable.ic_expand_arrow);
-            }
-        });
 
         onImageClickListener = new View.OnClickListener() {
             @Override
@@ -200,7 +182,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
             value = getString(R.string.film_actors, cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.ACTORS)));
             actors.setText(Html.fromHtml(value));
 
-            description.setText(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.DESCRIPTION)) + "\n");
+            description.setText(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.DESCRIPTION)));
 
             int commentsCountValue = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT));
             commentsCount.setText(Integer.toString(commentsCountValue));

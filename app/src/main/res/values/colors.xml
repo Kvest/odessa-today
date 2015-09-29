@@ -18,7 +18,6 @@
     <color name="film_details_director_text_color">#323232</color>
     <color name="film_details_actors_text_color">#323232</color>
     <color name="film_details_description_text_color">#323232</color>
-    <color name="film_expand_text_divider_color">#454954</color>
 
     <!--comments-->
     <color name="comments_list_divider_color">#888888</color>
