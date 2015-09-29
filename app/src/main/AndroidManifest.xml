@@ -41,6 +41,10 @@
             android:name=".ui.activity.PhotoGalleryActivity"
             android:theme="@style/OdessaTodayTheme.NoActionBar"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.YoutubeFullscreenActivity"
+            android:theme="@style/OdessaTodayTheme.NoActionBar"
+            android:screenOrientation="sensorLandscape"/>
 
         <provider
             android:authorities="com.kvest.odessatoday"

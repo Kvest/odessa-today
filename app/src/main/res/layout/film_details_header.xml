@@ -86,6 +86,16 @@
             android:drawableLeft="@drawable/ic_cash"
             android:drawablePadding="@dimen/min_max_prices_icon_padding"/>
     </RelativeLayout>
+    <com.google.android.youtube.player.YouTubeThumbnailView
+        android:id="@+id/video_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    <ImageView
+        android:id="@+id/video_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="120dip"
+        android:background="@color/application_green"/>
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

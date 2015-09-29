@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -14,15 +15,20 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
+import com.kvest.odessatoday.ui.activity.YoutubeFullscreenActivity;
 import com.kvest.odessatoday.ui.widget.ExpandablePanel;
 import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.YoutubeApiConstants;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
@@ -108,6 +114,45 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
             }
         };
         filmPoster.setOnClickListener(onImageClickListener);
+
+        ((YouTubeThumbnailView)view.findViewById(R.id.video_thumbnail)).initialize(YoutubeApiConstants.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                //TODO
+                //youTubeThumbnailLoader.release();
+
+                youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                    @Override
+                    public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                        Drawable d = youTubeThumbnailView.getDrawable();
+
+
+                        ImageView iv = (ImageView) getView().findViewById(R.id.video_preview);
+                        // iv.getLayoutParams().width = (int)(((float)d.getIntrinsicWidth() / (float)d.getIntrinsicHeight()) * iv.getLayoutParams().height);
+                        iv.setImageDrawable(d);
+                    }
+
+                    @Override
+                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+                    }
+                });
+
+                youTubeThumbnailLoader.setVideo("o7VVHhK9zf0");
+            }
+
+
+            @Override
+            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        });
+
+        view.findViewById(R.id.video_preview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YoutubeFullscreenActivity.start(getActivity(), trailerVideoId);
+            }
+        });
     }
 
     @Override
