@@ -61,6 +61,9 @@
     <dimen name="film_details_posters_margin">8dip</dimen>
     <dimen name="film_details_posters_height">90dip</dimen>
     <dimen name="film_details_role_name_width">70dip</dimen>
+    <dimen name="film_details_date_divider_height">1dip</dimen>
+    <dimen name="film_details_date_height">85dip</dimen>
+    <dimen name="film_details_date_text_size">15sp</dimen>
 
     <dimen name="film_details_divider_height">1dip</dimen>
     <dimen name="timetable_date_margin_vertical">10dip</dimen>

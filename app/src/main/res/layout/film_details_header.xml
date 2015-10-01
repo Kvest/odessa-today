@@ -85,46 +85,27 @@
     </RelativeLayout>
     <include layout="@layout/film_images_container_layout" />
     <include layout="@layout/film_description_layout" />
-    <LinearLayout
-        android:id="@+id/timetable_date_container"
-        android:orientation="horizontal"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
+        android:layout_height="@dimen/film_details_date_divider_height"
         android:layout_marginLeft="@dimen/film_details_padding"
         android:layout_marginRight="@dimen/film_details_padding"
-        android:layout_marginBottom="@dimen/timetable_date_margin_vertical"
-        android:padding="@dimen/complex_date_padding"
+        android:background="?attr/FilmDetailsDateDividerColor" />
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/film_details_date_height"
+        android:paddingLeft="@dimen/film_details_padding"
+        android:paddingRight="@dimen/film_details_padding"
         android:gravity="center_vertical"
-        android:background="@drawable/complex_date_bg">
-        <TextView
-            android:id="@+id/is_today"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/today_marker"
-            android:textColor="@color/complex_date_text_color"
-            android:textSize="@dimen/complex_date_text_size"/>
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/complex_date_text_color"
-            android:textSize="@dimen/complex_date_text_size" />
-        <TextView
-            android:id="@+id/week_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/complex_date_week_text_color"
-            android:textSize="@dimen/complex_date_week_text_size" />
-        <View
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-        <ImageView
-            android:id="@+id/show_calendar"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_calendar" />
-    </LinearLayout>
+        android:textColor="?attr/FilmDetailsDateTextColor"
+        android:textSize="@dimen/film_details_date_text_size"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/film_details_date_divider_height"
+        android:layout_marginLeft="@dimen/film_details_padding"
+        android:layout_marginRight="@dimen/film_details_padding"
+        android:background="?attr/FilmDetailsDateDividerColor" />
 </LinearLayout>

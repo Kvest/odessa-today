@@ -50,5 +50,7 @@
         <item name="FilmDetailsBgColor">@android:color/white</item>
         <item name="FilmDetailsRoleTitleTextColor">#24282b</item>
         <item name="FilmDetailsDescriptionTextColor">#4e4e4e</item>
+        <item name="FilmDetailsDateDividerColor">#e2e2e2</item>
+        <item name="FilmDetailsDateTextColor">#24282b</item>
     </style>
 </resources>

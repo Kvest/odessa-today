@@ -50,5 +50,7 @@
         <item name="FilmDetailsBgColor">#2d2d2d</item>
         <item name="FilmDetailsRoleTitleTextColor">#e1e1e1</item>
         <item name="FilmDetailsDescriptionTextColor">#a5a5a5</item>
+        <item name="FilmDetailsDateDividerColor">#4a4a4a</item>
+        <item name="FilmDetailsDateTextColor">#828282</item>
     </style>
 </resources>

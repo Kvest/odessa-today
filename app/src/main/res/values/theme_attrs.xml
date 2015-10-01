@@ -46,4 +46,6 @@
     <attr format="color" name="FilmDetailsRoleTitleTextColor"/>
     <attr format="color" name="FilmDetailsRoleTextColor"/>
     <attr format="color" name="FilmDetailsDescriptionTextColor"/>
+    <attr format="color" name="FilmDetailsDateDividerColor"/>
+    <attr format="color" name="FilmDetailsDateTextColor"/>
 </resources>

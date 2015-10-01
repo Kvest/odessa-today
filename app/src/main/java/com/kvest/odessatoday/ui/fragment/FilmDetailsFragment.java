@@ -54,10 +54,8 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     private static final Pattern PRICES_PATTERN = Pattern.compile("(\\d+)");
     private static final int PRICES_GROUP = 1;
 
-    private static final String DATE_FORMAT_PATTERN = " dd MMM. yyyy, ";
-    private static final String WEEK_DAY_FORMAT_PATTERN = "cccc";
+    private static final String DATE_FORMAT_PATTERN = " dd MMMM yyyy, cccc";
     private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
-    private final SimpleDateFormat WEEK_DAY_FORMAT = new SimpleDateFormat(WEEK_DAY_FORMAT_PATTERN);
 
     private static final int FILM_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
@@ -67,9 +65,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     private String shareTitle, shareText;
     private String currencyStr;
 
-    private TextView isToday;
     private TextView dateTextView;
-    private TextView weekDayTextView;
     private long shownTimetableDate;
 
     private LoadTimetableNotificationReceiver timetableErrorReceiver = new LoadTimetableNotificationReceiver();
@@ -123,9 +119,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         super.initFilmInfoView(view);
 
         minMaxPricesView = (TextView)view.findViewById(R.id.min_max_prices);
-        isToday = (TextView)view.findViewById(R.id.is_today);
         dateTextView = (TextView)view.findViewById(R.id.date);
-        weekDayTextView = (TextView)view.findViewById(R.id.week_day);
     }
 
     private void initTimetableList(ListView rootView, View headerView) {
@@ -142,9 +136,9 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         });
 
         //set date
-        isToday.setVisibility(TimeUtils.isCurrentDay(shownTimetableDate) ? View.VISIBLE : View.GONE);
-        dateTextView.setText(DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(shownTimetableDate)));
-        weekDayTextView.setText(WEEK_DAY_FORMAT.format(TimeUnit.SECONDS.toMillis(shownTimetableDate)).toLowerCase());
+        String dateValue = (TimeUtils.isCurrentDay(shownTimetableDate) ? getString(R.string.today_marker) : "") +
+                           DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(shownTimetableDate));
+        dateTextView.setText(dateValue);
     }
 
     @Override
