@@ -43,4 +43,7 @@
     <attr format="reference" name="CalendarSelectedDayBg"/>
     <attr format="color" name="CalendarSelectedDayTextColor"/>
     <attr format="color" name="FilmDetailsBgColor"/>
+    <attr format="color" name="FilmDetailsRoleTitleTextColor"/>
+    <attr format="color" name="FilmDetailsRoleTextColor"/>
+    <attr format="color" name="FilmDetailsDescriptionTextColor"/>
 </resources>

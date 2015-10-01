@@ -176,12 +176,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
                 filmDuration.setText(R.string.film_duration_unknown);
             }
 
-            String value = getString(R.string.film_director, cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.DIRECTOR)));
-            director.setText(Html.fromHtml(value));
-
-            value = getString(R.string.film_actors, cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.ACTORS)));
-            actors.setText(Html.fromHtml(value));
-
+            director.setText(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.DIRECTOR)));
+            actors.setText(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.ACTORS)));
             description.setText(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.DESCRIPTION)));
 
             int commentsCountValue = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT));

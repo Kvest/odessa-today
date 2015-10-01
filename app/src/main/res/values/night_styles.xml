@@ -48,5 +48,7 @@
         <item name="CalendarSelectedDayTextColor">#1b1b1b</item>
         <!--film details-->
         <item name="FilmDetailsBgColor">#2d2d2d</item>
+        <item name="FilmDetailsRoleTitleTextColor">#e1e1e1</item>
+        <item name="FilmDetailsDescriptionTextColor">#a5a5a5</item>
     </style>
 </resources>

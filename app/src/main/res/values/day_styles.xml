@@ -48,5 +48,7 @@
         <item name="CalendarSelectedDayTextColor">@color/application_green</item>
         <!--film details-->
         <item name="FilmDetailsBgColor">@android:color/white</item>
+        <item name="FilmDetailsRoleTitleTextColor">#24282b</item>
+        <item name="FilmDetailsDescriptionTextColor">#4e4e4e</item>
     </style>
 </resources>

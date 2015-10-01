@@ -95,46 +95,7 @@
                     android:textColor="@color/film_duration_text_color" />
             </LinearLayout>
         </RelativeLayout>
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/film_details_padding">
-            <LinearLayout
-                android:id="@+id/images_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
-
-        <TextView
-            android:id="@+id/director"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/film_details_padding"
-            android:layout_marginRight="@dimen/film_details_padding"
-            android:layout_marginBottom="@dimen/film_details_director_padding"
-            android:textSize="@dimen/film_details_director_text_size"
-            android:textColor="@color/film_details_director_text_color"/>
-        <TextView
-            android:id="@+id/actors"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/film_details_padding"
-            android:layout_marginRight="@dimen/film_details_padding"
-            android:layout_marginBottom="@dimen/film_details_actors_padding_bottom"
-            android:textSize="@dimen/film_details_actors_text_size"
-            android:textColor="@color/film_details_actors_text_color" />
-
-        <TextView
-            android:id="@+id/film_description"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/film_details_padding"
-            android:layout_marginRight="@dimen/film_details_padding"
-            android:layout_marginBottom="@dimen/film_details_description_padding_bottom"
-            android:textSize="@dimen/film_details_description_text_size"
-            android:textColor="@color/film_details_description_text_color"
-            android:autoLink="all"
-            android:linksClickable="true"/>
+        <include layout="@layout/film_images_container_layout" />
+        <include layout="@layout/film_description_layout" />
     </LinearLayout>
 </ScrollView>
