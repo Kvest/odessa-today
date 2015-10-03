@@ -130,8 +130,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         rootView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                long cinemaId = timetableAdapter.getCinemaId(view, position, id);
-                showCinema(cinemaId);
+                showCinema(id);
             }
         });
 
@@ -224,8 +223,10 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
                 return DataProviderHelper.getFilmLoader(getActivity(), getFilmId(), null);
             case TIMETABLE_LOADER_ID :
                 long endDate = TimeUtils.getEndOfTheDay(shownTimetableDate);
-                return DataProviderHelper.getFilmsFullTimetableLoader(getActivity(), getFilmId(), shownTimetableDate, endDate,
-                                                                  TimetableAdapter.PROJECTION, Tables.FilmsFullTimetableView.TIMETABLE_ORDER_ASC);
+                return DataProviderHelper.getFilmsFullTimetableLoader(getActivity(), getFilmId(),
+                                                                      shownTimetableDate, endDate,
+                                                                      TimetableAdapter.PROJECTION,
+                                                                      Tables.FilmsFullTimetableView.TIMETABLE_ORDER_CINEMA_ASC_DATE_ASC);
         }
 
         return null;

@@ -3,7 +3,7 @@
     android:id="@+id/film_details_list"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:paddingBottom="@dimen/film_details_padding"
     android:listSelector="@drawable/application_list_item_selector"
     android:background="?attr/FilmDetailsBgColor"
-    android:divider="@color/film_details_divider_color"
-    android:dividerHeight="@dimen/film_details_divider_height" />
+    android:divider="@null"/>

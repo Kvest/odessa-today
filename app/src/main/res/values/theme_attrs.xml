@@ -11,12 +11,13 @@
     <attr format="color" name="MainMenuSubcategoryIconTintColor"/>
     <attr format="color" name="MainMenuDisabledSubcategoryIconTintColor"/>
     <attr format="color" name="MainMenuSelectedSubcategoryIconTintColor"/>
-    <attr format="color" name="TitleTextColor"/>
-    <attr format="color" name="ABIconColor"/>
-    <attr format="reference" name="ABCalendarIcon"/>
     <attr format="reference" name="MainMenuSubcategoryBg"/>
     <attr format="reference" name="MainMenuSelectedSubcategoryBg"/>
     <attr format="reference" name="MainMenuSubcategoryOverlayBg"/>
+    <attr format="color" name="TitleTextColor"/>
+    <attr format="color" name="ABIconColor"/>
+    <attr format="reference" name="ABCalendarIcon"/>
+    <attr format="color" name="DetailsArrowTint"/>
     <attr format="color" name="CloseIconTintColor"/>
     <attr format="color" name="ListEvenItemBg"/>
     <attr format="color" name="ListOddItemBg"/>
@@ -48,4 +49,6 @@
     <attr format="color" name="FilmDetailsDescriptionTextColor"/>
     <attr format="color" name="FilmDetailsDateDividerColor"/>
     <attr format="color" name="FilmDetailsDateTextColor"/>
+    <attr format="color" name="TimetablePriceTextColor"/>
+    <attr format="color" name="TimetableListCinemaAddressTextColor"/>
 </resources>

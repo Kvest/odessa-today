@@ -34,6 +34,7 @@
     <dimen name="announcement_comments_count_margin_top">8dip</dimen>
     <dimen name="toolbar_horizontal_padding">10dip</dimen>
     <dimen name="title_text_size">18sp</dimen>
+    <dimen name="format_text_size">12sp</dimen>
 
     <dimen name="comments_count_text_size">10sp</dimen>
 
@@ -64,12 +65,24 @@
     <dimen name="film_details_date_divider_height">1dip</dimen>
     <dimen name="film_details_date_height">85dip</dimen>
     <dimen name="film_details_date_text_size">15sp</dimen>
-
-    <dimen name="film_details_divider_height">1dip</dimen>
-    <dimen name="timetable_date_margin_vertical">10dip</dimen>
     <dimen name="min_max_prices_margin_top">16dip</dimen>
     <dimen name="min_max_prices_icon_padding">12dip</dimen>
     <dimen name="min_max_prices_text_size">12sp</dimen>
+
+    <!--timetable list-->
+    <dimen name="timetable_seance_time_margin_left">10dip</dimen>
+    <dimen name="timetable_seance_time_width">40dip</dimen>
+    <dimen name="timetable_format_margin_left">22dip</dimen>
+    <dimen name="timetable_seance_time_text_size">12sp</dimen>
+    <dimen name="timetable_price_text_size">12sp</dimen>
+    <dimen name="timetable_list_item_arrow_margin_left">4dip</dimen>
+    <dimen name="timetable_list_cinema_address_margin_top">8dip</dimen>
+    <dimen name="timetable_list_cinema_address_drawable_padding">8dip</dimen>
+    <dimen name="timetable_list_cinema_name_text_size">13sp</dimen>
+    <dimen name="timetable_list_cinema_address_text_size">12sp</dimen>
+    <dimen name="timetable_list_cinema_padding_top">26dip</dimen>
+    <dimen name="timetable_list_cinema_padding_bottom">8dip</dimen>
+    <dimen name="timetable_list_item_padding_top">5dip</dimen>
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>
@@ -91,7 +104,7 @@
     <dimen name="cinemas_list_item_padding_bottom">20dip</dimen>
     <dimen name="cinema_name_text_size">20sp</dimen>
     <dimen name="cinema_address_text_size">12sp</dimen>
-    <dimen name="cinema_address_drawable_padding">4dip</dimen>
+    <dimen name="cinema_address_drawable_padding">8dip</dimen>
     <dimen name="cinema_address_margin_top">15dip</dimen>
     <dimen name="cinemas_list_comments_count_text_size">8sp</dimen>
     <dimen name="cinemas_list_comments_count_margin_top">15dip</dimen>

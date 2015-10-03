@@ -35,13 +35,13 @@
     <string name="comments_with_count"><![CDATA[Отзывы <b>%1$d</b>]]></string>
     <string name="cinema_photos"><![CDATA[Фото <b>%1$d</b>]]></string>
     <string name="format_unknown">\?</string>
-    <string name="format_thirty_fife_mm">35мм</string>
+    <string name="format_thirty_fife_mm">35 MM</string>
     <string name="format_two_d">2D</string>
     <string name="format_three_d">3D</string>
-    <string name="format_imax_three_d">i3D</string>
+    <string name="format_imax_three_d">IMAX3D</string>
     <string name="format_imax">IMAX</string>
     <string name="format_five_d">5D</string>
-    <string name="format_four_dx">i4DX</string>
+    <string name="format_four_dx">4DX</string>
     <string name="share">Поделиться...</string>
     <string name="image_caching_progress">Идет сохранение изображения...</string>
     <string name="currency">грн.</string>

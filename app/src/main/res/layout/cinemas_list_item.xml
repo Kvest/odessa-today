@@ -14,7 +14,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/cinemas_list_item_arrow_margin_left"
-        android:tint="@color/details_arrow_tint"
+        android:tint="?attr/DetailsArrowTint"
         android:src="@drawable/ic_arrow_details" />
     <TextView
         android:id="@+id/cinema_name"

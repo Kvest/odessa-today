@@ -12,6 +12,7 @@
         <item name="TitleTextColor">#ffffff</item>
         <item name="ABCalendarIcon">@drawable/ic_ab_calendar_day</item>
         <item name="ABIconColor">@color/ab_icon_color_day</item>
+        <item name="DetailsArrowTint">#bcbcbc</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuHeaderBgColor">#24282b</item>
@@ -52,5 +53,8 @@
         <item name="FilmDetailsDescriptionTextColor">#4e4e4e</item>
         <item name="FilmDetailsDateDividerColor">#e2e2e2</item>
         <item name="FilmDetailsDateTextColor">#24282b</item>
+        <!--timetable list-->
+        <item name="TimetablePriceTextColor">#24282b</item>
+        <item name="TimetableListCinemaAddressTextColor">#24282b</item>
     </style>
 </resources>

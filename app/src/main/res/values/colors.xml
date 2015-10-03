@@ -2,7 +2,6 @@
 <resources>
     <color name="application_green">#85ce49</color>
     <color name="main_bg_color_night">#2d2d2d</color>
-    <color name="details_arrow_tint">#bcbcbc</color>
     <color name="premiere_label_bg">#FF4444</color>
     <color name="premiere_date_text_color">#24282b</color>
     <color name="premiere_label_text_color">#ffffff</color>
@@ -11,13 +10,27 @@
     <color name="film_duration_text_color">#bcbcbc</color>
     <color name="ab_icon_color_day">#ffffff</color>
     <color name="ab_icon_color_night">#1b1b1b</color>
+    <color name="format_text_color">@android:color/white</color>
+
+    <!--film fromat bg color-->
+    <color name="format_unknown">#cac847</color>
+    <color name="format_thirty_fife_mm">#5e899d</color>
+    <color name="format_two_d">#49ce49</color>
+    <color name="format_three_d">#4bc6bc</color>
+    <color name="format_imax_three_d">#0084ea</color>
+    <color name="format_imax">#00c6ff</color>
+    <color name="format_five_d">#3da2a8</color>
+    <color name="format_four_dx">#85ce49</color>
 
     <!--film details-->
-    <color name="film_details_divider_color">#e6e6e6</color>
     <color name="min_max_prices_text_color">#828282</color>
     <color name="film_details_director_text_color">#323232</color>
     <color name="film_details_actors_text_color">#323232</color>
     <color name="film_details_role_text_color">#828282</color>
+
+    <!--timetable list-->
+    <color name="timetable_seance_time_text_color">#828282</color>
+    <color name="timetable_list_cinema_address_text_color">#828282</color>
 
     <!--comments-->
     <color name="comments_list_divider_color">#888888</color>

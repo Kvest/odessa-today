@@ -106,6 +106,7 @@ public class TodayProviderContract {
             }
 
             String TIMETABLE_ORDER_ASC = Columns.DATE + " ASC";
+            String TIMETABLE_ORDER_CINEMA_ASC_DATE_ASC = Columns.CINEMA_ID + " ASC," + Columns.DATE + " ASC";
         }
 
         interface CinemaTimetableView {
