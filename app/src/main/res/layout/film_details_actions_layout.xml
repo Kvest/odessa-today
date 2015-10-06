@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="3"
+    android:background="?attr/FilmDetailsActionsLayoutBg"
+    android:paddingLeft="@dimen/film_details_padding"
+    android:paddingRight="@dimen/film_details_padding"
+    android:paddingTop="@dimen/film_details_actions_layout_vertical_padding"
+    android:paddingBottom="@dimen/film_details_actions_layout_vertical_padding">
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/comments_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/FilmDetailsActionBg"
+            android:textColor="@color/application_green"
+            android:gravity="center"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:textSize="14sp"
+            android:text="6"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/comments_action"
+            android:layout_marginTop="10dip"
+            android:textSize="12sp"
+            android:textColor="#24282b"
+            android:layout_alignStart="@id/comments_action"
+            android:layout_alignEnd="@id/comments_action"
+            android:text="отзывы"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/tickets_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ticket"
+            android:tint="@color/application_green"
+            android:scaleType="center"
+            android:background="?attr/FilmDetailsActionBg"
+
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/tickets_action_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+
+            android:layout_marginTop="10dip"
+            android:layout_below="@id/tickets_action"
+            android:layout_alignStart="@id/tickets_action"
+            android:layout_alignEnd="@id/tickets_action"
+            android:textSize="12sp"
+            android:textColor="#24282b"
+            android:text="билеты"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/share_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_share"
+            android:tint="@color/application_green"
+            android:scaleType="center"
+            android:background="?attr/FilmDetailsActionBg"
+
+            android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/share_action_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+
+            android:layout_marginTop="10dip"
+            android:layout_below="@id/share_action"
+            android:layout_alignStart="@id/share_action"
+            android:layout_alignEnd="@id/share_action"
+            android:textSize="12sp"
+            android:textColor="#24282b"
+            android:text="..."/>
+    </RelativeLayout>
+</LinearLayout>

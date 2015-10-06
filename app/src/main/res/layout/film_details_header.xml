@@ -83,8 +83,9 @@
             android:drawableLeft="@drawable/ic_cash"
             android:drawablePadding="@dimen/min_max_prices_icon_padding"/>
     </RelativeLayout>
-    <include layout="@layout/film_images_container_layout" />
-    <include layout="@layout/film_description_layout" />
+    <include layout="@layout/film_images_container_layout"/>
+    <include layout="@layout/film_details_actions_layout"/>
+    <include layout="@layout/film_description_layout"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/film_details_date_divider_height"

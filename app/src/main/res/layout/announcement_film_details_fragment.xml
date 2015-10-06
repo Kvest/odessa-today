@@ -85,17 +85,18 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/film_duration_icon_margin_right"
-                    android:src="@drawable/ic_film_duration" />
+                    android:src="@drawable/ic_film_duration"/>
                 <TextView
                     android:id="@+id/film_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textSize="@dimen/film_duration_text_size"
-                    android:textColor="@color/film_duration_text_color" />
+                    android:textColor="@color/film_duration_text_color"/>
             </LinearLayout>
         </RelativeLayout>
-        <include layout="@layout/film_images_container_layout" />
-        <include layout="@layout/film_description_layout" />
+        <include layout="@layout/film_images_container_layout"/>
+        <include layout="@layout/film_details_actions_layout"/>
+        <include layout="@layout/film_description_layout"/>
     </LinearLayout>
 </ScrollView>
