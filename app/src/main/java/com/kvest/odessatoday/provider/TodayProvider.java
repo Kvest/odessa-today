@@ -35,6 +35,8 @@ public class TodayProvider extends ContentProvider {
     private static final int ANNOUNCEMENTS_LIST_URI_INDICATOR = 11;
     private static final int ANNOUNCEMENTS_ITEM_URI_INDICATOR = 12;
     private static final int ANNOUNCEMENT_FILMS_LIST_VIEW_URI_INDICATOR = 13;
+    private static final int PLACE_LIST_URI_INDICATOR = 14;
+    private static final int PLACE_ITEM_URI_INDICATOR = 15;
 
     private static final UriMatcher uriMatcher;
     static {
@@ -52,6 +54,8 @@ public class TodayProvider extends ContentProvider {
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + ANNOUNCEMENTS_PATH, ANNOUNCEMENTS_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + ANNOUNCEMENTS_PATH + "/#", ANNOUNCEMENTS_ITEM_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + ANNOUNCEMENTS_PATH + "/" + ANNOUNCEMENT_FILMS_VIEW_PATH, ANNOUNCEMENT_FILMS_LIST_VIEW_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, PLACES_PATH + "/#", PLACE_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, PLACES_PATH + "/#/#", PLACE_ITEM_URI_INDICATOR);
     }
 
     @Override
@@ -103,6 +107,16 @@ public class TodayProvider extends ContentProvider {
                         (hasSelection ? selectionArgs : null), sortOrder);
             case ANNOUNCEMENT_FILMS_LIST_VIEW_URI_INDICATOR :
                 return simpleQuery(Tables.AnnouncementFilmsView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
+            case PLACE_LIST_URI_INDICATOR :
+                return simpleQuery(Tables.Places.TABLE_NAME, uri, projection,
+                        Tables.Places.Columns.PLACE_TYPE + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null), sortOrder);
+            case PLACE_ITEM_URI_INDICATOR :
+                return simpleQuery(Tables.Places.TABLE_NAME, uri, projection,
+                        Tables.Places.Columns.PLACE_TYPE + "=" + uri.getPathSegments().get(1) +
+                        " AND " + Tables.Places.Columns._ID + "=" + uri.getLastPathSegment() +
+                        (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null), sortOrder);
         }
 
         throw new IllegalArgumentException("Unknown uri for query : " + uri);
@@ -121,6 +135,9 @@ public class TodayProvider extends ContentProvider {
                 return simpleInsert(Tables.Comments.TABLE_NAME, uri, values);
             case ANNOUNCEMENTS_LIST_URI_INDICATOR :
                 return simpleInsert(Tables.AnnouncementsMetadata.TABLE_NAME, uri, values);
+            case PLACE_LIST_URI_INDICATOR :
+                values.put(Tables.Places.Columns.PLACE_TYPE, Integer.parseInt(uri.getLastPathSegment()));
+                return simpleInsert(Tables.Places.TABLE_NAME, uri, values);
         }
         throw new IllegalArgumentException("Unknown uri for insert : " + uri);
     }
@@ -159,6 +176,16 @@ public class TodayProvider extends ContentProvider {
             case ANNOUNCEMENTS_ITEM_URI_INDICATOR :
                 return simpleDelete(Tables.AnnouncementsMetadata.TABLE_NAME, uri,
                         Tables.AnnouncementsMetadata.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case PLACE_LIST_URI_INDICATOR :
+                return simpleDelete(Tables.Places.TABLE_NAME, uri,
+                        Tables.Places.Columns.PLACE_TYPE + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case PLACE_ITEM_URI_INDICATOR :
+                return simpleDelete(Tables.Places.TABLE_NAME, uri,
+                        Tables.Places.Columns.PLACE_TYPE + "=" + uri.getPathSegments().get(1) +
+                        " AND " + Tables.Places.Columns._ID + "=" + uri.getLastPathSegment() +
+                        (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 
@@ -199,6 +226,16 @@ public class TodayProvider extends ContentProvider {
             case ANNOUNCEMENTS_ITEM_URI_INDICATOR :
                 return simpleUpdate(Tables.AnnouncementsMetadata.TABLE_NAME, uri, values,
                         Tables.AnnouncementsMetadata.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case PLACE_LIST_URI_INDICATOR :
+                return simpleUpdate(Tables.Places.TABLE_NAME, uri, values,
+                        Tables.Places.Columns.PLACE_TYPE + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case PLACE_ITEM_URI_INDICATOR :
+                return simpleUpdate(Tables.Places.TABLE_NAME, uri, values,
+                        Tables.Places.Columns.PLACE_TYPE + "=" + uri.getPathSegments().get(1) +
+                        " AND " + Tables.Places.Columns._ID + "=" + uri.getLastPathSegment() +
+                        (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 

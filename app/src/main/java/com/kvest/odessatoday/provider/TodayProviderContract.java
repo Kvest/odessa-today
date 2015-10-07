@@ -23,6 +23,7 @@ public class TodayProviderContract {
     static final String COMMENTS_PATH = "comments";
     static final String ANNOUNCEMENTS_PATH = "announcements";
     static final String ANNOUNCEMENT_FILMS_VIEW_PATH = "announcement_films_view";
+    static final String PLACES_PATH = "places";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
     public static final Uri TIMETABLE_URI = Uri.withAppendedPath(FILMS_URI, TIMETABLE_PATH);
@@ -32,6 +33,7 @@ public class TodayProviderContract {
     public static final Uri COMMENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, COMMENTS_PATH);
     public static final Uri ANNOUNCEMENT_FILMS_URI = Uri.withAppendedPath(FILMS_URI, ANNOUNCEMENTS_PATH);
     public static final Uri ANNOUNCEMENT_FILMS_VIEW_URI = Uri.withAppendedPath(ANNOUNCEMENT_FILMS_URI, ANNOUNCEMENT_FILMS_VIEW_PATH);
+    public static final Uri PLACES_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PLACES_PATH);
 
     public interface Tables {
         interface Films {
@@ -282,6 +284,44 @@ public class TodayProviderContract {
 
             String PREMIERE_DATE_ORDER_DESC = AnnouncementFilmsView.Columns.PREMIERE_DATE + " DESC";
             String PREMIERE_DATE_ORDER_ASC = AnnouncementFilmsView.Columns.PREMIERE_DATE + " ASC";
+        }
+
+        interface Places {
+            String TABLE_NAME = "places";
+            interface Columns extends BaseColumns {
+                String PLACE_ID = "place_id";
+                String PLACE_TYPE = "place_type";
+                String NAME = "name";
+                String ADDRESS = "address";
+                String PHONES = "phones";
+                String TRANSPORT = "transport";
+                String DESCRIPTION = "description";
+                String COMMENTS_COUNT = "comments_count";
+                String WORK_TIME = "worktime";
+                String IMAGE = "image";
+                String LON = "lon";
+                String LAT = "lat";
+                String RATING = "rating";
+            }
+
+            String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.PLACE_ID + " INTEGER,"
+                    + Columns.PLACE_TYPE + " INTEGER,"
+                    + Columns.NAME + " TEXT,"
+                    + Columns.ADDRESS + " TEXT,"
+                    + Columns.PHONES + " TEXT,"
+                    + Columns.TRANSPORT + " TEXT,"
+                    + Columns.DESCRIPTION + " TEXT,"
+                    + Columns.WORK_TIME + " TEXT,"
+                    + Columns.IMAGE + " TEXT,"
+                    + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
+                    + Columns.LON + " REAL,"
+                    + Columns.LAT + " REAL,"
+                    + Columns.RATING + " REAL,"
+                    + "UNIQUE(" + Columns.PLACE_ID + ", " + Columns.PLACE_TYPE + ") ON CONFLICT REPLACE);";
+
+            String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
         }
     }
 }
