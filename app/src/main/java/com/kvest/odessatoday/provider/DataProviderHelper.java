@@ -79,6 +79,12 @@ public abstract class DataProviderHelper {
         return new CursorLoader(context, CINEMAS_URI, projection, null, null, order);
     }
 
+    public static CursorLoader getPlacesLoader(Context context, int placeType, String[] projection, String order) {
+        Uri uri = Uri.withAppendedPath(PLACES_URI, Integer.toString(placeType));
+        return new CursorLoader(context, uri, projection, null, null, order);
+    }
+
+
     public static CursorLoader getCinemaLoader(Context context, long cinemaId, String[] projection) {
         String selection = Tables.Cinemas.Columns.CINEMA_ID + "=?";
         return new CursorLoader(context, CINEMAS_URI, projection, selection, new String[]{Long.toString(cinemaId)}, null);

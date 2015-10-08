@@ -35,7 +35,7 @@ public class MainMenuAdapter extends BaseAdapter {
             new CategoryItem(R.string.menu_category_place),
             new DividerItem(),
             new SubcategoryItem(MainMenuFragment.MENU_CINEMA_ID, R.string.menu_cinema, R.drawable.ic_menu_cinema, true),
-            new SubcategoryItem(MainMenuFragment.MENU_THEATRE_ID, R.string.menu_theatre, R.drawable.ic_menu_theatre, false),
+            new SubcategoryItem(MainMenuFragment.MENU_THEATRE_ID, R.string.menu_theatre, R.drawable.ic_menu_theatre, true),
             new SubcategoryItem(MainMenuFragment.MENU_CONCERT_HALL_ID, R.string.menu_concert_hall, R.drawable.ic_menu_concert_hall, false),
             new SubcategoryItem(MainMenuFragment.MENU_CLUB_ID, R.string.menu_club, R.drawable.ic_menu_club, false),
             new SubcategoryItem(MainMenuFragment.MENU_MUSEUM_ID, R.string.menu_museum, R.drawable.ic_menu_museum, false),

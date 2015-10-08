@@ -115,7 +115,7 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
         }
 
         //Request all announcements
-        NetworkService.loadAnnouncements(getActivity());
+        NetworkService.loadAnnouncements(activity);
 
         //workaround - start showing progress
 //        new Handler().post(new Runnable() {

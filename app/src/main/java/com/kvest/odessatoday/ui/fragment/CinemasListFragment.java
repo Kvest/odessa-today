@@ -67,7 +67,7 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
         }
 
         //Request all cinemas
-        NetworkService.loadCinemas(getActivity());
+        NetworkService.loadCinemas(activity);
 
 //        //workaround - start showing progress
 //        new Handler().post(new Runnable() {
@@ -178,6 +178,6 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     }
 
     public interface CinemaSelectedListener {
-        public void onCinemaSelected(long cinemaId);
+        void onCinemaSelected(long cinemaId);
     }
 }

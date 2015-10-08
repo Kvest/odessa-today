@@ -158,4 +158,7 @@
     <dimen name="main_menu_subcategory_text_size">14sp</dimen>
     <dimen name="main_menu_subcategory_icon_size">50dip</dimen>
     <dimen name="main_menu_subcategory_overlay_text_size">11sp</dimen>
+
+    <!--places-->
+    <dimen name="places_list_item_arrow_margin_left">4dip</dimen>
 </resources>

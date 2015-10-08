@@ -268,6 +268,10 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 replaceFragment(CinemasListFragment.getInstance());
                 setTitle(R.string.menu_cinema);
                 break;
+            case MainMenuFragment.MENU_THEATRE_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.THEATRE));
+                setTitle(R.string.menu_theatre);
+                break;
         }
 
         hideCalendar();
