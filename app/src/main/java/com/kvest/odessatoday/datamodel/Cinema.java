@@ -1,10 +1,7 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
-
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Arrays;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
@@ -17,6 +14,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
  */
 public class Cinema {
     public static final String IMAGES_SEPARATOR = ",";
+
     @SerializedName("id")
     public long id;
     @SerializedName("name")
