@@ -122,7 +122,6 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

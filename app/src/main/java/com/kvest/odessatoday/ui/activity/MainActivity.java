@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseActivity implements MainMenuFragment.MainMenuItemSelectedListener,
                                                         CinemasListFragment.CinemaSelectedListener,
+                                                        PlacesListFragment.PlaceSelectedListener,
                                                         FilmsListFragment.ShowCalendarListener,
                                                         FilmsListFragment.FilmSelectedListener,
                                                         AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
@@ -301,6 +302,11 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     @Override
     public void onCinemaSelected(long cinemaId) {
         CinemaDetailsActivity.start(this, cinemaId);
+    }
+
+    @Override
+    public void onPlaceSelected(long placeId) {
+        //TODO
     }
 
     public interface ToolbarExtendable {

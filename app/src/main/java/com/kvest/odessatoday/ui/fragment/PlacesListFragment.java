@@ -1,10 +1,15 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +18,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.network.notification.LoadPlacesNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.PlacesAdapter;
+import com.kvest.odessatoday.utils.Constants;
+
+import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
  * Created by kvest on 08.10.15.
@@ -27,6 +36,10 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     private ListView placesList;
     private PlacesAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
+
+    private PlaceSelectedListener placeSelectedListener;
+
+    private LoadPlacesNotificationReceiver receiver = new LoadPlacesNotificationReceiver();
 
     public static PlacesListFragment getInstance(int placeType) {
         Bundle arguments = new Bundle(1);
@@ -55,7 +68,9 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
         placesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO
+                if (placeSelectedListener != null) {
+                    placeSelectedListener.onPlaceSelected(id);
+                }
             }
         });
 
@@ -75,8 +90,38 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+        try {
+            placeSelectedListener = (PlaceSelectedListener) activity;
+        } catch (ClassCastException cce) {
+            LOGE(Constants.TAG, "Host activity for PlacesListFragment should implements PlacesListFragment.PlaceSelectedListener");
+        }
+
         //Request places
         NetworkService.loadPlaces(activity, getPlaceType());
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        placeSelectedListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(LoadPlacesNotification.ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        //stop progress
+        refreshLayout.setRefreshing(false);
+
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
     @Override
@@ -118,4 +163,19 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
         return (arguments != null) ? arguments.getInt(ARGUMENT_PLACE_TYPE, -1) : -1;
     }
 
+    public interface PlaceSelectedListener {
+        void onPlaceSelected(long placeId);
+    }
+
+    private class LoadPlacesNotificationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refreshLayout.setRefreshing(false);
+
+            Activity activity = getActivity();
+            if (!LoadPlacesNotification.isSuccessful(intent) && activity != null) {
+                showErrorSnackbar(activity, R.string.error_loading_places);
+            }
+        }
+    }
 }
