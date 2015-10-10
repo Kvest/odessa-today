@@ -276,6 +276,70 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.THEATRE));
                 setTitle(R.string.menu_theatre);
                 break;
+            case MainMenuFragment.MENU_CONCERT_HALL_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.CONCERT_HALL));
+                setTitle(R.string.menu_concert_hall);
+                break;
+            case MainMenuFragment.MENU_CLUB_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.CLUB));
+                setTitle(R.string.menu_club);
+                break;
+            case MainMenuFragment.MENU_MUSEUM_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.MUSEUM));
+                setTitle(R.string.menu_museum);
+                break;
+            case MainMenuFragment.MENU_GALLERY_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.GALLERY));
+                setTitle(R.string.menu_gallery);
+                break;
+            case MainMenuFragment.MENU_ZOO_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.ZOO));
+                setTitle(R.string.menu_zoo);
+                break;
+            case MainMenuFragment.MENU_QUEST_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.QUEST));
+                setTitle(R.string.menu_quest);
+                break;
+            case MainMenuFragment.MENU_RESTAURANT_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.RESTAURANT));
+                setTitle(R.string.menu_restaurant);
+                break;
+            case MainMenuFragment.MENU_CAFE_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.CAFE));
+                setTitle(R.string.menu_cafe);
+                break;
+            case MainMenuFragment.MENU_PIZZA_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.PIZZA));
+                setTitle(R.string.menu_pizza);
+                break;
+            case MainMenuFragment.MENU_SUSHI_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.SUSHI));
+                setTitle(R.string.menu_sushi);
+                break;
+            case MainMenuFragment.MENU_KARAOKE_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.KARAOKE));
+                setTitle(R.string.menu_karaoke);
+                break;
+            case MainMenuFragment.MENU_SKATING_RINK_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.SKATING_RINK));
+                setTitle(R.string.menu_skating_rink);
+                break;
+            case MainMenuFragment.MENU_BOWLING_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.BOWLING));
+                setTitle(R.string.menu_bowling);
+                break;
+            case MainMenuFragment.MENU_BILLIARD_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.BILLIARD));
+                setTitle(R.string.menu_billiard);
+                break;
+            case MainMenuFragment.MENU_SAUNA_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.SAUNA));
+                setTitle(R.string.menu_sauna);
+                break;
+            case MainMenuFragment.MENU_BATH_ID :
+                replaceFragment(PlacesListFragment.getInstance(Constants.PlaceType.BATH));
+                setTitle(R.string.menu_bath);
+                break;
         }
 
         hideCalendar();
