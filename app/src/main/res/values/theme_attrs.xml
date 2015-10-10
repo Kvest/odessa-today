@@ -53,4 +53,5 @@
     <attr format="reference" name="FilmDetailsActionBg"/>
     <attr format="color" name="TimetablePriceTextColor"/>
     <attr format="color" name="TimetableListCinemaAddressTextColor"/>
+    <attr format="color" name="PlaceNameTextColor"/>
 </resources>

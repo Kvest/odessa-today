@@ -86,8 +86,6 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     }
 
     private void init(View rootView) {
-        setHasOptionsMenu(true);
-
         refreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_layout);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.application_green);

@@ -13,6 +13,8 @@
         <item name="ABCalendarIcon">@drawable/ic_ab_calendar_day</item>
         <item name="ABIconColor">@color/ab_icon_color_day</item>
         <item name="DetailsArrowTint">#bcbcbc</item>
+        <item name="ListEvenItemBg">@android:color/white</item>
+        <item name="ListOddItemBg">#f5f5f5</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuHeaderBgColor">#24282b</item>
@@ -29,8 +31,6 @@
         <item name="MainMenuSubcategoryOverlayBg">@drawable/main_menu_subcategory_overlay_bg_day</item>
         <item name="CloseIconTintColor">@android:color/white</item>
         <!--Films list-->
-        <item name="ListEvenItemBg">@android:color/white</item>
-        <item name="ListOddItemBg">#f5f5f5</item>
         <item name="FilmNameTextColor">#24282b</item>
         <item name="GenreNameTextColor">#828282</item>
         <item name="FilmsRatingBar">@drawable/films_ratingbar_day</item>
@@ -58,5 +58,7 @@
         <!--timetable list-->
         <item name="TimetablePriceTextColor">#24282b</item>
         <item name="TimetableListCinemaAddressTextColor">#24282b</item>
+        <!--places list-->
+        <item name="PlaceNameTextColor">#24282b</item>
     </style>
 </resources>

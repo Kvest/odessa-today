@@ -37,8 +37,7 @@
         <item name="android:displayOptions">showTitle</item>
     </style>
 
-    <!--Films rating-->
-    <style name="FilmsRatingBarTheme" parent="android:Widget.Holo.Light.RatingBar">
+    <style name="RatingBarTheme" parent="android:Widget.Holo.Light.RatingBar">
         <item name="android:progressDrawable">?attr/FilmsRatingBar</item>
         <item name="android:indeterminateDrawable">?attr/FilmsRatingBar</item>
         <item name="android:minHeight">@dimen/films_ratingbar_min_height</item>

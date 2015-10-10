@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/places_list_item_vertical_padding"
+    android:paddingBottom="@dimen/places_list_item_vertical_padding"
+    android:paddingLeft="@dimen/places_list_item_padding_lift"
+    android:paddingRight="@dimen/places_list_item_padding_right">
     <ImageView
         android:id="@+id/arrow_image"
         android:layout_width="wrap_content"
@@ -12,10 +16,55 @@
         android:tint="?attr/DetailsArrowTint"
         android:src="@drawable/ic_arrow_details" />
     <TextView
-        android:id="@+id/place_name"
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/arrow_image"/>
+        android:layout_toLeftOf="@id/arrow_image"
+        android:textColor="?attr/PlaceNameTextColor"
+        android:textSize="@dimen/places_list_item_name_text_size"/>
+    <RatingBar
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:numStars="5"
+        android:stepSize="0.1"
+        style="@style/RatingBarTheme"
+        android:layout_marginTop="@dimen/places_list_item_rating_margin_top"
+        android:isIndicator="true"/>
+    <TextView
+        android:id="@+id/comments_count"
+        style="@style/CommentsCountLabel"
+        android:layout_toRightOf="@id/rating"
+        android:layout_below="@id/name"
+        android:layout_marginTop="@dimen/places_list_item_comments_count_margin_top"
+        android:layout_marginLeft="@dimen/places_list_item_comments_count_margin_left"
+        android:textColor="@color/places_list_item_comments_count_text_color"
+        android:textSize="@dimen/places_list_item_comments_count_text_size"/>
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rating"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/arrow_image"
+        android:paddingTop="@dimen/places_list_item_address_margin_top"
+        android:drawablePadding="@dimen/places_list_item_address_drawable_padding"
+        android:drawableLeft="?attr/MapPin"
+        android:textColor="@color/places_list_item_address_text_color"
+        android:textSize="@dimen/places_list_item_address_text_size"/>
+    <TextView
+        android:id="@+id/phones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/address"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/arrow_image"
+        android:paddingTop="@dimen/places_list_item_phones_margin_top"
+        android:drawablePadding="@dimen/places_list_item_phones_drawable_padding"
+        android:drawableLeft="?attr/MapPin"
+        android:textColor="@color/places_list_item_phones_text_color"
+        android:textSize="@dimen/places_list_item_phones_text_size"/>
 </RelativeLayout>

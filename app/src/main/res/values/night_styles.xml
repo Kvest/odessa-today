@@ -13,6 +13,8 @@
         <item name="ABCalendarIcon">@drawable/ic_ab_calendar_night</item>
         <item name="ABIconColor">@color/ab_icon_color_night</item>
         <item name="DetailsArrowTint">#787878</item>
+        <item name="ListEvenItemBg">#2d2d2d</item>
+        <item name="ListOddItemBg">#1b1b1b</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">@color/application_green</item>
         <item name="MainMenuHeaderBgColor">#1b1b1b</item>
@@ -29,8 +31,6 @@
         <item name="MainMenuSubcategoryOverlayBg">@drawable/main_menu_subcategory_overlay_bg_night</item>
         <item name="CloseIconTintColor">@color/application_green</item>
         <!--Films list-->
-        <item name="ListEvenItemBg">#2d2d2d</item>
-        <item name="ListOddItemBg">#1b1b1b</item>
         <item name="FilmNameTextColor">#e1e1e1</item>
         <item name="GenreNameTextColor">#828282</item>
         <item name="FilmsRatingBar">@drawable/films_ratingbar_night</item>
@@ -58,5 +58,7 @@
         <!--timetable list-->
         <item name="TimetablePriceTextColor">#bcbcbc</item>
         <item name="TimetableListCinemaAddressTextColor">#e1e1e1</item>
+        <!--places list-->
+        <item name="PlaceNameTextColor">#e1e1e1</item>
     </style>
 </resources>

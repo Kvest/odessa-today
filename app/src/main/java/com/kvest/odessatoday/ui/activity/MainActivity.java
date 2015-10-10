@@ -259,6 +259,9 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
     @Override
     public void onMainMenuItemSelected(int menuItemId) {
+        //workaround - need to clear options menu or sometimes it will have options from previous fragment
+        toolbar.getMenu().clear();
+
         switch (menuItemId) {
             case MainMenuFragment.MENU_FILMS_ID :
                 replaceFragment(FilmsFragment.getInstance());

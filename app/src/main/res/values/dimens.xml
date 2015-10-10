@@ -161,4 +161,18 @@
 
     <!--places-->
     <dimen name="places_list_item_arrow_margin_left">4dip</dimen>
+    <dimen name="places_list_item_vertical_padding">14dip</dimen>
+    <dimen name="places_list_item_padding_lift">10dip</dimen>
+    <dimen name="places_list_item_padding_right">8dip</dimen>
+    <dimen name="places_list_item_rating_margin_top">16dip</dimen>
+    <dimen name="places_list_item_comments_count_margin_top">14dip</dimen>
+    <dimen name="places_list_item_comments_count_margin_left">4dip</dimen>
+    <dimen name="places_list_item_address_margin_top">16dip</dimen>
+    <dimen name="places_list_item_phones_margin_top">6dip</dimen>
+    <dimen name="places_list_item_address_drawable_padding">17dip</dimen>
+    <dimen name="places_list_item_phones_drawable_padding">10dip</dimen>
+    <dimen name="places_list_item_name_text_size">20sp</dimen>
+    <dimen name="places_list_item_comments_count_text_size">8sp</dimen>
+    <dimen name="places_list_item_address_text_size">12sp</dimen>
+    <dimen name="places_list_item_phones_text_size">12sp</dimen>
 </resources>

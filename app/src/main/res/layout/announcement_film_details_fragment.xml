@@ -64,7 +64,7 @@
                 android:stepSize="0.1"
                 android:layout_marginTop="@dimen/announcement_ratingbar_margin_top"
                 android:layout_marginBottom="@dimen/films_ratingbar_vertical_margin"
-                style="@style/FilmsRatingBarTheme"
+                style="@style/RatingBarTheme"
                 android:isIndicator="true"/>
             <TextView
                 android:id="@+id/comments_count"
