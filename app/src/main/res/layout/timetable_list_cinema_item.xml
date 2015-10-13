@@ -31,7 +31,7 @@
         android:layout_below="@id/cinema_name"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/arrow_image"
-        android:drawableLeft="?attr/MapPin"
+        android:drawableLeft="@drawable/ic_map_pin"
         android:layout_marginTop="@dimen/timetable_list_cinema_address_margin_top"
         android:drawablePadding="@dimen/timetable_list_cinema_address_drawable_padding"
         android:textSize="@dimen/timetable_list_cinema_address_text_size"

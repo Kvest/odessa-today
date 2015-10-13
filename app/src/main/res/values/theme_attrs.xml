@@ -26,7 +26,7 @@
     <attr format="reference" name="FilmsRatingBar"/>
     <attr format="color" name="CommentsCountTextColor"/>
     <attr format="color" name="CinemaNameTextColor"/>
-    <attr format="reference" name="MapPin"/>
+    <attr format="color" name="MapPinColor"/>
     <attr format="color" name="CategorySelectorBgColor"/>
     <attr format="color" name="CategorySelectorDividerColor"/>
     <attr format="reference" name="LeftSelectorBg"/>
@@ -54,4 +54,5 @@
     <attr format="color" name="TimetablePriceTextColor"/>
     <attr format="color" name="TimetableListCinemaAddressTextColor"/>
     <attr format="color" name="PlaceNameTextColor"/>
+    <attr format="color" name="PlacesListDrawablesColor"/>
 </resources>

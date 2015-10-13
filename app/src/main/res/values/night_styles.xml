@@ -2,7 +2,6 @@
 <resources>
     <style name="NightOdessaTodayTheme" parent="BaseOdessaTodayTheme">
         <item name="MainBGColor">@color/main_bg_color_night</item>
-        <item name="MapPin">@drawable/ic_map_pin_night</item>
         <item name="CategorySelectorBgColor">#1b1b1b</item>
         <item name="CategorySelectorDividerColor">#494949</item>
         <item name="LeftSelectorBg">@drawable/left_selector_bg_night</item>
@@ -15,6 +14,7 @@
         <item name="DetailsArrowTint">#787878</item>
         <item name="ListEvenItemBg">#2d2d2d</item>
         <item name="ListOddItemBg">#1b1b1b</item>
+        <item name="MapPinColor">#ff6600</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">@color/application_green</item>
         <item name="MainMenuHeaderBgColor">#1b1b1b</item>
@@ -54,11 +54,12 @@
         <item name="FilmDetailsDateDividerColor">#4a4a4a</item>
         <item name="FilmDetailsDateTextColor">#828282</item>
         <item name="FilmDetailsActionsLayoutBg">#1b1b1b</item>
-        <item name="FilmDetailsActionBg">@drawable/film_datails_action_bg_night</item>
+        <item name="FilmDetailsActionBg">@drawable/film_details_action_bg_night</item>
         <!--timetable list-->
         <item name="TimetablePriceTextColor">#bcbcbc</item>
         <item name="TimetableListCinemaAddressTextColor">#e1e1e1</item>
         <!--places list-->
         <item name="PlaceNameTextColor">#e1e1e1</item>
+        <item name="PlacesListDrawablesColor">#787878</item>
     </style>
 </resources>

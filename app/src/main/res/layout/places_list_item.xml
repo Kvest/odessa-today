@@ -51,8 +51,9 @@
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/arrow_image"
         android:paddingTop="@dimen/places_list_item_address_margin_top"
+        android:paddingLeft="@dimen/places_list_item_address_padding_left"
         android:drawablePadding="@dimen/places_list_item_address_drawable_padding"
-        android:drawableLeft="?attr/MapPin"
+        android:drawableLeft="@drawable/ic_map_pin"
         android:textColor="@color/places_list_item_address_text_color"
         android:textSize="@dimen/places_list_item_address_text_size"/>
     <TextView
@@ -64,7 +65,7 @@
         android:layout_toLeftOf="@id/arrow_image"
         android:paddingTop="@dimen/places_list_item_phones_margin_top"
         android:drawablePadding="@dimen/places_list_item_phones_drawable_padding"
-        android:drawableLeft="?attr/MapPin"
+        android:drawableLeft="@drawable/ic_phone"
         android:textColor="@color/places_list_item_phones_text_color"
         android:textSize="@dimen/places_list_item_phones_text_size"/>
 </RelativeLayout>

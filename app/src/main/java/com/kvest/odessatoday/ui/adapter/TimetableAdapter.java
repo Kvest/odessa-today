@@ -1,8 +1,12 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +48,7 @@ public class TimetableAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<BaseTimetableItem> dataset;
     private String currencyStr;
+    private int pinColor;
     private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
     public TimetableAdapter(Context context) {
@@ -52,6 +57,23 @@ public class TimetableAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
         dataset = new ArrayList<>();
         currencyStr = context.getString(R.string.currency);
+
+        initResources(context);
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.MapPinColor};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        try {
+            // Fetching the resources defined in the style
+            pinColor = ta.getColor(0, Color.BLACK);
+        } finally {
+            ta.recycle();
+        }
 
         //retrieve fonts
         helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
@@ -191,6 +213,7 @@ public class TimetableAdapter extends BaseAdapter {
         //set fonts
         holder.cinemaName.setTypeface(helveticaneuecyrBold);
         holder.cinemaAddress.setTypeface(helveticaneuecyrRoman);
+        setPinColor(holder.cinemaAddress.getCompoundDrawables());
 
         return view;
     }
@@ -207,6 +230,14 @@ public class TimetableAdapter extends BaseAdapter {
         holder.prices.setTypeface(helveticaneuecyrRoman);
 
         return view;
+    }
+
+    private void setPinColor(Drawable[] drawables) {
+        for (int i = 0; i < drawables.length; i++) {
+            if (drawables[i] != null) {
+                drawables[i].setColorFilter(pinColor, PorterDuff.Mode.SRC_IN);
+            }
+        }
     }
 
     private static abstract class BaseTimetableItem {

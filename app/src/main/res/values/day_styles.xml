@@ -2,7 +2,6 @@
 <resources>
     <style name="DayOdessaTodayTheme" parent="BaseOdessaTodayTheme">
         <item name="MainBGColor">@android:color/white</item>
-        <item name="MapPin">@drawable/ic_map_pin_day</item>
         <item name="CategorySelectorBgColor">#f9f9f9</item>
         <item name="CategorySelectorDividerColor">#e1e1e1</item>
         <item name="LeftSelectorBg">@drawable/left_selector_bg_day</item>
@@ -15,6 +14,7 @@
         <item name="DetailsArrowTint">#bcbcbc</item>
         <item name="ListEvenItemBg">@android:color/white</item>
         <item name="ListOddItemBg">#f5f5f5</item>
+        <item name="MapPinColor">#24282b</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuHeaderBgColor">#24282b</item>
@@ -54,11 +54,12 @@
         <item name="FilmDetailsDateDividerColor">#e2e2e2</item>
         <item name="FilmDetailsDateTextColor">#24282b</item>
         <item name="FilmDetailsActionsLayoutBg">#f5f5f5</item>
-        <item name="FilmDetailsActionBg">@drawable/film_datails_action_bg_day</item>
+        <item name="FilmDetailsActionBg">@drawable/film_details_action_bg_day</item>
         <!--timetable list-->
         <item name="TimetablePriceTextColor">#24282b</item>
         <item name="TimetableListCinemaAddressTextColor">#24282b</item>
         <!--places list-->
         <item name="PlaceNameTextColor">#24282b</item>
+        <item name="PlacesListDrawablesColor">#24282b</item>
     </style>
 </resources>

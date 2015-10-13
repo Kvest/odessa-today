@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +34,7 @@ public class CinemasAdapter extends CursorAdapter {
     private int nameColumnIndex = -1;
     private int addressColumnIndex = -1;
     private int commentsCountColumnIndex = -1;
-    private int evenItemBgColor, oddItemBgColor;
+    private int evenItemBgColor, oddItemBgColor, pinColor;
 
     private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
@@ -78,12 +80,13 @@ public class CinemasAdapter extends CursorAdapter {
 
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.address.setText(cursor.getString(addressColumnIndex));
+        setPinColor(holder.address.getCompoundDrawables());
         holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
     }
 
     private void initResources(Context context) {
         // The attributes you want retrieved
-        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg};
+        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg, R.attr.MapPinColor};
 
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
@@ -92,6 +95,7 @@ public class CinemasAdapter extends CursorAdapter {
             // Fetching the resources defined in the style
             evenItemBgColor = ta.getColor(0, Color.BLACK);
             oddItemBgColor = ta.getColor(1, Color.BLACK);
+            pinColor = ta.getColor(2, Color.BLACK);
         } finally {
             ta.recycle();
         }
@@ -99,6 +103,14 @@ public class CinemasAdapter extends CursorAdapter {
         //retrieve fonts
         helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
         helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
+    }
+
+    private void setPinColor(Drawable[] drawables) {
+        for (int i = 0; i < drawables.length; i++) {
+            if (drawables[i] != null) {
+                drawables[i].setColorFilter(pinColor, PorterDuff.Mode.SRC_IN);
+            }
+        }
     }
 
     private boolean isColumnIndexesCalculated() {

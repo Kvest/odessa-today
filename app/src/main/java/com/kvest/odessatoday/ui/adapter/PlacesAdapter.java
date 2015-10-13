@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +34,7 @@ public class PlacesAdapter extends CursorAdapter {
     private int commentsCountColumnIndex = -1;
     private int addressColumnIndex = -1;
     private int phonesColumnIndex = -1;
-    private int evenItemBgColor, oddItemBgColor;
+    private int evenItemBgColor, oddItemBgColor, drawablesColor;
 
     private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
@@ -57,8 +59,10 @@ public class PlacesAdapter extends CursorAdapter {
         holder.commentsCount.setTypeface(helveticaneuecyrBold);
         holder.address = (TextView)view.findViewById(R.id.address);
         holder.address.setTypeface(helveticaneuecyrRoman);
+        setDrawablesColor(holder.address.getCompoundDrawables());
         holder.phones = (TextView)view.findViewById(R.id.phones);
         holder.phones.setTypeface(helveticaneuecyrRoman);
+        setDrawablesColor(holder.phones.getCompoundDrawables());
 
         view.setTag(holder);
 
@@ -93,9 +97,17 @@ public class PlacesAdapter extends CursorAdapter {
         holder.phones.setVisibility(TextUtils.isEmpty(value) ? View.GONE : View.VISIBLE);
     }
 
+    private void setDrawablesColor(Drawable[] drawables) {
+        for (int i = 0; i < drawables.length; i++) {
+            if (drawables[i] != null) {
+                drawables[i].setColorFilter(drawablesColor, PorterDuff.Mode.SRC_IN);
+            }
+        }
+    }
+
     private void initResources(Context context) {
         // The attributes you want retrieved
-        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg};
+        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg, R.attr.PlacesListDrawablesColor};
 
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
@@ -104,6 +116,7 @@ public class PlacesAdapter extends CursorAdapter {
             // Fetching the resources defined in the style
             evenItemBgColor = ta.getColor(0, Color.BLACK);
             oddItemBgColor = ta.getColor(1, Color.BLACK);
+            drawablesColor = ta.getColor(2, Color.BLACK);
         } finally {
             ta.recycle();
         }
