@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="NightOdessaTodayTheme" parent="BaseOdessaTodayTheme">
+        <item name="android:scrollbarThumbHorizontal">@drawable/scrollbar_handle_dark</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar_handle_dark</item>
+
         <item name="MainBGColor">@color/main_bg_color_night</item>
         <item name="CategorySelectorBgColor">#1b1b1b</item>
         <item name="CategorySelectorDividerColor">#494949</item>
