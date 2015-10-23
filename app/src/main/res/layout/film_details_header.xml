@@ -23,15 +23,16 @@
             android:layout_alignParentTop="true"
             android:textSize="@dimen/film_name_text_size"
             android:textColor="?attr/FilmNameTextColor"
-            app:fontAsset="fonts/helveticaneuecyr-bold.ttf" />
-        <TextView
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+        <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/film_poster"
             android:layout_below="@id/film_name"
             android:textSize="@dimen/genre_text_size"
-            android:textColor="?attr/GenreNameTextColor"/>
+            android:textColor="?attr/GenreNameTextColor"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
         <RatingBar
             android:id="@+id/film_rating"
             android:layout_width="wrap_content"
@@ -44,9 +45,10 @@
             android:layout_marginBottom="@dimen/films_ratingbar_vertical_margin"
             style="@style/RatingBarTheme"
             android:isIndicator="true"/>
-        <TextView
+        <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/comments_count"
             style="@style/CommentsCountLabel"
+            app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
             android:layout_toRightOf="@id/film_rating"
             android:layout_below="@id/genre"
             android:layout_marginTop="@dimen/films_comments_count_margin_top"
@@ -64,15 +66,16 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/film_duration_icon_margin_right"
                 android:src="@drawable/ic_film_duration" />
-            <TextView
+            <com.kvest.odessatoday.ui.widget.FontTextView
                 android:id="@+id/film_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textSize="@dimen/film_duration_text_size"
-                android:textColor="@color/film_duration_text_color" />
+                android:textColor="@color/film_duration_text_color"
+                app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
         </LinearLayout>
-        <TextView
+        <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/min_max_prices"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -81,6 +84,7 @@
             android:layout_marginTop="@dimen/min_max_prices_margin_top"
             android:textSize="@dimen/min_max_prices_text_size"
             android:textColor="@color/min_max_prices_text_color"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
             android:drawableLeft="@drawable/ic_cash"
             android:drawablePadding="@dimen/min_max_prices_icon_padding"/>
     </RelativeLayout>
@@ -93,7 +97,7 @@
         android:layout_marginLeft="@dimen/film_details_padding"
         android:layout_marginRight="@dimen/film_details_padding"
         android:background="?attr/FilmDetailsDateDividerColor" />
-    <TextView
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="@dimen/film_details_date_height"
@@ -101,6 +105,7 @@
         android:paddingRight="@dimen/film_details_padding"
         android:gravity="center_vertical"
         android:textColor="?attr/FilmDetailsDateTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
         android:textSize="@dimen/film_details_date_text_size"
         android:singleLine="true"
         android:ellipsize="end"/>

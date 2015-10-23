@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/FilmDetailsBgColor">
@@ -18,29 +19,31 @@
                 android:layout_height="wrap_content"
                 app:cornerRadius="@dimen/image_corner_radius"
                 android:layout_marginRight="@dimen/film_thumbnail_margin_right"/>
-            <TextView
+            <com.kvest.odessatoday.ui.widget.FontTextView
                 android:id="@+id/film_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/film_poster"
                 android:layout_alignParentTop="true"
                 android:textSize="@dimen/film_name_text_size"
-                android:textColor="?attr/FilmNameTextColor"/>
-            <TextView
+                android:textColor="?attr/FilmNameTextColor"
+                app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+            <com.kvest.odessatoday.ui.widget.FontTextView
                 android:id="@+id/genre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/film_poster"
                 android:layout_below="@id/film_name"
                 android:textSize="@dimen/genre_text_size"
-                android:textColor="?attr/GenreNameTextColor"/>
+                android:textColor="?attr/GenreNameTextColor"
+                app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
             <FrameLayout
                 android:id="@+id/premiere_date_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/film_poster"
                 android:layout_below="@id/genre">
-                <TextView
+                <com.kvest.odessatoday.ui.widget.FontTextView
                     android:id="@+id/premiere_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,6 +51,7 @@
                     android:drawablePadding="4dip"
                     android:textColor="@color/premiere_date_text_color"
                     android:textSize="@dimen/premiere_date_text_size"
+                    app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
                     android:background="@drawable/premiere_date_bg"
                     android:padding="@dimen/premiere_date_padding"
                     android:layout_marginTop="@dimen/premiere_date_margin_top"
@@ -66,9 +70,10 @@
                 android:layout_marginBottom="@dimen/films_ratingbar_vertical_margin"
                 style="@style/RatingBarTheme"
                 android:isIndicator="true"/>
-            <TextView
+            <com.kvest.odessatoday.ui.widget.FontTextView
                 android:id="@+id/comments_count"
                 style="@style/CommentsCountLabel"
+                app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
                 android:layout_toRightOf="@id/film_rating"
                 android:layout_below="@id/premiere_date_container"
                 android:layout_marginTop="@dimen/announcement_comments_count_margin_top"
@@ -86,13 +91,14 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/film_duration_icon_margin_right"
                     android:src="@drawable/ic_film_duration"/>
-                <TextView
+                <com.kvest.odessatoday.ui.widget.FontTextView
                     android:id="@+id/film_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textSize="@dimen/film_duration_text_size"
-                    android:textColor="@color/film_duration_text_color"/>
+                    android:textColor="@color/film_duration_text_color"
+                    app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
             </LinearLayout>
         </RelativeLayout>
         <include layout="@layout/film_images_container_layout"/>

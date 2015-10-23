@@ -34,7 +34,7 @@
         android:textSize="@dimen/film_name_text_size"
         android:textColor="?attr/FilmNameTextColor"
         app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
-    <TextView
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/genre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,8 @@
         android:layout_toLeftOf="@id/arrow_image"
         android:layout_below="@id/film_name"
         android:textSize="@dimen/genre_text_size"
-        android:textColor="?attr/GenreNameTextColor"/>
+        android:textColor="?attr/GenreNameTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
     <FrameLayout
         android:id="@+id/premiere_date_container"
         android:layout_width="match_parent"

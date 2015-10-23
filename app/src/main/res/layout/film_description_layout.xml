@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -7,18 +8,20 @@
         android:layout_marginLeft="@dimen/film_details_padding"
         android:layout_marginRight="@dimen/film_details_padding"
         android:layout_marginBottom="@dimen/film_details_director_padding_bottom">
-        <TextView
+        <com.kvest.odessatoday.ui.widget.FontTextView
             android:layout_width="@dimen/film_details_role_name_width"
             android:layout_height="wrap_content"
             android:textSize="@dimen/film_details_description_text_size"
             android:textColor="?attr/FilmDetailsRoleTitleTextColor"
+            app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
             android:text="@string/film_director"/>
-        <TextView
+        <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/director"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/film_details_description_text_size"
-            android:textColor="@color/film_details_role_text_color"/>
+            android:textColor="@color/film_details_role_text_color"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,20 +30,22 @@
         android:layout_marginLeft="@dimen/film_details_padding"
         android:layout_marginRight="@dimen/film_details_padding"
         android:layout_marginBottom="@dimen/film_details_actors_padding_bottom">
-        <TextView
+        <com.kvest.odessatoday.ui.widget.FontTextView
             android:layout_width="@dimen/film_details_role_name_width"
             android:layout_height="wrap_content"
             android:textSize="@dimen/film_details_description_text_size"
             android:textColor="?attr/FilmDetailsRoleTitleTextColor"
+            app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
             android:text="@string/film_actors"/>
-        <TextView
+        <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/actors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/film_details_description_text_size"
-            android:textColor="@color/film_details_role_text_color" />
+            android:textColor="@color/film_details_role_text_color"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
     </LinearLayout>
-    <TextView
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/film_description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -49,6 +54,7 @@
         android:layout_marginBottom="@dimen/film_details_description_padding_bottom"
         android:textSize="@dimen/film_details_description_text_size"
         android:textColor="?attr/FilmDetailsDescriptionTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
         android:autoLink="all"
         android:linksClickable="true"/>
 </merge>
