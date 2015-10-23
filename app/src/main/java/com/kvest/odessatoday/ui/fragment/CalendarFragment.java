@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.FontUtils;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -107,7 +105,6 @@ public class CalendarFragment extends Fragment {
         currentMonthNumber = getMonthNumber(System.currentTimeMillis());
 
         shownMonthLabel = (TextView) root.findViewById(R.id.shown_month_label);
-        shownMonthLabel.setTypeface(FontUtils.getFont(root.getContext().getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT));
 
         root.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,10 +146,8 @@ public class CalendarFragment extends Fragment {
         });
 
         dayNamesView = new TextView[DAY_NAME_IDS.length];
-        Typeface helveticaneuecyrBold = FontUtils.getFont(root.getContext().getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
         for (int i = 0; i < dayNamesView.length; ++i) {
             dayNamesView[i] = (TextView)root.findViewById(DAY_NAME_IDS[i]);
-            dayNamesView[i].setTypeface(helveticaneuecyrBold);
         }
     }
 
@@ -277,7 +272,6 @@ public class CalendarFragment extends Fragment {
         private int activeDaysTextColor;
         private int selectedDayTextColor;
         private Drawable selectedDayBg;
-        private Typeface helveticaneuecyrRoman;
 
         public CalendarAdapter(Context context) {
             super();
@@ -306,8 +300,6 @@ public class CalendarFragment extends Fragment {
                 //cleanup
                 ta.recycle();
             }
-
-            helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
         }
 
         public void setContent(long monthToShow, CalendarDay selectedDate)  {
@@ -417,7 +409,6 @@ public class CalendarFragment extends Fragment {
 
         private View createView(ViewGroup parent) {
             TextView view = (TextView)LayoutInflater.from(context).inflate(R.layout.calendar_day_layout, parent, false);
-            view.setTypeface(helveticaneuecyrRoman);
 
             return view;
         }

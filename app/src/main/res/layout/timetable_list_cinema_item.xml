@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/film_details_padding"
@@ -15,7 +17,7 @@
         android:layout_marginLeft="@dimen/timetable_list_item_arrow_margin_left"
         android:tint="?attr/DetailsArrowTint"
         android:src="@drawable/ic_arrow_details" />
-    <TextView
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/cinema_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,8 +25,9 @@
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/arrow_image"
         android:textSize="@dimen/timetable_list_cinema_name_text_size"
-        android:textColor="?attr/TimetableListCinemaAddressTextColor"/>
-    <TextView
+        android:textColor="?attr/TimetableListCinemaAddressTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-bold.ttf"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/cinema_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,5 +38,6 @@
         android:layout_marginTop="@dimen/timetable_list_cinema_address_margin_top"
         android:drawablePadding="@dimen/timetable_list_cinema_address_drawable_padding"
         android:textSize="@dimen/timetable_list_cinema_address_text_size"
-        android:textColor="@color/timetable_list_cinema_address_text_color"/>
+        android:textColor="@color/timetable_list_cinema_address_text_color"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
 </RelativeLayout>

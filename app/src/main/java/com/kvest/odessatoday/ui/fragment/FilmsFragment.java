@@ -248,9 +248,5 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
                 }
             }
         });
-
-        //set title font
-        extensionTitle.setTypeface(FontUtils.getFont(extensionTitle.getContext().getAssets(),
-                                                     FontUtils.HELVETICANEUECYR_ROMAN_FONT));
     }
 }

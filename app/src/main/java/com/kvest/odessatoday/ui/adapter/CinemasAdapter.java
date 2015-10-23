@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.Utils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
@@ -36,7 +33,7 @@ public class CinemasAdapter extends CursorAdapter {
     private int commentsCountColumnIndex = -1;
     private int evenItemBgColor, oddItemBgColor, pinColor;
 
-    private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
+ //   private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
     public CinemasAdapter(Context context) {
         super(context, null, 0);
@@ -53,11 +50,8 @@ public class CinemasAdapter extends CursorAdapter {
         //create holder
         ViewHolder holder = new ViewHolder();
         holder.name = (TextView)view.findViewById(R.id.cinema_name);
-        holder.name.setTypeface(helveticaneuecyrRoman);
         holder.address = (TextView)view.findViewById(R.id.cinema_address);
-        holder.address.setTypeface(helveticaneuecyrRoman);
         holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
-        holder.commentsCount.setTypeface(helveticaneuecyrBold);
 
         view.setTag(holder);
 
@@ -99,10 +93,6 @@ public class CinemasAdapter extends CursorAdapter {
         } finally {
             ta.recycle();
         }
-
-        //retrieve fonts
-        helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
-        helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
     }
 
     private void setPinColor(Drawable[] drawables) {

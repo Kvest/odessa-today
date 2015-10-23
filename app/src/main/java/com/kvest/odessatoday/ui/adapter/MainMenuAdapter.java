@@ -188,7 +188,6 @@ public class MainMenuAdapter extends BaseAdapter {
                 return LayoutInflater.from(context).inflate(R.layout.main_menu_item_divider, parent, false);
             case MainMenuItem.TYPE_CATEGORY :
                 TextView categoryView = (TextView) LayoutInflater.from(context).inflate(R.layout.main_menu_item_category, parent, false);
-                categoryView.setTypeface(helveticaneuecyrBold);
                 return categoryView;
             case MainMenuItem.TYPE_SUBCATEGORY :
                 View view  = LayoutInflater.from(context).inflate(R.layout.main_menu_item_subcategory, parent, false);
@@ -297,7 +296,6 @@ public class MainMenuAdapter extends BaseAdapter {
             text = (TextView) view.findViewById(R.id.text);
             icon = (ImageView) view.findViewById(R.id.icon);
             disableOverlay = (TextView) view.findViewById(R.id.disable_overlay);
-            disableOverlay.setTypeface(helveticaneuecyrRoman);
         }
     }
 }

@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="center"/>
-        <TextView
+        <com.kvest.odessatoday.ui.widget.FontTextView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/disable_overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,6 +23,7 @@
             android:background="?attr/MainMenuSubcategoryOverlayBg"
             android:textSize="@dimen/main_menu_subcategory_overlay_text_size"
             android:textColor="@color/main_menu_subcategory_overlay_text_color"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
             android:text="@string/soon"/>
     </FrameLayout>
     <TextView

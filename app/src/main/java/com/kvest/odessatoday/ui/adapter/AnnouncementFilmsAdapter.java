@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.TextUtils;
@@ -17,7 +16,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.utils.Constants;
-import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -52,7 +50,6 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
     private int premiereDateColumnIndex = -1;
 
     private int evenItemBgColor, oddItemBgColor;
-    private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
     public AnnouncementFilmsAdapter(Context context) {
         super(context, null, 0);
@@ -72,17 +69,12 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         holder.image.setDefaultImageResId(R.drawable.loading_poster);
         holder.image.setErrorImageResId(R.drawable.no_poster);
         holder.name = (TextView)view.findViewById(R.id.film_name);
-        holder.name.setTypeface(helveticaneuecyrRoman);
         holder.genre = (TextView)view.findViewById(R.id.genre);
         holder.premiereDate = (TextView)view.findViewById(R.id.premiere_date);
-        holder.premiereDate.setTypeface(helveticaneuecyrRoman);
         holder.rating = (RatingBar)view.findViewById(R.id.film_rating);
         holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
-        holder.commentsCount.setTypeface(helveticaneuecyrBold);
         holder.filmDuration = (TextView) view.findViewById(R.id.film_duration);
-        holder.filmDuration.setTypeface(helveticaneuecyrRoman);
         holder.isPremiere = (TextView)view.findViewById(R.id.is_premiere);
-        holder.isPremiere.setTypeface(helveticaneuecyrBold);
         view.setTag(holder);
 
         return view;
@@ -143,10 +135,6 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
         } finally {
             ta.recycle();
         }
-
-        //retrieve font
-        helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
-        helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
     }
 
     private boolean isColumnIndexesCalculated() {

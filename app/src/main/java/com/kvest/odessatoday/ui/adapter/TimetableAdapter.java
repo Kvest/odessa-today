@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.widget.FormatTextView;
-import com.kvest.odessatoday.utils.FontUtils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
@@ -49,7 +47,6 @@ public class TimetableAdapter extends BaseAdapter {
     private List<BaseTimetableItem> dataset;
     private String currencyStr;
     private int pinColor;
-    private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
 
     public TimetableAdapter(Context context) {
         super();
@@ -74,10 +71,6 @@ public class TimetableAdapter extends BaseAdapter {
         } finally {
             ta.recycle();
         }
-
-        //retrieve fonts
-        helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
-        helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
     }
 
     @Override
@@ -210,9 +203,6 @@ public class TimetableAdapter extends BaseAdapter {
         CinemaItemViewHolder holder = new CinemaItemViewHolder(view);
         view.setTag(holder);
 
-        //set fonts
-        holder.cinemaName.setTypeface(helveticaneuecyrBold);
-        holder.cinemaAddress.setTypeface(helveticaneuecyrRoman);
         setPinColor(holder.cinemaAddress.getCompoundDrawables());
 
         return view;
@@ -224,10 +214,6 @@ public class TimetableAdapter extends BaseAdapter {
         //create holder
         TimetableItemViewHolder holder = new TimetableItemViewHolder(view);
         view.setTag(holder);
-
-        //set fonts
-        holder.seanceTime.setTypeface(helveticaneuecyrRoman);
-        holder.prices.setTypeface(helveticaneuecyrRoman);
 
         return view;
     }

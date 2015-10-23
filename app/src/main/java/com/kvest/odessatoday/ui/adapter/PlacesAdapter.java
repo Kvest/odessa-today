@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.TodayProviderContract.*;
-import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.Utils;
 
 /**
@@ -36,8 +34,6 @@ public class PlacesAdapter extends CursorAdapter {
     private int phonesColumnIndex = -1;
     private int evenItemBgColor, oddItemBgColor, drawablesColor;
 
-    private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
-
     public PlacesAdapter(Context context) {
         super(context, null, 0);
 
@@ -53,15 +49,11 @@ public class PlacesAdapter extends CursorAdapter {
         //create holder
         ViewHolder holder = new ViewHolder();
         holder.name = (TextView)view.findViewById(R.id.name);
-        holder.name.setTypeface(helveticaneuecyrRoman);
         holder.rating = (RatingBar)view.findViewById(R.id.rating);
         holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
-        holder.commentsCount.setTypeface(helveticaneuecyrBold);
         holder.address = (TextView)view.findViewById(R.id.address);
-        holder.address.setTypeface(helveticaneuecyrRoman);
         setDrawablesColor(holder.address.getCompoundDrawables());
         holder.phones = (TextView)view.findViewById(R.id.phones);
-        holder.phones.setTypeface(helveticaneuecyrRoman);
         setDrawablesColor(holder.phones.getCompoundDrawables());
 
         view.setTag(holder);
@@ -120,10 +112,6 @@ public class PlacesAdapter extends CursorAdapter {
         } finally {
             ta.recycle();
         }
-
-        //retrieve fonts
-        helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
-        helveticaneuecyrBold = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
     }
 
     private boolean isColumnIndexesCalculated() {
