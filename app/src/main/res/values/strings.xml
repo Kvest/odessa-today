@@ -46,6 +46,10 @@
     <string name="share">Поделиться...</string>
     <string name="image_caching_progress">Идет сохранение изображения...</string>
     <string name="currency">грн.</string>
+    <string name="film_details_action_comments">отзывы</string>
+    <string name="film_details_action_share">...</string>
+    <string name="film_details_action_no_tickets">нет билетов</string>
+    <string name="film_details_action_tickets">билеты</string>
 
     <string-array name="formats">
         <item>@string/format_unknown</item>

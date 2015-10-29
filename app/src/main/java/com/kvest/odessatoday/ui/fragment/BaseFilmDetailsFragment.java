@@ -1,13 +1,18 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
@@ -21,8 +26,15 @@ import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
+import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.Utils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
@@ -48,10 +60,12 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
     protected TextView description;
     protected TextView director;
     protected TextView actors;
+    protected CommentsCountView actionCommentsCount;
     protected LinearLayout imagesContainer;
     private View.OnClickListener onImageClickListener;
 
     protected String trailerVideoId;
+    private String shareTitle, shareText;
 
     private OnShowFilmCommentsListener onShowFilmCommentsListener;
     private LoadCommentsNotificationReceiver commentsErrorReceiver = new LoadCommentsNotificationReceiver();
@@ -87,6 +101,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
         director = (TextView)view.findViewById(R.id.director);
         actors = (TextView)view.findViewById(R.id.actors);
         imagesContainer = (LinearLayout)view.findViewById(R.id.images_container);
+        actionCommentsCount = (CommentsCountView) view.findViewById(R.id.action_comments_count);
 
         onImageClickListener = new View.OnClickListener() {
             @Override
@@ -96,6 +111,20 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
             }
         };
         filmPoster.setOnClickListener(onImageClickListener);
+
+        actionCommentsCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showComments();
+            }
+        });
+
+        view.findViewById(R.id.action_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new CacheImageAsyncTask(Long.toString(getFilmId())).execute(filmPoster.getDrawable());
+            }
+        });
 
 //        ((YouTubeThumbnailView)view.findViewById(R.id.video_thumbnail)).initialize(YoutubeApiConstants.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
 //            @Override
@@ -182,6 +211,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
 
             int commentsCountValue = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT));
             commentsCount.setText(Integer.toString(commentsCountValue));
+            actionCommentsCount.setCommentsCount(commentsCountValue);
 
             //setTrailer
             setTrailer(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.VIDEO)));
@@ -201,6 +231,9 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
 //                imagesContainer.setVisibility(View.VISIBLE);
 //                youTubePlayerFragmentContainer.setVisibility(View.VISIBLE);
 //            }
+
+            shareTitle = filmNameValue;
+            shareText = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.SHARE_TEXT));
         }
     }
 
@@ -250,6 +283,21 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
         }
     }
 
+    private void share(String imageFilePath) {
+        Context context = getActivity();
+        if (context != null) {
+            Intent sharingIntent = new Intent();
+            sharingIntent.setAction(Intent.ACTION_SEND);
+            sharingIntent.setType(imageFilePath != null ? "image/*" : "text/plain");
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle);
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+            if (imageFilePath != null) {
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, Utils.getImageContentUri(context, imageFilePath));
+            }
+            startActivity(Intent.createChooser(sharingIntent, getResources().getText(R.string.share)));
+        }
+    }
+
     protected long getFilmId() {
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -261,6 +309,83 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
 
     public interface OnShowFilmCommentsListener {
         public void onShowFilmComments(long filmId);
+    }
+
+    private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {
+        //minimum 3 sec of the cachring process to avoid a blinking of the load dialog
+        private static final long MIN_PROCESS_DURATION = 2000L;
+        private static final String CACHE_IMAGE_FORMAT = ".png";
+
+        private String fileName;
+        private ProgressDialog progressDialog;
+
+        public CacheImageAsyncTask(String fileName) {
+            super();
+
+            this.fileName = fileName + CACHE_IMAGE_FORMAT;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //show progress dialog
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage(getString(R.string.image_caching_progress));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(String filePath) {
+            //hide progress dialog
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+            progressDialog = null;
+
+            share(filePath);
+        }
+
+        @Override
+        protected String doInBackground(Drawable... params) {
+            long startTime = System.currentTimeMillis();
+
+            String result = null;
+            Drawable drawable = params[0];
+
+            if (drawable != null) {
+                Rect bounds = drawable.getBounds();
+                Bitmap bitmap = Bitmap.createBitmap(bounds.width(),bounds.height(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.draw(canvas);
+                OutputStream out = null;
+                try {
+                    File file = new File(getActivity().getExternalCacheDir(), fileName);
+                    if (!file.exists()) {
+                        out = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    }
+                    result = file.getAbsolutePath();
+                } catch (IOException ioException) {
+                } finally {
+                    if ( out != null ){
+                        try {
+                            out.close();
+                        } catch (IOException e) {}
+                    }
+                }
+            }
+
+            //artificial delay to avoid a blinking of the load dialog
+            long delayDuration = MIN_PROCESS_DURATION - (System.currentTimeMillis() - startTime);
+            if (delayDuration > 0) {
+                try {
+                    Thread.sleep(delayDuration);
+                } catch (InterruptedException e) {}
+            }
+
+            return result;
+        }
     }
 
     private class LoadCommentsNotificationReceiver extends BroadcastReceiver {

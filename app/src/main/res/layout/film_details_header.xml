@@ -89,7 +89,34 @@
             android:drawablePadding="@dimen/min_max_prices_icon_padding"/>
     </RelativeLayout>
     <include layout="@layout/film_images_container_layout"/>
-    <include layout="@layout/film_details_actions_layout"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:background="?attr/FilmDetailsActionsLayoutBg"
+        android:paddingTop="@dimen/film_details_actions_layout_vertical_padding"
+        android:paddingBottom="@dimen/film_details_actions_layout_vertical_padding"
+        android:layout_marginTop="@dimen/film_details_actions_margin_top"
+        android:layout_marginBottom="@dimen/film_details_actions_margin_bottom">
+        <include
+            layout="@layout/film_details_action_comments"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <include
+            layout="@layout/film_details_action_tickets"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <include
+            layout="@layout/film_details_action_share"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+
     <include layout="@layout/film_description_layout"/>
     <View
         android:layout_width="match_parent"

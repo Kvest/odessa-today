@@ -62,7 +62,6 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
 
     private TextView minMaxPricesView;
     private TimetableAdapter timetableAdapter;
-    private String shareTitle, shareText;
     private String currencyStr;
 
     private TextView dateTextView;
@@ -251,110 +250,6 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
             case TIMETABLE_LOADER_ID :
                 timetableAdapter.swapCursor(null);
                 break;
-        }
-    }
-
-    @Override
-    public void setFilmData(Cursor cursor) {
-        super.setFilmData(cursor);
-
-        //generate data for share
-        if (!cursor.isAfterLast()) {
-            String filmNameValue = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.NAME));
-            shareTitle = filmNameValue;
-            shareText = cursor.getString(cursor.getColumnIndex(Tables.Films.Columns.SHARE_TEXT));
-        }
-    }
-
-    private void share(String imageFilePath) {
-        Context context = getActivity();
-        if (context != null) {
-            Intent sharingIntent = new Intent();
-            sharingIntent.setAction(Intent.ACTION_SEND);
-            sharingIntent.setType(imageFilePath != null ? "image/*" : "text/plain");
-            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle);
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-            if (imageFilePath != null) {
-                sharingIntent.putExtra(Intent.EXTRA_STREAM, Utils.getImageContentUri(context, imageFilePath));
-            }
-            startActivity(Intent.createChooser(sharingIntent, getResources().getText(R.string.share)));
-        }
-    }
-
-    private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {
-        //minimum 3 sec of the cachring process to avoid a blinking of the load dialog
-        private static final long MIN_PROCESS_DURATION = 2000L;
-        private static final String CACHE_IMAGE_FORMAT = ".png";
-
-        private String fileName;
-        private ProgressDialog progressDialog;
-
-        public CacheImageAsyncTask(String fileName) {
-            super();
-
-            this.fileName = fileName + CACHE_IMAGE_FORMAT;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            //show progress dialog
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage(getString(R.string.image_caching_progress));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(String filePath) {
-            //hide progress dialog
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-            }
-            progressDialog = null;
-
-            share(filePath);
-        }
-
-        @Override
-        protected String doInBackground(Drawable... params) {
-            long startTime = System.currentTimeMillis();
-
-            String result = null;
-            Drawable drawable = params[0];
-
-            if (drawable != null) {
-                Rect bounds = drawable.getBounds();
-                Bitmap bitmap = Bitmap.createBitmap(bounds.width(),bounds.height(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-                drawable.draw(canvas);
-                OutputStream out = null;
-                try {
-                    File file = new File(getActivity().getExternalCacheDir(), fileName);
-                    if (!file.exists()) {
-                        out = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    }
-                    result = file.getAbsolutePath();
-                } catch (IOException ioException) {
-                } finally {
-                    if ( out != null ){
-                        try {
-                            out.close();
-                        } catch (IOException e) {}
-                    }
-                }
-            }
-
-            //artificial delay to avoid a blinking of the load dialog
-            long delayDuration = MIN_PROCESS_DURATION - (System.currentTimeMillis() - startTime);
-            if (delayDuration > 0) {
-                try {
-                    Thread.sleep(delayDuration);
-                } catch (InterruptedException e) {}
-            }
-
-            return result;
         }
     }
 

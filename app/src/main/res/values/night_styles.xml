@@ -58,6 +58,7 @@
         <item name="FilmDetailsDateTextColor">#828282</item>
         <item name="FilmDetailsActionsLayoutBg">#1b1b1b</item>
         <item name="FilmDetailsActionBg">@drawable/film_details_action_bg_night</item>
+        <item name="FilmDetailsActionNameTextColor">#4bc6bc</item>
         <!--timetable list-->
         <item name="TimetablePriceTextColor">#bcbcbc</item>
         <item name="TimetableListCinemaAddressTextColor">#e1e1e1</item>
