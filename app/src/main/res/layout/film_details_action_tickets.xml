@@ -2,15 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/action_tickets"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <ImageView
+        android:id="@+id/action_tickets"
+        android:enabled="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_ticket"
-        android:tint="@color/application_green"
+        android:src="?attr/ActionTicketsIcon"
         android:scaleType="center"
         android:gravity="center"
         android:layout_gravity="center_horizontal"

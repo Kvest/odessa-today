@@ -51,6 +51,7 @@
     <attr format="color" name="FilmDetailsDateTextColor"/>
     <attr format="color" name="FilmDetailsActionsLayoutBg"/>
     <attr format="color" name="FilmDetailsActionNameTextColor"/>
+    <attr format="reference" name="ActionTicketsIcon"/>
     <attr format="reference" name="FilmDetailsActionBg"/>
     <attr format="color" name="TimetablePriceTextColor"/>
     <attr format="color" name="TimetableListCinemaAddressTextColor"/>

@@ -79,9 +79,6 @@ public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  im
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Request comments
-        NetworkService.loadFilmComments(getActivity(), getFilmId());
-
         getLoaderManager().initLoader(FILM_LOADER_ID, null, this);
     }
 

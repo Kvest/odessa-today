@@ -9,7 +9,7 @@
             <size
                 android:height="@dimen/film_details_actions_size"
                 android:width="@dimen/film_details_actions_size" />
-            <solid android:color="#d3d3d3" />
+            <solid android:color="#d2d2d2" />
         </shape>
     </item>
     <item>

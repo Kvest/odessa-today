@@ -67,6 +67,8 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     private TextView dateTextView;
     private long shownTimetableDate;
 
+    private View actionTickets;
+
     private LoadTimetableNotificationReceiver timetableErrorReceiver = new LoadTimetableNotificationReceiver();
 
     public static FilmDetailsFragment getInstance(long filmId, long timetableDate) {
@@ -119,6 +121,9 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
 
         minMaxPricesView = (TextView)view.findViewById(R.id.min_max_prices);
         dateTextView = (TextView)view.findViewById(R.id.date);
+
+        actionTickets = view.findViewById(R.id.action_tickets);
+        actionTickets.setEnabled(false);
     }
 
     private void initTimetableList(ListView rootView, View headerView) {
@@ -145,7 +150,6 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
 
         //Request full timetable for the film and comments
         NetworkService.loadTimetable(getActivity(), getFilmId());
-        NetworkService.loadFilmComments(getActivity(), getFilmId());
 
         getLoaderManager().initLoader(FILM_LOADER_ID, null, this);
         getLoaderManager().initLoader(TIMETABLE_LOADER_ID, null, this);
