@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -72,6 +73,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     private YouTubeThumbnailLoader youTubeThumbnailLoader;
     private ImageView videoPreview;
+    private ImageView videoThumbnailLoadProgress;
 
     protected String trailerVideoId;
     private String shareTitle, shareText;
@@ -112,6 +114,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         imagesContainer = (LinearLayout)view.findViewById(R.id.images_container);
         actionCommentsCount = (CommentsCountView) view.findViewById(R.id.action_comments_count);
         videoPreview = (ImageView) view.findViewById(R.id.video_preview);
+        videoThumbnailLoadProgress = (ImageView) view.findViewById(R.id.video_thumbnail_load_progress);
 
         onImageClickListener = new View.OnClickListener() {
             @Override
@@ -145,6 +148,10 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
         //start load video thumbnail
         ((YouTubeThumbnailView)view.findViewById(R.id.video_thumbnail)).initialize(YoutubeApiConstants.YOUTUBE_API_KEY, this);
+
+        AnimationDrawable frameAnimation = (AnimationDrawable) videoThumbnailLoadProgress.getBackground();
+        frameAnimation.start();
+
         //TODO
         //FilmDetailsActivity has leaked ServiceConnection - если быстро выйти, пока видео не загрузилось
     }

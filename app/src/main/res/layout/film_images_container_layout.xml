@@ -23,10 +23,19 @@
                 android:layout_height="wrap_content"
                 app:cornerRadius="@dimen/image_corner_radius"/>
             <ImageView
+                android:visibility="invisible"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_play"
-                android:tint="@color/application_green"/>
+                android:tint="@color/application_green"
+                android:layout_gravity="center"/>
+            <ImageView
+                android:id="@+id/video_thumbnail_load_progress"
+                android:layout_width="44dip"
+                android:layout_height="44dip"
+                android:background="@drawable/video_thumbnail_load"
+                android:layout_gravity="center"/>
         </FrameLayout>
     </LinearLayout>
 </HorizontalScrollView>
