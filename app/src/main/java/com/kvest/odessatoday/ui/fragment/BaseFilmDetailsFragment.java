@@ -20,16 +20,21 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
+import com.kvest.odessatoday.ui.activity.YoutubeFullscreenActivity;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
+import com.kvest.odessatoday.utils.YoutubeApiConstants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +50,8 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  * Time: 17:07
  * To change this template use File | Settings | File Templates.
  */
-public abstract class BaseFilmDetailsFragment extends BaseFragment {
+public abstract class BaseFilmDetailsFragment extends BaseFragment implements YouTubeThumbnailView.OnInitializedListener,
+                                                                              YouTubeThumbnailLoader.OnThumbnailLoadedListener {
     private static final String VIDEO_ID_PARAM = "v";
 
     protected static final String ARGUMENT_FILM_ID = "com.kvest.odessatoday.argument.FILM_ID";
@@ -63,6 +69,9 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
     protected CommentsCountView actionCommentsCount;
     protected LinearLayout imagesContainer;
     private View.OnClickListener onImageClickListener;
+
+    private YouTubeThumbnailLoader youTubeThumbnailLoader;
+    private ImageView videoPreview;
 
     protected String trailerVideoId;
     private String shareTitle, shareText;
@@ -102,6 +111,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
         actors = (TextView)view.findViewById(R.id.actors);
         imagesContainer = (LinearLayout)view.findViewById(R.id.images_container);
         actionCommentsCount = (CommentsCountView) view.findViewById(R.id.action_comments_count);
+        videoPreview = (ImageView) view.findViewById(R.id.video_preview);
 
         onImageClickListener = new View.OnClickListener() {
             @Override
@@ -126,44 +136,17 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
             }
         });
 
-//        ((YouTubeThumbnailView)view.findViewById(R.id.video_thumbnail)).initialize(YoutubeApiConstants.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
-//            @Override
-//            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
-//                //TODO
-//                //youTubeThumbnailLoader.release();
-//
-//                youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
-//                    @Override
-//                    public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-//                        Drawable d = youTubeThumbnailView.getDrawable();
-//
-//
-//                        ImageView iv = (ImageView) getView().findViewById(R.id.video_preview);
-//                        // iv.getLayoutParams().width = (int)(((float)d.getIntrinsicWidth() / (float)d.getIntrinsicHeight()) * iv.getLayoutParams().height);
-//                        iv.setImageDrawable(d);
-//                    }
-//
-//                    @Override
-//                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-//                    }
-//                });
-//
-//                youTubeThumbnailLoader.setVideo("o7VVHhK9zf0");
-//            }
-//
-//
-//            @Override
-//            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-//
-//            }
-//        });
-//
-//        view.findViewById(R.id.video_preview).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                YoutubeFullscreenActivity.start(getActivity(), trailerVideoId);
-//            }
-//        });
+        videoPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YoutubeFullscreenActivity.start(getActivity(), trailerVideoId);
+            }
+        });
+
+        //start load video thumbnail
+        ((YouTubeThumbnailView)view.findViewById(R.id.video_thumbnail)).initialize(YoutubeApiConstants.YOUTUBE_API_KEY, this);
+        //TODO
+        //FilmDetailsActivity has leaked ServiceConnection - если быстро выйти, пока видео не загрузилось
     }
 
     @Override
@@ -220,6 +203,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
             String[] postersUrls = FilmWithTimetable.string2Posters(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
             mergeImages(postersUrls);
 
+            //TODO
             //set visibility for Youtube player and posters
 //            if (TextUtils.isEmpty(trailerVideoId)) {
                 if (postersUrls.length == 0) {
@@ -235,6 +219,48 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment {
             shareTitle = filmNameValue;
             shareText = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.SHARE_TEXT));
         }
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+        this.youTubeThumbnailLoader = youTubeThumbnailLoader;
+
+        youTubeThumbnailLoader.setOnThumbnailLoadedListener(this);
+
+        if (!TextUtils.isEmpty(trailerVideoId)) {
+            youTubeThumbnailLoader.setVideo(trailerVideoId);
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+        LOGE(Constants.TAG, "YouTubePlayer onInitializationFailure");
+
+        //TODO
+    }
+
+    @Override
+    public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String videoId) {
+        if (youTubeThumbnailLoader != null) {
+            youTubeThumbnailLoader.release();
+            youTubeThumbnailLoader = null;
+        }
+
+        //transform thumbnail
+        Drawable thumbnail = youTubeThumbnailView.getDrawable();
+
+        videoPreview.getLayoutParams().height = postersLayoutParams.height;
+        videoPreview.getLayoutParams().width = (int)(((float)thumbnail.getIntrinsicWidth() / (float)thumbnail.getIntrinsicHeight()) * videoPreview.getLayoutParams().height);
+        videoPreview.setImageDrawable(thumbnail);
+    }
+
+    @Override
+    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+        if (youTubeThumbnailLoader != null) {
+            youTubeThumbnailLoader.release();
+            youTubeThumbnailLoader = null;
+        }
+        //TODO
     }
 
     private void setTrailer(String trailerLink) {

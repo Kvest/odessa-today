@@ -11,31 +11,31 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 
 /**
- * Created by kvest on 30.08.15.
+ * Created by roman on 11/4/15.
  */
-public class RoundNetworkImageView extends NetworkImageView {
+public class RoundImageView extends ImageView {
     private Paint paint;
     private RectF rect;
     private float radius;
 
-    public RoundNetworkImageView(Context context) {
+    public RoundImageView(Context context) {
         super(context);
 
         init(context, null);
     }
 
-    public RoundNetworkImageView(Context context, AttributeSet attrs) {
+    public RoundImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context, attrs);
     }
 
-    public RoundNetworkImageView(Context context, AttributeSet attrs, int defStyle) {
+    public RoundImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         init(context, attrs);

@@ -7,5 +7,26 @@
         android:id="@+id/images_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" />
+        android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.google.android.youtube.player.YouTubeThumbnailView
+                android:id="@+id/video_thumbnail"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <com.kvest.odessatoday.ui.widget.RoundImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/video_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cornerRadius="@dimen/image_corner_radius"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_play"
+                android:tint="@color/application_green"/>
+        </FrameLayout>
+    </LinearLayout>
 </HorizontalScrollView>
