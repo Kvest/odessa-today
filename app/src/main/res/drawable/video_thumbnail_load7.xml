@@ -3,16 +3,7 @@
     <item>
         <shape
             android:shape="ring"
-            android:innerRadius="0dip"
-            android:thickness="2dip"
-            android:useLevel="false">
-            <solid android:color="@color/application_green" />
-        </shape>
-    </item>
-    <item>
-        <shape
-            android:shape="ring"
-            android:innerRadius="4dip"
+            android:innerRadius="20dip"
             android:thickness="2dip"
             android:useLevel="false">
             <solid android:color="@color/application_green" />

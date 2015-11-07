@@ -7,4 +7,6 @@
     <item android:drawable="@drawable/video_thumbnail_load3" android:duration="100" />
     <item android:drawable="@drawable/video_thumbnail_load4" android:duration="100" />
     <item android:drawable="@drawable/video_thumbnail_load5" android:duration="100" />
+    <item android:drawable="@drawable/video_thumbnail_load6" android:duration="100" />
+    <item android:drawable="@drawable/video_thumbnail_load7" android:duration="100" />
 </animation-list>
