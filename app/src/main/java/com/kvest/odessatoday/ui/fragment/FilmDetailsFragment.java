@@ -1,17 +1,11 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -22,17 +16,11 @@ import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.notification.LoadTimetableNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
-import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.activity.CinemaDetailsActivity;
 import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
 import com.kvest.odessatoday.utils.TimeUtils;
-import com.kvest.odessatoday.utils.Utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;

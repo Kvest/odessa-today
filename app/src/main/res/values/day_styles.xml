@@ -59,7 +59,8 @@
         <item name="FilmDetailsActionsLayoutBg">#f5f5f5</item>
         <item name="FilmDetailsActionBg">@drawable/film_details_action_bg_day</item>
         <item name="FilmDetailsActionNameTextColor">#24282b</item>
-        <item name="ActionTicketsIcon">@drawable/action_tickets_day</item>
+        <item name="ActionTicketsDisabledColor">#d2d2d2</item>
+        <item name="ActionTicketsEnabledColor">@color/application_green</item>
         <!--timetable list-->
         <item name="TimetablePriceTextColor">#24282b</item>
         <item name="TimetableListCinemaAddressTextColor">#24282b</item>
