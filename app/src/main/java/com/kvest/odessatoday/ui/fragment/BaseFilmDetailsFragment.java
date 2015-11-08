@@ -16,8 +16,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
@@ -53,6 +53,7 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  */
 public abstract class BaseFilmDetailsFragment extends BaseFragment implements YouTubeThumbnailView.OnInitializedListener,
                                                                               YouTubeThumbnailLoader.OnThumbnailLoadedListener {
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
     private static final String VIDEO_ID_PARAM = "v";
 
     protected static final String ARGUMENT_FILM_ID = "com.kvest.odessatoday.argument.FILM_ID";
@@ -74,6 +75,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     private YouTubeThumbnailLoader youTubeThumbnailLoader;
     private ImageView videoPreview;
     private ImageView videoThumbnailLoadProgress;
+    private View videoThumbnailContainer;
+    private View videoThumbnailPlay;
 
     protected String trailerVideoId;
     private String shareTitle, shareText;
@@ -115,6 +118,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         actionCommentsCount = (CommentsCountView) view.findViewById(R.id.action_comments_count);
         videoPreview = (ImageView) view.findViewById(R.id.video_preview);
         videoThumbnailLoadProgress = (ImageView) view.findViewById(R.id.video_thumbnail_load_progress);
+        videoThumbnailContainer = view.findViewById(R.id.video_thumbnail_container);
+        videoThumbnailPlay = view.findViewById(R.id.video_thumbnail_play);
 
         onImageClickListener = new View.OnClickListener() {
             @Override
@@ -146,14 +151,13 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             }
         });
 
-        //start load video thumbnail
-        ((YouTubeThumbnailView)view.findViewById(R.id.video_thumbnail)).initialize(YoutubeApiConstants.YOUTUBE_API_KEY, this);
-
         AnimationDrawable frameAnimation = (AnimationDrawable) videoThumbnailLoadProgress.getBackground();
         frameAnimation.start();
 
         //TODO
         //FilmDetailsActivity has leaked ServiceConnection - если быстро выйти, пока видео не загрузилось
+//        11-08 13:21:25.056  14613-14613/com.kvest.odessatoday E/ActivityThread﹕ Activity com.kvest.odessatoday.ui.activity.FilmDetailsActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@a0f64ff that was originally bound here
+//        android.app.ServiceConnectionLeaked: Activity com.kvest.odessatoday.ui.activity.FilmDetailsActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@a0f64ff that was originally bound here
     }
 
     @Override
@@ -168,6 +172,15 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         super.onPause();
 
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(commentsErrorReceiver);
+
+
+        if (getActivity() != null && getActivity().isFinishing()) {
+            //TODO replace with the metod
+            if (youTubeThumbnailLoader != null) {
+                youTubeThumbnailLoader.release();
+                youTubeThumbnailLoader = null;
+            }
+        }
     }
 
     protected void setFilmData(Cursor cursor) {
@@ -210,21 +223,34 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             String[] postersUrls = FilmWithTimetable.string2Posters(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
             mergeImages(postersUrls);
 
-            //TODO
-            //set visibility for Youtube player and posters
-//            if (TextUtils.isEmpty(trailerVideoId)) {
+            //set visibility for Youtube player and images
+            if (TextUtils.isEmpty(trailerVideoId)) {
                 if (postersUrls.length == 0) {
                     imagesContainer.setVisibility(View.GONE);
                 } else {
                     imagesContainer.setVisibility(View.VISIBLE);
                 }
-//            } else {
-//                imagesContainer.setVisibility(View.VISIBLE);
-//                youTubePlayerFragmentContainer.setVisibility(View.VISIBLE);
-//            }
+            } else {
+                //TODO  - два вызова
+                imagesContainer.setVisibility(View.VISIBLE);
+
+                initVideoThumbnailLoading();
+            }
 
             shareTitle = filmNameValue;
             shareText = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.SHARE_TEXT));
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RECOVERY_DIALOG_REQUEST) {
+            if (requestCode == Activity.RESULT_OK) {
+                // Retry initialization if user performed a recovery action
+                initVideoThumbnailLoading();
+            } else {
+                onVideoThumbnailLoadFailed();
+            }
         }
     }
 
@@ -243,7 +269,12 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
         LOGE(Constants.TAG, "YouTubePlayer onInitializationFailure");
 
-        //TODO
+        Activity activity = getActivity();
+        if (youTubeInitializationResult.isUserRecoverableError() && activity != null) {
+            youTubeInitializationResult.getErrorDialog(activity, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            onVideoThumbnailLoadFailed();
+        }
     }
 
     @Override
@@ -259,6 +290,11 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         videoPreview.getLayoutParams().height = postersLayoutParams.height;
         videoPreview.getLayoutParams().width = (int)(((float)thumbnail.getIntrinsicWidth() / (float)thumbnail.getIntrinsicHeight()) * videoPreview.getLayoutParams().height);
         videoPreview.setImageDrawable(thumbnail);
+
+        //hide loading views
+        videoThumbnailLoadProgress.setVisibility(View.GONE);
+        videoPreview.setVisibility(View.VISIBLE);
+        videoThumbnailPlay.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -267,7 +303,28 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             youTubeThumbnailLoader.release();
             youTubeThumbnailLoader = null;
         }
-        //TODO
+
+        onVideoThumbnailLoadFailed();
+    }
+
+    private void onVideoThumbnailLoadFailed() {
+        //if only 1 child - it is only video thumbnail and we need to hide the container
+        if (imagesContainer.getChildCount() <= 1) {
+            imagesContainer.setVisibility(View.GONE);
+        } else {
+            //hide video thumbnail views
+            videoThumbnailContainer.setVisibility(View.GONE);
+        }
+    }
+
+    private void initVideoThumbnailLoading() {
+        videoThumbnailContainer.setVisibility(View.VISIBLE);
+        videoThumbnailLoadProgress.setVisibility(View.VISIBLE);
+        videoPreview.setVisibility(View.GONE);
+        videoThumbnailPlay.setVisibility(View.GONE);
+
+        YouTubeThumbnailView youTubeThumbnailView = ((YouTubeThumbnailView) getView().findViewById(R.id.video_thumbnail));
+        youTubeThumbnailView.initialize(YoutubeApiConstants.YOUTUBE_API_KEY, this);
     }
 
     private void setTrailer(String trailerLink) {
@@ -341,7 +398,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     }
 
     public interface OnShowFilmCommentsListener {
-        public void onShowFilmComments(long filmId);
+        void onShowFilmComments(long filmId);
     }
 
     private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {
