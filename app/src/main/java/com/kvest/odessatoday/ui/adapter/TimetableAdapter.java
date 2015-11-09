@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,7 @@ import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.widget.FormatTextView;
+import com.kvest.odessatoday.utils.Utils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
@@ -203,7 +202,7 @@ public class TimetableAdapter extends BaseAdapter {
         CinemaItemViewHolder holder = new CinemaItemViewHolder(view);
         view.setTag(holder);
 
-        setPinColor(holder.cinemaAddress.getCompoundDrawables());
+        Utils.setDrawablesColor(pinColor, holder.cinemaAddress.getCompoundDrawables());
 
         return view;
     }
@@ -216,14 +215,6 @@ public class TimetableAdapter extends BaseAdapter {
         view.setTag(holder);
 
         return view;
-    }
-
-    private void setPinColor(Drawable[] drawables) {
-        for (int i = 0; i < drawables.length; i++) {
-            if (drawables[i] != null) {
-                drawables[i].setColorFilter(pinColor, PorterDuff.Mode.SRC_IN);
-            }
-        }
     }
 
     private static abstract class BaseTimetableItem {

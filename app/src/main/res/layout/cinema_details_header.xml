@@ -1,101 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/cinema_details_padding"
     android:paddingRight="@dimen/cinema_details_padding"
-    android:paddingTop="@dimen/cinema_details_padding"
-    android:paddingBottom="@dimen/cinema_details_header_padding_bottom"
-    android:background="@color/cinema_details_bg">
-    <TextView
+    android:paddingTop="@dimen/cinema_details_padding_top">
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/cinema_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/cinema_name_margin_bottom"
-        android:textColor="@color/cinema_details_name_text_color"
-        android:textSize="@dimen/cinema_details_name_text_size"
-        android:textStyle="bold"
-        android:gravity="center"/>
-    <LinearLayout
-        android:id="@+id/phones_container"
-        android:orientation="vertical"
+        android:textSize="@dimen/cinema_name_text_size"
+        android:textColor="?attr/CinemaNameTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/cinema_phones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/cinema_details_phones_padding"
-        android:layout_marginBottom="@dimen/phones_container_margin_bottom"
-        android:background="@drawable/cinema_details_header_block_bg">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/cinema_phones"/>
-        <TextView
-            android:id="@+id/cinema_phones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:autoLink="all" />
-    </LinearLayout>
-    <RelativeLayout
-        android:id="@+id/address_container"
-        android:orientation="vertical"
+        android:paddingTop="@dimen/cinema_details_phones_margin_top"
+        android:drawablePadding="@dimen/cinema_details_phones_drawable_padding"
+        android:drawableLeft="@drawable/ic_phone"
+        android:textColor="@color/cinema_phones_text_color"
+        android:textSize="@dimen/cinema_details_phones_text_size"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+        android:autoLink="phone"
+        android:linksClickable="true"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/cinema_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/cinema_details_address_padding"
-        android:layout_marginBottom="@dimen/address_container_margin_bottom"
-        android:background="@drawable/cinema_details_header_block_bg">
-        <ImageButton
-            android:id="@+id/show_on_map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/cinema_details_address_padding"
-            android:background="@drawable/green_button"
-            android:minWidth="@dimen/show_on_map_min_size"
-            android:minHeight="@dimen/show_on_map_min_size"
-            android:src="@android:drawable/ic_dialog_map" />
-        <TextView
-            android:id="@+id/cinema_address_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/show_on_map"
-            android:textStyle="bold"
-            android:text="@string/cinema_address"/>
-        <TextView
-            android:id="@+id/cinema_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cinema_address_label"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/show_on_map"/>
-    </RelativeLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/ic_map_pin"
+        android:layout_marginTop="@dimen/cinema_address_margin_top"
+        android:drawablePadding="@dimen/cinema_details_address_drawable_padding"
+        android:paddingLeft="@dimen/cinema_details_address_padding_left"
+        android:textSize="@dimen/cinema_address_text_size"
+        android:textColor="@color/cinema_address_text_color"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+    <ImageView
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:weightSum="2">
-        <Button
-            android:id="@+id/show_comments"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="4dip"
-            android:background="@drawable/green_button"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/cinema_details_button_text_size"/>
-        <Button
-            android:id="@+id/show_photos"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="4dip"
-            android:background="@drawable/green_button"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/cinema_details_button_text_size"/>
-    </LinearLayout>
+        android:src="@drawable/ic_map_pin"
+        android:tint="#00ff00"/>
 </LinearLayout>

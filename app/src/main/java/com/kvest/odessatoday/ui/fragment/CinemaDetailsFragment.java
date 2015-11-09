@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -22,13 +23,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.datamodel.Cinema;
-import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CinemaTimetableAdapter;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,12 +59,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private static final int TIMETABLE_LOADER_ID = 3;
 
     private TextView cinemaName;
-    private View phonesContainer;
     private TextView phones;
-    private View addressContainer;
     private TextView address;
-    private Button showComments;
-    private Button showPhotos;
     private ListView timetableList;
     private String[] photoUrls = null;
     private double latitude = 0d;
@@ -83,7 +80,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private Animation hideCalendarAnimation;
 
     private CinemaDetailsActionsListener cinemaDetailsActionsListener;
-    private LoadCommentsNotificationReceiver commentsErrorReceiver = new LoadCommentsNotificationReceiver();
     private LoadFilmsNotificationReceiver filmsErrorReceiver = new LoadFilmsNotificationReceiver();
 
     public static CinemaDetailsFragment getInstance(long cinemaId) {
@@ -117,7 +113,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(commentsErrorReceiver, new IntentFilter(LoadCommentsNotification.ACTION));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(filmsErrorReceiver, new IntentFilter(LoadFilmsNotification.ACTION));
     }
 
@@ -125,19 +120,13 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     public void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(commentsErrorReceiver);
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(filmsErrorReceiver);
     }
 
     private void init(View rootView, View headerView, View dateHeaderView) {
         cinemaName = (TextView) headerView.findViewById(R.id.cinema_name);
-        phonesContainer = headerView.findViewById(R.id.phones_container);
         phones = (TextView) headerView.findViewById(R.id.cinema_phones);
-        addressContainer = headerView.findViewById(R.id.address_container);
         address = (TextView) headerView.findViewById(R.id.cinema_address);
-        ImageButton showOnMapButton = (ImageButton) headerView.findViewById(R.id.show_on_map);
-        showComments = (Button) headerView.findViewById(R.id.show_comments);
-        showPhotos = (Button) headerView.findViewById(R.id.show_photos);
         isToday = (TextView)dateHeaderView.findViewById(R.id.is_today);
         dateTextView = (TextView)dateHeaderView.findViewById(R.id.date);
         weekDayTextView = (TextView)dateHeaderView.findViewById(R.id.week_day);
@@ -151,25 +140,26 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         timetableList.addHeaderView(dateHeaderView);
         cinemaTimetableAdapter = new CinemaTimetableAdapter(getActivity());
         timetableList.setAdapter(cinemaTimetableAdapter);
-        
-        showOnMapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCinemaOnMap();
-            }
-        });
-        showComments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showComments();
-            }
-        });
-        showPhotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPhotos();
-            }
-        });
+
+        //TODO
+//        showOnMapButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showCinemaOnMap();
+//            }
+//        });
+//        showComments.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showComments();
+//            }
+//        });
+//        showPhotos.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showPhotos();
+//            }
+//        });
         dateHeaderView.findViewById(R.id.show_calendar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -379,25 +369,25 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
             String tmp = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.PHONES));
             if (!TextUtils.isEmpty(tmp)) {
-                phonesContainer.setVisibility(View.VISIBLE);
+                phones.setVisibility(View.VISIBLE);
                 phones.setText(Html.fromHtml(tmp));
             } else {
-                phonesContainer.setVisibility(View.GONE);
+                phones.setVisibility(View.GONE);
             }
 
             String addressValue = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.ADDRESS));
             if (!TextUtils.isEmpty(addressValue)) {
-                addressContainer.setVisibility(View.VISIBLE);
+                address.setVisibility(View.VISIBLE);
                 address.setText(addressValue);
             } else {
-                addressContainer.setVisibility(View.GONE);
+                address.setVisibility(View.GONE);
             }
 
             tmp = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.IMAGE));
             photoUrls = tmp != null ? tmp.split(Cinema.IMAGES_SEPARATOR) : null;
             int photosCount = photoUrls != null ? photoUrls.length : 0;
-            showPhotos.setText(Html.fromHtml(getString(R.string.cinema_photos, photosCount)));
-            showPhotos.setEnabled(photosCount > 0);
+            //TODO
+//            showPhotos.setEnabled(photosCount > 0);
 
             //remember geo location
             longitude = cursor.getDouble(cursor.getColumnIndex(Tables.Cinemas.Columns.LON));
@@ -409,7 +399,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             int commentsCount = cursor.getInt(cursor.getColumnIndex(Tables.Comments.COMMENTS_COUNT));
-            showComments.setText(Html.fromHtml(getString(R.string.comments_with_count, commentsCount)));
+            //TODO
+//            showComments.setText(Html.fromHtml(getString(R.string.comments_with_count, commentsCount)));
         }
     }
 
@@ -426,19 +417,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 //
 //        setShownDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
 //    }
-
-    private class LoadCommentsNotificationReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (LoadCommentsNotification.getTargetType(intent) == Constants.CommentTargetType.CINEMA
-                && LoadCommentsNotification.getTargetId(intent) == getCinemaId()) {
-                Activity activity = getActivity();
-                if (!LoadCommentsNotification.isSuccessful(intent) && activity != null) {
-                    showErrorSnackbar(activity, R.string.error_loading_comments);
-                }
-            }
-        }
-    }
 
     private class LoadFilmsNotificationReceiver extends BroadcastReceiver {
         @Override

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,9 +50,9 @@ public class PlacesAdapter extends CursorAdapter {
         holder.rating = (RatingBar)view.findViewById(R.id.rating);
         holder.commentsCount = (TextView)view.findViewById(R.id.comments_count);
         holder.address = (TextView)view.findViewById(R.id.address);
-        setDrawablesColor(holder.address.getCompoundDrawables());
+        Utils.setDrawablesColor(drawablesColor, holder.address.getCompoundDrawables());
         holder.phones = (TextView)view.findViewById(R.id.phones);
-        setDrawablesColor(holder.phones.getCompoundDrawables());
+        Utils.setDrawablesColor(drawablesColor, holder.phones.getCompoundDrawables());
 
         view.setTag(holder);
 
@@ -87,14 +85,6 @@ public class PlacesAdapter extends CursorAdapter {
         value = cursor.getString(phonesColumnIndex);
         holder.phones.setText(value);
         holder.phones.setVisibility(TextUtils.isEmpty(value) ? View.GONE : View.VISIBLE);
-    }
-
-    private void setDrawablesColor(Drawable[] drawables) {
-        for (int i = 0; i < drawables.length; i++) {
-            if (drawables[i] != null) {
-                drawables[i].setColorFilter(drawablesColor, PorterDuff.Mode.SRC_IN);
-            }
-        }
     }
 
     private void initResources(Context context) {

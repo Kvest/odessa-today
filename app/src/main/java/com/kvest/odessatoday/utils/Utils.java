@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -93,5 +95,13 @@ public class Utils {
         }
 
         return context.getString(R.string.comments_count, commentsCount);
+    }
+
+    public static void setDrawablesColor(int color, Drawable... drawables) {
+        for (int i = 0; i < drawables.length; i++) {
+            if (drawables[i] != null) {
+                drawables[i].setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+        }
     }
 }

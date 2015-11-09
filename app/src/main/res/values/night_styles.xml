@@ -67,5 +67,7 @@
         <!--places list-->
         <item name="PlaceNameTextColor">#e1e1e1</item>
         <item name="PlacesListDrawablesColor">#787878</item>
+        <!--cinema details-->
+        <item name="CinemaDetailsBgColor">#2d2d2d</item>
     </style>
 </resources>

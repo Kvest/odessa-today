@@ -82,7 +82,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     private String shareTitle, shareText;
 
     private OnShowFilmCommentsListener onShowFilmCommentsListener;
-    private LoadCommentsNotificationReceiver commentsErrorReceiver = new LoadCommentsNotificationReceiver();
 
     @Override
     public void onAttach(Activity activity) {
@@ -161,18 +160,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(commentsErrorReceiver, new IntentFilter(LoadCommentsNotification.ACTION));
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
-
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(commentsErrorReceiver);
-
 
         if (getActivity() != null && getActivity().isFinishing()) {
             //TODO replace with the metod
@@ -475,19 +464,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             }
 
             return result;
-        }
-    }
-
-    private class LoadCommentsNotificationReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (LoadCommentsNotification.getTargetType(intent) == Constants.CommentTargetType.FILM
-                && LoadCommentsNotification.getTargetId(intent) == getFilmId()) {
-                Activity activity = getActivity();
-                if (!LoadCommentsNotification.isSuccessful(intent) && activity != null) {
-                    showErrorSnackbar(activity, R.string.error_loading_comments);
-                }
-            }
         }
     }
 }

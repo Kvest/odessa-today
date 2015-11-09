@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -27,6 +25,7 @@ import com.kvest.odessatoday.receiver.NetworkChangeReceiver;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.fragment.*;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -355,7 +354,8 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
         try {
             Drawable drawable = getResources().getDrawable(R.drawable.ic_menu);
-            drawable.setColorFilter(new PorterDuffColorFilter(ta.getColor(0, Color.WHITE), PorterDuff.Mode.SRC_IN));
+
+            Utils.setDrawablesColor(ta.getColor(0, Color.WHITE), drawable);
 
             return drawable;
         } finally {

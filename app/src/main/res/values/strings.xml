@@ -29,12 +29,8 @@
     <string name="error_loading_announcement_films">Не удалось загрузить списк анонсов фильмов</string>
     <string name="error_loading_films_timetable">Не удалось загрузить расписание фильмов</string>
     <string name="error_loading_places">Не удалось загрузить список заведений</string>
-    <string name="cinema_info">Информация о кинотеатре</string>
-    <string name="cinema_phones">Телефоны:</string>
-    <string name="cinema_address">Адрес:</string>
+    <string name="cinema_info">О кинотеатре</string>
     <string name="map_not_found">Приложение-карта не найдено</string>
-    <string name="comments_with_count"><![CDATA[Отзывы <b>%1$d</b>]]></string>
-    <string name="cinema_photos"><![CDATA[Фото <b>%1$d</b>]]></string>
     <string name="format_unknown">\?</string>
     <string name="format_thirty_fife_mm">35 MM</string>
     <string name="format_two_d">2D</string>

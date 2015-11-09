@@ -58,4 +58,5 @@
     <attr format="color" name="TimetableListCinemaAddressTextColor"/>
     <attr format="color" name="PlaceNameTextColor"/>
     <attr format="color" name="PlacesListDrawablesColor"/>
+    <attr format="color" name="CinemaDetailsBgColor"/>
 </resources>

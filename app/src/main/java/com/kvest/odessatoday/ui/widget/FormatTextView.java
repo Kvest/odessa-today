@@ -2,11 +2,7 @@ package com.kvest.odessatoday.ui.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -15,6 +11,7 @@ import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.FontUtils;
+import com.kvest.odessatoday.utils.Utils;
 
 /**
  * Created by kvest on 03.10.15.
@@ -97,7 +94,6 @@ public class FormatTextView extends TextView {
     }
 
     private void setBgColor(int colorResId) {
-        background.setColorFilter(getResources().getColor(colorResId), PorterDuff.Mode.SRC_IN);
+        Utils.setDrawablesColor(getResources().getColor(colorResId), background);
     }
-
 }

@@ -117,17 +117,14 @@
     <dimen name="cinemas_list_comments_count_margin_top">15dip</dimen>
 
     <!--cinema details-->
-    <dimen name="cinema_details_name_text_size">24sp</dimen>
-    <dimen name="cinema_details_padding">12dip</dimen>
-    <dimen name="cinema_details_header_padding_bottom">20dip</dimen>
+    <dimen name="cinema_details_padding">10dip</dimen>
+    <dimen name="cinema_details_padding_top">15dip</dimen>
+    <dimen name="cinema_details_phones_margin_top">15dip</dimen>
+    <dimen name="cinema_details_phones_drawable_padding">10dip</dimen>
+    <dimen name="cinema_details_phones_text_size">12sp</dimen>
     <dimen name="cinema_details_corner_radius">5dip</dimen>
-    <dimen name="cinema_details_phones_padding">6dip</dimen>
-    <dimen name="cinema_details_address_padding">6dip</dimen>
-    <dimen name="cinema_name_margin_bottom">8dip</dimen>
-    <dimen name="phones_container_margin_bottom">10dip</dimen>
-    <dimen name="address_container_margin_bottom">10dip</dimen>
-    <dimen name="show_on_map_min_size">40dip</dimen>
-    <dimen name="cinema_details_button_text_size">18sp</dimen>
+    <dimen name="cinema_details_address_drawable_padding">10dip</dimen>
+    <dimen name="cinema_details_address_padding_left">3dip</dimen>
 
     <dimen name="cinema_details_film_name_text_size">16sp</dimen>
     <dimen name="cinema_details_film_name_padding_top">14dip</dimen>

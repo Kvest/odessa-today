@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
@@ -7,9 +6,10 @@
         android:id="@+id/cinema_details_list"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="@color/cinema_details_list_bg"
-        android:divider="@null"
-        android:listSelector="@android:color/transparent"/>
+        android:paddingBottom="@dimen/cinema_details_padding"
+        android:background="?attr/CinemaDetailsBgColor"
+        android:listSelector="@drawable/application_list_item_selector"
+        android:divider="@null"/>
     <FrameLayout
         android:id="@+id/calendar_container"
         android:layout_width="match_parent"

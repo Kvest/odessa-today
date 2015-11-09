@@ -67,5 +67,7 @@
         <!--places list-->
         <item name="PlaceNameTextColor">#24282b</item>
         <item name="PlacesListDrawablesColor">#24282b</item>
+        <!--cinema details-->
+        <item name="CinemaDetailsBgColor">@android:color/white</item>
     </style>
 </resources>

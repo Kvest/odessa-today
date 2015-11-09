@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +72,7 @@ public class CinemasAdapter extends CursorAdapter {
 
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.address.setText(cursor.getString(addressColumnIndex));
-        setPinColor(holder.address.getCompoundDrawables());
+        Utils.setDrawablesColor(pinColor, holder.address.getCompoundDrawables());
         holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
     }
 
@@ -92,14 +90,6 @@ public class CinemasAdapter extends CursorAdapter {
             pinColor = ta.getColor(2, Color.BLACK);
         } finally {
             ta.recycle();
-        }
-    }
-
-    private void setPinColor(Drawable[] drawables) {
-        for (int i = 0; i < drawables.length; i++) {
-            if (drawables[i] != null) {
-                drawables[i].setColorFilter(pinColor, PorterDuff.Mode.SRC_IN);
-            }
         }
     }
 
