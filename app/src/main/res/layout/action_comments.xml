@@ -9,19 +9,19 @@
         android:id="@+id/action_comments_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/FilmDetailsActionBg"
+        android:background="?attr/ActionBg"
         android:textColor="@color/application_green"
         app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:textSize="@dimen/film_details_action_comments_count_text_size"/>
+        android:textSize="@dimen/action_comments_count_text_size"/>
     <com.kvest.odessatoday.ui.widget.FontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
-        android:layout_marginTop="@dimen/film_details_action_name_padding_top"
-        android:textSize="@dimen/film_details_action_name_text_size"
-        android:textColor="?attr/FilmDetailsActionNameTextColor"
-        android:text="@string/film_details_action_comments"/>
+        android:layout_marginTop="@dimen/action_name_padding_top"
+        android:textSize="@dimen/action_name_text_size"
+        android:textColor="?attr/ActionNameTextColor"
+        android:text="@string/action_comments"/>
 </LinearLayout>

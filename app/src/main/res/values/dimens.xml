@@ -35,7 +35,9 @@
     <dimen name="toolbar_horizontal_padding">10dip</dimen>
     <dimen name="title_text_size">18sp</dimen>
     <dimen name="format_text_size">8sp</dimen>
-
+    <dimen name="action_name_padding_top">8dip</dimen>
+    <dimen name="action_name_text_size">12sp</dimen>
+    <dimen name="action_comments_count_text_size">14sp</dimen>
     <dimen name="comments_count_text_size">10sp</dimen>
 
     <!--Calendar fragment-->
@@ -44,7 +46,6 @@
     <dimen name="calendar_shown_month_text_size">18sp</dimen>
     <dimen name="calendar_week_days_name_text_size">13sp</dimen>
     <dimen name="calendar_horizontal_padding">26dip</dimen>
-
     <dimen name="calendar_days_spacing">0dip</dimen>
     <dimen name="calendar_day_names_padding_top">34dip</dimen>
     <dimen name="calendar_day_names_padding_bottom">20dip</dimen>
@@ -72,9 +73,6 @@
     <dimen name="film_details_actions_size">50dip</dimen>
     <dimen name="film_details_images_container_margin_bottom">10dip</dimen>
     <dimen name="film_details_actions_margin_bottom">26dip</dimen>
-    <dimen name="film_details_action_name_padding_top">8dip</dimen>
-    <dimen name="film_details_action_name_text_size">12sp</dimen>
-    <dimen name="film_details_action_comments_count_text_size">14sp</dimen>
 
     <!--timetable list-->
     <dimen name="timetable_seance_time_margin_left">10dip</dimen>
@@ -115,6 +113,7 @@
     <dimen name="cinema_address_margin_top">15dip</dimen>
     <dimen name="cinemas_list_comments_count_text_size">8sp</dimen>
     <dimen name="cinemas_list_comments_count_margin_top">15dip</dimen>
+    <dimen name="cinema_description_text_size">14sp</dimen>
 
     <!--cinema details-->
     <dimen name="cinema_details_padding">10dip</dimen>
@@ -124,7 +123,10 @@
     <dimen name="cinema_details_phones_text_size">12sp</dimen>
     <dimen name="cinema_details_corner_radius">5dip</dimen>
     <dimen name="cinema_details_address_drawable_padding">10dip</dimen>
-    <dimen name="cinema_details_address_padding_left">3dip</dimen>
+    <dimen name="cinema_details_address_padding_left">13dip</dimen>
+    <dimen name="cinema_details_actions_layout_vertical_padding">20dip</dimen>
+    <dimen name="cinema_details_actions_margin_top">15dip</dimen>
+    <dimen name="cinema_details_actions_margin_bottom">26dip</dimen>
 
     <dimen name="cinema_details_film_name_text_size">16sp</dimen>
     <dimen name="cinema_details_film_name_padding_top">14dip</dimen>

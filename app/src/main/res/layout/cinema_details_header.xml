@@ -5,13 +5,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/cinema_details_padding"
-    android:paddingRight="@dimen/cinema_details_padding"
     android:paddingTop="@dimen/cinema_details_padding_top">
     <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/cinema_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/cinema_details_padding"
+        android:paddingRight="@dimen/cinema_details_padding"
         android:textSize="@dimen/cinema_name_text_size"
         android:textColor="?attr/CinemaNameTextColor"
         app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
@@ -19,6 +19,8 @@
         android:id="@+id/cinema_phones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/cinema_details_padding"
+        android:paddingRight="@dimen/cinema_details_padding"
         android:paddingTop="@dimen/cinema_details_phones_margin_top"
         android:drawablePadding="@dimen/cinema_details_phones_drawable_padding"
         android:drawableLeft="@drawable/ic_phone"
@@ -31,6 +33,7 @@
         android:id="@+id/cinema_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingRight="@dimen/cinema_details_padding"
         android:drawableLeft="@drawable/ic_map_pin"
         android:layout_marginTop="@dimen/cinema_address_margin_top"
         android:drawablePadding="@dimen/cinema_details_address_drawable_padding"
@@ -38,10 +41,39 @@
         android:textSize="@dimen/cinema_address_text_size"
         android:textColor="@color/cinema_address_text_color"
         app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
-    <ImageView
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_map_pin"
-        android:tint="#00ff00"/>
+        android:layout_weight="3"
+        android:background="?attr/CinemaDetailsActionsLayoutBg"
+        android:paddingTop="@dimen/cinema_details_actions_layout_vertical_padding"
+        android:paddingBottom="@dimen/cinema_details_actions_layout_vertical_padding"
+        android:layout_marginTop="@dimen/cinema_details_actions_margin_top"
+        android:layout_marginBottom="@dimen/cinema_details_actions_margin_bottom">
+        <include
+            layout="@layout/action_comments"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <include
+            layout="@layout/action_gallery"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <include
+            layout="@layout/action_map"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/cinema_details_padding"
+        android:paddingRight="@dimen/cinema_details_padding"
+        android:textSize="@dimen/cinema_description_text_size"
+        android:textColor="?attr/CinemaDescriptionTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
 </LinearLayout>

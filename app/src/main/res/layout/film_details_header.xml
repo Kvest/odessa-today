@@ -100,17 +100,17 @@
         android:paddingBottom="@dimen/film_details_actions_layout_vertical_padding"
         android:layout_marginBottom="@dimen/film_details_actions_margin_bottom">
         <include
-            layout="@layout/film_details_action_comments"
+            layout="@layout/action_comments"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />
         <include
-            layout="@layout/film_details_action_tickets"
+            layout="@layout/action_tickets"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />
         <include
-            layout="@layout/film_details_action_share"
+            layout="@layout/action_share"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />

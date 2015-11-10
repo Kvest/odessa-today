@@ -50,13 +50,16 @@
     <attr format="color" name="FilmDetailsDateDividerColor"/>
     <attr format="color" name="FilmDetailsDateTextColor"/>
     <attr format="color" name="FilmDetailsActionsLayoutBg"/>
-    <attr format="color" name="FilmDetailsActionNameTextColor"/>
+    <attr format="color" name="ActionNameTextColor"/>
+    <attr format="reference" name="ActionBg"/>
     <attr format="color" name="ActionTicketsDisabledColor"/>
     <attr format="color" name="ActionTicketsEnabledColor"/>
-    <attr format="reference" name="FilmDetailsActionBg"/>
     <attr format="color" name="TimetablePriceTextColor"/>
     <attr format="color" name="TimetableListCinemaAddressTextColor"/>
     <attr format="color" name="PlaceNameTextColor"/>
     <attr format="color" name="PlacesListDrawablesColor"/>
     <attr format="color" name="CinemaDetailsBgColor"/>
+    <attr format="color" name="CinemaDetailsDrawablesColor"/>
+    <attr format="color" name="CinemaDetailsActionsLayoutBg"/>
+    <attr format="color" name="CinemaDescriptionTextColor"/>
 </resources>

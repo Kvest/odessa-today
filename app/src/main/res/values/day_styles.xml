@@ -57,8 +57,8 @@
         <item name="FilmDetailsDateDividerColor">#e2e2e2</item>
         <item name="FilmDetailsDateTextColor">#24282b</item>
         <item name="FilmDetailsActionsLayoutBg">#f5f5f5</item>
-        <item name="FilmDetailsActionBg">@drawable/film_details_action_bg_day</item>
-        <item name="FilmDetailsActionNameTextColor">#24282b</item>
+        <item name="ActionBg">@drawable/film_details_action_bg_day</item>
+        <item name="ActionNameTextColor">#24282b</item>
         <item name="ActionTicketsDisabledColor">#d2d2d2</item>
         <item name="ActionTicketsEnabledColor">@color/application_green</item>
         <!--timetable list-->
@@ -69,5 +69,8 @@
         <item name="PlacesListDrawablesColor">#24282b</item>
         <!--cinema details-->
         <item name="CinemaDetailsBgColor">@android:color/white</item>
+        <item name="CinemaDetailsDrawablesColor">#24282b</item>
+        <item name="CinemaDetailsActionsLayoutBg">#f5f5f5</item>
+        <item name="CinemaDescriptionTextColor">#4f4f4f</item>
     </style>
 </resources>

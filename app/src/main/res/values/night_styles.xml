@@ -57,8 +57,8 @@
         <item name="FilmDetailsDateDividerColor">#4a4a4a</item>
         <item name="FilmDetailsDateTextColor">#828282</item>
         <item name="FilmDetailsActionsLayoutBg">#1b1b1b</item>
-        <item name="FilmDetailsActionBg">@drawable/film_details_action_bg_night</item>
-        <item name="FilmDetailsActionNameTextColor">#4bc6bc</item>
+        <item name="ActionBg">@drawable/film_details_action_bg_night</item>
+        <item name="ActionNameTextColor">#4bc6bc</item>
         <item name="ActionTicketsDisabledColor">#2d2d2d</item>
         <item name="ActionTicketsEnabledColor">@color/application_green</item>
         <!--timetable list-->
@@ -69,5 +69,8 @@
         <item name="PlacesListDrawablesColor">#787878</item>
         <!--cinema details-->
         <item name="CinemaDetailsBgColor">#2d2d2d</item>
+        <item name="CinemaDetailsDrawablesColor">#ff6600</item>
+        <item name="CinemaDetailsActionsLayoutBg">#1b1b1b</item>
+        <item name="CinemaDescriptionTextColor">#a5a5a5</item>
     </style>
 </resources>

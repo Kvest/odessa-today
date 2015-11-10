@@ -6,22 +6,22 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <ImageView
-        android:id="@+id/action_tickets"
+        android:id="@+id/action_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_ticket"
-        android:tint="?attr/ActionTicketsDisabledColor"
+        android:src="@drawable/ic_share"
+        android:tint="@color/application_green"
         android:scaleType="center"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:background="?attr/FilmDetailsActionBg"/>
+        android:background="?attr/ActionBg"/>
     <com.kvest.odessatoday.ui.widget.FontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
-        android:layout_marginTop="@dimen/film_details_action_name_padding_top"
-        android:textSize="@dimen/film_details_action_name_text_size"
-        android:textColor="?attr/FilmDetailsActionNameTextColor"
-        android:text="@string/film_details_action_no_tickets"/>
+        android:layout_marginTop="@dimen/action_name_padding_top"
+        android:textSize="@dimen/action_name_text_size"
+        android:textColor="?attr/ActionNameTextColor"
+        android:text="@string/action_share"/>
 </LinearLayout>

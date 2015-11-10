@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CinemaTimetableAdapter;
+import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
 import com.kvest.odessatoday.utils.Utils;
@@ -47,7 +49,6 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  */
 public class CinemaDetailsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_CINEMA_ID = "com.kvest.odessatoday.argument.CINEMA_ID";
-    public static final String[] COMMENTS_COUNT_PROJECTION = new String[]{Tables.Comments.COMMENTS_COUNT};
 
     private static final String DATE_FORMAT_PATTERN = " dd MMM. yyyy, ";
     private static final String WEEK_DAY_FORMAT_PATTERN = "cccc";
@@ -55,16 +56,19 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private final SimpleDateFormat WEEK_DAY_FORMAT = new SimpleDateFormat(WEEK_DAY_FORMAT_PATTERN);
 
     private static final int CINEMA_LOADER_ID = 1;
-    private static final int COMMENTS_COUNT_LOADER_ID = 2;
-    private static final int TIMETABLE_LOADER_ID = 3;
+    private static final int TIMETABLE_LOADER_ID = 2;
 
     private TextView cinemaName;
     private TextView phones;
     private TextView address;
+    private TextView description;
+    private CommentsCountView actionCommentsCount;
     private ListView timetableList;
     private String[] photoUrls = null;
     private double latitude = 0d;
     private double longitude = 0d;
+
+    private int drawablesColor;
 
     private TextView isToday;
     private TextView dateTextView;
@@ -124,12 +128,20 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     }
 
     private void init(View rootView, View headerView, View dateHeaderView) {
+        initResources(getActivity());
+
         cinemaName = (TextView) headerView.findViewById(R.id.cinema_name);
         phones = (TextView) headerView.findViewById(R.id.cinema_phones);
         address = (TextView) headerView.findViewById(R.id.cinema_address);
+        description = (TextView) headerView.findViewById(R.id.description);
+        actionCommentsCount = (CommentsCountView) headerView.findViewById(R.id.action_comments_count);
         isToday = (TextView)dateHeaderView.findViewById(R.id.is_today);
         dateTextView = (TextView)dateHeaderView.findViewById(R.id.date);
         weekDayTextView = (TextView)dateHeaderView.findViewById(R.id.week_day);
+
+        //colorize drawables
+        Utils.setDrawablesColor(drawablesColor, phones.getCompoundDrawables());
+        Utils.setDrawablesColor(drawablesColor, address.getCompoundDrawables());
 
         //set shown date UI
         updateShownDateUI();
@@ -141,25 +153,24 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         cinemaTimetableAdapter = new CinemaTimetableAdapter(getActivity());
         timetableList.setAdapter(cinemaTimetableAdapter);
 
-        //TODO
-//        showOnMapButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showCinemaOnMap();
-//            }
-//        });
-//        showComments.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showComments();
-//            }
-//        });
-//        showPhotos.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPhotos();
-//            }
-//        });
+        headerView.findViewById(R.id.action_map).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCinemaOnMap();
+            }
+        });
+        headerView.findViewById(R.id.action_comments_count).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showComments();
+            }
+        });
+        headerView.findViewById(R.id.action_gallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPhotos();
+            }
+        });
         dateHeaderView.findViewById(R.id.show_calendar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +183,20 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         });
 
         setupCalendar(rootView);
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.CinemaDetailsDrawablesColor};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        try {
+            drawablesColor = ta.getColor(0, Color.BLACK);
+        } finally {
+            ta.recycle();
+        }
     }
 
     private void setupCalendar(View rootView) {
@@ -188,7 +213,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         hideCalendarAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
         hideCalendarAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -196,7 +222,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
     }
 
@@ -309,10 +336,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
         //Request full timetable for the cinema for today and comments
         NetworkService.loadFilms(getActivity(), shownDate, TimeUtils.getEndOfTheDay(shownDate), getCinemaId());
-        NetworkService.loadCinemaComments(getActivity(), getCinemaId());
 
         getLoaderManager().initLoader(CINEMA_LOADER_ID, null, this);
-        getLoaderManager().initLoader(COMMENTS_COUNT_LOADER_ID, null, this);
         getLoaderManager().initLoader(TIMETABLE_LOADER_ID, null, this);
     }
 
@@ -321,9 +346,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         switch (id) {
             case CINEMA_LOADER_ID :
                 return DataProviderHelper.getCinemaLoader(getActivity(), getCinemaId(), null);
-            case COMMENTS_COUNT_LOADER_ID :
-                return DataProviderHelper.getCommentsLoader(getActivity(), getCinemaId(), Constants.CommentTargetType.CINEMA,
-                                                            COMMENTS_COUNT_PROJECTION, null);
             case TIMETABLE_LOADER_ID :
                 long endDate = TimeUtils.getEndOfTheDay(shownDate);
                 return DataProviderHelper.getCinemaTimetableLoader(getActivity(), getCinemaId(), shownDate, endDate,
@@ -338,9 +360,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         switch (loader.getId()) {
             case CINEMA_LOADER_ID :
                 setCinemaData(data);
-                break;
-            case COMMENTS_COUNT_LOADER_ID :
-                setCommentsCount(data);
                 break;
             case TIMETABLE_LOADER_ID :
                 cinemaTimetableAdapter.setCursor(data);
@@ -368,39 +387,38 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
             cinemaName.setText(cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.NAME)));
 
             String tmp = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.PHONES));
-            if (!TextUtils.isEmpty(tmp)) {
+            if (TextUtils.isEmpty(tmp)) {
+                phones.setVisibility(View.GONE);
+            } else {
                 phones.setVisibility(View.VISIBLE);
                 phones.setText(Html.fromHtml(tmp));
-            } else {
-                phones.setVisibility(View.GONE);
             }
 
             String addressValue = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.ADDRESS));
-            if (!TextUtils.isEmpty(addressValue)) {
+            if (TextUtils.isEmpty(addressValue)) {
+                address.setVisibility(View.GONE);
+            } else {
                 address.setVisibility(View.VISIBLE);
                 address.setText(addressValue);
+            }
+
+            int commentsCount = cursor.getInt(cursor.getColumnIndex(Tables.Cinemas.Columns.COMMENTS_COUNT));
+            actionCommentsCount.setCommentsCount(commentsCount);
+
+            String descriptionValue = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.DESCRIPTION));
+            if (TextUtils.isEmpty(descriptionValue)) {
+                description.setVisibility(View.GONE);
             } else {
-                address.setVisibility(View.GONE);
+                description.setVisibility(View.VISIBLE);
+                description.setText(descriptionValue);
             }
 
             tmp = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.IMAGE));
             photoUrls = tmp != null ? tmp.split(Cinema.IMAGES_SEPARATOR) : null;
-            int photosCount = photoUrls != null ? photoUrls.length : 0;
-            //TODO
-//            showPhotos.setEnabled(photosCount > 0);
 
             //remember geo location
             longitude = cursor.getDouble(cursor.getColumnIndex(Tables.Cinemas.Columns.LON));
             latitude = cursor.getDouble(cursor.getColumnIndex(Tables.Cinemas.Columns.LAT));
-        }
-    }
-
-    private void setCommentsCount(Cursor cursor) {
-        cursor.moveToFirst();
-        if (!cursor.isAfterLast()) {
-            int commentsCount = cursor.getInt(cursor.getColumnIndex(Tables.Comments.COMMENTS_COUNT));
-            //TODO
-//            showComments.setText(Html.fromHtml(getString(R.string.comments_with_count, commentsCount)));
         }
     }
 
@@ -429,7 +447,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     }
 
     public interface CinemaDetailsActionsListener {
-        public void onShowCinemaComments(long cinemaId);
-        public void onShowCinemaPhotos(String[] photoURLs);
+        void onShowCinemaComments(long cinemaId);
+        void onShowCinemaPhotos(String[] photoURLs);
     }
 }
