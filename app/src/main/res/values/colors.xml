@@ -49,10 +49,6 @@
     <!--cinema details-->
     <color name="cinema_details_row_date_text_color">#98cb00</color>
 
-    <!--complex date colors-->
-    <color name="complex_date_text_color">#ffffff</color>
-    <color name="complex_date_week_text_color">#99cc01</color>
-
     <!--main menu-->
     <color name="main_menu_subcategory_overlay_text_color">#1b1b1b</color>
 

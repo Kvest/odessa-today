@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
@@ -19,8 +18,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.datamodel.Cinema;
@@ -34,7 +31,6 @@ import com.kvest.odessatoday.utils.TimeUtils;
 import com.kvest.odessatoday.utils.Utils;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
@@ -50,10 +46,8 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
 public class CinemaDetailsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_CINEMA_ID = "com.kvest.odessatoday.argument.CINEMA_ID";
 
-    private static final String DATE_FORMAT_PATTERN = " dd MMM. yyyy, ";
-    private static final String WEEK_DAY_FORMAT_PATTERN = "cccc";
+    private static final String DATE_FORMAT_PATTERN = " dd MMMM yyyy, cccc";
     private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
-    private final SimpleDateFormat WEEK_DAY_FORMAT = new SimpleDateFormat(WEEK_DAY_FORMAT_PATTERN);
 
     private static final int CINEMA_LOADER_ID = 1;
     private static final int TIMETABLE_LOADER_ID = 2;
@@ -70,18 +64,10 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
     private int drawablesColor;
 
-    private TextView isToday;
     private TextView dateTextView;
-    private TextView weekDayTextView;
     private long shownDate;
 
     private CinemaTimetableAdapter cinemaTimetableAdapter;
-
-    private final Calendar calendar = Calendar.getInstance();
-    private FrameLayout calendarContainer;
-
-    private Animation showCalendarAnimation;
-    private Animation hideCalendarAnimation;
 
     private CinemaDetailsActionsListener cinemaDetailsActionsListener;
     private LoadFilmsNotificationReceiver filmsErrorReceiver = new LoadFilmsNotificationReceiver();
@@ -106,9 +92,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.cinema_details_fragment, container, false);
         View headerView = inflater.inflate(R.layout.cinema_details_header, null);
-        View dateHeaderView = inflater.inflate(R.layout.cinema_details_date_header, null);
 
-        init(rootView, headerView, dateHeaderView);
+        init(rootView, headerView);
 
         return rootView;
     }
@@ -127,7 +112,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(filmsErrorReceiver);
     }
 
-    private void init(View rootView, View headerView, View dateHeaderView) {
+    private void init(View rootView, View headerView) {
         initResources(getActivity());
 
         cinemaName = (TextView) headerView.findViewById(R.id.cinema_name);
@@ -135,9 +120,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         address = (TextView) headerView.findViewById(R.id.cinema_address);
         description = (TextView) headerView.findViewById(R.id.description);
         actionCommentsCount = (CommentsCountView) headerView.findViewById(R.id.action_comments_count);
-        isToday = (TextView)dateHeaderView.findViewById(R.id.is_today);
-        dateTextView = (TextView)dateHeaderView.findViewById(R.id.date);
-        weekDayTextView = (TextView)dateHeaderView.findViewById(R.id.week_day);
+        dateTextView = (TextView)headerView.findViewById(R.id.date);
 
         //colorize drawables
         Utils.setDrawablesColor(drawablesColor, phones.getCompoundDrawables());
@@ -149,7 +132,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         //setup timetable list
         timetableList = (ListView)rootView.findViewById(R.id.cinema_details_list);
         timetableList.addHeaderView(headerView);
-        timetableList.addHeaderView(dateHeaderView);
         cinemaTimetableAdapter = new CinemaTimetableAdapter(getActivity());
         timetableList.setAdapter(cinemaTimetableAdapter);
 
@@ -171,18 +153,13 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
                 showPhotos();
             }
         });
-        dateHeaderView.findViewById(R.id.show_calendar).setOnClickListener(new View.OnClickListener() {
+
+        headerView.findViewById(R.id.show_calendar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isCalendarShown()) {
-                    hideCalendar();
-                } else {
-                    showCalendar();
-                }
+                showCalendar();
             }
         });
-
-        setupCalendar(rootView);
     }
 
     private void initResources(Context context) {
@@ -199,35 +176,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         }
     }
 
-    private void setupCalendar(View rootView) {
-        calendarContainer = (FrameLayout)rootView.findViewById(R.id.calendar_container);
-        calendarContainer.setVisibility(View.INVISIBLE);
-        calendarContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideCalendar();
-            }
-        });
-
-        showCalendarAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down);
-        hideCalendarAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
-        hideCalendarAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                calendarContainer.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-    }
-
-    private void setShownDate(long shownDate) {
+    public void setShownDate(long shownDate) {
         this.shownDate = shownDate;
 
         updateShownDateUI();
@@ -240,43 +189,15 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     }
 
     private void updateShownDateUI() {
-        isToday.setVisibility(TimeUtils.isCurrentDay(shownDate) ? View.VISIBLE : View.GONE);
-        dateTextView.setText(DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(shownDate)));
-        weekDayTextView.setText(WEEK_DAY_FORMAT.format(TimeUnit.SECONDS.toMillis(shownDate)).toLowerCase());
-
+        String dateValue = (TimeUtils.isCurrentDay(shownDate) ? getString(R.string.today_marker) : "") +
+                            DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(shownDate));
+        dateTextView.setText(dateValue);
     }
 
     private void showCalendar() {
-        //set fragment
-        if (calendarContainer != null && !isCalendarShown()) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            try {
-                calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(shownDate));
-                CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
-                                                                                 calendar.get(Calendar.MONTH),
-                                                                                 calendar.get(Calendar.YEAR));
-                transaction.replace(R.id.calendar_container, calendarFragment);
-            } finally {
-                transaction.commit();
-            }
-
-            //set calendar visible
-            calendarContainer.setVisibility(View.VISIBLE);
-
-            //animate
-            calendarContainer.clearAnimation();
-            calendarContainer.startAnimation(showCalendarAnimation);
+        if (cinemaDetailsActionsListener != null) {
+            cinemaDetailsActionsListener.onShowCalendar(shownDate);
         }
-    }
-
-    private void hideCalendar() {
-        //animate
-        calendarContainer.clearAnimation();
-        calendarContainer.startAnimation(hideCalendarAnimation);
-    }
-
-    private boolean isCalendarShown() {
-        return calendarContainer.getVisibility() == View.VISIBLE;
     }
 
     private void showPhotos() {
@@ -301,16 +222,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         super.onDetach();
 
         cinemaDetailsActionsListener = null;
-    }
-
-    public boolean onBackPressed() {
-        if (isCalendarShown()) {
-            hideCalendar();
-
-            return true;
-        }
-
-        return false;
     }
 
     private void showComments() {
@@ -422,20 +333,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         }
     }
 
-//    @Override
-//    public void onDateSelected(int day, int month, int year) {
-//        //hide calendar
-//        hideCalendar();
-//
-//        //show films by selected date
-//        calendar.clear();
-//        calendar.set(Calendar.YEAR, year);
-//        calendar.set(Calendar.MONTH, month);
-//        calendar.set(Calendar.DAY_OF_MONTH, day);
-//
-//        setShownDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
-//    }
-
     private class LoadFilmsNotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -449,5 +346,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     public interface CinemaDetailsActionsListener {
         void onShowCinemaComments(long cinemaId);
         void onShowCinemaPhotos(String[] photoURLs);
+        void onShowCalendar(long withDate);
     }
 }

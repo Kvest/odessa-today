@@ -61,5 +61,9 @@
     <attr format="color" name="CinemaDetailsBgColor"/>
     <attr format="color" name="CinemaDetailsDrawablesColor"/>
     <attr format="color" name="CinemaDetailsActionsLayoutBg"/>
-    <attr format="color" name="CinemaDescriptionTextColor"/>
+    <attr format="color" name="CinemaDetailsDescriptionTextColor"/>
+    <attr format="color" name="CinemaDetailsDateDividerColor"/>
+    <attr format="color" name="CinemaDetailsDateTextColor"/>
+    <attr format="color" name="CinemaDetailsCalendarColor"/>
+    <attr format="color" name="CinemaDetailsCalendarBg"/>
 </resources>
