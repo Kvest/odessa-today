@@ -2,10 +2,8 @@ package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,9 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
@@ -27,7 +23,6 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
-import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
 import com.kvest.odessatoday.ui.activity.YoutubeFullscreenActivity;
@@ -73,6 +68,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     private View.OnClickListener onImageClickListener;
 
     private YouTubeThumbnailLoader youTubeThumbnailLoader;
+    private boolean isYoutubeInitInProgress = false;
     private ImageView videoPreview;
     private ImageView videoThumbnailLoadProgress;
     private View videoThumbnailContainer;
@@ -152,19 +148,29 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
         AnimationDrawable frameAnimation = (AnimationDrawable) videoThumbnailLoadProgress.getBackground();
         frameAnimation.start();
-
-        //TODO
-        //FilmDetailsActivity has leaked ServiceConnection - если быстро выйти, пока видео не загрузилось
-//        11-08 13:21:25.056  14613-14613/com.kvest.odessatoday E/ActivityThread﹕ Activity com.kvest.odessatoday.ui.activity.FilmDetailsActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@a0f64ff that was originally bound here
-//        android.app.ServiceConnectionLeaked: Activity com.kvest.odessatoday.ui.activity.FilmDetailsActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@a0f64ff that was originally bound here
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        if (getActivity() != null && getActivity().isFinishing()) {
-            //TODO replace with the metod
+        Activity activity = getActivity();
+        if (activity != null && activity.isFinishing()) {
+            if (youTubeThumbnailLoader != null) {
+                youTubeThumbnailLoader.release();
+                youTubeThumbnailLoader = null;
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        //one more check. In some situations happens "android.app.ServiceConnectionLeaked: Activity com.kvest.odessatoday.ui.activity.FilmDetailsActivity has leaked ServiceConnection.."
+        //try to avoid it
+        Activity activity = getActivity();
+        if (activity != null && activity.isFinishing()) {
             if (youTubeThumbnailLoader != null) {
                 youTubeThumbnailLoader.release();
                 youTubeThumbnailLoader = null;
@@ -220,10 +226,13 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
                     imagesContainer.setVisibility(View.VISIBLE);
                 }
             } else {
-                //TODO  - два вызова
                 imagesContainer.setVisibility(View.VISIBLE);
 
-                initVideoThumbnailLoading();
+                if (youTubeThumbnailLoader == null) {
+                    initVideoThumbnailLoading();
+                } else {
+                    youTubeThumbnailLoader.setVideo(trailerVideoId);
+                }
             }
 
             shareTitle = filmNameValue;
@@ -245,6 +254,14 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     @Override
     public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+        isYoutubeInitInProgress = false;
+
+        Activity activity = getActivity();
+        if (activity != null && activity.isFinishing()) {
+            youTubeThumbnailLoader.release();
+            return;
+        }
+
         this.youTubeThumbnailLoader = youTubeThumbnailLoader;
 
         youTubeThumbnailLoader.setOnThumbnailLoadedListener(this);
@@ -256,6 +273,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     @Override
     public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+        isYoutubeInitInProgress = false;
+
         LOGE(Constants.TAG, "YouTubePlayer onInitializationFailure");
 
         Activity activity = getActivity();
@@ -268,11 +287,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     @Override
     public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String videoId) {
-        if (youTubeThumbnailLoader != null) {
-            youTubeThumbnailLoader.release();
-            youTubeThumbnailLoader = null;
-        }
-
         //transform thumbnail
         Drawable thumbnail = youTubeThumbnailView.getDrawable();
 
@@ -288,11 +302,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     @Override
     public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-        if (youTubeThumbnailLoader != null) {
-            youTubeThumbnailLoader.release();
-            youTubeThumbnailLoader = null;
-        }
-
         onVideoThumbnailLoadFailed();
     }
 
@@ -307,6 +316,11 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     }
 
     private void initVideoThumbnailLoading() {
+        if (isYoutubeInitInProgress) {
+            return;
+        }
+        isYoutubeInitInProgress = true;
+
         videoThumbnailContainer.setVisibility(View.VISIBLE);
         videoThumbnailLoadProgress.setVisibility(View.VISIBLE);
         videoPreview.setVisibility(View.GONE);
