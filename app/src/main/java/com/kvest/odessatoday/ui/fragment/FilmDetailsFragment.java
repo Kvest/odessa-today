@@ -153,7 +153,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     }
 
     private void showCinema(long cinemaId) {
-        CinemaDetailsActivity.start(getActivity(), cinemaId);
+        CinemaDetailsActivity.startClearTop(getActivity(), cinemaId);
     }
 
     private void setMinMaxPrices(Cursor cursor) {

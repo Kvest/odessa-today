@@ -24,6 +24,7 @@ import com.kvest.odessatoday.datamodel.Cinema;
 import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
 import com.kvest.odessatoday.ui.adapter.CinemaTimetableAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.utils.Constants;
@@ -135,6 +136,12 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         cinemaTimetableAdapter = new CinemaTimetableAdapter(getActivity());
         timetableList.setAdapter(cinemaTimetableAdapter);
 
+        timetableList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showFilm(id);
+            }
+        });
         headerView.findViewById(R.id.action_map).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,6 +193,10 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
         //restart loader
         getLoaderManager().restartLoader(TIMETABLE_LOADER_ID, null, this);
+    }
+
+    private void showFilm(long filmId) {
+        FilmDetailsActivity.startClearTop(getActivity(), filmId, shownDate);
     }
 
     private void updateShownDateUI() {
@@ -260,7 +271,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
             case TIMETABLE_LOADER_ID :
                 long endDate = TimeUtils.getEndOfTheDay(shownDate);
                 return DataProviderHelper.getCinemaTimetableLoader(getActivity(), getCinemaId(), shownDate, endDate,
-                        CinemaTimetableAdapter.PROJECTION , Tables.CinemaTimetableView.TIMETABLE_ORDER_ASC);
+                        CinemaTimetableAdapter.PROJECTION , Tables.CinemaTimetableView.TIMETABLE_ORDER_FILM_ASC_DATE_ASC);
         }
 
         return null;

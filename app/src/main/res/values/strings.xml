@@ -49,17 +49,6 @@
     <string name="action_gallery">галерея</string>
     <string name="action_map">на карте</string>
 
-    <string-array name="formats">
-        <item>@string/format_unknown</item>
-        <item>@string/format_thirty_fife_mm</item>
-        <item>@string/format_two_d</item>
-        <item>@string/format_three_d</item>
-        <item>@string/format_imax_three_d</item>
-        <item>@string/format_imax</item>
-        <item>@string/format_five_d</item>
-        <item>@string/format_four_dx</item>
-    </string-array>
-
     <!--main menu-->
     <string name="menu_category_event">События</string>
     <string name="menu_category_place">Места</string>

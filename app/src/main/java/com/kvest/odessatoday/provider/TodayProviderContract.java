@@ -145,6 +145,7 @@ public class TodayProviderContract {
             }
 
             String TIMETABLE_ORDER_ASC = Columns.DATE + " ASC";
+            String TIMETABLE_ORDER_FILM_ASC_DATE_ASC = Columns.FILM_ID + " ASC," + Columns.DATE + " ASC";
         }
 
         interface FilmsTimetable {

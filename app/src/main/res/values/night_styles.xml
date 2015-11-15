@@ -76,5 +76,6 @@
         <item name="CinemaDetailsDateTextColor">#828282</item>
         <item name="CinemaDetailsCalendarColor">#ffffff</item>
         <item name="CinemaDetailsCalendarBg">@drawable/cinema_details_calendar_bg_night</item>
+        <item name="TimetableListFilmTextColor">#e1e1e1</item>
     </style>
 </resources>

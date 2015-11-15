@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/cinema_details_padding"
+    android:paddingRight="@dimen/cinema_details_padding">
+    <ImageView
+        android:id="@+id/arrow_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="@dimen/cinema_details_film_padding_bottom"
+        android:paddingTop="@dimen/cinema_details_film_padding_top"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/timetable_list_film_item_arrow_margin_left"
+        android:tint="?attr/DetailsArrowTint"
+        android:src="@drawable/ic_arrow_details" />
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/film_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="@dimen/cinema_details_film_padding_bottom"
+        android:paddingTop="@dimen/cinema_details_film_padding_top"
+        android:gravity="center_vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/arrow_image"
+        android:textSize="@dimen/timetable_list_film_name_text_size"
+        android:textColor="?attr/TimetableListFilmTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-bold.ttf"/>
+</RelativeLayout>

@@ -131,17 +131,11 @@
     <dimen name="cinema_details_date_height">85dip</dimen>
     <dimen name="cinema_details_date_text_size">15sp</dimen>
     <dimen name="cinema_details_date_margin_top">25dip</dimen>
-    <dimen name="cinema_details_date_margin_bottom">10dip</dimen>
-
-    <dimen name="cinema_details_film_name_text_size">16sp</dimen>
-    <dimen name="cinema_details_film_name_padding_top">14dip</dimen>
-    <dimen name="cinema_details_film_name_padding_bottom">6dip</dimen>
-    <dimen name="cinema_details_row_item_margin">6dip</dimen>
-    <dimen name="cinema_details_row_item_vertical_padding">4dip</dimen>
-    <dimen name="cinema_details_row_date_text_size">20sp</dimen>
-    <dimen name="cinema_details_row_format_text_size">14sp</dimen>
-    <dimen name="cinema_details_row_prices_text_size">12sp</dimen>
-    <dimen name="cinema_details_row_date_margin_right">8dip</dimen>
+    <dimen name="cinema_details_date_margin_bottom">4dip</dimen>
+    <dimen name="cinema_details_film_padding_bottom">10dip</dimen>
+    <dimen name="cinema_details_film_padding_top">22dip</dimen>
+    <dimen name="timetable_list_film_item_arrow_margin_left">4dip</dimen>
+    <dimen name="timetable_list_film_name_text_size">13sp</dimen>
 
     <!--PhotoGalleryFragment-->
     <dimen name="pager_indicator_vertical_margin">10dip</dimen>

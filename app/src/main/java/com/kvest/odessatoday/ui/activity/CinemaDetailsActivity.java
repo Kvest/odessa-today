@@ -46,6 +46,15 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
         context.startActivity(intent);
     }
 
+    public static void startClearTop(Context context, long cinemaId) {
+        Intent intent = new Intent(context, CinemaDetailsActivity.class);
+        intent.putExtra(EXTRA_CINEMA_ID, cinemaId);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -30,6 +30,16 @@ public class FilmDetailsActivity extends BaseActivity implements FilmDetailsFrag
         context.startActivity(intent);
     }
 
+    public static void startClearTop(Context context, long filmId, long timetableDate) {
+        Intent intent = new Intent(context, FilmDetailsActivity.class);
+        intent.putExtra(EXTRA_FILM_ID, filmId);
+        intent.putExtra(EXTRA_TIMETABLE_DATE, timetableDate);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

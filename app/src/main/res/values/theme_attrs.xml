@@ -66,4 +66,5 @@
     <attr format="color" name="CinemaDetailsDateTextColor"/>
     <attr format="color" name="CinemaDetailsCalendarColor"/>
     <attr format="color" name="CinemaDetailsCalendarBg"/>
+    <attr format="color" name="TimetableListFilmTextColor"/>
 </resources>

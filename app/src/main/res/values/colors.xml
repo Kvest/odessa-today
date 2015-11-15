@@ -46,9 +46,6 @@
     <color name="cinema_phones_text_color">#828282</color>
     <color name="cinemas_list_comments_count_text_color">#ffffff</color>
 
-    <!--cinema details-->
-    <color name="cinema_details_row_date_text_color">#98cb00</color>
-
     <!--main menu-->
     <color name="main_menu_subcategory_overlay_text_color">#1b1b1b</color>
 
