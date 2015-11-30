@@ -66,7 +66,7 @@ public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
         if (endDate >= 0) {
             builder.appendQueryParameter(NetworkContract.FilmsRequest.Params.END_DATE, Long.toString(endDate));
         }
-        if (cinemaId >=0 ) {
+        if (cinemaId >=0) {
             builder.appendQueryParameter(NetworkContract.FilmsRequest.Params.CINEMA_ID, Long.toString(cinemaId));
         }
 

@@ -64,4 +64,13 @@ public abstract class Constants {
         int SAUNA = 16;
         int BATH = 17;
     }
+
+    public interface EventType {
+        int CONCERT = 1;
+        int PARTY = 2;
+        int SPECTACLE = 3;
+        int EXHIBITION = 4;
+        int SPORT = 5;
+        int WORKSHOP = 6;
+    }
 }
