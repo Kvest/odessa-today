@@ -24,6 +24,7 @@ public class TodayProviderContract {
     static final String ANNOUNCEMENTS_PATH = "announcements";
     static final String ANNOUNCEMENT_FILMS_VIEW_PATH = "announcement_films_view";
     static final String PLACES_PATH = "places";
+    static final String EVENTS_PATH = "events";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
     public static final Uri TIMETABLE_URI = Uri.withAppendedPath(FILMS_URI, TIMETABLE_PATH);
@@ -322,6 +323,64 @@ public class TodayProviderContract {
                     + "UNIQUE(" + Columns.PLACE_ID + ", " + Columns.PLACE_TYPE + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        }
+
+        interface Events {
+            String TABLE_NAME = "events";
+
+            interface Columns extends BaseColumns {
+                String EVENT_ID = "event_id";
+                String IMAGE = "image";
+                String NAME = "name";
+                String DIRECTOR = "director";
+                String ACTORS = "actors";
+                String DESCRIPTION = "description";
+                String RATING = "rating";
+                String COMMENTS_COUNT = "comments_count";
+            }
+
+            String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.EVENT_ID + " INTEGER,"
+                    + Columns.IMAGE + " TEXT, "
+                    + Columns.NAME + " TEXT,"
+                    + Columns.DIRECTOR + " TEXT, "
+                    + Columns.ACTORS + " TEXT, "
+                    + Columns.DESCRIPTION + " TEXT, "
+                    + Columns.RATING + " REAL, "
+                    + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
+                    + "UNIQUE (" + Columns.EVENT_ID + ") ON CONFLICT REPLACE)";
+
+            String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        }
+
+        interface EventsTimetable {
+            String TABLE_NAME = "events_timetable";
+
+            interface Columns extends BaseColumns {
+                String TIMETABLE_ID = "timetable_id";
+                String EVENT_ID = "event_id";
+                String PLACE_ID = "place_id";
+                String PLACE_NAME = "place_name";
+                String DATE = "date";
+                String PRICES = "prices";
+                String HAVE_TICKETS = "have_tickets";
+            }
+
+            String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.TIMETABLE_ID + " INTEGER,"
+                    + Columns.EVENT_ID + " INTEGER,"
+                    + Columns.PLACE_ID + " INTEGER,"
+                    + Columns.PLACE_NAME + " TEXT,"
+                    + Columns.DATE + " INTEGER,"
+                    + Columns.PRICES + " TEXT,"
+                    + Columns.HAVE_TICKETS + " INTEGER DEFAULT 0, "
+                    + "UNIQUE(" + Columns.TIMETABLE_ID + ") ON CONFLICT REPLACE);";
+
+            String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+            String GET_EVENTS_ID_BY_PERIOD_SQL = "SELECT DISTINCT " + Columns.EVENT_ID + " FROM " + TABLE_NAME +
+                    " WHERE " + Columns.DATE + ">=? AND " + Columns.DATE + "<=?";
         }
     }
 }

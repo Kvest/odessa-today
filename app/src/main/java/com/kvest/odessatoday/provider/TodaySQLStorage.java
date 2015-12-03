@@ -37,6 +37,8 @@ class TodaySQLStorage extends SQLiteOpenHelper {
         db.execSQL(AnnouncementFilmsView.CREATE_VIEW_SQL);
         db.execSQL(FilmsFullTimetableView.CREATE_VIEW_SQL);
         db.execSQL(Places.CREATE_TABLE_SQL);
+        db.execSQL(Events.CREATE_TABLE_SQL);
+        db.execSQL(EventsTimetable.CREATE_TABLE_SQL);
     }
 
     @Override
@@ -48,6 +50,8 @@ class TodaySQLStorage extends SQLiteOpenHelper {
             db.execSQL(Cinemas.CREATE_TABLE_SQL);
 
             db.execSQL(Places.CREATE_TABLE_SQL);
+            db.execSQL(Events.CREATE_TABLE_SQL);
+            db.execSQL(EventsTimetable.CREATE_TABLE_SQL);
         }
     }
 

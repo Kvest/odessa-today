@@ -30,8 +30,8 @@ public class Event {
         public long id;
         @SerializedName("place_id")
         public long placeId;
-        //@SerializedName("place_name")
-        //public String placeName;
+        @SerializedName("place_name")
+        public String placeName;
         @SerializedName("date")
         public long date;
         @SerializedName("prices")
