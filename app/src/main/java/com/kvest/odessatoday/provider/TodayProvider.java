@@ -24,8 +24,8 @@ public class TodayProvider extends ContentProvider {
 
     private static final int FILM_LIST_URI_INDICATOR = 1;
     private static final int FILM_ITEM_URI_INDICATOR = 2;
-    private static final int TIMETABLE_LIST_URI_INDICATOR = 3;
-    private static final int TIMETABLE_ITEM_URI_INDICATOR = 4;
+    private static final int FILM_TIMETABLE_LIST_URI_INDICATOR = 3;
+    private static final int FILM_TIMETABLE_ITEM_URI_INDICATOR = 4;
     private static final int CINEMA_LIST_URI_INDICATOR = 5;
     private static final int CINEMA_ITEM_URI_INDICATOR = 6;
     private static final int FULL_TIMETABLE_LIST_URI_INDICATOR = 7;
@@ -37,14 +37,18 @@ public class TodayProvider extends ContentProvider {
     private static final int ANNOUNCEMENT_FILMS_LIST_VIEW_URI_INDICATOR = 13;
     private static final int PLACE_LIST_URI_INDICATOR = 14;
     private static final int PLACE_ITEM_URI_INDICATOR = 15;
+    private static final int EVENT_LIST_URI_INDICATOR = 16;
+    private static final int EVENT_ITEM_URI_INDICATOR = 17;
+    private static final int EVENT_TIMETABLE_LIST_URI_INDICATOR = 18;
+    private static final int EVENT_TIMETABLE_ITEM_URI_INDICATOR = 19;
 
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH, FILM_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/#", FILM_ITEM_URI_INDICATOR);
-        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH, TIMETABLE_LIST_URI_INDICATOR);
-        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/#", TIMETABLE_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH, FILM_TIMETABLE_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/#", FILM_TIMETABLE_ITEM_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, CINEMAS_PATH, CINEMA_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, CINEMAS_PATH + "/#", CINEMA_ITEM_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + TIMETABLE_PATH + "/" + FULL_PATH, FULL_TIMETABLE_LIST_URI_INDICATOR);
@@ -56,6 +60,10 @@ public class TodayProvider extends ContentProvider {
         uriMatcher.addURI(CONTENT_AUTHORITY, FILMS_PATH + "/" + ANNOUNCEMENTS_PATH + "/" + ANNOUNCEMENT_FILMS_VIEW_PATH, ANNOUNCEMENT_FILMS_LIST_VIEW_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, PLACES_PATH + "/#", PLACE_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, PLACES_PATH + "/#/#", PLACE_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH, EVENT_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/#", EVENT_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/" + TIMETABLE_PATH, EVENT_TIMETABLE_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/" + TIMETABLE_PATH + "/#", EVENT_TIMETABLE_ITEM_URI_INDICATOR);
     }
 
     @Override
@@ -77,9 +85,9 @@ public class TodayProvider extends ContentProvider {
                 return simpleQuery(Tables.Films.TABLE_NAME, uri, projection,
                         Tables.Films.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
-            case TIMETABLE_LIST_URI_INDICATOR :
+            case FILM_TIMETABLE_LIST_URI_INDICATOR:
                 return simpleQuery(Tables.FilmsTimetable.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
-            case TIMETABLE_ITEM_URI_INDICATOR :
+            case FILM_TIMETABLE_ITEM_URI_INDICATOR:
                 return simpleQuery(Tables.FilmsTimetable.TABLE_NAME, uri, projection,
                         Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
@@ -117,6 +125,18 @@ public class TodayProvider extends ContentProvider {
                         " AND " + Tables.Places.Columns._ID + "=" + uri.getLastPathSegment() +
                         (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
+            case EVENT_LIST_URI_INDICATOR :
+                return simpleQuery(Tables.Events.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
+            case EVENT_ITEM_URI_INDICATOR :
+                return simpleQuery(Tables.Events.TABLE_NAME, uri, projection,
+                        Tables.Events.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null), sortOrder);
+            case EVENT_TIMETABLE_LIST_URI_INDICATOR :
+                return simpleQuery(Tables.EventsTimetable.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
+            case EVENT_TIMETABLE_ITEM_URI_INDICATOR :
+                return simpleQuery(Tables.EventsTimetable.TABLE_NAME, uri, projection,
+                        Tables.EventsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null), sortOrder);
         }
 
         throw new IllegalArgumentException("Unknown uri for query : " + uri);
@@ -127,7 +147,7 @@ public class TodayProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case FILM_LIST_URI_INDICATOR :
                 return simpleInsert(Tables.Films.TABLE_NAME, uri, values);
-            case TIMETABLE_LIST_URI_INDICATOR :
+            case FILM_TIMETABLE_LIST_URI_INDICATOR:
                 return simpleInsert(Tables.FilmsTimetable.TABLE_NAME, uri, values);
             case CINEMA_LIST_URI_INDICATOR :
                 return simpleInsert(Tables.Cinemas.TABLE_NAME, uri, values);
@@ -138,6 +158,10 @@ public class TodayProvider extends ContentProvider {
             case PLACE_LIST_URI_INDICATOR :
                 values.put(Tables.Places.Columns.PLACE_TYPE, Integer.parseInt(uri.getLastPathSegment()));
                 return simpleInsert(Tables.Places.TABLE_NAME, uri, values);
+            case EVENT_LIST_URI_INDICATOR :
+                return simpleInsert(Tables.Events.TABLE_NAME, uri, values);
+            case EVENT_TIMETABLE_LIST_URI_INDICATOR :
+                return simpleInsert(Tables.EventsTimetable.TABLE_NAME, uri, values);
         }
         throw new IllegalArgumentException("Unknown uri for insert : " + uri);
     }
@@ -153,9 +177,9 @@ public class TodayProvider extends ContentProvider {
                 return simpleDelete(Tables.Films.TABLE_NAME, uri,
                         Tables.Films.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
-            case TIMETABLE_LIST_URI_INDICATOR :
+            case FILM_TIMETABLE_LIST_URI_INDICATOR:
                 return simpleDelete(Tables.FilmsTimetable.TABLE_NAME, uri, selection, selectionArgs);
-            case TIMETABLE_ITEM_URI_INDICATOR :
+            case FILM_TIMETABLE_ITEM_URI_INDICATOR:
                 return simpleDelete(Tables.FilmsTimetable.TABLE_NAME, uri,
                         Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
@@ -187,6 +211,18 @@ public class TodayProvider extends ContentProvider {
                         " AND " + Tables.Places.Columns._ID + "=" + uri.getLastPathSegment() +
                         (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
+            case EVENT_LIST_URI_INDICATOR :
+                return simpleDelete(Tables.Events.TABLE_NAME, uri, selection, selectionArgs);
+            case EVENT_ITEM_URI_INDICATOR :
+                return simpleDelete(Tables.Events.TABLE_NAME, uri,
+                        Tables.Events.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case EVENT_TIMETABLE_LIST_URI_INDICATOR :
+                return simpleDelete(Tables.EventsTimetable.TABLE_NAME, uri, selection, selectionArgs);
+            case EVENT_TIMETABLE_ITEM_URI_INDICATOR :
+                return simpleDelete(Tables.EventsTimetable.TABLE_NAME, uri,
+                        Tables.EventsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
         }
 
         throw new IllegalArgumentException("Unknown uri for delete : " + uri);
@@ -200,12 +236,12 @@ public class TodayProvider extends ContentProvider {
             case FILM_LIST_URI_INDICATOR :
                 return simpleUpdate(Tables.Films.TABLE_NAME, uri, values, selection, selectionArgs);
             case FILM_ITEM_URI_INDICATOR :
-                return simpleUpdate( Tables.Films.TABLE_NAME, uri, values,
+                return simpleUpdate(Tables.Films.TABLE_NAME, uri, values,
                         Tables.Films.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
-            case TIMETABLE_LIST_URI_INDICATOR :
+            case FILM_TIMETABLE_LIST_URI_INDICATOR:
                 return simpleUpdate(Tables.FilmsTimetable.TABLE_NAME, uri, values, selection, selectionArgs);
-            case TIMETABLE_ITEM_URI_INDICATOR :
+            case FILM_TIMETABLE_ITEM_URI_INDICATOR:
                 return simpleUpdate(Tables.FilmsTimetable.TABLE_NAME, uri, values,
                         Tables.FilmsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
@@ -236,6 +272,18 @@ public class TodayProvider extends ContentProvider {
                         Tables.Places.Columns.PLACE_TYPE + "=" + uri.getPathSegments().get(1) +
                         " AND " + Tables.Places.Columns._ID + "=" + uri.getLastPathSegment() +
                         (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case EVENT_LIST_URI_INDICATOR :
+                return simpleUpdate(Tables.Events.TABLE_NAME, uri, values, selection, selectionArgs);
+            case EVENT_ITEM_URI_INDICATOR :
+                return simpleUpdate(Tables.Events.TABLE_NAME, uri, values,
+                        Tables.Events.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case EVENT_TIMETABLE_LIST_URI_INDICATOR :
+                return simpleUpdate(Tables.EventsTimetable.TABLE_NAME, uri, values, selection, selectionArgs);
+            case EVENT_TIMETABLE_ITEM_URI_INDICATOR :
+                return simpleUpdate(Tables.EventsTimetable.TABLE_NAME, uri, values,
+                        Tables.EventsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 
