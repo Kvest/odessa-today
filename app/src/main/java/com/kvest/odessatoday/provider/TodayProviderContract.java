@@ -27,14 +27,16 @@ public class TodayProviderContract {
     static final String EVENTS_PATH = "events";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
-    public static final Uri TIMETABLE_URI = Uri.withAppendedPath(FILMS_URI, TIMETABLE_PATH);
-    public static final Uri FULL_TIMETABLE_URI = Uri.withAppendedPath(TIMETABLE_URI, FULL_PATH);
-    public static final Uri CINEMA_TIMETABLE_URI = Uri.withAppendedPath(TIMETABLE_URI, CINEMA_VIEW_PATH);
+    public static final Uri FILM_TIMETABLE_URI = Uri.withAppendedPath(FILMS_URI, TIMETABLE_PATH);
+    public static final Uri FULL_TIMETABLE_URI = Uri.withAppendedPath(FILM_TIMETABLE_URI, FULL_PATH);
+    public static final Uri CINEMA_TIMETABLE_URI = Uri.withAppendedPath(FILM_TIMETABLE_URI, CINEMA_VIEW_PATH);
     public static final Uri CINEMAS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, CINEMAS_PATH);
     public static final Uri COMMENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, COMMENTS_PATH);
     public static final Uri ANNOUNCEMENT_FILMS_URI = Uri.withAppendedPath(FILMS_URI, ANNOUNCEMENTS_PATH);
     public static final Uri ANNOUNCEMENT_FILMS_VIEW_URI = Uri.withAppendedPath(ANNOUNCEMENT_FILMS_URI, ANNOUNCEMENT_FILMS_VIEW_PATH);
     public static final Uri PLACES_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PLACES_PATH);
+    public static final Uri EVENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, EVENTS_PATH);
+    public static final Uri EVENT_TIMETABLE_URI = Uri.withAppendedPath(EVENTS_URI, TIMETABLE_PATH);
 
     public interface Tables {
         interface Films {
@@ -364,7 +366,7 @@ public class TodayProviderContract {
                 String PLACE_NAME = "place_name";
                 String DATE = "date";
                 String PRICES = "prices";
-                String HAVE_TICKETS = "have_tickets";
+                String HAS_TICKETS = "has_tickets";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
@@ -375,7 +377,7 @@ public class TodayProviderContract {
                     + Columns.PLACE_NAME + " TEXT,"
                     + Columns.DATE + " INTEGER,"
                     + Columns.PRICES + " TEXT,"
-                    + Columns.HAVE_TICKETS + " INTEGER DEFAULT 0, "
+                    + Columns.HAS_TICKETS + " INTEGER DEFAULT 0, "
                     + "UNIQUE(" + Columns.TIMETABLE_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;

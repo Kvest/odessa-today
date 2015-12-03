@@ -25,6 +25,7 @@ public class NetworkService extends IntentService {
     private static final int ACTION_UPLOAD_ALL_COMMENTS = 6;
     private static final int ACTION_LOAD_ANNOUNCEMENTS = 7;
     private static final int ACTION_LOAD_PLACES = 8;
+    private static final int ACTION_LOAD_EVENTS = 9;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
         loadFilms(context, startDate, endDate, -1);
@@ -96,6 +97,20 @@ public class NetworkService extends IntentService {
         }
     }
 
+    public static void loadEvents(Context context, long startDate, long endDate, long placeId) {
+        Intent intent = createIntent(context, ACTION_LOAD_EVENTS);
+        LoadEventsHandler.putExtras(intent, startDate, endDate, placeId);
+
+        context.startService(intent);
+    }
+
+    public static void loadEvents(Context context, long startDate, long endDate, int type) {
+        Intent intent = createIntent(context, ACTION_LOAD_EVENTS);
+        LoadEventsHandler.putExtras(intent, startDate, endDate, type);
+
+        context.startService(intent);
+    }
+
     public NetworkService() {
         super("NetworkService");
     }
@@ -139,6 +154,8 @@ public class NetworkService extends IntentService {
                 return new LoadAnnouncementsHandler();
             case ACTION_LOAD_PLACES :
                 return new LoadPlacesHandler();
+            case ACTION_LOAD_EVENTS :
+                return new LoadEventsHandler();
         }
 
         return null;

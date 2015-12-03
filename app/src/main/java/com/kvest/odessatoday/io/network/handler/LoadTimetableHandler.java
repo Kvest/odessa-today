@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.CONTENT_AUTHORITY;
-import static com.kvest.odessatoday.provider.TodayProviderContract.TIMETABLE_URI;
+import static com.kvest.odessatoday.provider.TodayProviderContract.FILM_TIMETABLE_URI;
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
@@ -71,14 +71,14 @@ public class LoadTimetableHandler extends RequestHandler {
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 
         //delete timetable for film with filmId
-        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(TIMETABLE_URI)
+        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(FILM_TIMETABLE_URI)
                 .withSelection(TodayProviderContract.Tables.FilmsTimetable.Columns.FILM_ID + "=?", new String[]{Long.toString(filmId)})
                 .build();
         operations.add(deleteOperation);
 
         //insert timetable items
         for (TimetableItem timetableItem : timetable) {
-            operations.add(ContentProviderOperation.newInsert(TIMETABLE_URI).withValues(timetableItem.getContentValues(filmId)).build());
+            operations.add(ContentProviderOperation.newInsert(FILM_TIMETABLE_URI).withValues(timetableItem.getContentValues(filmId)).build());
         }
 
         //apply
