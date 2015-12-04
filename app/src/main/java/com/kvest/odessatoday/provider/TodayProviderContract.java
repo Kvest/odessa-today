@@ -332,6 +332,7 @@ public class TodayProviderContract {
 
             interface Columns extends BaseColumns {
                 String EVENT_ID = "event_id";
+                String EVENT_TYPE = "event_type";
                 String IMAGE = "image";
                 String NAME = "name";
                 String DIRECTOR = "director";
@@ -344,6 +345,7 @@ public class TodayProviderContract {
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
                     + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Columns.EVENT_ID + " INTEGER,"
+                    + Columns.EVENT_TYPE + " INTEGER,"
                     + Columns.IMAGE + " TEXT, "
                     + Columns.NAME + " TEXT,"
                     + Columns.DIRECTOR + " TEXT, "

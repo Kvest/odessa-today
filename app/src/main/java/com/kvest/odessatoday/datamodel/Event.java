@@ -12,6 +12,8 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 public class Event {
     @SerializedName("id")
     public long id;
+    @SerializedName("type")
+    public long type;
     @SerializedName("image")
     public String image;
     @SerializedName("name")
@@ -30,8 +32,9 @@ public class Event {
     public Timetable[] timetable;
 
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues(8);
+        ContentValues values = new ContentValues(9);
         values.put(Events.Columns.EVENT_ID, id);
+        values.put(Events.Columns.EVENT_TYPE, type);
         values.put(Events.Columns.IMAGE, image);
         values.put(Events.Columns.NAME, name);
         values.put(Events.Columns.DIRECTOR, director);
@@ -58,7 +61,7 @@ public class Event {
         public boolean hasTickets;
 
         public ContentValues getContentValues(long eventId) {
-            ContentValues values = new ContentValues(6);
+            ContentValues values = new ContentValues(7);
             values.put(EventsTimetable.Columns.TIMETABLE_ID, id);
             values.put(EventsTimetable.Columns.EVENT_ID, eventId);
             values.put(EventsTimetable.Columns.PLACE_ID, placeId);
