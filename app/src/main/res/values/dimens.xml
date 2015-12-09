@@ -157,7 +157,7 @@
     <dimen name="main_menu_subcategory_icon_size">50dip</dimen>
     <dimen name="main_menu_subcategory_overlay_text_size">11sp</dimen>
 
-    <!--places-->
+    <!--places list-->
     <dimen name="places_list_item_arrow_margin_left">4dip</dimen>
     <dimen name="places_list_item_vertical_padding">14dip</dimen>
     <dimen name="places_list_item_padding_lift">10dip</dimen>
@@ -174,4 +174,18 @@
     <dimen name="places_list_item_comments_count_text_size">8sp</dimen>
     <dimen name="places_list_item_address_text_size">12sp</dimen>
     <dimen name="places_list_item_phones_text_size">12sp</dimen>
+
+    <!--events list-->
+    <dimen name="events_list_item_arrow_margin_left">4dip</dimen>
+    <dimen name="events_list_item_vertical_padding">14dip</dimen>
+    <dimen name="events_list_item_horizontal_padding">10dip</dimen>
+    <dimen name="events_list_thumbnail_image_width">120dip</dimen>
+    <dimen name="events_list_thumbnail_margin_right">25dip</dimen>
+    <dimen name="events_list_name_text_size">20sp</dimen>
+    <dimen name="events_list_ratingbar_vertical_margin">16dip</dimen>
+    <dimen name="events_list_comments_count_margin_top">14dip</dimen>
+    <dimen name="events_list_comments_count_margin_left">4dip</dimen>
+    <dimen name="events_list_item_place_name_padding_left">3dip</dimen>
+    <dimen name="events_list_item_place_name_drawable_padding">12dip</dimen>
+    <dimen name="events_list_item_small_text_size">12sp</dimen>
 </resources>

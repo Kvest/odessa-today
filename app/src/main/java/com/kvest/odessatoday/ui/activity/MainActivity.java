@@ -267,6 +267,30 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 replaceFragment(FilmsFragment.getInstance());
                 setTitle(R.string.menu_films);
                 break;
+            case MainMenuFragment.MENU_CONCERT_ID :
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.CONCERT));
+                setTitle(R.string.menu_concert);
+                break;
+            case MainMenuFragment.MENU_PARTY_ID :
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.PARTY));
+                setTitle(R.string.menu_party);
+                break;
+            case MainMenuFragment.MENU_SPECTACLE_ID :
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.SPECTACLE));
+                setTitle(R.string.menu_spectacle);
+                break;
+            case MainMenuFragment.MENU_EXHIBITION_ID :
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.EXHIBITION));
+                setTitle(R.string.menu_exhibition);
+                break;
+            case MainMenuFragment.MENU_SPORT_ID :
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.SPORT));
+                setTitle(R.string.menu_sport);
+                break;
+            case MainMenuFragment.MENU_WORKSHOP_ID :
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.WORKSHOP));
+                setTitle(R.string.menu_workshop);
+                break;
             case MainMenuFragment.MENU_CINEMA_ID :
                 replaceFragment(CinemasListFragment.getInstance());
                 setTitle(R.string.menu_cinema);

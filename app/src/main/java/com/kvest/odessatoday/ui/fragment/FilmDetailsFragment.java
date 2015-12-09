@@ -217,7 +217,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
                 return DataProviderHelper.getFilmsFullTimetableLoader(getActivity(), getFilmId(),
                                                                       shownTimetableDate, endDate,
                                                                       TimetableAdapter.PROJECTION,
-                                                                      Tables.FilmsFullTimetableView.TIMETABLE_ORDER_CINEMA_ASC_DATE_ASC);
+                                                                      Tables.FilmsFullTimetableView.ORDER_CINEMA_ASC_DATE_ASC);
         }
 
         return null;

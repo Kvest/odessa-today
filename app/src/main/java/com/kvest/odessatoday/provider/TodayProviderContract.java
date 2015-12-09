@@ -25,6 +25,7 @@ public class TodayProviderContract {
     static final String ANNOUNCEMENT_FILMS_VIEW_PATH = "announcement_films_view";
     static final String PLACES_PATH = "places";
     static final String EVENTS_PATH = "events";
+    static final String EVENTS_VIEW_PATH = "events_view";
 
     public static final Uri FILMS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, FILMS_PATH);
     public static final Uri FILM_TIMETABLE_URI = Uri.withAppendedPath(FILMS_URI, TIMETABLE_PATH);
@@ -36,7 +37,8 @@ public class TodayProviderContract {
     public static final Uri ANNOUNCEMENT_FILMS_VIEW_URI = Uri.withAppendedPath(ANNOUNCEMENT_FILMS_URI, ANNOUNCEMENT_FILMS_VIEW_PATH);
     public static final Uri PLACES_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PLACES_PATH);
     public static final Uri EVENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, EVENTS_PATH);
-    public static final Uri EVENT_TIMETABLE_URI = Uri.withAppendedPath(EVENTS_URI, TIMETABLE_PATH);
+    public static final Uri EVENTS_TIMETABLE_URI = Uri.withAppendedPath(EVENTS_URI, TIMETABLE_PATH);
+    public static final Uri EVENTS_TIMETABLE_VIEW_URI = Uri.withAppendedPath(EVENTS_TIMETABLE_URI, EVENTS_VIEW_PATH);
 
     public interface Tables {
         interface Films {
@@ -110,8 +112,8 @@ public class TodayProviderContract {
                 String CINEMA_COMMENTS_COUNT = "comments_count";
             }
 
-            String TIMETABLE_ORDER_ASC = Columns.DATE + " ASC";
-            String TIMETABLE_ORDER_CINEMA_ASC_DATE_ASC = Columns.CINEMA_ID + " ASC," + Columns.DATE + " ASC";
+            String ORDER_ASC = Columns.DATE + " ASC";
+            String ORDER_CINEMA_ASC_DATE_ASC = Columns.CINEMA_ID + " ASC," + Columns.DATE + " ASC";
         }
 
         interface CinemaTimetableView {
@@ -147,8 +149,8 @@ public class TodayProviderContract {
                 String POSTERS = "posters";
             }
 
-            String TIMETABLE_ORDER_ASC = Columns.DATE + " ASC";
-            String TIMETABLE_ORDER_FILM_ASC_DATE_ASC = Columns.FILM_ID + " ASC," + Columns.DATE + " ASC";
+            String ORDER_ASC = Columns.DATE + " ASC";
+            String ORDER_FILM_ASC_DATE_ASC = Columns.FILM_ID + " ASC," + Columns.DATE + " ASC";
         }
 
         interface FilmsTimetable {
@@ -356,6 +358,8 @@ public class TodayProviderContract {
                     + "UNIQUE (" + Columns.EVENT_ID + ") ON CONFLICT REPLACE)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+            String GET_EVENTS_ID_BY_TYPE_SQL = "SELECT DISTINCT " + Columns.EVENT_ID + " FROM " + TABLE_NAME +
+                                               " WHERE " + Columns.EVENT_TYPE + "=?";
         }
 
         interface EventsTimetable {
@@ -385,6 +389,36 @@ public class TodayProviderContract {
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String GET_EVENTS_ID_BY_PERIOD_SQL = "SELECT DISTINCT " + Columns.EVENT_ID + " FROM " + TABLE_NAME +
                     " WHERE " + Columns.DATE + ">=? AND " + Columns.DATE + "<=?";
+        }
+
+        interface EventsTimetableView {
+            String VIEW_NAME = "events_full_timetable_view";
+            String CREATE_VIEW_SQL = "CREATE VIEW IF NOT EXISTS " + VIEW_NAME + " AS SELECT * FROM " +
+                                     EventsTimetable.TABLE_NAME + " LEFT OUTER JOIN " + Events.TABLE_NAME + " ON " +
+                                     EventsTimetable.TABLE_NAME + "." + EventsTimetable.Columns.EVENT_ID + "=" +
+                                     Events.TABLE_NAME + "." + Events.Columns.EVENT_ID;
+
+            interface Columns extends BaseColumns {
+                String TIMETABLE_ID = "timetable_id";
+                String EVENT_ID = "event_id";
+                String PLACE_ID = "place_id";
+                String PLACE_NAME = "place_name";
+                String DATE = "date";
+                String PRICES = "prices";
+                String HAS_TICKETS = "has_tickets";
+                String _ID1 = "_id:1";
+                String EVENT_ID1 = "event_id:1";
+                String EVENT_TYPE = "event_type";
+                String IMAGE = "image";
+                String NAME = "name";
+                String DIRECTOR = "director";
+                String ACTORS = "actors";
+                String DESCRIPTION = "description";
+                String RATING = "rating";
+                String COMMENTS_COUNT = "comments_count";
+            }
+
+            String ORDER_ASC = Columns.DATE + " ASC";
         }
     }
 }

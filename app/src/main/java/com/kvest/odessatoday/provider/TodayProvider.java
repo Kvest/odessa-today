@@ -41,6 +41,7 @@ public class TodayProvider extends ContentProvider {
     private static final int EVENT_ITEM_URI_INDICATOR = 17;
     private static final int EVENT_TIMETABLE_LIST_URI_INDICATOR = 18;
     private static final int EVENT_TIMETABLE_ITEM_URI_INDICATOR = 19;
+    private static final int EVENT_TIMETABLE_VIEW_LIST_URI_INDICATOR = 20;
 
     private static final UriMatcher uriMatcher;
     static {
@@ -64,6 +65,7 @@ public class TodayProvider extends ContentProvider {
         uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/#", EVENT_ITEM_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/" + TIMETABLE_PATH, EVENT_TIMETABLE_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/" + TIMETABLE_PATH + "/#", EVENT_TIMETABLE_ITEM_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/" + TIMETABLE_PATH + "/" + EVENTS_VIEW_PATH, EVENT_TIMETABLE_VIEW_LIST_URI_INDICATOR);
     }
 
     @Override
@@ -137,6 +139,8 @@ public class TodayProvider extends ContentProvider {
                 return simpleQuery(Tables.EventsTimetable.TABLE_NAME, uri, projection,
                         Tables.EventsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null), sortOrder);
+            case EVENT_TIMETABLE_VIEW_LIST_URI_INDICATOR :
+                return simpleQuery(Tables.EventsTimetableView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
         }
 
         throw new IllegalArgumentException("Unknown uri for query : " + uri);

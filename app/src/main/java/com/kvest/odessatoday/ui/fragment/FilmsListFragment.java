@@ -209,7 +209,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
                 long startDate = date;
                 long endDate = TimeUtils.getEndOfTheDay(startDate);
 
-                return DataProviderHelper.getFilmsForPeriodLoader(getActivity(), startDate, endDate, FilmsAdapter.PROJECTION, null);
+                return DataProviderHelper.getFilmsForPeriodLoader(getActivity(), startDate, endDate, FilmsAdapter.PROJECTION);
             default :
                 return null;
         }
