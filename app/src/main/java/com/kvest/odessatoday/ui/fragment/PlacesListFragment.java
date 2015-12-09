@@ -127,7 +127,7 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == PLACES_LOADER_ID) {
-            return DataProviderHelper.getPlacesLoader(getActivity(), getPlaceType(), PlacesAdapter.PROJECTION, null);
+            return DataProviderHelper.getPlacesLoader(getActivity(), getPlaceType(), PlacesAdapter.PROJECTION);
         }
 
         return null;
@@ -154,7 +154,10 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     @Override
     public void onRefresh() {
         //Request places
-        NetworkService.loadPlaces(getActivity(), getPlaceType());;
+        Context context = getActivity();
+        if (context != null) {
+            NetworkService.loadPlaces(context, getPlaceType());;
+        }
     }
 
     private int getPlaceType() {

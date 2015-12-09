@@ -67,4 +67,5 @@
     <attr format="color" name="CinemaDetailsCalendarColor"/>
     <attr format="color" name="CinemaDetailsCalendarBg"/>
     <attr format="color" name="TimetableListFilmTextColor"/>
+    <attr format="color" name="EventNameTextColor"/>
 </resources>

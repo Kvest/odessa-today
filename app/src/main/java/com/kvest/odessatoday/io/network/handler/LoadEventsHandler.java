@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.CONTENT_AUTHORITY;
 import static com.kvest.odessatoday.provider.TodayProviderContract.EVENTS_URI;
-import static com.kvest.odessatoday.provider.TodayProviderContract.EVENT_TIMETABLE_URI;
+import static com.kvest.odessatoday.provider.TodayProviderContract.EVENTS_TIMETABLE_URI;
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
@@ -39,10 +39,10 @@ public class LoadEventsHandler extends RequestHandler {
     private static final String SELECTION_WITH_PLACE_ID = TodayProviderContract.Tables.EventsTimetable.Columns.DATE + ">=? AND " +
                                                           TodayProviderContract.Tables.EventsTimetable.Columns.DATE + "<=? AND " +
                                                           TodayProviderContract.Tables.EventsTimetable.Columns.PLACE_ID + "=?";
-    //TODO
-    private static final String SELECTION_WITH_TYPE = ""/*TodayProviderContract.Tables.EventsTimetable.Columns.DATE + ">=? AND " +
-            TodayProviderContract.Tables.EventsTimetable.Columns.DATE + "<=? AND " +
-            TodayProviderContract.Tables.EventsTimetable.Columns. + "=?"*/;
+
+    private static final String SELECTION_WITH_TYPE = TodayProviderContract.Tables.EventsTimetable.Columns.DATE + ">=? AND " +
+                                                      TodayProviderContract.Tables.EventsTimetable.Columns.DATE + "<=? AND " +
+                                                      TodayProviderContract.Tables.EventsTimetable.Columns.EVENT_ID + " in (" + TodayProviderContract.Tables.Events.GET_EVENTS_ID_BY_TYPE_SQL + ")";
 
     public static void putExtras(Intent intent, long startDate, long endDate, long placeId) {
         intent.putExtra(EXTRA_START_DATE, startDate);
@@ -109,12 +109,12 @@ public class LoadEventsHandler extends RequestHandler {
 
         //delete timetable from startDate to endDate
         if (type == EMPTY_TYPE) {
-            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(EVENT_TIMETABLE_URI)
+            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(EVENTS_TIMETABLE_URI)
                     .withSelection(SELECTION_WITH_PLACE_ID, new String[]{Long.toString(startDate), Long.toString(endDate), Long.toString(placeId)})
                     .build();
             operations.add(deleteOperation);
         } else {
-            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(EVENT_TIMETABLE_URI)
+            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(EVENTS_TIMETABLE_URI)
                     .withSelection(SELECTION_WITH_TYPE, new String[]{Long.toString(startDate), Long.toString(endDate), Integer.toString(type)})
                     .build();
             operations.add(deleteOperation);
@@ -126,7 +126,7 @@ public class LoadEventsHandler extends RequestHandler {
 
             //insert timetable
             for (Event.Timetable timetableItem : event.timetable) {
-                operations.add(ContentProviderOperation.newInsert(EVENT_TIMETABLE_URI).withValues(timetableItem.getContentValues(event.id)).build());
+                operations.add(ContentProviderOperation.newInsert(EVENTS_TIMETABLE_URI).withValues(timetableItem.getContentValues(event.id)).build());
             }
         }
 

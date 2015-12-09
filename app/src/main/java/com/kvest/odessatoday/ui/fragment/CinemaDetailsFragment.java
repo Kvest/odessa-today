@@ -271,7 +271,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
             case TIMETABLE_LOADER_ID :
                 long endDate = TimeUtils.getEndOfTheDay(shownDate);
                 return DataProviderHelper.getCinemaTimetableLoader(getActivity(), getCinemaId(), shownDate, endDate,
-                        CinemaTimetableAdapter.PROJECTION , Tables.CinemaTimetableView.TIMETABLE_ORDER_FILM_ASC_DATE_ASC);
+                        CinemaTimetableAdapter.PROJECTION , Tables.CinemaTimetableView.ORDER_FILM_ASC_DATE_ASC);
         }
 
         return null;

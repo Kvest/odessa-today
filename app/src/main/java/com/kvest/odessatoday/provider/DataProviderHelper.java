@@ -56,10 +56,10 @@ public abstract class DataProviderHelper {
                                 order);
     }
 
-    public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate, String[] projection, String order) {
+    public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate, String[] projection) {
         String selection = Tables.Films.Columns.FILM_ID + " in (" + Tables.FilmsTimetable.GET_FILMS_ID_BY_PERIOD_SQL + ")";
         return new CursorLoader(context, TodayProviderContract.FILMS_URI, projection, selection,
-                                new String[]{Long.toString(startDate), Long.toString(endDate)}, order);
+                                new String[]{Long.toString(startDate), Long.toString(endDate)}, null);
     }
 
     public static CursorLoader getFilmLoader(Context context, long filmId, String[] projection) {
@@ -79,11 +79,17 @@ public abstract class DataProviderHelper {
         return new CursorLoader(context, CINEMAS_URI, projection, null, null, order);
     }
 
-    public static CursorLoader getPlacesLoader(Context context, int placeType, String[] projection, String order) {
+    public static CursorLoader getPlacesLoader(Context context, int placeType, String[] projection) {
         Uri uri = Uri.withAppendedPath(PLACES_URI, Integer.toString(placeType));
-        return new CursorLoader(context, uri, projection, null, null, order);
+        return new CursorLoader(context, uri, projection, null, null, null);
     }
 
+    public static CursorLoader getFullEventsForPeriodLoader(Context context, int eventType, long startDate, long endDate, String[] projection, String order) {
+        String selection = Tables.Events.Columns.EVENT_ID + " in (" + Tables.EventsTimetable.GET_EVENTS_ID_BY_PERIOD_SQL + ") AND " +
+                           Tables.Events.Columns.EVENT_TYPE + "=?";
+        return new CursorLoader(context, TodayProviderContract.EVENTS_TIMETABLE_VIEW_URI, projection, selection,
+                                new String[]{Long.toString(startDate), Long.toString(endDate), Integer.toString(eventType)}, order);
+    }
 
     public static CursorLoader getCinemaLoader(Context context, long cinemaId, String[] projection) {
         String selection = Tables.Cinemas.Columns.CINEMA_ID + "=?";

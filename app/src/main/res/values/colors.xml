@@ -53,4 +53,7 @@
     <color name="places_list_item_address_text_color">#828282</color>
     <color name="places_list_item_phones_text_color">#828282</color>
     <color name="places_list_item_comments_count_text_color">@android:color/white</color>
+
+    <!--events lis-->
+    <color name="events_list_item_grey">#bcbcbc</color>
 </resources>
