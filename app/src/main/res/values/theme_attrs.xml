@@ -29,6 +29,7 @@
     <attr format="color" name="MapPinColor"/>
     <attr format="color" name="CategorySelectorBgColor"/>
     <attr format="color" name="CategorySelectorDividerColor"/>
+    <attr format="reference" name="SelectorBg"/>
     <attr format="reference" name="LeftSelectorBg"/>
     <attr format="reference" name="MiddleSelectorBg"/>
     <attr format="reference" name="RightSelectorBg"/>

@@ -1,7 +1,6 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
-
 import com.google.gson.annotations.SerializedName;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
