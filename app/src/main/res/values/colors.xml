@@ -11,8 +11,9 @@
     <color name="ab_icon_color_day">#ffffff</color>
     <color name="ab_icon_color_night">#1b1b1b</color>
     <color name="format_text_color">@android:color/white</color>
+    <color name="selector_bg_color_day">#bcbcbc</color>
 
-    <!--film fromat bg color-->
+    <!--film format bg color-->
     <color name="format_unknown">#cac847</color>
     <color name="format_thirty_fife_mm">#5e899d</color>
     <color name="format_two_d">#49ce49</color>

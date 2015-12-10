@@ -8,6 +8,7 @@
         <item name="CategorySelectorBgColor">#f9f9f9</item>
         <item name="CategorySelectorDividerColor">#e1e1e1</item>
         <item name="SelectorBg">@drawable/selector_bg_day</item>
+        <item name="SelectorDividerColor">@color/selector_bg_color_day</item>
         <item name="LeftSelectorBg">@drawable/left_selector_bg_day</item>
         <item name="MiddleSelectorBg">@drawable/middle_selector_bg_day</item>
         <item name="RightSelectorBg">@drawable/right_selector_bg_day</item>

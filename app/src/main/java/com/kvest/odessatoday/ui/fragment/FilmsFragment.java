@@ -37,6 +37,7 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
 
     private ViewPager fragmentsPager;
     private RadioGroup categorySelector;
+    private View leftDivider, rightDivider;
     private FilmsFragmentPagerAdapter pagerAdapter;
 
     private View toolbarExtension;
@@ -107,6 +108,9 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         fragmentsPager.setAdapter(pagerAdapter);
 
         //category selector
+        leftDivider = view.findViewById(R.id.selector_divider_left);
+        rightDivider = view.findViewById(R.id.selector_divider_right);
+        setSelectorDividersVisibility(false, true);
         categorySelector = (RadioGroup)view.findViewById(R.id.category_selector);
         categorySelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -115,14 +119,17 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
                     case R.id.selector_timetable:
                         fragmentsPager.setCurrentItem(FILMS_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.VISIBLE);
+                        setSelectorDividersVisibility(false, true);
                         break;
                     case R.id.selector_cinemas:
                         fragmentsPager.setCurrentItem(CINEMAS_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.GONE);
+                        setSelectorDividersVisibility(false, false);
                         break;
                     case R.id.selector_announcements:
                         fragmentsPager.setCurrentItem(ANNOUNCEMENTS_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.GONE);
+                        setSelectorDividersVisibility(true, false);
                         break;
                 }
             }
@@ -154,6 +161,11 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
             mainMenuController.unlockMenuSliding();
         }
         mainMenuController = null;
+    }
+
+    private void setSelectorDividersVisibility(boolean isLeftVisible, boolean isRightVisible) {
+        leftDivider.setVisibility(isLeftVisible ? View.VISIBLE : View.GONE);
+        rightDivider.setVisibility(isRightVisible ? View.VISIBLE : View.GONE);
     }
 
     public void showFilmsByDate(long date) {

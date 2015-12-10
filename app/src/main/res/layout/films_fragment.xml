@@ -24,7 +24,11 @@
                 android:background="?attr/LeftSelectorBg"
                 style="@style/CategorySelectorRadioButton"
                 android:text="@string/selector_timetable" />
-
+            <View
+                android:id="@+id/selector_divider_left"
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:background="?attr/SelectorDividerColor"/>
             <RadioButton
                 android:id="@+id/selector_cinemas"
                 android:layout_width="0dip"
@@ -33,7 +37,11 @@
                 android:background="?attr/MiddleSelectorBg"
                 style="@style/CategorySelectorRadioButton"
                 android:text="@string/selector_cinemas" />
-
+            <View
+                android:id="@+id/selector_divider_right"
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:background="?attr/SelectorDividerColor"/>
             <RadioButton
                 android:id="@+id/selector_announcements"
                 android:layout_width="0dip"
