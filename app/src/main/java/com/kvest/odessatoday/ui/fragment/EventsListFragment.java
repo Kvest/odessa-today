@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,12 +14,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.network.event.EventsLoaded;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.EventsAdapter;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
+import com.squareup.otto.Subscribe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +31,7 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 /**
  * Created by roman on 12/8/15.
  */
-public class EventsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+public class EventsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     private static final String ARGUMENT_EVENT_TYPE = "com.kvest.odessatoday.argument.EVENT_TYPE";
     private static final int EVENTS_LOADER_ID = 1;
 
@@ -105,11 +107,39 @@ public class EventsListFragment extends Fragment implements LoaderManager.Loader
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
 
         //stop progress
         refreshLayout.setRefreshing(false);
+
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void onEventsLoaded(EventsLoaded event) {
+        if (event.getType() == getEventType()) {
+            //event dispatched not in the UI thread
+            refreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLayout.setRefreshing(false);
+                }
+            });
+
+
+            Activity activity = getActivity();
+            if (!event.isSuccessful() && activity != null) {
+                showErrorSnackbar(activity, R.string.error_loading_events);
+            }
+        }
     }
 
     @Override

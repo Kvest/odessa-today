@@ -173,6 +173,7 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     private class LoadPlacesNotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            //TODO use type of the place loading and check if the type from event is the same(see EventsListFragment)
             refreshLayout.setRefreshing(false);
 
             Activity activity = getActivity();
