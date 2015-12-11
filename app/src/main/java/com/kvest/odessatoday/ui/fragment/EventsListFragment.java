@@ -148,7 +148,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
             long startDate = date;
             long endDate = TimeUtils.getEndOfTheDay(startDate);
 
-            //TODO проверить сортировку
             return DataProviderHelper.getFullEventsForPeriodLoader(getActivity(), getEventType(), startDate, endDate, EventsAdapter.PROJECTION, TodayProviderContract.Tables.EventsTimetableView.ORDER_ASC);
         }
 

@@ -187,5 +187,11 @@
     <dimen name="events_list_comments_count_margin_left">4dip</dimen>
     <dimen name="events_list_item_place_name_padding_left">3dip</dimen>
     <dimen name="events_list_item_place_name_drawable_padding">12dip</dimen>
+    <dimen name="events_list_item_date_drawable_padding">10dip</dimen>
+    <dimen name="events_list_item_prices_drawable_padding">10dip</dimen>
+    <dimen name="events_list_item_info_padding_bottom">6dip</dimen>
     <dimen name="events_list_item_small_text_size">12sp</dimen>
+    <dimen name="events_list_has_tickets_text_size">11sp</dimen>
+    <dimen name="events_list_has_tickets_padding_vertical">3dip</dimen>
+    <dimen name="events_list_has_tickets_padding_horizontal">5dip</dimen>
 </resources>

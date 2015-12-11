@@ -56,5 +56,6 @@
     <color name="places_list_item_comments_count_text_color">@android:color/white</color>
 
     <!--events lis-->
-    <color name="events_list_item_grey">#bcbcbc</color>
+    <color name="events_list_item_grey">#828282</color>
+    <color name="events_list_has_tickets_text_color">#24282b</color>
 </resources>

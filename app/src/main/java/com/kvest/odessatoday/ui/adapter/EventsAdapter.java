@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.utils.Utils;
+
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 /**
@@ -36,7 +39,10 @@ public class EventsAdapter extends CursorAdapter {
     private int dateColumnIndex = -1;
     private int pricesColumnIndex = -1;
     private int hasTicketsColumnIndex = -1;
-    private int evenItemBgColor, oddItemBgColor;
+
+    private int evenItemBgColor, oddItemBgColor, drawablesColor, hasTicketsDrawablesColor;
+
+    private SimpleDateFormat dateFormat;
 
     public EventsAdapter(Context context) {
         super(context, null, 0);
@@ -59,6 +65,13 @@ public class EventsAdapter extends CursorAdapter {
         holder.rating = (RatingBar)view.findViewById(R.id.event_rating);
         holder.commentsCount = (TextView) view.findViewById(R.id.comments_count);
         holder.placeName = (TextView) view.findViewById(R.id.place_name);
+        Utils.setDrawablesColor(drawablesColor, holder.placeName.getCompoundDrawables());
+        holder.date = (TextView) view.findViewById(R.id.event_date);
+        Utils.setDrawablesColor(drawablesColor, holder.date.getCompoundDrawables());
+        holder.prices = (TextView) view.findViewById(R.id.event_prices);
+        Utils.setDrawablesColor(drawablesColor, holder.prices.getCompoundDrawables());
+        holder.hasTickets = (TextView) view.findViewById(R.id.has_tickets);
+        Utils.setDrawablesColor(hasTicketsDrawablesColor, holder.hasTickets.getCompoundDrawables());
 
         view.setTag(holder);
 
@@ -81,7 +94,18 @@ public class EventsAdapter extends CursorAdapter {
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
         holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
         holder.placeName.setText(cursor.getString(placeNameColumnIndex));
-        //TODO
+        holder.date.setText(dateFormat.format(TimeUnit.SECONDS.toMillis(cursor.getLong(dateColumnIndex))));
+
+        //prices can be empty
+        String prices = cursor.getString(pricesColumnIndex);
+        if (TextUtils.isEmpty(prices)) {
+            holder.prices.setVisibility(View.GONE);
+        } else {
+            holder.prices.setText(prices);
+            holder.prices.setVisibility(View.VISIBLE);
+        }
+
+        holder.hasTickets.setVisibility(cursor.getInt(hasTicketsColumnIndex) != 0 ? View.VISIBLE : View.GONE);
     }
 
     private boolean isColumnIndexesCalculated() {
@@ -113,6 +137,10 @@ public class EventsAdapter extends CursorAdapter {
         } finally {
             ta.recycle();
         }
+
+        drawablesColor = context.getResources().getColor(R.color.events_list_item_grey);
+        dateFormat = new SimpleDateFormat(context.getString(R.string.events_list_date_format));
+        hasTicketsDrawablesColor = Color.WHITE;
     }
 
     private static class ViewHolder {
@@ -121,5 +149,8 @@ public class EventsAdapter extends CursorAdapter {
         private RatingBar rating;
         private TextView commentsCount;
         private TextView placeName;
+        private TextView date;
+        private TextView prices;
+        private TextView hasTickets;
     }
 }

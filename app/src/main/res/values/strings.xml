@@ -49,6 +49,8 @@
     <string name="action_tickets">билеты</string>
     <string name="action_gallery">галерея</string>
     <string name="action_map">на карте</string>
+    <string name="events_list_date_format">dd MMMM в HH:mm</string>
+    <string name="has_tickets">есть билеты</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>
@@ -79,4 +81,5 @@
     <string name="menu_sauna">Сауны</string>
     <string name="menu_bath">Бани</string>
     <string name="soon">скоро</string>
+
 </resources>

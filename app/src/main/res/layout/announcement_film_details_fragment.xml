@@ -47,7 +47,7 @@
                     android:id="@+id/premiere_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_premiere_date"
+                    android:drawableLeft="@drawable/ic_ok"
                     android:drawablePadding="4dip"
                     android:textColor="@color/premiere_date_text_color"
                     android:textSize="@dimen/premiere_date_text_size"
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/film_duration_icon_margin_right"
-                    android:src="@drawable/ic_film_duration"/>
+                    android:src="@drawable/ic_time"/>
                 <com.kvest.odessatoday.ui.widget.FontTextView
                     android:id="@+id/film_duration"
                     android:layout_width="wrap_content"
