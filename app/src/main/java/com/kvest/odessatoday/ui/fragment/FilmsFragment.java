@@ -204,36 +204,6 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         }
     }
 
-    public class FilmsFragmentPagerAdapter extends FragmentPagerAdapter {
-        private static final int FRAGMENTS_COUNT = 3;
-
-        public FilmsFragmentPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int index) {
-            switch (index) {
-                case FILMS_LIST_FRAGMENT_POSITION:
-                    FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-                    filmsListFragment.setDateChangedListener(FilmsFragment.this);
-                    return filmsListFragment;
-                case CINEMAS_LIST_FRAGMENT_POSITION:
-                    return CinemasListFragment.getInstance();
-                case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION:
-                    AnnouncementFilmsListFragment announcementFilmsListFragment = AnnouncementFilmsListFragment.getInstance();
-                    return announcementFilmsListFragment;
-                default :
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return FRAGMENTS_COUNT;
-        }
-    }
-
     @Override
     public int getExtensionLayoutId() {
         return R.layout.toolbar_extension_with_calendar;
@@ -263,5 +233,35 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
                 }
             }
         });
+    }
+
+    public class FilmsFragmentPagerAdapter extends FragmentPagerAdapter {
+        private static final int FRAGMENTS_COUNT = 3;
+
+        public FilmsFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int index) {
+            switch (index) {
+                case FILMS_LIST_FRAGMENT_POSITION:
+                    FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                    filmsListFragment.setDateChangedListener(FilmsFragment.this);
+                    return filmsListFragment;
+                case CINEMAS_LIST_FRAGMENT_POSITION:
+                    return CinemasListFragment.getInstance();
+                case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION:
+                    AnnouncementFilmsListFragment announcementFilmsListFragment = AnnouncementFilmsListFragment.getInstance();
+                    return announcementFilmsListFragment;
+                default :
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return FRAGMENTS_COUNT;
+        }
     }
 }

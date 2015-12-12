@@ -41,7 +41,7 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
 
     private LoadPlacesNotificationReceiver receiver = new LoadPlacesNotificationReceiver();
 
-    public static PlacesListFragment getInstance(int placeType) {
+    public static PlacesListFragment newInstance(int placeType) {
         Bundle arguments = new Bundle(1);
         arguments.putInt(ARGUMENT_PLACE_TYPE, placeType);
 

@@ -306,7 +306,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
             }
 
             previousDay.setVisibility(previousDayVisibility);
-
         }
 
         //notify listener
