@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends BaseActivity implements MainMenuFragment.MainMenuItemSelectedListener,
                                                         CinemasListFragment.CinemaSelectedListener,
                                                         PlacesListFragment.PlaceSelectedListener,
-                                                        FilmsListFragment.ShowCalendarListener,
+                                                        ShowCalendarListener,
                                                         FilmsListFragment.FilmSelectedListener,
                                                         AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
                                                         MainMenuController, CalendarFragment.CalendarEventsListener {
@@ -199,13 +199,13 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         hideCalendar();
 
         Fragment activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (activeFragment instanceof FilmsFragment) {
+        if (activeFragment instanceof DateSelectionListener) {
             //show films by selected date
             calendar.clear();
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, day);
-            ((FilmsFragment)activeFragment).showFilmsByDate(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
+            ((DateSelectionListener)activeFragment).onDateSelected(TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
         }
     }
 
@@ -268,27 +268,33 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 setTitle(R.string.menu_films);
                 break;
             case MainMenuFragment.MENU_CONCERT_ID :
-                replaceFragment(EventsListFragment.newInstance(Constants.EventType.CONCERT));
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.CONCERT,
+                                                               TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
                 setTitle(R.string.menu_concert);
                 break;
             case MainMenuFragment.MENU_PARTY_ID :
-                replaceFragment(EventsListFragment.newInstance(Constants.EventType.PARTY));
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.PARTY,
+                                                               TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
                 setTitle(R.string.menu_party);
                 break;
             case MainMenuFragment.MENU_SPECTACLE_ID :
-                replaceFragment(EventsListFragment.newInstance(Constants.EventType.SPECTACLE));
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.SPECTACLE,
+                                                               TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
                 setTitle(R.string.menu_spectacle);
                 break;
             case MainMenuFragment.MENU_EXHIBITION_ID :
-                replaceFragment(EventsListFragment.newInstance(Constants.EventType.EXHIBITION));
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.EXHIBITION,
+                                                               TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
                 setTitle(R.string.menu_exhibition);
                 break;
             case MainMenuFragment.MENU_SPORT_ID :
-                replaceFragment(EventsListFragment.newInstance(Constants.EventType.SPORT));
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.SPORT,
+                                                               TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
                 setTitle(R.string.menu_sport);
                 break;
             case MainMenuFragment.MENU_WORKSHOP_ID :
-                replaceFragment(EventsListFragment.newInstance(Constants.EventType.WORKSHOP));
+                replaceFragment(EventsListFragment.newInstance(Constants.EventType.WORKSHOP,
+                                                               TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
                 setTitle(R.string.menu_workshop);
                 break;
             case MainMenuFragment.MENU_CINEMA_ID :

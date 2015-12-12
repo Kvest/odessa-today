@@ -8,22 +8,29 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.event.EventsLoaded;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.ui.activity.DateSelectionListener;
+import com.kvest.odessatoday.ui.activity.MainActivity;
 import com.kvest.odessatoday.ui.adapter.EventsAdapter;
 import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
 import com.squareup.otto.Subscribe;
 
+import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
@@ -31,22 +38,37 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 /**
  * Created by roman on 12/8/15.
  */
-public class EventsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+public class EventsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                                SwipeRefreshLayout.OnRefreshListener,
+                                                                MainActivity.ToolbarExtendable,
+                                                                DateSelectionListener {
+    private final SimpleDateFormat EVENTS_LIST_DATE_FORMAT = new SimpleDateFormat("dd MMMM, cc.");
+
+
+    private static final String KEY_DATE = "com.kvest.odessatoday.key.DATE";
     private static final String ARGUMENT_EVENT_TYPE = "com.kvest.odessatoday.argument.EVENT_TYPE";
+    private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
     private static final int EVENTS_LOADER_ID = 1;
 
     //date of the shown events in seconds
     private long date = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+    private DateChangedListener dateChangedListener;
+
+    private TextView extensionTitle;
+    private View previousDay;
+    private View nextDay;
 
     private ListView eventsList;
     private EventsAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
 
     private EventSelectedListener eventSelectedListener;
+    private ShowCalendarListener showCalendarListener;
 
-    public static EventsListFragment newInstance(int eventType) {
-        Bundle arguments = new Bundle(1);
+    public static EventsListFragment newInstance(int eventType, long date) {
+        Bundle arguments = new Bundle(2);
         arguments.putInt(ARGUMENT_EVENT_TYPE, eventType);
+        arguments.putLong(ARGUMENT_DATE, date);
 
         EventsListFragment result = new EventsListFragment();
         result.setArguments(arguments);
@@ -55,6 +77,8 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         View rootView = inflater.inflate(R.layout.events_list_fragment, container, false);
 
         init(rootView);
@@ -80,9 +104,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         //create and set an adapter
         adapter = new EventsAdapter(getActivity());
         eventsList.setAdapter(adapter);
-
-        //TODO
-        //don't forget cto call getLoaderManager().restartLoader(EVENTS_LOADER_ID, null, this); when the date was changed
     }
 
     @Override
@@ -90,12 +111,54 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         super.onActivityCreated(savedInstanceState);
 
         getLoaderManager().initLoader(EVENTS_LOADER_ID, null, this);
+
+        //send data once again after recreate to the date listener
+        if (savedInstanceState != null) {
+            onDateChanged(this.date);
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_DATE)) {
+            setDate(savedInstanceState.getLong(KEY_DATE));
+        } else {
+            //get initial data
+            Bundle arguments = getArguments();
+            if (arguments != null) {
+                setDate(arguments.getLong(ARGUMENT_DATE, date));
+            }
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.calendar_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.show_calendar:
+                onShowCalendar();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+        try {
+            showCalendarListener = (ShowCalendarListener) activity;
+        } catch (ClassCastException cce) {
+            LOGE(Constants.TAG, "Host activity for EventsListFragment should implements ShowCalendarListener");
+        }
         try {
             eventSelectedListener = (EventSelectedListener) activity;
         } catch (ClassCastException cce) {
@@ -121,6 +184,28 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         refreshLayout.setRefreshing(false);
 
         BusProvider.getInstance().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        dateChangedListener = null;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        eventSelectedListener = null;
+        showCalendarListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong(KEY_DATE, date);
     }
 
     @Subscribe
@@ -172,12 +257,102 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         }
     }
 
+    private void onShowCalendar() {
+        if (showCalendarListener != null) {
+            showCalendarListener.onShowCalendar(date);
+        }
+    }
+
+    @Override
+    public void onDateSelected(long date) {
+        setDate(Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
+
+        //reload content
+        getLoaderManager().restartLoader(EVENTS_LOADER_ID, null, this);
+
+        //load events data
+        Activity activity = getActivity();
+        if (activity != null) {
+            loadEvents(activity);
+        }
+    }
+
+    public void showNextDay() {
+        long nextDay = TimeUtils.getBeginningOfTheDay(date) + TimeUnit.DAYS.toSeconds(1);
+        onDateSelected(nextDay);
+    }
+
+    public void showPreviousDay() {
+        long previousDay = TimeUtils.getBeginningOfTheDay(date) - TimeUnit.DAYS.toSeconds(1);
+        onDateSelected(previousDay);
+    }
+
+    private void setDate(long date) {
+        this.date = date;
+
+        onDateChanged(date);
+    }
+
+    public void onDateChanged(long date) {
+        if (extensionTitle != null && previousDay != null) {
+            int previousDayVisibility = View.VISIBLE;
+            if (TimeUtils.isCurrentDay(date)) {
+                extensionTitle.setText(R.string.odessa_today);
+                previousDayVisibility = View.INVISIBLE;
+            } else if (TimeUtils.isTomorrow(date)) {
+                extensionTitle.setText(R.string.odessa_tomorrow);
+            } else {
+                extensionTitle.setText(EVENTS_LIST_DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(date)));
+            }
+
+            previousDay.setVisibility(previousDayVisibility);
+
+        }
+
+        //notify listener
+        if (dateChangedListener != null) {
+            dateChangedListener.onDateChanged(this.date);
+        }
+    }
+
     @Override
     public void onRefresh() {
         Context context = getActivity();
         if (context != null) {
             loadEvents(context);
         }
+    }
+
+    @Override
+    public int getExtensionLayoutId() {
+        return R.layout.toolbar_extension_with_calendar;
+    }
+
+    @Override
+    public void setExtensionView(View extension) {
+        extensionTitle = (TextView) extension.findViewById(R.id.title);
+        previousDay = extension.findViewById(R.id.previous_day);
+        previousDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPreviousDay();
+            }
+        });
+        nextDay = extension.findViewById(R.id.next_day);
+        nextDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNextDay();
+            }
+        });
+    }
+
+    public DateChangedListener getDateChangedListener() {
+        return dateChangedListener;
+    }
+
+    public void setDateChangedListener(DateChangedListener dateChangedListener) {
+        this.dateChangedListener = dateChangedListener;
     }
 
     private void loadEvents(Context context) {
@@ -196,13 +371,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         Bundle arguments = getArguments();
 
         return (arguments != null) ? arguments.getInt(ARGUMENT_EVENT_TYPE, -1) : -1;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        eventSelectedListener = null;
     }
 
     public interface EventSelectedListener {

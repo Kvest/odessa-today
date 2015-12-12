@@ -18,6 +18,7 @@ import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.ui.activity.DateSelectionListener;
 import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
@@ -32,7 +33,8 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * Time: 11:09
  * To change this template use File | Settings | File Templates.
  */
-public class FilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+public class FilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                               SwipeRefreshLayout.OnRefreshListener {
     private static final String KEY_DATE = "com.kvest.odessatoday.key.DATE";
     private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
     private static final int FILMS_LOADER_ID = 1;
@@ -62,7 +64,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.films_fragment_menu, menu);
+        inflater.inflate(R.menu.calendar_menu, menu);
     }
 
     @Override
@@ -112,7 +114,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         try {
             showCalendarListener = (ShowCalendarListener) activity;
         } catch (ClassCastException cce) {
-            LOGE(Constants.TAG, "Host activity for FilmsListFragment should implements FilmsListFragment.ShowCalendarListener");
+            LOGE(Constants.TAG, "Host activity for FilmsListFragment should implements ShowCalendarListener");
         }
 
         try {
@@ -187,7 +189,6 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         outState.putLong(KEY_DATE, date);
     }
 
-
     public DateChangedListener getDateChangedListener() {
         return dateChangedListener;
     }
@@ -254,7 +255,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         filmsList.setAdapter(adapter);
     }
 
-    public void changeDate(long date) {
+    public void onDateSelected(long date) {
         setDate(Math.max(date, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
 
         //reload content
@@ -269,12 +270,12 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
 
     public void showNextDay() {
         long nextDay = TimeUtils.getBeginningOfTheDay(date) + TimeUnit.DAYS.toSeconds(1);
-        changeDate(nextDay);
+        onDateSelected(nextDay);
     }
 
     public void showPreviousDay() {
         long previousDay = TimeUtils.getBeginningOfTheDay(date) - TimeUnit.DAYS.toSeconds(1);
-        changeDate(previousDay);
+        onDateSelected(previousDay);
     }
 
     private void setDate(long date) {
@@ -306,15 +307,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         }
     }
 
-    public interface ShowCalendarListener {
-        void onShowCalendar(long selectedDate);
-    }
-
     public interface FilmSelectedListener {
         void onFilmSelected(long filmId, long date);
-    }
-
-    public interface DateChangedListener {
-        void onDateChanged(long date);
     }
 }

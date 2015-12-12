@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.ui.activity.DateSelectionListener;
 import com.kvest.odessatoday.ui.activity.MainActivity;
 import com.kvest.odessatoday.ui.activity.MainMenuController;
 import com.kvest.odessatoday.utils.FontUtils;
@@ -25,9 +26,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Kvest on 08.02.2015.
  */
-public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarExtendable, FilmsListFragment.DateChangedListener {
-    private static final String FILMS_LIST_DATE_FORMAT_PATTERN = "dd MMMM, cc.";
-    private final SimpleDateFormat FILMS_LIST_DATE_FORMAT = new SimpleDateFormat(FILMS_LIST_DATE_FORMAT_PATTERN);
+public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarExtendable,
+                                                           DateChangedListener,
+                                                           DateSelectionListener {
+    private final SimpleDateFormat FILMS_LIST_DATE_FORMAT = new SimpleDateFormat("dd MMMM, cc.");
 
     private static final int FILMS_LIST_FRAGMENT_POSITION = 0;
     private static final int CINEMAS_LIST_FRAGMENT_POSITION = 1;
@@ -168,10 +170,11 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         rightDivider.setVisibility(isRightVisible ? View.VISIBLE : View.GONE);
     }
 
-    public void showFilmsByDate(long date) {
+    @Override
+    public void onDateSelected(long date) {
         FilmsListFragment filmsListFragment = getFilmsListFragment();
         if (filmsListFragment != null) {
-            filmsListFragment.changeDate(date);
+            filmsListFragment.onDateSelected(date);
         }
     }
 
@@ -233,7 +236,7 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
 
     @Override
     public int getExtensionLayoutId() {
-        return R.layout.films_fragment_toolbar_extension;
+        return R.layout.toolbar_extension_with_calendar;
     }
 
     @Override
