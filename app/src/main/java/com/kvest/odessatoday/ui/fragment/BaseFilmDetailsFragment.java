@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -77,6 +78,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     protected String trailerVideoId;
     private String shareTitle, shareText;
 
+    private int noImageResId, loadingImageResId;
+
     private OnShowFilmCommentsListener onShowFilmCommentsListener;
 
     @Override
@@ -90,6 +93,13 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         }
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        initResources(getActivity());
+    }
+
     protected void initFilmInfoView(View view) {
         //create layout params for posters
         int postersMargin = (int)getResources().getDimension(R.dimen.film_details_posters_margin);
@@ -99,8 +109,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
         //store views
         filmPoster = (NetworkImageView) view.findViewById(R.id.film_poster);
-        filmPoster.setDefaultImageResId(R.drawable.loading_poster);
-        filmPoster.setErrorImageResId(R.drawable.no_poster);
+        filmPoster.setDefaultImageResId(loadingImageResId);
+        filmPoster.setErrorImageResId(noImageResId);
         filmName = (TextView) view.findViewById(R.id.film_name);
         genre = (TextView) view.findViewById(R.id.genre);
         filmRating = (RatingBar) view.findViewById(R.id.film_rating);
@@ -402,6 +412,22 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     public interface OnShowFilmCommentsListener {
         void onShowFilmComments(long filmId);
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.NoImage, R.attr.LoadingImage};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        try {
+            // Fetching the resources defined in the style
+            noImageResId = ta.getResourceId(0, -1);
+            loadingImageResId = ta.getResourceId(1, -1);
+        } finally {
+            ta.recycle();
+        }
     }
 
     private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {

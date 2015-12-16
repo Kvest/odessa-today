@@ -1,6 +1,7 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +21,21 @@ public class PhotoGalleryAdapter extends PagerAdapter {
     private String[] photoURLs;
     private ViewGroup.LayoutParams layoutParams;
 
+    private int noImageResId, loadingImageResId;
+
     public PhotoGalleryAdapter(Context context, String[] photoURLs) {
         this.context = context;
         this.photoURLs = photoURLs;
         this.layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
+        initResources(context);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         NetworkImageView imageView = new NetworkImageView(context);
         imageView.setScaleType(NetworkImageView.ScaleType.FIT_CENTER);
-        imageView.setDefaultImageResId(R.drawable.loading_poster);
-        imageView.setErrorImageResId(R.drawable.no_poster);
+        imageView.setDefaultImageResId(loadingImageResId);
+        imageView.setErrorImageResId(noImageResId);
 
         //start loading image
         imageView.setImageUrl(photoURLs[position], TodayApplication.getApplication().getVolleyHelper().getImageLoader());
@@ -55,5 +58,21 @@ public class PhotoGalleryAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.NoImage, R.attr.LoadingImage};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        try {
+            // Fetching the resources defined in the style
+            noImageResId = ta.getResourceId(0, -1);
+            loadingImageResId = ta.getResourceId(1, -1);
+        } finally {
+            ta.recycle();
+        }
     }
 }

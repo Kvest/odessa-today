@@ -14,6 +14,8 @@
     <attr format="reference" name="MainMenuSubcategoryBg"/>
     <attr format="reference" name="MainMenuSelectedSubcategoryBg"/>
     <attr format="reference" name="MainMenuSubcategoryOverlayBg"/>
+    <attr format="reference" name="NoImage"/>
+    <attr format="reference" name="LoadingImage"/>
     <attr format="color" name="TitleTextColor"/>
     <attr format="color" name="ABIconColor"/>
     <attr format="reference" name="ABCalendarIcon"/>

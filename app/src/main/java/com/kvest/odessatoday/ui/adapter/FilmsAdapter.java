@@ -40,6 +40,7 @@ public class FilmsAdapter extends CursorAdapter {
     private int isPremiereColumnIndex = -1;
 
     private int evenItemBgColor, oddItemBgColor;
+    private int noImageResId, loadingImageResId;
 
     public FilmsAdapter(Context context) {
         super(context, null, 0);
@@ -56,8 +57,8 @@ public class FilmsAdapter extends CursorAdapter {
         //create holder
         ViewHolder holder = new ViewHolder();
         holder.image = (NetworkImageView)view.findViewById(R.id.film_poster);
-        holder.image.setDefaultImageResId(R.drawable.loading_poster);
-        holder.image.setErrorImageResId(R.drawable.no_poster);
+        holder.image.setDefaultImageResId(loadingImageResId);
+        holder.image.setErrorImageResId(noImageResId);
         holder.name = (TextView)view.findViewById(R.id.film_name);
         holder.genre = (TextView)view.findViewById(R.id.genre);
         holder.rating = (RatingBar)view.findViewById(R.id.film_rating);
@@ -103,7 +104,9 @@ public class FilmsAdapter extends CursorAdapter {
     private void initResources(Context context) {
         // The attributes you want retrieved
         int[] attrs = {R.attr.ListEvenItemBg,
-                       R.attr.ListOddItemBg};
+                       R.attr.ListOddItemBg,
+                       R.attr.NoImage,
+                       R.attr.LoadingImage};
 
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
@@ -112,6 +115,8 @@ public class FilmsAdapter extends CursorAdapter {
             // Fetching the resources defined in the style
             evenItemBgColor = ta.getColor(0, Color.BLACK);
             oddItemBgColor = ta.getColor(1, Color.BLACK);
+            noImageResId = ta.getResourceId(2, -1);
+            loadingImageResId = ta.getResourceId(3, -1);
         } finally {
             ta.recycle();
         }

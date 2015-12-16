@@ -20,6 +20,8 @@
         <item name="ListEvenItemBg">#2d2d2d</item>
         <item name="ListOddItemBg">#1b1b1b</item>
         <item name="MapPinColor">#ff6600</item>
+        <item name="NoImage">@drawable/no_image_night</item>
+        <item name="LoadingImage">@drawable/loading_image_night</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">@color/application_green</item>
         <item name="MainMenuHeaderBgColor">#1b1b1b</item>
