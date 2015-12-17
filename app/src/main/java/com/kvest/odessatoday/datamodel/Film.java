@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 import com.kvest.odessatoday.provider.TodayProviderContract;
+import com.kvest.odessatoday.utils.Utils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +15,6 @@ import com.kvest.odessatoday.provider.TodayProviderContract;
  * To change this template use File | Settings | File Templates.
  */
 public class Film {
-    private static final String POSTER_SEPARATOR = ",";
     @SerializedName("id")
     public long id;
     @SerializedName("filmname")
@@ -64,29 +64,9 @@ public class Film {
         values.put(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT, comments_count);
         values.put(TodayProviderContract.Tables.Films.Columns.IS_PREMIERE, is_premiere);
         values.put(TodayProviderContract.Tables.Films.Columns.FILM_DURATION, film_duration);
-        values.put(TodayProviderContract.Tables.Films.Columns.POSTERS, posters2String(posters));
+        values.put(TodayProviderContract.Tables.Films.Columns.POSTERS, Utils.posters2String(posters));
         values.put(TodayProviderContract.Tables.Films.Columns.SHARE_TEXT, share_text);
 
         return values;
-    }
-
-    public static String posters2String(String[] posters) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0 ; i < posters.length; ++i) {
-            if (i > 0) {
-                builder.append(POSTER_SEPARATOR);
-            }
-            builder.append(posters[i]);
-        }
-
-        return builder.toString();
-    }
-
-    public static String[] string2Posters(String value) {
-        if (!TextUtils.isEmpty(value)) {
-            return value.split(POSTER_SEPARATOR);
-        } else {
-            return new String[0];
-        }
     }
 }

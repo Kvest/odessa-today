@@ -28,6 +28,8 @@ import java.security.MessageDigest;
  * To change this template use File | Settings | File Templates.
  */
 public class Utils {
+    private static final String POSTER_SEPARATOR = ",";
+
     public static String getDeviceId(Context context)
     {
         //Serial number
@@ -102,6 +104,26 @@ public class Utils {
             if (drawables[i] != null) {
                 drawables[i].setColorFilter(color, PorterDuff.Mode.SRC_IN);
             }
+        }
+    }
+
+    public static String posters2String(String[] posters) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0 ; i < posters.length; ++i) {
+            if (i > 0) {
+                builder.append(POSTER_SEPARATOR);
+            }
+            builder.append(posters[i]);
+        }
+
+        return builder.toString();
+    }
+
+    public static String[] string2Posters(String value) {
+        if (!TextUtils.isEmpty(value)) {
+            return value.split(POSTER_SEPARATOR);
+        } else {
+            return new String[0];
         }
     }
 }

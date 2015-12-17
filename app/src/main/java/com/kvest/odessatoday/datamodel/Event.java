@@ -2,6 +2,7 @@ package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
 import com.google.gson.annotations.SerializedName;
+import com.kvest.odessatoday.utils.Utils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
@@ -15,6 +16,8 @@ public class Event {
     public long type;
     @SerializedName("image")
     public String image;
+    @SerializedName("video")
+    public String video;
     @SerializedName("name")
     public String name;
     @SerializedName("director")
@@ -27,20 +30,27 @@ public class Event {
     public float rating;
     @SerializedName("comments_count")
     public int commentsCount;
+    @SerializedName("posters")
+    public String[] posters;
+    @SerializedName("share_text")
+    public String share_text;
     @SerializedName("timetable")
     public Timetable[] timetable;
 
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues(9);
+        ContentValues values = new ContentValues(12);
         values.put(Events.Columns.EVENT_ID, id);
         values.put(Events.Columns.EVENT_TYPE, type);
         values.put(Events.Columns.IMAGE, image);
+        values.put(Events.Columns.VIDEO, video);
         values.put(Events.Columns.NAME, name);
         values.put(Events.Columns.DIRECTOR, director);
         values.put(Events.Columns.ACTORS, actors);
         values.put(Events.Columns.DESCRIPTION, description);
         values.put(Events.Columns.RATING, rating);
         values.put(Events.Columns.COMMENTS_COUNT, commentsCount);
+        values.put(Events.Columns.POSTERS, Utils.posters2String(posters));
+        values.put(Events.Columns.SHARE_TEXT, share_text);
 
         return values;
     }

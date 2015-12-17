@@ -23,7 +23,6 @@ import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
 import com.kvest.odessatoday.ui.activity.YoutubeFullscreenActivity;
@@ -225,7 +224,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             setTrailer(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.VIDEO)));
 
             //add new posters
-            String[] postersUrls = FilmWithTimetable.string2Posters(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
+            String[] postersUrls = Utils.string2Posters(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
             mergeImages(postersUrls);
 
             //set visibility for Youtube player and images

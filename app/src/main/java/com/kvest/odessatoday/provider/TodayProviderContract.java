@@ -336,12 +336,15 @@ public class TodayProviderContract {
                 String EVENT_ID = "event_id";
                 String EVENT_TYPE = "event_type";
                 String IMAGE = "image";
+                String VIDEO = "video";
                 String NAME = "name";
                 String DIRECTOR = "director";
                 String ACTORS = "actors";
                 String DESCRIPTION = "description";
                 String RATING = "rating";
                 String COMMENTS_COUNT = "comments_count";
+                String POSTERS = "posters";
+                String SHARE_TEXT = "share_text";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
@@ -349,12 +352,15 @@ public class TodayProviderContract {
                     + Columns.EVENT_ID + " INTEGER,"
                     + Columns.EVENT_TYPE + " INTEGER,"
                     + Columns.IMAGE + " TEXT, "
+                    + Columns.VIDEO + " TEXT, "
                     + Columns.NAME + " TEXT,"
                     + Columns.DIRECTOR + " TEXT, "
                     + Columns.ACTORS + " TEXT, "
                     + Columns.DESCRIPTION + " TEXT, "
                     + Columns.RATING + " REAL, "
                     + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
+                    + Columns.POSTERS + " TEXT, "
+                    + Columns.SHARE_TEXT + " TEXT DEFAULT \'\', "
                     + "UNIQUE (" + Columns.EVENT_ID + ") ON CONFLICT REPLACE)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
