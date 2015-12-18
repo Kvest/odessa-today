@@ -393,8 +393,6 @@ public class TodayProviderContract {
                     + "UNIQUE(" + Columns.TIMETABLE_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
-            String GET_EVENTS_ID_BY_PERIOD_SQL = "SELECT DISTINCT " + Columns.EVENT_ID + " FROM " + TABLE_NAME +
-                    " WHERE " + Columns.DATE + ">=? AND " + Columns.DATE + "<=?";
         }
 
         interface EventsTimetableView {

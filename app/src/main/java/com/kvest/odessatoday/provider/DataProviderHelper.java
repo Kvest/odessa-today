@@ -85,8 +85,9 @@ public abstract class DataProviderHelper {
     }
 
     public static CursorLoader getFullEventsForPeriodLoader(Context context, int eventType, long startDate, long endDate, String[] projection, String order) {
-        String selection = Tables.Events.Columns.EVENT_ID + " in (" + Tables.EventsTimetable.GET_EVENTS_ID_BY_PERIOD_SQL + ") AND " +
-                           Tables.Events.Columns.EVENT_TYPE + "=?";
+        String selection = Tables.EventsTimetableView.Columns.DATE + ">=? AND "
+                           + Tables.EventsTimetableView.Columns.DATE + "<=? AND "
+                           + Tables.EventsTimetableView.Columns.EVENT_TYPE + "=?";
         return new CursorLoader(context, TodayProviderContract.EVENTS_TIMETABLE_VIEW_URI, projection, selection,
                                 new String[]{Long.toString(startDate), Long.toString(endDate), Integer.toString(eventType)}, order);
     }

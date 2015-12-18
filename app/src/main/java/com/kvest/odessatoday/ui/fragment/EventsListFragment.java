@@ -33,6 +33,7 @@ import com.squareup.otto.Subscribe;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
+import static com.kvest.odessatoday.utils.LogUtils.LOGD;
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
@@ -269,12 +270,7 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
 
         //reload content
         getLoaderManager().restartLoader(EVENTS_LOADER_ID, null, this);
-
-        //load events data
-        Activity activity = getActivity();
-        if (activity != null) {
-            loadEvents(activity);
-        }
+        getLoaderManager().restartLoader(EVENTS_LOADER_ID, null, this);
     }
 
     public void showNextDay() {
@@ -355,15 +351,14 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     }
 
     private void loadEvents(Context context) {
-        long startDate = date;
-        long endDate = TimeUtils.getEndOfTheDay(startDate);
+        long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
 
         //show progress
         if (refreshLayout != null) {
             refreshLayout.setRefreshing(true);
         }
 
-        NetworkService.loadEvents(context, startDate, endDate, getEventType());
+        NetworkService.loadEvents(context, startDate, -1, getEventType());
     }
 
     private int getEventType() {
