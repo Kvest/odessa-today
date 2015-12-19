@@ -306,8 +306,4 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
             }
         }
     }
-
-    public interface FilmSelectedListener {
-        void onFilmSelected(long filmId, long date);
-    }
 }

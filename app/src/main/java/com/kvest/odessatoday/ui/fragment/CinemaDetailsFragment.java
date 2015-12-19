@@ -291,7 +291,11 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        //nothing to do
+        switch (loader.getId()) {
+            case TIMETABLE_LOADER_ID :
+                cinemaTimetableAdapter.setCursor(null);
+                break;
+        }
     }
 
     private long getCinemaId() {

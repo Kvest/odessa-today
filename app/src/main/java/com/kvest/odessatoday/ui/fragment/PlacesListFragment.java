@@ -166,10 +166,6 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
         return (arguments != null) ? arguments.getInt(ARGUMENT_PLACE_TYPE, -1) : -1;
     }
 
-    public interface PlaceSelectedListener {
-        void onPlaceSelected(long placeId);
-    }
-
     private class LoadPlacesNotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

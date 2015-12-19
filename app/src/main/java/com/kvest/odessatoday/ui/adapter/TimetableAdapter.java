@@ -129,7 +129,7 @@ public class TimetableAdapter extends BaseAdapter {
         return getItemViewType(position) == VIEW_TYPE_CINEMA;
     }
 
-    public void swapCursor(Cursor cursor) {
+    public void setCursor(Cursor cursor) {
         dataset.clear();
 
         if (cursor != null && cursor.moveToFirst()) {

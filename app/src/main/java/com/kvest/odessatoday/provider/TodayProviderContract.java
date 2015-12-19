@@ -393,6 +393,7 @@ public class TodayProviderContract {
                     + "UNIQUE(" + Columns.TIMETABLE_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+            String ORDER_DATE_ASC = Columns.DATE + " ASC";
         }
 
         interface EventsTimetableView {

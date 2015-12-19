@@ -83,5 +83,14 @@
         <item name="TimetableListFilmTextColor">#24282b</item>
         <!--events list-->
         <item name="EventNameTextColor">#24282b</item>
+        <!--event details-->
+        <item name="EventDetailsBgColor">@android:color/white</item>
+        <item name="EventDetailsNameTextColor">#24282b</item>
+        <item name="EventDetailsActionsLayoutBg">#f5f5f5</item>
+        <item name="EventDetailsRoleTitleTextColor">#24282b</item>
+        <item name="EventDetailsDescriptionTextColor">#4e4e4e</item>
+        <item name="EventDetailsDividerColor">#e2e2e2</item>
+        <item name="EventDetailsTimetableTextColor">#24282b</item>
+        <item name="EventDetailsTimetableIconColor">#a6a6a6</item>
     </style>
 </resources>

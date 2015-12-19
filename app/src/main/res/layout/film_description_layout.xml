@@ -14,7 +14,7 @@
             android:textSize="@dimen/film_details_description_text_size"
             android:textColor="?attr/FilmDetailsRoleTitleTextColor"
             app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
-            android:text="@string/film_director"/>
+            android:text="@string/director"/>
         <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/director"
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:textSize="@dimen/film_details_description_text_size"
             android:textColor="?attr/FilmDetailsRoleTitleTextColor"
             app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
-            android:text="@string/film_actors"/>
+            android:text="@string/actors"/>
         <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/actors"
             android:layout_width="match_parent"

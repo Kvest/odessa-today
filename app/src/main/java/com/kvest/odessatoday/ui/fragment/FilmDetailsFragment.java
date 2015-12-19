@@ -231,7 +231,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
                 break;
             case TIMETABLE_LOADER_ID :
                 setMinMaxPrices(cursor);
-                timetableAdapter.swapCursor(cursor);
+                timetableAdapter.setCursor(cursor);
                 break;
         }
     }
@@ -240,7 +240,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case TIMETABLE_LOADER_ID :
-                timetableAdapter.swapCursor(null);
+                timetableAdapter.setCursor(null);
                 break;
         }
     }

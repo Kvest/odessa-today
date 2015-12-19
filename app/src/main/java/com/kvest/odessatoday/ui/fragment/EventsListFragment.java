@@ -366,8 +366,4 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
 
         return (arguments != null) ? arguments.getInt(ARGUMENT_EVENT_TYPE, -1) : -1;
     }
-
-    public interface EventSelectedListener {
-        void onEventSelected(long eventId);
-    }
 }

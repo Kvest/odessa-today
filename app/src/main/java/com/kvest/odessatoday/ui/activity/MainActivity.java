@@ -31,11 +31,9 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseActivity implements MainMenuFragment.MainMenuItemSelectedListener,
-                                                        CinemasListFragment.CinemaSelectedListener,
-                                                        PlacesListFragment.PlaceSelectedListener,
-                                                        ShowCalendarListener,
-                                                        FilmsListFragment.FilmSelectedListener,
-                                                        AnnouncementFilmsListFragment.AnnouncementFilmSelectedListener,
+                                                        CinemaSelectedListener, PlaceSelectedListener,
+                                                        EventSelectedListener, ShowCalendarListener,
+                                                        FilmSelectedListener, AnnouncementFilmSelectedListener,
                                                         MainMenuController, CalendarFragment.CalendarEventsListener {
     private static final String KEY_TITLE = "com.kvest.odessatoday.key.TITLE";
     private static final String CALENDAR_FRAGMENT_TAG = "calendar";
@@ -401,6 +399,11 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     @Override
     public void onPlaceSelected(long placeId) {
         //TODO
+    }
+
+    @Override
+    public void onEventSelected(long eventId) {
+        EventDetailsActivity.start(this, eventId);
     }
 
     public interface ToolbarExtendable {

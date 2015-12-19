@@ -12,8 +12,8 @@
     <string name="selector_announcements">анонсы</string>
     <string name="film_duration">%1$d мин.</string>
     <string name="film_duration_unknown">продолжительность неизвестна</string>
-    <string name="film_director">Режиссер:</string>
-    <string name="film_actors">Актеры:</string>
+    <string name="director">Режиссер:</string>
+    <string name="actors">Актеры:</string>
     <string name="comments_count">%1$d отзывов</string>
     <string name="comments_count1">%1$d отзыв</string>
     <string name="comments_count2">%1$d отзыва</string>
@@ -47,6 +47,7 @@
     <string name="action_share">...</string>
     <string name="action_no_tickets">нет билетов</string>
     <string name="action_tickets">билеты</string>
+    <string name="action_tickets_soon">билеты(скоро)</string>
     <string name="action_gallery">галерея</string>
     <string name="action_map">на карте</string>
     <string name="events_list_date_format">dd MMMM в HH:mm</string>
@@ -59,6 +60,7 @@
     <string name="selector_museums">музеи</string>
     <string name="selector_concerts">концерты</string>
     <string name="selector_concert_halls">концертные залы</string>
+    <string name="timetable">Расписание</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>

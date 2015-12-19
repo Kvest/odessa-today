@@ -72,4 +72,12 @@
     <attr format="color" name="CinemaDetailsCalendarBg"/>
     <attr format="color" name="TimetableListFilmTextColor"/>
     <attr format="color" name="EventNameTextColor"/>
+    <attr format="color" name="EventDetailsBgColor"/>
+    <attr format="color" name="EventDetailsNameTextColor"/>
+    <attr format="color" name="EventDetailsActionsLayoutBg"/>
+    <attr format="color" name="EventDetailsRoleTitleTextColor"/>
+    <attr format="color" name="EventDetailsDescriptionTextColor"/>
+    <attr format="color" name="EventDetailsDividerColor"/>
+    <attr format="color" name="EventDetailsTimetableTextColor"/>
+    <attr format="color" name="EventDetailsTimetableIconColor"/>
 </resources>

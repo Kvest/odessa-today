@@ -430,8 +430,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     }
 
     private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {
-        //minimum 3 sec of the cachring process to avoid a blinking of the load dialog
-        private static final long MIN_PROCESS_DURATION = 2000L;
+        //minimum 3 sec of the caching process to avoid a blinking of the load dialog
+        private static final long MIN_PROCESS_DURATION = 3000L;
         private static final String CACHE_IMAGE_FORMAT = ".png";
 
         private String fileName;
@@ -468,31 +468,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         protected String doInBackground(Drawable... params) {
             long startTime = System.currentTimeMillis();
 
-            String result = null;
-            Drawable drawable = params[0];
-
-            if (drawable != null) {
-                Rect bounds = drawable.getBounds();
-                Bitmap bitmap = Bitmap.createBitmap(bounds.width(),bounds.height(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-                drawable.draw(canvas);
-                OutputStream out = null;
-                try {
-                    File file = new File(getActivity().getExternalCacheDir(), fileName);
-                    if (!file.exists()) {
-                        out = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    }
-                    result = file.getAbsolutePath();
-                } catch (IOException ioException) {
-                } finally {
-                    if ( out != null ){
-                        try {
-                            out.close();
-                        } catch (IOException e) {}
-                    }
-                }
-            }
+            String result = Utils.saveDrawable(getActivity(), params[0], fileName);
 
             //artificial delay to avoid a blinking of the load dialog
             long delayDuration = MIN_PROCESS_DURATION - (System.currentTimeMillis() - startTime);

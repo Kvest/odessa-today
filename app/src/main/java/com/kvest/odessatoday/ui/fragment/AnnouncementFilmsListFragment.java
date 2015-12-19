@@ -178,8 +178,4 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
             }
         }
     }
-
-    public interface AnnouncementFilmSelectedListener {
-        public void onAnnouncementFilmSelected(long filmId);
-    }
 }

@@ -173,8 +173,4 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
             }
         }
     }
-
-    public interface CinemaSelectedListener {
-        void onCinemaSelected(long cinemaId);
-    }
 }

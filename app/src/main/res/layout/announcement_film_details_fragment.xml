@@ -101,7 +101,7 @@
                     app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
             </LinearLayout>
         </RelativeLayout>
-        <include layout="@layout/film_images_container_layout"/>
+        <include layout="@layout/video_and_images_container_layout"/>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

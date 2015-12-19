@@ -106,4 +106,17 @@ public abstract class DataProviderHelper {
         String[] selectionArgs = new String[]{Long.toString(filmId)};
         return new CursorLoader(context, ANNOUNCEMENT_FILMS_VIEW_URI, projection, selection, selectionArgs, null);
     }
+
+    public static CursorLoader getEventLoader(Context context, long eventId, String[] projection) {
+        String selection = Tables.Events.Columns.EVENT_ID + "=?";
+        return new CursorLoader(context, EVENTS_URI, projection, selection, new String[]{Long.toString(eventId)}, null);
+    }
+
+    public static CursorLoader getEventTimetableLoader(Context context, long eventId,
+                                                       String[] projection, String order) {
+        String selection = Tables.EventsTimetable.Columns.EVENT_ID + "=?";
+        return new CursorLoader(context, EVENTS_TIMETABLE_URI, projection,
+                                selection, new String[]{ Long.toString(eventId)},
+                                order);
+    }
 }
