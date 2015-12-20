@@ -2,6 +2,7 @@ package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
 import com.google.gson.annotations.SerializedName;
+import com.kvest.odessatoday.utils.Utils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 
@@ -13,8 +14,6 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
  * To change this template use File | Settings | File Templates.
  */
 public class Cinema {
-    public static final String IMAGES_SEPARATOR = ",";
-
     @SerializedName("id")
     public long id;
     @SerializedName("name")
@@ -47,29 +46,11 @@ public class Cinema {
         values.put(Cinemas.Columns.TRANSPORT, transport);
         values.put(Cinemas.Columns.DESCRIPTION, description);
         values.put(Cinemas.Columns.WORK_TIME, worktime);
-        values.put(Cinemas.Columns.IMAGE, imagesToString());
+        values.put(Cinemas.Columns.IMAGE, images != null ? Utils.images2String(images) : null);
         values.put(Cinemas.Columns.COMMENTS_COUNT, comments_count);
         values.put(Cinemas.Columns.LON, lon);
         values.put(Cinemas.Columns.LAT, lat);
 
         return values;
-    }
-
-    public String imagesToString() {
-        String result = null;
-
-        if (images != null) {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < images.length; ++i) {
-                if (i != 0) {
-                    builder.append(IMAGES_SEPARATOR);
-                }
-                builder.append(images[i]);
-            }
-
-            result = builder.toString();
-        }
-
-        return result;
     }
 }

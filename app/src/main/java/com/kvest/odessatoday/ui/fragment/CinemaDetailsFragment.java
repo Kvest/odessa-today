@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.datamodel.Cinema;
 import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
@@ -340,7 +339,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
             }
 
             tmp = cursor.getString(cursor.getColumnIndex(Tables.Cinemas.Columns.IMAGE));
-            photoUrls = tmp != null ? tmp.split(Cinema.IMAGES_SEPARATOR) : null;
+            photoUrls = tmp != null ? Utils.string2Images(tmp) : null;
 
             //remember geo location
             longitude = cursor.getDouble(cursor.getColumnIndex(Tables.Cinemas.Columns.LON));

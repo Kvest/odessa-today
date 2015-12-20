@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -31,11 +28,6 @@ import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
 import com.kvest.odessatoday.utils.YoutubeApiConstants;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
@@ -224,7 +216,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             setTrailer(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.VIDEO)));
 
             //add new posters
-            String[] postersUrls = Utils.string2Posters(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
+            String[] postersUrls = Utils.string2Images(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
             mergeImages(postersUrls);
 
             //set visibility for Youtube player and images

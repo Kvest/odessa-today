@@ -1,7 +1,6 @@
 package com.kvest.odessatoday.datamodel;
 
 import android.content.ContentValues;
-import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 import com.kvest.odessatoday.provider.TodayProviderContract;
@@ -64,7 +63,7 @@ public class Film {
         values.put(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT, comments_count);
         values.put(TodayProviderContract.Tables.Films.Columns.IS_PREMIERE, is_premiere);
         values.put(TodayProviderContract.Tables.Films.Columns.FILM_DURATION, film_duration);
-        values.put(TodayProviderContract.Tables.Films.Columns.POSTERS, Utils.posters2String(posters));
+        values.put(TodayProviderContract.Tables.Films.Columns.POSTERS, Utils.images2String(posters));
         values.put(TodayProviderContract.Tables.Films.Columns.SHARE_TEXT, share_text);
 
         return values;

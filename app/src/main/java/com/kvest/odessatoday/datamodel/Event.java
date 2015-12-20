@@ -49,7 +49,7 @@ public class Event {
         values.put(Events.Columns.DESCRIPTION, description);
         values.put(Events.Columns.RATING, rating);
         values.put(Events.Columns.COMMENTS_COUNT, commentsCount);
-        values.put(Events.Columns.POSTERS, Utils.posters2String(posters));
+        values.put(Events.Columns.POSTERS, Utils.images2String(posters));
         values.put(Events.Columns.SHARE_TEXT, share_text);
 
         return values;

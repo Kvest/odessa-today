@@ -309,7 +309,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
             setVideo(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.VIDEO)));
 
             //add new posters
-            String[] postersUrls = Utils.string2Posters(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.POSTERS)));
+            String[] postersUrls = Utils.string2Images(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.POSTERS)));
             mergeImages(postersUrls);
 
             //set visibility for Youtube player and images

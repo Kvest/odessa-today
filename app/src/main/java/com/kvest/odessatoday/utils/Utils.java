@@ -114,7 +114,7 @@ public class Utils {
         }
     }
 
-    public static String posters2String(String[] posters) {
+    public static String images2String(String[] posters) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0 ; i < posters.length; ++i) {
             if (i > 0) {
@@ -126,7 +126,7 @@ public class Utils {
         return builder.toString();
     }
 
-    public static String[] string2Posters(String value) {
+    public static String[] string2Images(String value) {
         if (!TextUtils.isEmpty(value)) {
             return value.split(POSTER_SEPARATOR);
         } else {
