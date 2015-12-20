@@ -33,8 +33,7 @@ public class CinemaTimetableAdapter extends BaseAdapter {
     public static final String[] PROJECTION = new String[]{CinemaTimetableView.Columns._ID, CinemaTimetableView.Columns.NAME,
                                                            CinemaTimetableView.Columns.DATE, CinemaTimetableView.Columns.PRICES,
                                                            CinemaTimetableView.Columns.FORMAT, CinemaTimetableView.Columns.FILM_ID};
-    private static final String TIME_FORMAT_PATTERN = "HH:mm";
-    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
+    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
     private static final String MIN_MAX_PRICES_SEPARATOR = " / ";
     private static final Pattern PRICES_PATTERN = Pattern.compile("(\\d+)");
@@ -192,65 +191,6 @@ public class CinemaTimetableAdapter extends BaseAdapter {
 
         return Integer.toString(min) + currencyStr + MIN_MAX_PRICES_SEPARATOR + Integer.toString(max) + currencyStr;
     }
-
-//    public void setCursor(Cursor cursor) {
-//        //delete old items
-//        items.clear();
-//
-//        //add new items
-//        cursor.moveToFirst();
-//        LongSparseArray<TmpContainer> containers = new LongSparseArray<TmpContainer>();
-//        while (!cursor.isAfterLast()) {
-//            //parse data
-//            long filmId =cursor.getLong(cursor.getColumnIndex(CinemaTimetableView.Columns.FILM_ID));
-//            long date =cursor.getLong(cursor.getColumnIndex(CinemaTimetableView.Columns.DATE));
-//            String prices = cursor.getString(cursor.getColumnIndex(CinemaTimetableView.Columns.PRICES));
-//            int format = cursor.getInt(cursor.getColumnIndex(CinemaTimetableView.Columns.FORMAT));
-//
-//            //create item
-//            TimetableItem timetableItem = new TimetableItem(date, prices, format);
-//
-//            //retrieve TmpContainer or create new if it is not exists
-//            TmpContainer tmpContainer = containers.get(filmId);
-//            if (tmpContainer == null) {
-//                String filmName = cursor.getString(cursor.getColumnIndex(CinemaTimetableView.Columns.NAME));
-//                tmpContainer = new TmpContainer(filmName);
-//                containers.put(filmId, tmpContainer);
-//            }
-//
-//            //add TimetableItem to the container
-//            tmpContainer.items.add(timetableItem);
-//
-//            cursor.moveToNext();
-//        }
-//
-//        //copy data from tmp containers to main items list
-//        for (int i = 0; i < containers.size(); ++i) {
-//            long filmId = containers.keyAt(i);
-//            TmpContainer tmpContainer = containers.valueAt(i);
-//
-//            //add film name
-//            items.add(new FilmNameItem(filmId, tmpContainer.filmName));
-//
-//            //add timetable items
-//            while (!tmpContainer.items.isEmpty()) {
-//                //calculate timetable items cont
-//                int count = Math.min(ROW_ITEMS_COUNT, tmpContainer.items.size());
-//
-//                //generate row items array
-//                TimetableItem[] rowItems = new TimetableItem[count];
-//                for (int j = 0; j < count; ++j) {
-//                    rowItems[j] = tmpContainer.items.remove(0);
-//                }
-//
-//                //add row
-//                items.add(new TimetableRowItem(filmId, rowItems));
-//            }
-//        }
-//
-//        notifyDataSetChanged();
-//    }
-//
 
     private static abstract class BaseTimetableItem {
         public long id;

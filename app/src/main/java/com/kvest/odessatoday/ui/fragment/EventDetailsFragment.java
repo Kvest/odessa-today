@@ -151,7 +151,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         //setup timetable list
         timetableList = (ListView)rootView.findViewById(R.id.event_details_list);
         timetableList.addHeaderView(headerView);
-        timetableAdapter = new EventTimetableAdapter();
+        timetableAdapter = new EventTimetableAdapter(getActivity());
         timetableList.setAdapter(timetableAdapter);
 
         actionCommentsCount.setOnClickListener(new View.OnClickListener() {

@@ -92,5 +92,9 @@
         <item name="EventDetailsDividerColor">#e2e2e2</item>
         <item name="EventDetailsTimetableTextColor">#24282b</item>
         <item name="EventDetailsTimetableIconColor">#a6a6a6</item>
+        <item name="EventTimetableListDateTextSize">#24282b</item>
+        <item name="EventTimetableListTimeIconColor">#bcbcbc</item>
+        <item name="EventTimetableListPricesTextColor">#24282b</item>
+        <item name="EventTimetableListPinIconColor">#24282b</item>
     </style>
 </resources>

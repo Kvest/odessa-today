@@ -80,4 +80,8 @@
     <attr format="color" name="EventDetailsDividerColor"/>
     <attr format="color" name="EventDetailsTimetableTextColor"/>
     <attr format="color" name="EventDetailsTimetableIconColor"/>
+    <attr format="color" name="EventTimetableListDateTextSize"/>
+    <attr format="color" name="EventTimetableListTimeIconColor"/>
+    <attr format="color" name="EventTimetableListPricesTextColor"/>
+    <attr format="color" name="EventTimetableListPinIconColor"/>
 </resources>

@@ -173,6 +173,5 @@
         android:layout_height="@dimen/event_details_divider_height"
         android:layout_marginLeft="@dimen/event_details_padding"
         android:layout_marginRight="@dimen/event_details_padding"
-        android:layout_marginBottom="@dimen/event_details_timetable_margin_bottom"
         android:background="?attr/EventDetailsDividerColor" />
 </LinearLayout>

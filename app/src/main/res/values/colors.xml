@@ -61,4 +61,6 @@
 
     <!--events details-->
     <color name="event_details_role_text_color">#828282</color>
+    <color name="event_timetable_list_time_text_color">#828282</color>
+    <color name="event_timetable_list_place_name_text_color">#828282</color>
 </resources>

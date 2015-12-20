@@ -214,6 +214,13 @@
     <dimen name="event_details_description_padding_bottom">30dip</dimen>
     <dimen name="event_details_divider_height">1dip</dimen>
     <dimen name="event_details_timetable_label_height">50dip</dimen>
-    <dimen name="event_details_timetable_label_text_size">14sp</dimen>
-    <dimen name="event_details_timetable_margin_bottom">30dip</dimen>
+    <dimen name="event_details_timetable_label_text_size">15sp</dimen>
+    <dimen name="event_timetable_list_date_padding_top">30dip</dimen>
+    <dimen name="event_timetable_list_date_padding_bottom">10dip</dimen>
+    <dimen name="event_timetable_list_text_size">12sp</dimen>
+    <dimen name="event_timetable_list_time_padding_left">8dip</dimen>
+    <dimen name="event_timetable_list_time_padding_right">35dip</dimen>
+    <dimen name="event_timetable_list_seance_padding_top">5dip</dimen>
+    <dimen name="event_timetable_list_place_name_icon_padding_top">3dip</dimen>
+    <dimen name="event_timetable_list_place_name_padding_horizontal">8dip</dimen>
 </resources>
