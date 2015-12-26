@@ -59,8 +59,13 @@
     <color name="events_list_item_grey">#828282</color>
     <color name="events_list_has_tickets_text_color">#24282b</color>
 
-    <!--events details-->
+    <!--event details-->
     <color name="event_details_role_text_color">#828282</color>
     <color name="event_timetable_list_time_text_color">#828282</color>
     <color name="event_timetable_list_place_name_text_color">#828282</color>
+
+    <!--place details-->
+    <color name="place_details_address_text_color">#828282</color>
+    <color name="place_details_phones_text_color">#828282</color>
+    <color name="place_details_phones_link_text_color">#008fa4</color>
 </resources>

@@ -63,9 +63,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:background="?attr/EventDetailsActionsLayoutBg"
-        android:paddingTop="@dimen/event_details_actions_layout_vertical_padding"
-        android:paddingBottom="@dimen/event_details_actions_layout_vertical_padding"
+        android:background="?attr/ActionsLayoutBg"
+        android:paddingTop="@dimen/actions_layout_vertical_padding"
+        android:paddingBottom="@dimen/actions_layout_vertical_padding"
         android:layout_marginBottom="@dimen/event_details_actions_margin_bottom">
         <include
             layout="@layout/action_comments"

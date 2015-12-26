@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/place_details_list"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:paddingBottom="@dimen/place_details_padding"
+    android:background="?attr/PlaceDetailsBgColor"
+    android:listSelector="@drawable/application_list_item_selector"
+    android:divider="@null" />

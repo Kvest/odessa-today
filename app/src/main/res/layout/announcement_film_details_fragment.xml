@@ -107,9 +107,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:background="?attr/FilmDetailsActionsLayoutBg"
-            android:paddingTop="@dimen/film_details_actions_layout_vertical_padding"
-            android:paddingBottom="@dimen/film_details_actions_layout_vertical_padding"
+            android:background="?attr/ActionsLayoutBg"
+            android:paddingTop="@dimen/actions_layout_vertical_padding"
+            android:paddingBottom="@dimen/actions_layout_vertical_padding"
             android:layout_marginBottom="@dimen/film_details_actions_margin_bottom">
             <include
                 layout="@layout/action_comments"

@@ -22,6 +22,7 @@
         <item name="MapPinColor">#ff6600</item>
         <item name="NoImage">@drawable/no_image_night</item>
         <item name="LoadingImage">@drawable/loading_image_night</item>
+        <item name="ActionsLayoutBg">#1b1b1b</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">@color/application_green</item>
         <item name="MainMenuHeaderBgColor">#1b1b1b</item>
@@ -60,7 +61,6 @@
         <item name="FilmDetailsDescriptionTextColor">#a5a5a5</item>
         <item name="FilmDetailsDateDividerColor">#4a4a4a</item>
         <item name="FilmDetailsDateTextColor">#828282</item>
-        <item name="FilmDetailsActionsLayoutBg">#1b1b1b</item>
         <item name="ActionBg">@drawable/film_details_action_bg_night</item>
         <item name="ActionNameTextColor">#4bc6bc</item>
         <item name="ActionTicketsDisabledColor">#2d2d2d</item>
@@ -74,7 +74,6 @@
         <!--cinema details-->
         <item name="CinemaDetailsBgColor">#2d2d2d</item>
         <item name="CinemaDetailsDrawablesColor">#ff6600</item>
-        <item name="CinemaDetailsActionsLayoutBg">#1b1b1b</item>
         <item name="CinemaDetailsDescriptionTextColor">#a5a5a5</item>
         <item name="CinemaDetailsDateDividerColor">#4a4a4a</item>
         <item name="CinemaDetailsDateTextColor">#828282</item>
@@ -86,7 +85,6 @@
         <!--event details-->
         <item name="EventDetailsBgColor">#2d2d2d</item>
         <item name="EventDetailsNameTextColor">#e1e1e1</item>
-        <item name="EventDetailsActionsLayoutBg">#1b1b1b</item>
         <item name="EventDetailsRoleTitleTextColor">#e1e1e1</item>
         <item name="EventDetailsDescriptionTextColor">#a5a5a5</item>
         <item name="EventDetailsDividerColor">#4a4a4a</item>
@@ -96,5 +94,11 @@
         <item name="EventTimetableListTimeIconColor">#787878</item>
         <item name="EventTimetableListPricesTextColor">#bcbcbc</item>
         <item name="EventTimetableListPinIconColor">#ff6600</item>
+        <!--place details-->
+        <item name="PlaceDetailsBgColor">#2d2d2d</item>
+        <item name="PlaceDetailsDescriptionTextSize">#a5a5a5</item>
+        <item name="PlaceDetailsDrawablesColor">#ff6600</item>
+        <item name="PlaceDetailsTimetableTextColor">#828282</item>
+        <item name="PlaceDetailsDividerColor">#4a4a4a</item>
     </style>
 </resources>

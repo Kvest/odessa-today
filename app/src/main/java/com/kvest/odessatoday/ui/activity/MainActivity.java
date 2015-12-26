@@ -397,8 +397,8 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     }
 
     @Override
-    public void onPlaceSelected(long placeId) {
-        //TODO
+    public void onPlaceSelected(int placeType, long placeId) {
+        PlaceDetailsActivity.start(this, placeType, placeId);
     }
 
     @Override

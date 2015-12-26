@@ -46,9 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:background="?attr/CinemaDetailsActionsLayoutBg"
-        android:paddingTop="@dimen/cinema_details_actions_layout_vertical_padding"
-        android:paddingBottom="@dimen/cinema_details_actions_layout_vertical_padding"
+        android:background="?attr/ActionsLayoutBg"
+        android:paddingTop="@dimen/actions_layout_vertical_padding"
+        android:paddingBottom="@dimen/actions_layout_vertical_padding"
         android:layout_marginTop="@dimen/cinema_details_actions_margin_top"
         android:layout_marginBottom="@dimen/cinema_details_actions_margin_bottom">
         <include

@@ -74,7 +74,5 @@
         android:textColor="@color/places_list_item_phones_text_color"
         android:textSize="@dimen/places_list_item_phones_text_size"
         app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
-        android:autoLink="phone"
-        android:linksClickable="true"
         android:textColorLink="@color/places_list_item_phones_text_color"/>
 </RelativeLayout>

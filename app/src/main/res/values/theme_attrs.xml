@@ -53,7 +53,7 @@
     <attr format="color" name="FilmDetailsDescriptionTextColor"/>
     <attr format="color" name="FilmDetailsDateDividerColor"/>
     <attr format="color" name="FilmDetailsDateTextColor"/>
-    <attr format="color" name="FilmDetailsActionsLayoutBg"/>
+    <attr format="color" name="ActionsLayoutBg"/>
     <attr format="color" name="ActionNameTextColor"/>
     <attr format="reference" name="ActionBg"/>
     <attr format="color" name="ActionTicketsDisabledColor"/>
@@ -64,7 +64,6 @@
     <attr format="color" name="PlacesListDrawablesColor"/>
     <attr format="color" name="CinemaDetailsBgColor"/>
     <attr format="color" name="CinemaDetailsDrawablesColor"/>
-    <attr format="color" name="CinemaDetailsActionsLayoutBg"/>
     <attr format="color" name="CinemaDetailsDescriptionTextColor"/>
     <attr format="color" name="CinemaDetailsDateDividerColor"/>
     <attr format="color" name="CinemaDetailsDateTextColor"/>
@@ -74,7 +73,6 @@
     <attr format="color" name="EventNameTextColor"/>
     <attr format="color" name="EventDetailsBgColor"/>
     <attr format="color" name="EventDetailsNameTextColor"/>
-    <attr format="color" name="EventDetailsActionsLayoutBg"/>
     <attr format="color" name="EventDetailsRoleTitleTextColor"/>
     <attr format="color" name="EventDetailsDescriptionTextColor"/>
     <attr format="color" name="EventDetailsDividerColor"/>
@@ -84,4 +82,9 @@
     <attr format="color" name="EventTimetableListTimeIconColor"/>
     <attr format="color" name="EventTimetableListPricesTextColor"/>
     <attr format="color" name="EventTimetableListPinIconColor"/>
+    <attr format="color" name="PlaceDetailsBgColor"/>
+    <attr format="color" name="PlaceDetailsDescriptionTextSize"/>
+    <attr format="color" name="PlaceDetailsDrawablesColor"/>
+    <attr format="color" name="PlaceDetailsTimetableTextColor"/>
+    <attr format="color" name="PlaceDetailsDividerColor"/>
 </resources>

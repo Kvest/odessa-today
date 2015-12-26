@@ -69,7 +69,7 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (placeSelectedListener != null) {
-                    placeSelectedListener.onPlaceSelected(id);
+                    placeSelectedListener.onPlaceSelected(getPlaceType(), id);
                 }
             }
         });

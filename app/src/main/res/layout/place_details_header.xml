@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/place_details_padding_top">
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/place_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/place_details_padding"
+        android:paddingRight="@dimen/place_details_padding"
+        android:textSize="@dimen/place_details_name_text_size"
+        android:textColor="?attr/PlaceNameTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/place_phones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/place_details_padding"
+        android:paddingRight="@dimen/place_details_padding"
+        android:layout_marginTop="@dimen/place_details_phones_margin_top"
+        android:drawablePadding="@dimen/place_details_phones_drawable_padding"
+        android:drawableLeft="@drawable/ic_phone"
+        android:textColor="@color/place_details_phones_text_color"
+        android:textColorLink="@color/place_details_phones_link_text_color"
+        android:textSize="@dimen/place_details_phones_text_size"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+        android:autoLink="phone"
+        android:linksClickable="true"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/place_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/place_details_padding"
+        android:paddingLeft="@dimen/place_details_address_padding_left"
+        android:drawableLeft="@drawable/ic_map_pin"
+        android:layout_marginTop="@dimen/place_details_address_margin_top"
+        android:drawablePadding="@dimen/place_details_address_drawable_padding"
+        android:textSize="@dimen/place_details_address_text_size"
+        android:textColor="@color/place_details_address_text_color"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/place_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/place_details_padding"
+        android:paddingRight="@dimen/place_details_padding"
+        android:layout_marginTop="@dimen/place_details_description_margin_top"
+        android:textColor="?attr/PlaceDetailsDescriptionTextSize"
+        android:textSize="@dimen/place_details_description_text_size"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:background="?attr/ActionsLayoutBg"
+        android:paddingTop="@dimen/actions_layout_vertical_padding"
+        android:paddingBottom="@dimen/actions_layout_vertical_padding"
+        android:layout_marginTop="@dimen/place_details_actions_margin_top">
+        <include
+            layout="@layout/action_comments"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <include
+            layout="@layout/action_gallery"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <include
+            layout="@layout/action_map"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/place_details_timetable_label_height"
+        android:paddingLeft="@dimen/place_details_padding"
+        android:paddingRight="@dimen/place_details_padding"
+        android:gravity="center_vertical|left"
+        android:textSize="@dimen/place_details_timetable_label_text_size"
+        android:textColor="?attr/PlaceDetailsTimetableTextColor"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+        android:text="@string/timetable"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/place_details_divider_height"
+        android:layout_marginLeft="@dimen/place_details_padding"
+        android:layout_marginRight="@dimen/place_details_padding"
+        android:background="?attr/PlaceDetailsDividerColor" />
+</LinearLayout>

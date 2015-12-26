@@ -22,6 +22,7 @@
         <item name="MapPinColor">#24282b</item>
         <item name="NoImage">@drawable/no_image_day</item>
         <item name="LoadingImage">@drawable/loading_image_day</item>
+        <item name="ActionsLayoutBg">#f5f5f5</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuHeaderBgColor">#24282b</item>
@@ -60,7 +61,6 @@
         <item name="FilmDetailsDescriptionTextColor">#4e4e4e</item>
         <item name="FilmDetailsDateDividerColor">#e2e2e2</item>
         <item name="FilmDetailsDateTextColor">#24282b</item>
-        <item name="FilmDetailsActionsLayoutBg">#f5f5f5</item>
         <item name="ActionBg">@drawable/film_details_action_bg_day</item>
         <item name="ActionNameTextColor">#24282b</item>
         <item name="ActionTicketsDisabledColor">#d2d2d2</item>
@@ -74,7 +74,6 @@
         <!--cinema details-->
         <item name="CinemaDetailsBgColor">@android:color/white</item>
         <item name="CinemaDetailsDrawablesColor">#24282b</item>
-        <item name="CinemaDetailsActionsLayoutBg">#f5f5f5</item>
         <item name="CinemaDetailsDescriptionTextColor">#4f4f4f</item>
         <item name="CinemaDetailsDateDividerColor">#e2e2e2</item>
         <item name="CinemaDetailsDateTextColor">#24282b</item>
@@ -86,7 +85,6 @@
         <!--event details-->
         <item name="EventDetailsBgColor">@android:color/white</item>
         <item name="EventDetailsNameTextColor">#24282b</item>
-        <item name="EventDetailsActionsLayoutBg">#f5f5f5</item>
         <item name="EventDetailsRoleTitleTextColor">#24282b</item>
         <item name="EventDetailsDescriptionTextColor">#4e4e4e</item>
         <item name="EventDetailsDividerColor">#e2e2e2</item>
@@ -96,5 +94,11 @@
         <item name="EventTimetableListTimeIconColor">#bcbcbc</item>
         <item name="EventTimetableListPricesTextColor">#24282b</item>
         <item name="EventTimetableListPinIconColor">#24282b</item>
+        <!--place details-->
+        <item name="PlaceDetailsBgColor">@android:color/white</item>
+        <item name="PlaceDetailsDescriptionTextSize">#4f4f4f</item>
+        <item name="PlaceDetailsDrawablesColor">#24282b</item>
+        <item name="PlaceDetailsTimetableTextColor">#24282b</item>
+        <item name="PlaceDetailsDividerColor">#e2e2e2</item>
     </style>
 </resources>

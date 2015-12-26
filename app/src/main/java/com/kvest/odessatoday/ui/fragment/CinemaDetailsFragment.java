@@ -241,7 +241,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     }
 
     private void showCinemaOnMap() {
-        Uri geoLocation = Uri.parse("geo:0,0?q=" + latitude + "," +longitude + "(" + cinemaName.getText() + ")");
+        Uri geoLocation = Uri.parse("geo:0,0?q=" + latitude + "," +longitude);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLocation);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {

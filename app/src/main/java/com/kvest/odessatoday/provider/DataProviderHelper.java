@@ -119,4 +119,10 @@ public abstract class DataProviderHelper {
                                 selection, new String[]{ Long.toString(eventId)},
                                 order);
     }
+
+    public static CursorLoader getPlaceLoader(Context context, int placeType, long placeId, String[] projection) {
+        Uri uri = Uri.withAppendedPath(PLACES_URI, Integer.toString(placeType));
+        String selection = Tables.Places.Columns.PLACE_ID + "=?";
+        return new CursorLoader(context, uri, projection, selection, new String[]{Long.toString(placeId)}, null);
+    }
 }
