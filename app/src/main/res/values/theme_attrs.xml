@@ -78,13 +78,16 @@
     <attr format="color" name="EventDetailsDividerColor"/>
     <attr format="color" name="EventDetailsTimetableTextColor"/>
     <attr format="color" name="EventDetailsTimetableIconColor"/>
-    <attr format="color" name="EventTimetableListDateTextSize"/>
+    <attr format="color" name="EventTimetableListDateTextColor"/>
     <attr format="color" name="EventTimetableListTimeIconColor"/>
     <attr format="color" name="EventTimetableListPricesTextColor"/>
     <attr format="color" name="EventTimetableListPinIconColor"/>
     <attr format="color" name="PlaceDetailsBgColor"/>
-    <attr format="color" name="PlaceDetailsDescriptionTextSize"/>
+    <attr format="color" name="PlaceDetailsDescriptionTextColor"/>
     <attr format="color" name="PlaceDetailsDrawablesColor"/>
     <attr format="color" name="PlaceDetailsTimetableTextColor"/>
     <attr format="color" name="PlaceDetailsDividerColor"/>
+    <attr format="color" name="PlaceTimetableListDateTextColor"/>
+    <attr format="color" name="PlaceTimetableListEventNameTextColor"/>
+    <attr format="color" name="PlaceTimetableListPriceTextColor"/>
 </resources>

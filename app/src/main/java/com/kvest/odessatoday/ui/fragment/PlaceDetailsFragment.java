@@ -14,17 +14,21 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
-import com.kvest.odessatoday.provider.TodayProviderContract;
+import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.ui.activity.EventDetailsActivity;
 import com.kvest.odessatoday.ui.adapter.PlaceTimetableAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.Tables.*;
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
@@ -100,6 +104,12 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
         timetableAdapter = new PlaceTimetableAdapter(getActivity());
         timetableList.setAdapter(timetableAdapter);
 
+        timetableList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showEvent(id);
+            }
+        });
         headerView.findViewById(R.id.action_map).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +130,11 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
         });
     }
 
+    private void showEvent(long eventId) {
+        EventDetailsActivity.start(getActivity(), eventId);
+    }
+
+
     private void initResources(Context context) {
         // The attributes you want retrieved
         int[] attrs = {R.attr.PlaceDetailsDrawablesColor};
@@ -137,6 +152,9 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        //Request full timetable for the place
+        loadEvents(getActivity());
 
         getLoaderManager().initLoader(PLACE_LOADER_ID, null, this);
         getLoaderManager().initLoader(TIMETABLE_LOADER_ID, null, this);
@@ -167,8 +185,9 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
                 return DataProviderHelper.getPlaceLoader(getActivity(), getPlaceType(),
                                                          getPlaceId(), PLACE_PROJECTION);
             case TIMETABLE_LOADER_ID :
-                return null;
-                //TODO
+                return DataProviderHelper.getPlaceTimetableLoader(getActivity(), getPlaceId(),
+                                                                  PlaceTimetableAdapter.PROJECTION,
+                                                                  EventsTimetableView.ORDER_EVENT_ASC_DATE_ASC);
         }
 
         return null;
@@ -180,19 +199,19 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
             case PLACE_LOADER_ID :
                 setPlaceData(cursor);
                 break;
-//            case TIMETABLE_LOADER_ID :
-//                timetableAdapter.setCursor(cursor);
-//                break;
+            case TIMETABLE_LOADER_ID :
+                timetableAdapter.setCursor(cursor);
+                break;
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-//        switch (loader.getId()) {
-//            case TIMETABLE_LOADER_ID :
-//                timetableAdapter.setCursor(null);
-//                break;
-//        }
+        switch (loader.getId()) {
+            case TIMETABLE_LOADER_ID :
+                timetableAdapter.setCursor(null);
+                break;
+        }
     }
 
     protected long getPlaceId() {
@@ -211,6 +230,12 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
         } else {
             return -1;
         }
+    }
+
+    private void loadEvents(Context context) {
+        long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+
+        NetworkService.loadEvents(context, startDate, -1, getPlaceId());
     }
 
     private void showComments() {

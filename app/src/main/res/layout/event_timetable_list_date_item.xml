@@ -10,5 +10,5 @@
     android:paddingLeft="@dimen/cinema_details_padding"
     android:paddingRight="@dimen/cinema_details_padding"
     android:textSize="@dimen/event_timetable_list_text_size"
-    android:textColor="?attr/EventTimetableListDateTextSize"
+    android:textColor="?attr/EventTimetableListDateTextColor"
     app:fontAsset="fonts/helveticaneuecyr-bold.ttf"/>

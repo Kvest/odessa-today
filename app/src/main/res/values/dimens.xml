@@ -190,9 +190,9 @@
     <dimen name="events_list_item_prices_drawable_padding">10dip</dimen>
     <dimen name="events_list_item_info_padding_bottom">6dip</dimen>
     <dimen name="events_list_item_small_text_size">12sp</dimen>
-    <dimen name="events_list_has_tickets_text_size">11sp</dimen>
-    <dimen name="events_list_has_tickets_padding_vertical">3dip</dimen>
-    <dimen name="events_list_has_tickets_padding_horizontal">5dip</dimen>
+    <dimen name="has_tickets_text_size">11sp</dimen>
+    <dimen name="has_tickets_padding_vertical">3dip</dimen>
+    <dimen name="has_tickets_padding_horizontal">5dip</dimen>
 
     <!--event details-->
     <dimen name="event_details_padding">10dip</dimen>
@@ -239,4 +239,19 @@
     <dimen name="place_details_timetable_label_height">50dip</dimen>
     <dimen name="place_details_timetable_label_text_size">15sp</dimen>
     <dimen name="place_details_divider_height">1dip</dimen>
+    <dimen name="place_timetable_list_text_size">13sp</dimen>
+    <dimen name="place_timetable_list_date_padding_top">30dip</dimen>
+    <dimen name="place_timetable_list_date_padding_bottom">16dip</dimen>
+    <dimen name="place_timetable_list_arrow_margin_left">4dip</dimen>
+    <dimen name="place_timetable_list_ratingbar_margin_top">2dip</dimen>
+    <dimen name="place_timetable_list_ratingbar_margin_bottom">16dip</dimen>
+    <dimen name="place_timetable_list_comments_count_margin_left">4dip</dimen>
+    <dimen name="place_timetable_list_event_name_margin_bottom">10dip</dimen>
+    <dimen name="place_timetable_list_event_name_text_size">13sp</dimen>
+    <dimen name="place_timetable_list_event_type_text_size">12sp</dimen>
+    <dimen name="place_timetable_list_seance_item_padding_top">13dip</dimen>
+    <dimen name="place_timetable_list_seance_time_width">40dip</dimen>
+    <dimen name="place_timetable_list_seance_time_margin_left">8dip</dimen>
+    <dimen name="place_timetable_list_seance_time_text_size">12sp</dimen>
+    <dimen name="place_timetable_list_price_text_size">12sp</dimen>
 </resources>

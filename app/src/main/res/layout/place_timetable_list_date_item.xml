@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kvest.odessatoday.ui.widget.FontTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/date"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/place_timetable_list_date_padding_top"
+    android:paddingBottom="@dimen/place_timetable_list_date_padding_bottom"
+    android:paddingLeft="@dimen/place_details_padding"
+    android:paddingRight="@dimen/place_details_padding"
+    android:textSize="@dimen/place_timetable_list_text_size"
+    android:textColor="?attr/PlaceTimetableListDateTextColor"
+    app:fontAsset="fonts/helveticaneuecyr-bold.ttf"/>

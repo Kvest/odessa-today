@@ -90,15 +90,18 @@
         <item name="EventDetailsDividerColor">#4a4a4a</item>
         <item name="EventDetailsTimetableTextColor">#828282</item>
         <item name="EventDetailsTimetableIconColor">#ff6600</item>
-        <item name="EventTimetableListDateTextSize">#e1e1e1</item>
+        <item name="EventTimetableListDateTextColor">#e1e1e1</item>
         <item name="EventTimetableListTimeIconColor">#787878</item>
         <item name="EventTimetableListPricesTextColor">#bcbcbc</item>
         <item name="EventTimetableListPinIconColor">#ff6600</item>
         <!--place details-->
         <item name="PlaceDetailsBgColor">#2d2d2d</item>
-        <item name="PlaceDetailsDescriptionTextSize">#a5a5a5</item>
+        <item name="PlaceDetailsDescriptionTextColor">#a5a5a5</item>
         <item name="PlaceDetailsDrawablesColor">#ff6600</item>
         <item name="PlaceDetailsTimetableTextColor">#828282</item>
         <item name="PlaceDetailsDividerColor">#4a4a4a</item>
+        <item name="PlaceTimetableListDateTextColor">#e1e1e1</item>
+        <item name="PlaceTimetableListEventNameTextColor">#e1e1e1</item>
+        <item name="PlaceTimetableListPriceTextColor">#bcbcbc</item>
     </style>
 </resources>

@@ -424,6 +424,7 @@ public class TodayProviderContract {
             }
 
             String ORDER_ASC = Columns.DATE + " ASC";
+            String ORDER_EVENT_ASC_DATE_ASC = Columns.EVENT_ID + " ASC," + Columns.DATE + " ASC";
         }
     }
 }

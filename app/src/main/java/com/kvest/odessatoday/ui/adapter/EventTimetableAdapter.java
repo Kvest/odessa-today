@@ -184,7 +184,7 @@ public class EventTimetableAdapter extends BaseAdapter {
     }
 
     private static abstract class BaseTimetableItem {
-        public long id;
+        public final long id;
 
         public BaseTimetableItem(long id) {
             this.id = id;

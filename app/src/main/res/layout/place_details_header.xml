@@ -49,7 +49,7 @@
         android:paddingLeft="@dimen/place_details_padding"
         android:paddingRight="@dimen/place_details_padding"
         android:layout_marginTop="@dimen/place_details_description_margin_top"
-        android:textColor="?attr/PlaceDetailsDescriptionTextSize"
+        android:textColor="?attr/PlaceDetailsDescriptionTextColor"
         android:textSize="@dimen/place_details_description_text_size"
         app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
 

@@ -255,7 +255,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Request full timetable for the cinema for today and comments
+        //Request full timetable for the cinema for today
         NetworkService.loadFilms(getActivity(), shownDate, TimeUtils.getEndOfTheDay(shownDate), getCinemaId());
 
         getLoaderManager().initLoader(CINEMA_LOADER_ID, null, this);

@@ -125,4 +125,10 @@ public abstract class DataProviderHelper {
         String selection = Tables.Places.Columns.PLACE_ID + "=?";
         return new CursorLoader(context, uri, projection, selection, new String[]{Long.toString(placeId)}, null);
     }
+
+    public static CursorLoader getPlaceTimetableLoader(Context context, long placeId, String[] projection, String sortOrder) {
+        String selection = Tables.EventsTimetableView.Columns.PLACE_ID + "=?";
+        String[] selectionArgs = new String[]{Long.toString(placeId)};
+        return new CursorLoader(context, EVENTS_TIMETABLE_VIEW_URI, projection, selection, selectionArgs, sortOrder);
+    }
 }

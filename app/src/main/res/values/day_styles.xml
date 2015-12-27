@@ -90,15 +90,18 @@
         <item name="EventDetailsDividerColor">#e2e2e2</item>
         <item name="EventDetailsTimetableTextColor">#24282b</item>
         <item name="EventDetailsTimetableIconColor">#a6a6a6</item>
-        <item name="EventTimetableListDateTextSize">#24282b</item>
+        <item name="EventTimetableListDateTextColor">#24282b</item>
         <item name="EventTimetableListTimeIconColor">#bcbcbc</item>
         <item name="EventTimetableListPricesTextColor">#24282b</item>
         <item name="EventTimetableListPinIconColor">#24282b</item>
         <!--place details-->
         <item name="PlaceDetailsBgColor">@android:color/white</item>
-        <item name="PlaceDetailsDescriptionTextSize">#4f4f4f</item>
+        <item name="PlaceDetailsDescriptionTextColor">#4f4f4f</item>
         <item name="PlaceDetailsDrawablesColor">#24282b</item>
         <item name="PlaceDetailsTimetableTextColor">#24282b</item>
         <item name="PlaceDetailsDividerColor">#e2e2e2</item>
+        <item name="PlaceTimetableListDateTextColor">#24282b</item>
+        <item name="PlaceTimetableListEventNameTextColor">#24282b</item>
+        <item name="PlaceTimetableListPriceTextColor">#24282b</item>
     </style>
 </resources>
