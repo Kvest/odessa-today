@@ -1,15 +1,11 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +14,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.network.notification.LoadPlacesNotification;
+import com.kvest.odessatoday.io.network.event.PlacesLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.PlacesAdapter;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
+import com.squareup.otto.Subscribe;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
@@ -38,8 +36,6 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     private SwipeRefreshLayout refreshLayout;
 
     private PlaceSelectedListener placeSelectedListener;
-
-    private LoadPlacesNotificationReceiver receiver = new LoadPlacesNotificationReceiver();
 
     public static PlacesListFragment newInstance(int placeType) {
         Bundle arguments = new Bundle(1);
@@ -111,7 +107,7 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(LoadPlacesNotification.ACTION));
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -121,7 +117,7 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
         //stop progress
         refreshLayout.setRefreshing(false);
 
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -166,14 +162,19 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
         return (arguments != null) ? arguments.getInt(ARGUMENT_PLACE_TYPE, -1) : -1;
     }
 
-    private class LoadPlacesNotificationReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //TODO use type of the place loading and check if the type from event is the same(see EventsListFragment)
-            refreshLayout.setRefreshing(false);
+    @Subscribe
+    public void onPlacesLoaded(PlacesLoadedEvent event) {
+        if (event.getPlaceType() == getPlaceType()) {
+            //event dispatched not in the UI thread
+            refreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLayout.setRefreshing(false);
+                }
+            });
 
             Activity activity = getActivity();
-            if (!LoadPlacesNotification.isSuccessful(intent) && activity != null) {
+            if (!event.isSuccessful() && activity != null) {
                 showErrorSnackbar(activity, R.string.error_loading_places);
             }
         }

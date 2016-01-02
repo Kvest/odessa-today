@@ -1,25 +1,22 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.*;
 import android.widget.*;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.network.notification.LoadTimetableNotification;
+import com.kvest.odessatoday.io.network.event.FilmTimetableLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.activity.CinemaDetailsActivity;
 import com.kvest.odessatoday.ui.adapter.TimetableAdapter;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.TimeUtils;
+import com.squareup.otto.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
@@ -57,8 +54,6 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
 
     private View actionTickets;
 
-    private LoadTimetableNotificationReceiver timetableErrorReceiver = new LoadTimetableNotificationReceiver();
-
     public static FilmDetailsFragment getInstance(long filmId, long timetableDate) {
         Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
@@ -93,14 +88,14 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(timetableErrorReceiver, new IntentFilter(LoadTimetableNotification.ACTION));
+        BusProvider.getInstance().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(timetableErrorReceiver);
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -245,13 +240,11 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
         }
     }
 
-    private class LoadTimetableNotificationReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Activity activity = getActivity();
-            if (!LoadTimetableNotification.isSuccessful(intent) && activity != null) {
-                showErrorSnackbar(activity, R.string.error_loading_films_timetable);
-            }
+    @Subscribe
+    public void onFilmTimetableLoaded(FilmTimetableLoadedEvent event) {
+        Activity activity = getActivity();
+        if (!event.isSuccessful() && activity != null) {
+            showErrorSnackbar(activity, R.string.error_loading_films_timetable);
         }
     }
 }

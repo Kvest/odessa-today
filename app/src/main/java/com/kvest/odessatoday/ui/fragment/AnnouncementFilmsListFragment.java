@@ -1,15 +1,10 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.network.notification.LoadAnnouncementFilmsNotification;
+import com.kvest.odessatoday.io.network.event.AnnouncementFilmsLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.AnnouncementFilmsAdapter;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
+import com.squareup.otto.Subscribe;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
@@ -37,10 +34,7 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
     private static final int ANNOUNCEMENTS_LOADER_ID = 1;
 
     private AnnouncementFilmsAdapter adapter;
-
     private AnnouncementFilmSelectedListener announcementFilmSelectedListener;
-    private LoadAnnouncementFilmsNotificationReceiver receiver = new LoadAnnouncementFilmsNotificationReceiver();
-
     private SwipeRefreshLayout refreshLayout;
 
     public static AnnouncementFilmsListFragment getInstance() {
@@ -91,7 +85,7 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(LoadAnnouncementFilmsNotification.ACTION));
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -101,7 +95,7 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
         //stop progress
         refreshLayout.setRefreshing(false);
 
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -167,15 +161,19 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
         NetworkService.loadAnnouncements(getActivity());
     }
 
-    private class LoadAnnouncementFilmsNotificationReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            refreshLayout.setRefreshing(false);
-
-            Activity activity = getActivity();
-            if (!LoadAnnouncementFilmsNotification.isSuccessful(intent) && activity != null) {
-                showErrorSnackbar(activity, R.string.error_loading_announcement_films);
+    @Subscribe
+    public void onAnnouncementFilmsLoaded(AnnouncementFilmsLoadedEvent event) {
+        //event dispatched not in the UI thread
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(false);
             }
+        });
+
+        Activity activity = getActivity();
+        if (!event.isSuccessful() && activity != null) {
+            showErrorSnackbar(activity, R.string.error_loading_announcement_films);
         }
     }
 }

@@ -10,9 +10,10 @@ import android.os.RemoteException;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.Place;
-import com.kvest.odessatoday.io.network.notification.LoadPlacesNotification;
+import com.kvest.odessatoday.io.network.event.PlacesLoadedEvent;
 import com.kvest.odessatoday.io.network.request.GetPlacesRequest;
 import com.kvest.odessatoday.io.network.response.GetPlacesResponse;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,28 +63,27 @@ public class LoadPlacesHandler extends RequestHandler {
                         hasMorePlaces = true;
                         offset += response.data.places.size();
                     } else {
-                        sendLocalBroadcast(context, LoadPlacesNotification.createSuccessResult(placesType));
+                        BusProvider.getInstance().post(new PlacesLoadedEvent(placesType, true, null));
                     }
                 } else {
                     LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                     //notify listeners about unsuccessful loading places
-                    sendLocalBroadcast(context, LoadPlacesNotification.createErrorsResult(response.error, placesType));
-
+                    BusProvider.getInstance().post(new PlacesLoadedEvent(placesType, false, response.error));
                     break;
                 }
             } catch (InterruptedException e) {
                 LOGE(Constants.TAG, e.getLocalizedMessage());
 
                 //notify listeners about unsuccessful loading places
-                sendLocalBroadcast(context, LoadPlacesNotification.createErrorsResult(e.getLocalizedMessage(), placesType));
+                BusProvider.getInstance().post(new PlacesLoadedEvent(placesType, false, e.getLocalizedMessage()));
 
                 break;
             } catch (ExecutionException e) {
                 LOGE(Constants.TAG, e.getLocalizedMessage());
 
                 //notify listeners about unsuccessful loading places
-                sendLocalBroadcast(context, LoadPlacesNotification.createErrorsResult(e.getLocalizedMessage(), placesType));
+                BusProvider.getInstance().post(new PlacesLoadedEvent(placesType, false, e.getLocalizedMessage()));
 
                 break;
             }

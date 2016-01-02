@@ -6,10 +6,11 @@ import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.AnnouncementFilm;
 import com.kvest.odessatoday.io.network.NetworkContract;
-import com.kvest.odessatoday.io.network.notification.LoadAnnouncementFilmsNotification;
+import com.kvest.odessatoday.io.network.event.AnnouncementFilmsLoadedEvent;
 import com.kvest.odessatoday.io.network.request.GetAnnouncementsRequest;
 import com.kvest.odessatoday.io.network.response.GetAnnouncementsResponse;
 import com.kvest.odessatoday.provider.TodayProviderContract;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class LoadAnnouncementsHandler extends RequestHandler {
 
                     loadedWithoutErrors = false;
                     //notify listeners about unsuccessful loading cinemas
-                    sendLocalBroadcast(context, LoadAnnouncementFilmsNotification.createErrorsResult(response.error));
+                    BusProvider.getInstance().post(new AnnouncementFilmsLoadedEvent(false, response.error));
 
                     break;
                 }
@@ -60,7 +61,7 @@ public class LoadAnnouncementsHandler extends RequestHandler {
 
                 loadedWithoutErrors = false;
                 //notify listeners about unsuccessful loading cinemas
-                sendLocalBroadcast(context, LoadAnnouncementFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
+                BusProvider.getInstance().post(new AnnouncementFilmsLoadedEvent(false, e.getLocalizedMessage()));
 
                 break;
             } catch (ExecutionException e) {
@@ -68,7 +69,7 @@ public class LoadAnnouncementsHandler extends RequestHandler {
 
                 loadedWithoutErrors = false;
                 //notify listeners about unsuccessful loading cinemas
-                sendLocalBroadcast(context, LoadAnnouncementFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
+                BusProvider.getInstance().post(new AnnouncementFilmsLoadedEvent(false, e.getLocalizedMessage()));
 
                 break;
             }
@@ -76,7 +77,7 @@ public class LoadAnnouncementsHandler extends RequestHandler {
 
         if (loadedWithoutErrors) {
             //notify listeners about successful loading cinemas
-            sendLocalBroadcast(context, LoadAnnouncementFilmsNotification.createSuccessResult());
+            BusProvider.getInstance().post(new AnnouncementFilmsLoadedEvent(true, null));
         }
     }
 

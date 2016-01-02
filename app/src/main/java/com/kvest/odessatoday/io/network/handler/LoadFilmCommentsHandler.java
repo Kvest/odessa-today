@@ -3,10 +3,11 @@ package com.kvest.odessatoday.io.network.handler;
 import android.content.Context;
 import android.content.Intent;
 import com.android.volley.toolbox.RequestFuture;
-import com.kvest.odessatoday.io.network.notification.LoadCommentsNotification;
+import com.kvest.odessatoday.io.network.event.CommentsLoadedEvent;
 import com.kvest.odessatoday.io.network.request.GetCommentsRequest;
 import com.kvest.odessatoday.io.network.request.GetFilmCommentsRequest;
 import com.kvest.odessatoday.io.network.response.GetCommentsResponse;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 
 
@@ -34,7 +35,7 @@ public class LoadFilmCommentsHandler extends LoadCommentsHandler {
         //get extra data
         long filmId = intent.getLongExtra(FILM_ID_EXTRA, -1);
 
-        sendLocalBroadcast(context, LoadCommentsNotification.createErrorsResult(message, filmId, Constants.CommentTargetType.FILM));
+        BusProvider.getInstance().post(new CommentsLoadedEvent(filmId, Constants.CommentTargetType.FILM, message));
     }
 
     @Override
@@ -42,6 +43,6 @@ public class LoadFilmCommentsHandler extends LoadCommentsHandler {
         //get extra data
         long filmId = intent.getLongExtra(FILM_ID_EXTRA, -1);
 
-        sendLocalBroadcast(context, LoadCommentsNotification.createSuccessResult(filmId, Constants.CommentTargetType.FILM));
+        BusProvider.getInstance().post(new CommentsLoadedEvent(filmId, Constants.CommentTargetType.FILM));
     }
 }

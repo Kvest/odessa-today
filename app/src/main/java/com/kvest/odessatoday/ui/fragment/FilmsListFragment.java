@@ -1,27 +1,24 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
+import com.kvest.odessatoday.io.network.event.FilmsLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
-import com.kvest.odessatoday.ui.activity.DateSelectionListener;
 import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
+import com.squareup.otto.Subscribe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -47,8 +44,6 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
 
     private ShowCalendarListener showCalendarListener;
     private FilmSelectedListener filmSelectedListener;
-
-    private LoadFilmsNotificationReceiver receiver = new LoadFilmsNotificationReceiver();
 
     private SwipeRefreshLayout refreshLayout;
 
@@ -155,7 +150,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(LoadFilmsNotification.ACTION));
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -165,7 +160,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         //stop progress
         refreshLayout.setRefreshing(false);
 
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -295,15 +290,19 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         }
     }
 
-    private class LoadFilmsNotificationReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            refreshLayout.setRefreshing(false);
-
-            Activity activity = getActivity();
-            if (!LoadFilmsNotification.isSuccessful(intent) && activity != null) {
-                showErrorSnackbar(activity, R.string.error_loading_films);
+    @Subscribe
+    public void onFilmsLoaded(FilmsLoadedEvent event) {
+        //event dispatched not in the UI thread
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(false);
             }
+        });
+
+        Activity activity = getActivity();
+        if (!event.isSuccessful() && activity != null) {
+            showErrorSnackbar(activity, R.string.error_loading_films);
         }
     }
 }

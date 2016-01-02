@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.network.event.EventsLoaded;
+import com.kvest.odessatoday.io.network.event.EventsLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
@@ -33,7 +33,6 @@ import com.squareup.otto.Subscribe;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
-import static com.kvest.odessatoday.utils.LogUtils.LOGD;
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
@@ -210,7 +209,7 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     }
 
     @Subscribe
-    public void onEventsLoaded(EventsLoaded event) {
+    public void onEventsLoaded(EventsLoadedEvent event) {
         if (event.getType() == getEventType()) {
             //event dispatched not in the UI thread
             refreshLayout.post(new Runnable() {

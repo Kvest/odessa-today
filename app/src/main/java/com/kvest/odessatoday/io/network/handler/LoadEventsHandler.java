@@ -9,9 +9,7 @@ import android.os.RemoteException;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.Event;
-import com.kvest.odessatoday.datamodel.FilmWithTimetable;
-import com.kvest.odessatoday.datamodel.TimetableItem;
-import com.kvest.odessatoday.io.network.event.EventsLoaded;
+import com.kvest.odessatoday.io.network.event.EventsLoadedEvent;
 import com.kvest.odessatoday.io.network.request.GetEventsRequest;
 import com.kvest.odessatoday.io.network.response.GetEventsResponse;
 import com.kvest.odessatoday.provider.TodayProviderContract;
@@ -82,23 +80,23 @@ public class LoadEventsHandler extends RequestHandler {
                 saveEvents(context, response.data.events, request.getStartDate(), request.getEndDate(), request.getPlaceId(), request.getType());
 
                 //notify listeners about successful loading events
-                BusProvider.getInstance().post(new EventsLoaded(type, placeId, true));
+                BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, true));
             } else {
                 LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading events
-                BusProvider.getInstance().post(new EventsLoaded(type, placeId, false));
+                BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false));
             }
         } catch (InterruptedException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading events
-            BusProvider.getInstance().post(new EventsLoaded(type, placeId, false));
+            BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false));
         } catch (ExecutionException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading events
-            BusProvider.getInstance().post(new EventsLoaded(type, placeId, false));
+            BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false));
         }
     }
 

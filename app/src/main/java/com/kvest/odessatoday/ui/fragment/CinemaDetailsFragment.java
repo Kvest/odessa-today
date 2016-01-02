@@ -1,10 +1,8 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -12,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,15 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
+import com.kvest.odessatoday.io.network.event.FilmsLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.activity.FilmDetailsActivity;
 import com.kvest.odessatoday.ui.adapter.CinemaTimetableAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.TimeUtils;
 import com.kvest.odessatoday.utils.Utils;
+import com.squareup.otto.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
@@ -70,7 +69,6 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private CinemaTimetableAdapter cinemaTimetableAdapter;
 
     private CinemaDetailsActionsListener cinemaDetailsActionsListener;
-    private LoadFilmsNotificationReceiver filmsErrorReceiver = new LoadFilmsNotificationReceiver();
 
     public static CinemaDetailsFragment getInstance(long cinemaId) {
         Bundle arguments = new Bundle(1);
@@ -102,14 +100,14 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(filmsErrorReceiver, new IntentFilter(LoadFilmsNotification.ACTION));
+        BusProvider.getInstance().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(filmsErrorReceiver);
+        BusProvider.getInstance().unregister(this);
     }
 
     private void init(View rootView, View headerView) {
@@ -347,13 +345,11 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         }
     }
 
-    private class LoadFilmsNotificationReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Activity activity = getActivity();
-            if (!LoadFilmsNotification.isSuccessful(intent) && activity != null) {
-                showErrorSnackbar(activity, R.string.error_loading_films);
-            }
+    @Subscribe
+    public void onFilmsLoaded(FilmsLoadedEvent event) {
+        Activity activity = getActivity();
+        if (!event.isSuccessful() && activity != null) {
+            showErrorSnackbar(activity, R.string.error_loading_films);
         }
     }
 

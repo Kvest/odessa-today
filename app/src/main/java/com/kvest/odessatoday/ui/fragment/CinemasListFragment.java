@@ -1,25 +1,22 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.network.notification.LoadCinemasNotification;
+import com.kvest.odessatoday.io.network.event.CinemasLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CinemasAdapter;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
+import com.squareup.otto.Subscribe;
 
 import static com.kvest.odessatoday.utils.LogUtils.*;
 
@@ -37,8 +34,6 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     private CinemasAdapter adapter;
 
     private CinemaSelectedListener cinemaSelectedListener;
-
-    private LoadCinemasNotificationReceiver receiver = new LoadCinemasNotificationReceiver();
 
     private SwipeRefreshLayout refreshLayout;
 
@@ -109,7 +104,7 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(LoadCinemasNotification.ACTION));
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -119,7 +114,7 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
         //stop progress
         refreshLayout.setRefreshing(false);
 
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -162,15 +157,19 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
         NetworkService.loadCinemas(getActivity());
     }
 
-    private class LoadCinemasNotificationReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            refreshLayout.setRefreshing(false);
-
-            Activity activity = getActivity();
-            if (!LoadCinemasNotification.isSuccessful(intent) && activity != null) {
-                showErrorSnackbar(activity, R.string.error_loading_cinemas);
+    @Subscribe
+    public void onCinemasLoaded(CinemasLoadedEvent event) {
+        //event dispatched not in the UI thread
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(false);
             }
+        });
+
+        Activity activity = getActivity();
+        if (!event.isSuccessful() && activity != null) {
+            showErrorSnackbar(activity, R.string.error_loading_cinemas);
         }
     }
 }

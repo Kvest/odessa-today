@@ -8,10 +8,11 @@ import android.os.RemoteException;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.TimetableItem;
-import com.kvest.odessatoday.io.network.notification.LoadTimetableNotification;
+import com.kvest.odessatoday.io.network.event.FilmTimetableLoadedEvent;
 import com.kvest.odessatoday.io.network.request.GetTimetableRequest;
 import com.kvest.odessatoday.io.network.response.GetTimetableResponse;
 import com.kvest.odessatoday.provider.TodayProviderContract;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 
 import java.util.ArrayList;
@@ -47,23 +48,23 @@ public class LoadTimetableHandler extends RequestHandler {
                 saveTimetable(context, response.data.timetable, request.getFilmId());
 
                 //notify listeners about successful loading timetable
-                sendLocalBroadcast(context, LoadTimetableNotification.createSuccessResult());
+                BusProvider.getInstance().post(new FilmTimetableLoadedEvent(true, null));
             } else {
                 LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading timetable
-                sendLocalBroadcast(context, LoadTimetableNotification.createErrorsResult(response.error));
+                BusProvider.getInstance().post(new FilmTimetableLoadedEvent(false, response.error));
             }
         } catch (InterruptedException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading timetable
-            sendLocalBroadcast(context, LoadTimetableNotification.createErrorsResult(e.getLocalizedMessage()));
+            BusProvider.getInstance().post(new FilmTimetableLoadedEvent(false, e.getLocalizedMessage()));
         } catch (ExecutionException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading timetable
-            sendLocalBroadcast(context, LoadTimetableNotification.createErrorsResult(e.getLocalizedMessage()));
+            BusProvider.getInstance().post(new FilmTimetableLoadedEvent(false, e.getLocalizedMessage()));
         }
     }
 

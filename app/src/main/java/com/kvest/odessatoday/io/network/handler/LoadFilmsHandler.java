@@ -9,10 +9,11 @@ import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.FilmWithTimetable;
 import com.kvest.odessatoday.datamodel.TimetableItem;
-import com.kvest.odessatoday.io.network.notification.LoadFilmsNotification;
+import com.kvest.odessatoday.io.network.event.FilmsLoadedEvent;
 import com.kvest.odessatoday.io.network.request.GetFilmsRequest;
 import com.kvest.odessatoday.io.network.response.GetFilmsResponse;
 import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class LoadFilmsHandler extends RequestHandler {
                 saveFilms(context, response.data.films, request.getStartDate(), request.getEndDate(), request.getCinemaId());
 
                 //notify listeners about successful loading films
-                sendLocalBroadcast(context, LoadFilmsNotification.createSuccessResult());
+                BusProvider.getInstance().post(new FilmsLoadedEvent(true, null));
 
                 //update cinemas
                 NetworkService.loadCinemas(context);
@@ -66,18 +67,18 @@ public class LoadFilmsHandler extends RequestHandler {
                 LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading films
-                sendLocalBroadcast(context, LoadFilmsNotification.createErrorsResult(response.error));
+                BusProvider.getInstance().post(new FilmsLoadedEvent(false, response.error));
             }
         } catch (InterruptedException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading films
-            sendLocalBroadcast(context, LoadFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
+            BusProvider.getInstance().post(new FilmsLoadedEvent(false, e.getLocalizedMessage()));
         } catch (ExecutionException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading films
-            sendLocalBroadcast(context, LoadFilmsNotification.createErrorsResult(e.getLocalizedMessage()));
+            BusProvider.getInstance().post(new FilmsLoadedEvent(false, e.getLocalizedMessage()));
         }
     }
 
