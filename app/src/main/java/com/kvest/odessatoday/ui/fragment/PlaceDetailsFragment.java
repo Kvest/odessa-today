@@ -134,7 +134,6 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
         EventDetailsActivity.start(getActivity(), eventId);
     }
 
-
     private void initResources(Context context) {
         // The attributes you want retrieved
         int[] attrs = {R.attr.PlaceDetailsDrawablesColor};
@@ -185,7 +184,8 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
                 return DataProviderHelper.getPlaceLoader(getActivity(), getPlaceType(),
                                                          getPlaceId(), PLACE_PROJECTION);
             case TIMETABLE_LOADER_ID :
-                return DataProviderHelper.getPlaceTimetableLoader(getActivity(), getPlaceId(),
+                long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                return DataProviderHelper.getPlaceTimetableLoader(getActivity(), getPlaceId(), startDate,
                                                                   PlaceTimetableAdapter.PROJECTION,
                                                                   EventsTimetableView.ORDER_EVENT_ASC_DATE_ASC);
         }

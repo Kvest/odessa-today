@@ -112,12 +112,12 @@ public abstract class DataProviderHelper {
         return new CursorLoader(context, EVENTS_URI, projection, selection, new String[]{Long.toString(eventId)}, null);
     }
 
-    public static CursorLoader getEventTimetableLoader(Context context, long eventId,
+    public static CursorLoader getEventTimetableLoader(Context context, long eventId, long startDate,
                                                        String[] projection, String order) {
-        String selection = Tables.EventsTimetable.Columns.EVENT_ID + "=?";
-        return new CursorLoader(context, EVENTS_TIMETABLE_URI, projection,
-                                selection, new String[]{ Long.toString(eventId)},
-                                order);
+        String selection = Tables.EventsTimetable.Columns.EVENT_ID + "=? AND " +
+                           Tables.EventsTimetable.Columns.DATE + ">=?";
+        String[] selectionArgs = new String[]{ Long.toString(eventId), Long.toString(startDate)};
+        return new CursorLoader(context, EVENTS_TIMETABLE_URI, projection, selection, selectionArgs, order);
     }
 
     public static CursorLoader getPlaceLoader(Context context, int placeType, long placeId, String[] projection) {
@@ -126,9 +126,11 @@ public abstract class DataProviderHelper {
         return new CursorLoader(context, uri, projection, selection, new String[]{Long.toString(placeId)}, null);
     }
 
-    public static CursorLoader getPlaceTimetableLoader(Context context, long placeId, String[] projection, String sortOrder) {
-        String selection = Tables.EventsTimetableView.Columns.PLACE_ID + "=?";
-        String[] selectionArgs = new String[]{Long.toString(placeId)};
+    public static CursorLoader getPlaceTimetableLoader(Context context, long placeId, long startDate,
+                                                       String[] projection, String sortOrder) {
+        String selection = Tables.EventsTimetableView.Columns.PLACE_ID + "=? AND " +
+                           Tables.EventsTimetableView.Columns.DATE + ">=?";
+        String[] selectionArgs = new String[]{Long.toString(placeId),  Long.toString(startDate)};
         return new CursorLoader(context, EVENTS_TIMETABLE_VIEW_URI, projection, selection, selectionArgs, sortOrder);
     }
 }

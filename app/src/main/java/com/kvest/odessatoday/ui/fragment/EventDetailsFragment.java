@@ -40,6 +40,7 @@ import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.Utils;
 import com.kvest.odessatoday.utils.YoutubeApiConstants;
 
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -241,7 +242,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
             case EVENT_LOADER_ID :
                 return DataProviderHelper.getEventLoader(getActivity(), getEventId(), null);
             case TIMETABLE_LOADER_ID :
-                return DataProviderHelper.getEventTimetableLoader(getActivity(), getEventId(),
+                long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                return DataProviderHelper.getEventTimetableLoader(getActivity(), getEventId(), startDate,
                                             EventTimetableAdapter.PROJECTION,
                                             TodayProviderContract.Tables.EventsTimetable.ORDER_DATE_ASC);
         }
