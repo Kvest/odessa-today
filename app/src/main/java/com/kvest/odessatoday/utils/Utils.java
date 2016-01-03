@@ -162,4 +162,64 @@ public class Utils {
 
         return result;
     }
+
+    public static int eventType2ComentTargetType(int eventType) {
+        switch (eventType) {
+            case Constants.EventType.CONCERT:
+                return Constants.CommentTargetType.CONCERT;
+            case Constants.EventType.PARTY:
+                return Constants.CommentTargetType.PARTY;
+            case Constants.EventType.SPECTACLE:
+                return Constants.CommentTargetType.SPECTACLE;
+            case Constants.EventType.EXHIBITION:
+                return Constants.CommentTargetType.EXHIBITION;
+            case Constants.EventType.SPORT:
+                return Constants.CommentTargetType.SPORT;
+            case Constants.EventType.WORKSHOP:
+                return Constants.CommentTargetType.WORKSHOP;
+            default:
+                return Constants.CommentTargetType.UNKNOWN;
+        }
+    }
+
+    public static int placeType2ComentTargetType(int placeType) {
+        switch (placeType) {
+            case Constants.PlaceType.THEATRE:
+                return Constants.CommentTargetType.THEATRE;
+            case Constants.PlaceType.CONCERT_HALL:
+                return Constants.CommentTargetType.CONCERT_HALL;
+            case Constants.PlaceType.CLUB:
+                return Constants.CommentTargetType.CLUB;
+            case Constants.PlaceType.MUSEUM:
+                return Constants.CommentTargetType.MUSEUM;
+            case Constants.PlaceType.GALLERY:
+                return Constants.CommentTargetType.GALLERY;
+            case Constants.PlaceType.ZOO:
+                return Constants.CommentTargetType.ZOO;
+            case Constants.PlaceType.QUEST:
+                return Constants.CommentTargetType.QUEST;
+            case Constants.PlaceType.RESTAURANT:
+                return Constants.CommentTargetType.RESTAURANT;
+            case Constants.PlaceType.CAFE:
+                return Constants.CommentTargetType.CAFE;
+            case Constants.PlaceType.PIZZA:
+                return Constants.CommentTargetType.PIZZA;
+            case Constants.PlaceType.SUSHI:
+                return Constants.CommentTargetType.SUSHI;
+            case Constants.PlaceType.KARAOKE:
+                return Constants.CommentTargetType.KARAOKE;
+            case Constants.PlaceType.SKATING_RINK:
+                return Constants.CommentTargetType.SKATING_RINK;
+            case Constants.PlaceType.BOWLING:
+                return Constants.CommentTargetType.BOWLING;
+            case Constants.PlaceType.BILLIARD:
+                return Constants.CommentTargetType.BILLIARD;
+            case Constants.PlaceType.SAUNA:
+                return Constants.CommentTargetType.SAUNA;
+            case Constants.PlaceType.BATH:
+                return Constants.CommentTargetType.BATH;
+            default:
+                return Constants.CommentTargetType.UNKNOWN;
+        }
+    }
 }

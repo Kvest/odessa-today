@@ -19,13 +19,12 @@ public class NetworkService extends IntentService {
     private static final int ACTION_LOAD_FILMS = 0;
     private static final int ACTION_LOAD_CINEMAS = 1;
     private static final int ACTION_LOAD_TIMETABLE = 2;
-    private static final int ACTION_LOAD_FILM_COMMENTS = 3;
-    private static final int ACTION_LOAD_CINEMA_COMMENTS = 4;
-    private static final int ACTION_UPLOAD_COMMENT = 5;
-    private static final int ACTION_UPLOAD_ALL_COMMENTS = 6;
-    private static final int ACTION_LOAD_ANNOUNCEMENTS = 7;
-    private static final int ACTION_LOAD_PLACES = 8;
-    private static final int ACTION_LOAD_EVENTS = 9;
+    private static final int ACTION_LOAD_COMMENTS = 3;
+    private static final int ACTION_UPLOAD_COMMENT = 4;
+    private static final int ACTION_UPLOAD_ALL_COMMENTS = 5;
+    private static final int ACTION_LOAD_ANNOUNCEMENTS = 6;
+    private static final int ACTION_LOAD_PLACES = 7;
+    private static final int ACTION_LOAD_EVENTS = 8;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
         loadFilms(context, startDate, endDate, -1);
@@ -51,16 +50,9 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
-    public static void loadFilmComments(Context context, long filmId) {
-        Intent intent = createIntent(context, ACTION_LOAD_FILM_COMMENTS);
-        LoadFilmCommentsHandler.putExtras(intent, filmId);
-
-        context.startService(intent);
-    }
-
-    public static void loadCinemaComments(Context context, long cinemaId) {
-        Intent intent = createIntent(context, ACTION_LOAD_CINEMA_COMMENTS);
-        LoadCinemaCommentsHandler.putExtras(intent, cinemaId);
+    public static void loadComments(Context context, long targetId, int targetType) {
+        Intent intent = createIntent(context, ACTION_LOAD_COMMENTS);
+        LoadCommentsHandler.putExtras(intent, targetId, targetType);
 
         context.startService(intent);
     }
@@ -142,10 +134,8 @@ public class NetworkService extends IntentService {
                 return new LoadCinemasHandler();
             case ACTION_LOAD_TIMETABLE :
                 return new LoadTimetableHandler();
-            case ACTION_LOAD_FILM_COMMENTS :
-                return new LoadFilmCommentsHandler();
-            case ACTION_LOAD_CINEMA_COMMENTS :
-                return new LoadCinemaCommentsHandler();
+            case ACTION_LOAD_COMMENTS :
+                return new LoadCommentsHandler();
             case ACTION_UPLOAD_COMMENT :
                 return new UploadCommentHandler();
             case ACTION_UPLOAD_ALL_COMMENTS :

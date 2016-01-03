@@ -240,7 +240,7 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
 
     private void showComments() {
         if (placeDetailsActionsListener != null) {
-            placeDetailsActionsListener.onShowPlaceComments(getPlaceId());
+            placeDetailsActionsListener.onShowPlaceComments(getPlaceId(), getPlaceType());
         }
     }
 
@@ -307,7 +307,7 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     }
 
     public interface PlaceDetailsActionsListener {
-        void onShowPlaceComments(long cinemaId);
+        void onShowPlaceComments(long placeId, int placeType);
         void onShowPlacePhotos(String[] photoURLs);
     }
 }

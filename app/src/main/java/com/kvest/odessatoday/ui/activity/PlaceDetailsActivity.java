@@ -8,8 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.ui.fragment.CommentsFragment;
 import com.kvest.odessatoday.ui.fragment.PhotoGalleryFragment;
 import com.kvest.odessatoday.ui.fragment.PlaceDetailsFragment;
+import com.kvest.odessatoday.utils.Utils;
 
 /**
  * Created by kvest on 20.12.15.
@@ -66,8 +68,16 @@ public class PlaceDetailsActivity extends BaseActivity implements PlaceDetailsFr
     }
 
     @Override
-    public void onShowPlaceComments(long cinemaId) {
-        //TODO
+    public void onShowPlaceComments(long placeId, int placeType) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        try {
+            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
+            CommentsFragment commentsFragment = CommentsFragment.getInstance(placeId, Utils.placeType2ComentTargetType(placeType));
+            transaction.replace(R.id.fragment_container, commentsFragment);
+            transaction.addToBackStack(null);
+        } finally {
+            transaction.commit();
+        }
     }
 
     @Override

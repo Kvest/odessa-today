@@ -25,6 +25,31 @@ public abstract class Constants {
         int UNKNOWN = -1;
         int FILM = 0;
         int CINEMA = 1;
+
+        int CONCERT = 2;
+        int PARTY = 3;
+        int SPECTACLE = 4;
+        int EXHIBITION = 5;
+        int SPORT = 6;
+        int WORKSHOP = 7;
+
+        int THEATRE = 8;
+        int CONCERT_HALL = 9;
+        int CLUB = 10;
+        int MUSEUM = 11;
+        int GALLERY = 12;
+        int ZOO = 13;
+        int QUEST = 14;
+        int RESTAURANT = 15;
+        int CAFE = 16;
+        int PIZZA = 17;
+        int SUSHI = 18;
+        int KARAOKE = 19;
+        int SKATING_RINK = 20;
+        int BOWLING = 21;
+        int BILLIARD = 22;
+        int SAUNA = 23;
+        int BATH = 24;
     }
 
     public interface FilmFormat {

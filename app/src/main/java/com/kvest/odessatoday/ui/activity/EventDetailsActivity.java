@@ -8,7 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.ui.fragment.CommentsFragment;
 import com.kvest.odessatoday.ui.fragment.EventDetailsFragment;
+import com.kvest.odessatoday.utils.Utils;
 
 /**
  * Created by kvest on 18.12.15.
@@ -62,7 +64,15 @@ public class EventDetailsActivity extends BaseActivity implements EventDetailsFr
     }
 
     @Override
-    public void onShowEventComments(long eventId) {
-        //TODO
+    public void onShowEventComments(long eventId, int eventType) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        try {
+            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
+            CommentsFragment commentsFragment = CommentsFragment.getInstance(eventId, Utils.eventType2ComentTargetType(eventType));
+            transaction.replace(R.id.fragment_container, commentsFragment);
+            transaction.addToBackStack(null);
+        } finally {
+            transaction.commit();
+        }
     }
 }

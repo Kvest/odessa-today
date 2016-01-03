@@ -8,9 +8,11 @@ import android.os.RemoteException;
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.datamodel.Comment;
+import com.kvest.odessatoday.io.network.event.CommentsLoadedEvent;
 import com.kvest.odessatoday.io.network.request.GetCommentsRequest;
 import com.kvest.odessatoday.io.network.response.GetCommentsResponse;
 import com.kvest.odessatoday.provider.TodayProviderContract;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 
 import java.util.ArrayList;
@@ -24,9 +26,17 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 /**
  * Created by Kvest on 10.01.2015.
  */
-public abstract class LoadCommentsHandler extends RequestHandler {
+public class LoadCommentsHandler extends RequestHandler {
+    private static final String TARGET_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.TARGET_ID";
+    private static final String TARGET_TYPE_EXTRA = "com.kvest.odessatoday.EXTRAS.TARGET_TYPE";
+
     private static final int DEFAULT_OFFSET = 0;
     private static final int DEFAULT_LIMIT = 50;
+
+    public static void putExtras(Intent intent, long targetId, int targetType) {
+        intent.putExtra(TARGET_ID_EXTRA, targetId);
+        intent.putExtra(TARGET_TYPE_EXTRA, targetType);
+    }
 
     @Override
     public void processIntent(Context context, Intent intent) {
@@ -111,7 +121,28 @@ public abstract class LoadCommentsHandler extends RequestHandler {
         }
     }
 
-    protected abstract GetCommentsRequest createRequest(Intent intent, int offset, int limit, RequestFuture<GetCommentsResponse> future);
-    protected abstract void notifyError(Context context, String message, Intent intent);
-    protected abstract void notifySuccess(Context context, Intent intent);
+    private GetCommentsRequest createRequest(Intent intent, int offset, int limit, RequestFuture<GetCommentsResponse> future) {
+        //get extra data
+        long targetId = intent.getLongExtra(TARGET_ID_EXTRA, -1);
+        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.CommentTargetType.UNKNOWN);
+
+        GetCommentsRequest request = new GetCommentsRequest(targetId, targetType, offset, limit, future, future);
+        return request;
+    }
+
+    protected void notifyError(Context context, String message, Intent intent) {
+        //get extra data
+        long targetId = intent.getLongExtra(TARGET_ID_EXTRA, -1);
+        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.CommentTargetType.UNKNOWN);
+
+        BusProvider.getInstance().post(new CommentsLoadedEvent(targetId, targetType, message));
+    }
+
+    protected void notifySuccess(Context context, Intent intent) {
+        //get extra data
+        long targetId = intent.getLongExtra(TARGET_ID_EXTRA, -1);
+        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.CommentTargetType.UNKNOWN);
+
+        BusProvider.getInstance().post(new CommentsLoadedEvent(targetId, targetType));
+    }
 }

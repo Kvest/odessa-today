@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
+import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
 import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
@@ -51,7 +52,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     private ImageView openPanelIcon;
     private ImageButton sendCommentButton;
 
-    public static CommentsFragment getInstance(int targetType, long targetId) {
+    public static CommentsFragment getInstance(long targetId, int targetType) {
         Bundle arguments = new Bundle(2);
         arguments.putInt(ARGUMENT_TARGET_TYPE, targetType);
         arguments.putLong(ARGUMENT_TARGET_ID, targetId);
@@ -68,6 +69,13 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         init(rootView);
 
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        NetworkService.loadComments(activity, getTargetId(), getTargetType());
     }
 
     @Override

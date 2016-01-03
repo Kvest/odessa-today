@@ -94,6 +94,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     private int noImageResId, loadingImageResId;
 
     private OnShowEventCommentsListener onShowEventCommentsListener;
+    private int eventType = -1;
 
     public static EventDetailsFragment getInstance(long eventId) {
         Bundle arguments = new Bundle(1);
@@ -290,6 +291,9 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
 
     private void setEventData(Cursor cursor) {
         if (cursor.moveToFirst()) {
+            //remember event type
+            eventType = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.EVENT_TYPE));
+
             //set data
             String imageUrl = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.IMAGE));
             eventPoster.setImageUrl(imageUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
@@ -359,8 +363,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     }
 
     private void showComments() {
-        if (onShowEventCommentsListener != null) {
-            onShowEventCommentsListener.onShowEventComments(getEventId());
+        if (onShowEventCommentsListener != null && eventType != -1) {
+            onShowEventCommentsListener.onShowEventComments(getEventId(), eventType);
         }
     }
 
@@ -626,6 +630,6 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     }
 
     public interface OnShowEventCommentsListener {
-        void onShowEventComments(long eventId);
+        void onShowEventComments(long eventId, int eventType);
     }
 }
