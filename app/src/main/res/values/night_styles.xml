@@ -103,5 +103,11 @@
         <item name="PlaceTimetableListDateTextColor">#e1e1e1</item>
         <item name="PlaceTimetableListEventNameTextColor">#e1e1e1</item>
         <item name="PlaceTimetableListPriceTextColor">#bcbcbc</item>
+        <!--comments-->
+        <item name="CommentsListDividerColor">#4a4a4a</item>
+        <item name="CommentAuthorTextColor">#e1e1e1</item>
+        <item name="CommentDateTextColor">#828282</item>
+        <item name="CommentTextColor">#a5a5a5</item>
+        <item name="CommentNeedUploadBgColor">#4a4a4a</item>
     </style>
 </resources>

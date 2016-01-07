@@ -1,6 +1,7 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.utils.Constants;
@@ -36,9 +38,12 @@ public class CommentsAdapter extends CursorAdapter {
     private int syncStatusColumnIndex = -1;
     private SimpleDateFormat dateFormat;
 
+    private int needUploadBgColor;
+
     public CommentsAdapter(Context context) {
         super(context, null, 0);
 
+        initResources(context);
         dateFormat = new SimpleDateFormat(context.getString(R.string.comments_date_format));
     }
 
@@ -53,7 +58,7 @@ public class CommentsAdapter extends CursorAdapter {
         holder.date = (TextView)view.findViewById(R.id.comment_date);
         holder.name = (TextView)view.findViewById(R.id.comment_author_name);
         holder.text = (TextView)view.findViewById(R.id.comment_text);
-        holder.uploadWait  = (ImageView) view.findViewById(R.id.upload_wait);
+        holder.inProgress = (ProgressBar)view.findViewById(R.id.in_progress);
         view.setTag(holder);
 
         return view;
@@ -73,11 +78,11 @@ public class CommentsAdapter extends CursorAdapter {
         holder.text.setText(Html.fromHtml(cursor.getString(textColumnIndex)));
 
         boolean needUpload = (cursor.getInt(syncStatusColumnIndex) & Constants.SyncStatus.NEED_UPLOAD) == Constants.SyncStatus.NEED_UPLOAD;
-        holder.uploadWait.setVisibility(needUpload ? View.VISIBLE : View.INVISIBLE);
+        holder.inProgress.setVisibility(needUpload ? View.VISIBLE : View.INVISIBLE);
         if (needUpload) {
-            view.setBackgroundResource(R.color.comment_need_upload_bg);
+            view.setBackgroundColor(needUploadBgColor);
         } else {
-            view.setBackgroundColor(Color.WHITE);
+            view.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -92,10 +97,25 @@ public class CommentsAdapter extends CursorAdapter {
         syncStatusColumnIndex = cursor.getColumnIndex(Tables.Comments.Columns.SYNC_STATUS);
     }
 
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.CommentNeedUploadBgColor};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        try {
+            // Fetching the resources defined in the style
+            needUploadBgColor = ta.getColor(0, Color.LTGRAY);
+        } finally {
+            ta.recycle();
+        }
+    }
+
     private static class ViewHolder {
         private TextView date;
         private TextView name;
         private TextView text;
-        private ImageView uploadWait;
+        private ProgressBar inProgress;
     }
 }

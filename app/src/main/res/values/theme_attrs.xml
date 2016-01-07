@@ -90,4 +90,9 @@
     <attr format="color" name="PlaceTimetableListDateTextColor"/>
     <attr format="color" name="PlaceTimetableListEventNameTextColor"/>
     <attr format="color" name="PlaceTimetableListPriceTextColor"/>
+    <attr format="color" name="CommentsListDividerColor"/>
+    <attr format="color" name="CommentAuthorTextColor"/>
+    <attr format="color" name="CommentDateTextColor"/>
+    <attr format="color" name="CommentTextColor"/>
+    <attr format="color" name="CommentNeedUploadBgColor"/>
 </resources>

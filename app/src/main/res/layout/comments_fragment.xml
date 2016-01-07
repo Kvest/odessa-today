@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@color/comments_list_divider_color"
+        android:divider="?attr/CommentsListDividerColor"
         android:dividerHeight="@dimen/comments_list_divider_height" />
     <LinearLayout
         android:id="@+id/add_comment_panel"

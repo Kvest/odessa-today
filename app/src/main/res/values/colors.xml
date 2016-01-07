@@ -34,11 +34,6 @@
     <color name="timetable_list_cinema_address_text_color">#828282</color>
 
     <!--comments-->
-    <color name="comments_list_divider_color">#888888</color>
-    <color name="comment_author_name_text_color">#040404</color>
-    <color name="comment_date_text_color">#a2a2a2</color>
-    <color name="comment_text_text_color">#040404</color>
-    <color name="comment_need_upload_bg">#e9e9e9</color>
     <color name="add_comment_edit_text_bg">#ffffff</color>
     <color name="write_comment_text_color">#ffffff</color>
 

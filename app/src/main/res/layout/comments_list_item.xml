@@ -1,40 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:padding="@dimen/comments_list_item_padding">
-    <LinearLayout
-        android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/comments_list_item_padding_top">
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/comment_author_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/comment_author_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/comment_author_name_text_size"
-            android:textColor="@color/comment_author_name_text_color"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/comment_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/comment_date_text_size"
-            android:textColor="@color/comment_date_text_color"/>
-        <TextView
-            android:id="@+id/comment_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/comment_text_top_margin"
-            android:textSize="@dimen/comment_text_text_size"
-            android:textColor="@color/comment_text_text_color"
-            android:autoLink="all"
-            android:linksClickable="true"/>
-    </LinearLayout>
-    <ImageView
-        android:id="@+id/upload_wait"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
-        android:src="@drawable/ic_comment_upload_wait"/>
-</FrameLayout>
+        android:layout_marginBottom="@dimen/comment_author_name_margin_bottom"
+        android:layout_marginLeft="@dimen/comments_list_item_horizontal_padding"
+        android:layout_marginRight="@dimen/comments_list_item_horizontal_padding"
+        android:textColor="?attr/CommentAuthorTextColor"
+        android:textSize="@dimen/comment_author_name_text_size"
+        app:fontAsset="fonts/helveticaneuecyr-bold.ttf"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/comment_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/comment_date_margin_bottom"
+        android:layout_marginLeft="@dimen/comments_list_item_horizontal_padding"
+        android:layout_marginRight="@dimen/comments_list_item_horizontal_padding"
+        android:textColor="?attr/CommentDateTextColor"
+        android:textSize="@dimen/comment_date_text_size"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
+        android:id="@+id/comment_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/comment_text_margin_bottom"
+        android:layout_marginLeft="@dimen/comments_list_item_horizontal_padding"
+        android:layout_marginRight="@dimen/comments_list_item_horizontal_padding"
+        android:textColor="?attr/CommentTextColor"
+        android:textSize="@dimen/comment_text_text_size"
+        android:autoLink="all"
+        android:linksClickable="true"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+    <ProgressBar
+        android:id="@+id/in_progress"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"/>
+</LinearLayout>
