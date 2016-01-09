@@ -1,83 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sothree="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="bottom"
-    sothree:umanoPanelHeight="@dimen/add_comment_panel_header_height">
-    <ListView
-        android:id="@+id/comments_list"
+    android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:listSelector="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="?attr/CommentsListDividerColor"
-        android:dividerHeight="@dimen/comments_list_divider_height" />
-    <LinearLayout
-        android:id="@+id/add_comment_panel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/application_green"
-        android:layout_gravity="bottom">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/add_comment_panel_header_height"
-            android:orientation="horizontal"
-            android:weightSum="1">
-            <ImageView
-                android:id="@+id/open_panel_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_open_comment_panel"
-                android:scaleType="center"
-                android:background="@null"
-                android:minWidth="@dimen/add_comment_button_min_size"
-                android:minHeight="@dimen/add_comment_button_min_size"
-                android:layout_gravity="center_vertical"/>
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:textSize="@dimen/write_comment_text_size"
-                android:textColor="@color/write_comment_text_color"
-                android:text="@string/write_comment" />
-            <ImageButton
-                android:id="@+id/send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:src="@drawable/ic_send_comment"
-                android:background="@null"
-                android:minWidth="@dimen/add_comment_button_min_size"
-                android:minHeight="@dimen/add_comment_button_min_size"
-                android:layout_gravity="center_vertical"/>
-        </LinearLayout>
-        <EditText
-            android:id="@+id/comment_name"
+        android:layout_height="match_parent">
+        <!--header-->
+        <RelativeLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/add_comment_edit_text_padding"
-            android:background="@color/add_comment_edit_text_bg"
-            android:hint="@string/name"
-            android:singleLine="true"
-            android:maxLength="100" />
-        <EditText
-            android:id="@+id/comment_text"
+            android:padding="@dimen/comments_header_padding"
+            android:background="?attr/CommentsHeaderBgColor">
+            <LinearLayout
+                android:id="@+id/rating_container"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="@dimen/comments_header_padding">
+                <com.kvest.odessatoday.ui.widget.CommentsCountView
+                    android:id="@+id/comments_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/ActionBg"
+                    android:textColor="@color/application_green"
+                    app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/action_comments_count_text_size"/>
+                <RatingBar
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/comments_header_padding"
+                    android:numStars="5"
+                    android:stepSize="0.1"
+                    style="@style/RatingBarTheme"
+                    android:isIndicator="true"/>
+            </LinearLayout>
+            <com.kvest.odessatoday.ui.widget.FontTextView
+                android:id="@+id/target_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/rating_container"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="@dimen/comments_target_name_margin_bottom"
+                android:textSize="@dimen/comments_target_name_text_size"
+                android:textColor="?attr/CommentsTargetNameTextColor"
+                app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+            <com.kvest.odessatoday.ui.widget.FontTextView
+                android:id="@+id/target_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/target_name"
+                android:layout_toLeftOf="@id/rating_container"
+                android:textSize="@dimen/comments_target_type_text_size"
+                android:textColor="@color/comments_target_type_text_color"
+                app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+        </RelativeLayout>
+        <View
+            android:id="@+id/header_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/comments_list_divider_height"
+            android:layout_below="@id/header"
+            android:background="?attr/CommentsListDividerColor" />
+        <!--footer-->
+        <FrameLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="?attr/CommentsFooterBgColor">
+            <Button
+                android:id="@+id/add_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/add_comment_button_horizontal_margin"
+                android:layout_marginRight="@dimen/add_comment_button_horizontal_margin"
+                android:layout_marginTop="@dimen/add_comment_button_vertical_margin"
+                android:layout_marginBottom="@dimen/add_comment_button_vertical_margin"
+                android:background="@drawable/gradient_button_bg" />
+            <TextView
+                android:id="@+id/add_comment_label"
+                style="@style/GradientButtonLabelStyle"
+                android:drawableLeft="@drawable/ic_add_comment"
+                android:text="@string/add_comment"/>
+        </FrameLayout>
+        <View
+            android:id="@+id/footer_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/comments_list_divider_height"
+            android:layout_above="@id/footer"
+            android:background="?attr/CommentsListDividerColor" />
+        <!--list-->
+        <ListView
+            android:id="@+id/comments_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/add_comment_text_top_margin"
-            android:padding="@dimen/add_comment_edit_text_padding"
-            android:gravity="top|left"
-            android:background="@color/add_comment_edit_text_bg"
-            android:maxLength="1000"
-            android:hint="@string/comment_text"
-            android:inputType="textMultiLine"
-            android:scrollbars="vertical"/>
-    </LinearLayout>
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+            android:layout_below="@id/header_divider"
+            android:layout_above="@id/footer_divider"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="?attr/CommentsListDividerColor"
+            android:dividerHeight="@dimen/comments_list_divider_height" />
+    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/add_comment_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

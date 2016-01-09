@@ -68,11 +68,13 @@ public class PlaceDetailsActivity extends BaseActivity implements PlaceDetailsFr
     }
 
     @Override
-    public void onShowPlaceComments(long placeId, int placeType) {
+    public void onShowPlaceComments(long placeId, int placeType, String placeName, int commentsCount) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            CommentsFragment commentsFragment = CommentsFragment.getInstance(placeId, Utils.placeType2ComentTargetType(placeType));
+            CommentsFragment commentsFragment = CommentsFragment.newInstance(placeId, Utils.placeType2CommentTargetType(placeType),
+                                                                             placeName, Utils.placeType2String(this, placeType).toLowerCase(),
+                                                                             commentsCount, CommentsFragment.EMPTY_RATING);
             transaction.replace(R.id.fragment_container, commentsFragment);
             transaction.addToBackStack(null);
         } finally {

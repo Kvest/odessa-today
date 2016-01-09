@@ -109,5 +109,8 @@
         <item name="CommentDateTextColor">#828282</item>
         <item name="CommentTextColor">#a5a5a5</item>
         <item name="CommentNeedUploadBgColor">#4a4a4a</item>
+        <item name="CommentsHeaderBgColor">#1b1b1b</item>
+        <item name="CommentsFooterBgColor">#090909</item>
+        <item name="CommentsTargetNameTextColor">#e1e1e1</item>
     </style>
 </resources>

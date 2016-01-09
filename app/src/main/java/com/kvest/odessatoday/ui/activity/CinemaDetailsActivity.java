@@ -97,11 +97,13 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
     }
 
     @Override
-    public void onShowCinemaComments(long cinemaId) {
+    public void onShowCinemaComments(long cinemaId, String cinemaName, int commentsCount) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            CommentsFragment commentsFragment = CommentsFragment.getInstance(cinemaId, Constants.CommentTargetType.CINEMA);
+            CommentsFragment commentsFragment = CommentsFragment.newInstance(cinemaId, Constants.CommentTargetType.CINEMA,
+                                                                             cinemaName, getString(R.string.menu_cinema).toLowerCase(),
+                                                                             commentsCount, CommentsFragment.EMPTY_RATING);
             transaction.replace(R.id.fragment_container, commentsFragment);
             transaction.addToBackStack(null);
         } finally {

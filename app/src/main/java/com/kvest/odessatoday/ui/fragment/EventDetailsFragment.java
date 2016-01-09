@@ -364,7 +364,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
 
     private void showComments() {
         if (onShowEventCommentsListener != null && eventType != -1) {
-            onShowEventCommentsListener.onShowEventComments(getEventId(), eventType);
+            onShowEventCommentsListener.onShowEventComments(getEventId(), eventType, eventName.getText().toString(),
+                                                            actionCommentsCount.getCommentsCount(), eventRating.getRating());
         }
     }
 
@@ -630,6 +631,6 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     }
 
     public interface OnShowEventCommentsListener {
-        void onShowEventComments(long eventId, int eventType);
+        void onShowEventComments(long eventId, int eventType, String eventName, int commentsCount, float rating);
     }
 }

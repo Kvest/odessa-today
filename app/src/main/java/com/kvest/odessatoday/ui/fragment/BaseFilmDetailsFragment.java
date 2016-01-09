@@ -373,7 +373,9 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     private void showComments() {
         if (onShowFilmCommentsListener != null) {
-            onShowFilmCommentsListener.onShowFilmComments(getFilmId());
+            onShowFilmCommentsListener.onShowFilmComments(getFilmId(), filmName.getText().toString(),
+                                                          genre.getText().toString(), actionCommentsCount.getCommentsCount(),
+                                                          filmRating.getRating());
         }
     }
 
@@ -402,7 +404,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     }
 
     public interface OnShowFilmCommentsListener {
-        void onShowFilmComments(long filmId);
+        void onShowFilmComments(long filmId, String filmName, String genre, int commentsCount, float rating);
     }
 
     private void initResources(Context context) {

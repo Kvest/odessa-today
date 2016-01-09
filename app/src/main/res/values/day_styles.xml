@@ -109,5 +109,8 @@
         <item name="CommentDateTextColor">#828282</item>
         <item name="CommentTextColor">#4f4f4f</item>
         <item name="CommentNeedUploadBgColor">#f4f4f4</item>
+        <item name="CommentsHeaderBgColor">#f9f9f9</item>
+        <item name="CommentsFooterBgColor">@android:color/white</item>
+        <item name="CommentsTargetNameTextColor">#24282b</item>
     </style>
 </resources>

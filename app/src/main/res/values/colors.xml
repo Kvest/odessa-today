@@ -34,8 +34,7 @@
     <color name="timetable_list_cinema_address_text_color">#828282</color>
 
     <!--comments-->
-    <color name="add_comment_edit_text_bg">#ffffff</color>
-    <color name="write_comment_text_color">#ffffff</color>
+    <color name="comments_target_type_text_color">#828282</color>
 
     <!--cinemas-->
     <color name="cinema_address_text_color">#828282</color>

@@ -9,6 +9,8 @@ import android.util.AttributeSet;
  */
 public class CommentsCountView extends FontTextView {
 
+    private int commentsCount;
+
     public CommentsCountView(Context context) {
         super(context);
     }
@@ -27,10 +29,15 @@ public class CommentsCountView extends FontTextView {
     }
 
     public void setCommentsCount(int count) {
-        if (count > 100) {
+        commentsCount = count;
+        if (commentsCount > 100) {
             setText("100+");
         } else {
-            setText(Integer.toString(count));
+            setText(Integer.toString(commentsCount));
         }
+    }
+
+    public int getCommentsCount() {
+        return commentsCount;
     }
 }

@@ -82,4 +82,14 @@
         <item name="android:textColor">?attr/CalendarWeekDaysNameTextColor</item>
         <item name="android:textSize">@dimen/calendar_week_days_name_text_size</item>
     </style>
+
+    <style name="GradientButtonLabelStyle" parent="android:Widget.TextView" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/gradient_button_text_size</item>
+        <item name="android:drawablePadding">12dip</item>
+    </style>
 </resources>

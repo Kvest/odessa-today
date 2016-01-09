@@ -234,7 +234,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
     private void showComments() {
         if (cinemaDetailsActionsListener != null) {
-            cinemaDetailsActionsListener.onShowCinemaComments(getCinemaId());
+            cinemaDetailsActionsListener.onShowCinemaComments(getCinemaId(), cinemaName.getText().toString(),
+                                                              actionCommentsCount.getCommentsCount());
         }
     }
 
@@ -354,7 +355,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     }
 
     public interface CinemaDetailsActionsListener {
-        void onShowCinemaComments(long cinemaId);
+        void onShowCinemaComments(long cinemaId, String cinemaName, int commentsCount);
         void onShowCinemaPhotos(String[] photoURLs);
         void onShowCalendar(long withDate);
     }

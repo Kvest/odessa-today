@@ -163,7 +163,7 @@ public class Utils {
         return result;
     }
 
-    public static int eventType2ComentTargetType(int eventType) {
+    public static int eventType2CommentTargetType(int eventType) {
         switch (eventType) {
             case Constants.EventType.CONCERT:
                 return Constants.CommentTargetType.CONCERT;
@@ -182,7 +182,7 @@ public class Utils {
         }
     }
 
-    public static int placeType2ComentTargetType(int placeType) {
+    public static int placeType2CommentTargetType(int placeType) {
         switch (placeType) {
             case Constants.PlaceType.THEATRE:
                 return Constants.CommentTargetType.THEATRE;
@@ -220,6 +220,66 @@ public class Utils {
                 return Constants.CommentTargetType.BATH;
             default:
                 return Constants.CommentTargetType.UNKNOWN;
+        }
+    }
+
+    public static String eventType2String(Context context, int eventType) {
+        switch (eventType) {
+            case Constants.EventType.CONCERT:
+                return context.getString(R.string.menu_concert);
+            case Constants.EventType.PARTY:
+                return context.getString(R.string.menu_party);
+            case Constants.EventType.SPECTACLE:
+                return context.getString(R.string.menu_spectacle);
+            case Constants.EventType.EXHIBITION:
+                return context.getString(R.string.menu_exhibition);
+            case Constants.EventType.SPORT:
+                return context.getString(R.string.menu_sport);
+            case Constants.EventType.WORKSHOP:
+                return context.getString(R.string.menu_workshop);
+            default:
+                return "";
+        }
+    }
+
+    public static String placeType2String(Context context, int placeType) {
+        switch (placeType) {
+            case Constants.PlaceType.THEATRE:
+                return context.getString(R.string.menu_theatre);
+            case Constants.PlaceType.CONCERT_HALL:
+                return context.getString(R.string.menu_concert_hall);
+            case Constants.PlaceType.CLUB:
+                return context.getString(R.string.menu_club);
+            case Constants.PlaceType.MUSEUM:
+                return context.getString(R.string.menu_museum);
+            case Constants.PlaceType.GALLERY:
+                return context.getString(R.string.menu_gallery);
+            case Constants.PlaceType.ZOO:
+                return context.getString(R.string.menu_zoo);
+            case Constants.PlaceType.QUEST:
+                return context.getString(R.string.menu_quest);
+            case Constants.PlaceType.RESTAURANT:
+                return context.getString(R.string.menu_restaurant);
+            case Constants.PlaceType.CAFE:
+                return context.getString(R.string.menu_cafe);
+            case Constants.PlaceType.PIZZA:
+                return context.getString(R.string.menu_pizza);
+            case Constants.PlaceType.SUSHI:
+                return context.getString(R.string.menu_sushi);
+            case Constants.PlaceType.KARAOKE:
+                return context.getString(R.string.menu_karaoke);
+            case Constants.PlaceType.SKATING_RINK:
+                return context.getString(R.string.menu_skating_rink);
+            case Constants.PlaceType.BOWLING:
+                return context.getString(R.string.menu_bowling);
+            case Constants.PlaceType.BILLIARD:
+                return context.getString(R.string.menu_billiard);
+            case Constants.PlaceType.SAUNA:
+                return context.getString(R.string.menu_sauna);
+            case Constants.PlaceType.BATH:
+                return context.getString(R.string.menu_bath);
+            default:
+                return "";
         }
     }
 }

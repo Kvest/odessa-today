@@ -1,28 +1,22 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.text.TextUtils;
 import android.view.*;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
-import com.kvest.odessatoday.utils.KeyboardUtils;
-import com.kvest.odessatoday.utils.SettingsSPStorage;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import java.util.concurrent.TimeUnit;
+import com.kvest.odessatoday.ui.widget.CommentsCountView;
+import com.kvest.odessatoday.utils.FontUtils;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -33,29 +27,28 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * Time: 11:26
  * To change this template use File | Settings | File Templates.
  */
-public class CommentsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
-                                                          SlidingUpPanelLayout.PanelSlideListener {
+public class CommentsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
+    private static final String ARGUMENT_COMMENTS_COUNT = "com.kvest.odessatoday.argument.COMMENTS_COUNT";
+    private static final String ARGUMENT_RATING = "com.kvest.odessatoday.argument.RATING";
+    private static final String ARGUMENT_TARGET_NAME = "com.kvest.odessatoday.argument.TARGET_NAME";
+    private static final String ARGUMENT_TARGET_TYPE_NAME = "com.kvest.odessatoday.argument.TARGET_TYPE_NAME";
+    public static final float EMPTY_RATING = -1;
     private static final int COMMENTS_LOADER_ID = 1;
 
-    private ListView commentsList;
     private CommentsAdapter adapter;
 
-    private Animation openPanelIconUp;
-    private Animation openPanelIconDown;
-
-    private SlidingUpPanelLayout slidingUpPanelLayout;
-
-    private EditText commentName;
-    private EditText commentText;
-    private ImageView openPanelIcon;
-    private ImageButton sendCommentButton;
-
-    public static CommentsFragment getInstance(long targetId, int targetType) {
-        Bundle arguments = new Bundle(2);
+    public static CommentsFragment newInstance(long targetId, int targetType,
+                                               String targetName, String targetTypeName,
+                                               int commentsCount, float rating) {
+        Bundle arguments = new Bundle(6);
         arguments.putInt(ARGUMENT_TARGET_TYPE, targetType);
         arguments.putLong(ARGUMENT_TARGET_ID, targetId);
+        arguments.putInt(ARGUMENT_COMMENTS_COUNT, commentsCount);
+        arguments.putFloat(ARGUMENT_RATING, rating);
+        arguments.putString(ARGUMENT_TARGET_NAME, targetName);
+        arguments.putString(ARGUMENT_TARGET_TYPE_NAME, targetTypeName);
 
         CommentsFragment result = new CommentsFragment();
         result.setArguments(arguments);
@@ -87,143 +80,80 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
 
     private void init(View rootView) {
         //store widgets
-        slidingUpPanelLayout = (SlidingUpPanelLayout) rootView.findViewById(R.id.sliding_layout);
-        slidingUpPanelLayout.setPanelSlideListener(this);
-        commentName = (EditText)rootView.findViewById(R.id.comment_name);
-        commentText = (EditText)rootView.findViewById(R.id.comment_text);
-        openPanelIcon = (ImageView)rootView.findViewById(R.id.open_panel_icon);
-        sendCommentButton = (ImageButton)rootView.findViewById(R.id.send);
-
-        commentName.setText(SettingsSPStorage.getCommentAuthorName(getActivity()));
+        View addComment = rootView.findViewById(R.id.add_comment);
+        TextView addCommentLabel = (TextView)rootView.findViewById(R.id.add_comment_label);
+        CommentsCountView commentsCount = (CommentsCountView)rootView.findViewById(R.id.comments_count);
+        RatingBar rating = (RatingBar)rootView.findViewById(R.id.rating);
+        TextView targetName = (TextView)rootView.findViewById(R.id.target_name);
+        TextView targetTypeName = (TextView)rootView.findViewById(R.id.target_type);
 
         //store list view
-        commentsList = (ListView)rootView.findViewById(R.id.comments_list);
+        ListView commentsList = (ListView)rootView.findViewById(R.id.comments_list);
 
         //create and set an adapter
         adapter = new CommentsAdapter(getActivity());
         commentsList.setAdapter(adapter);
 
-        //load animations
-        openPanelIconUp = AnimationUtils.loadAnimation(getActivity(), R.anim.open_panel_icon_up);
-        openPanelIconDown = AnimationUtils.loadAnimation(getActivity(), R.anim.open_panel_icon_down);
+        //setup header
+        commentsCount.setCommentsCount(getCommentsCount());
+        float ratingValue = getRating();
+        if (ratingValue >= 0) {
+            rating.setRating(getRating());
+        } else {
+            rating.setVisibility(View.GONE);
+        }
+        targetName.setText(getTargetName());
+        targetTypeName.setText(getTargetTypeName());
 
-        sendCommentButton.setOnClickListener(new View.OnClickListener() {
+        //setup footer
+        addCommentLabel.setTypeface(FontUtils.getFont(getActivity().getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT));
+        addComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sendComment()) {
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                }
+                showAddCommentFragment();
             }
         });
     }
 
-    @Override
-    public void onPanelSlide(View panel, float slideOffset) {}
-
-    @Override
-    public void onPanelCollapsed(View panel) {
-        sendCommentButton.setVisibility(View.INVISIBLE);
-
-        Activity activity = getActivity();
-        if (activity != null) {
-            KeyboardUtils.hideKeyboard(activity, activity.getCurrentFocus());
+    private void showAddCommentFragment() {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        try {
+            transaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_up, R.anim.slide_down, R.anim.slide_down);
+            transaction.add(R.id.add_comment_fragment_container, AddCommentFragment.newInstance(getTargetId(), getTargetType()));
+            transaction.addToBackStack(null);
+        } finally {
+            transaction.commit();
         }
-
-        //workaround - update the size of the comments list. Otherwise it will be shown only on the part of the screen
-        commentsList.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-        commentsList.requestLayout();
-
-        //animate arrow
-        openPanelIcon.clearAnimation();
-        openPanelIcon.startAnimation(openPanelIconDown);
-    }
-
-    @Override
-    public void onPanelExpanded(View panel) {
-        sendCommentButton.setVisibility(View.VISIBLE);
-
-        //open keyboard
-        Context context = getActivity();
-        if (context != null) {
-            if (TextUtils.isEmpty(commentName.getText())) {
-                commentName.requestFocus();
-                KeyboardUtils.showKeyboard(context, commentName);
-            } else {
-                commentText.requestFocus();
-                KeyboardUtils.showKeyboard(context, commentText);
-            }
-        }
-
-        //animate arrow
-        openPanelIcon.clearAnimation();
-        openPanelIcon.startAnimation(openPanelIconUp);
-    }
-
-    @Override
-    public void onPanelAnchored(View panel) {}
-
-    @Override
-    public void onPanelHidden(View panel) {}
-
-    private boolean sendComment() {
-        Context context = getActivity();
-        if (isNewCommentDataValid() && context != null) {
-            //send comment
-            DataProviderHelper.addComment(context, getTargetType(), getTargetId(), getCommentName(),
-                                          getCommentText(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-
-            //clean comment text
-            commentText.setText("");
-
-            //remember name
-            SettingsSPStorage.setCommentAuthorName(context, getCommentName());
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean isNewCommentDataValid() {
-        boolean isDataValid = true;
-
-        if (TextUtils.isEmpty(getCommentName())) {
-            commentName.setError(getString(R.string.fill_field));
-            isDataValid = false;
-        }
-
-        if (TextUtils.isEmpty(getCommentText())) {
-            commentText.setError(getString(R.string.fill_field));
-            isDataValid = false;
-        }
-
-        return isDataValid;
-    }
-
-    private String getCommentText() {
-        return commentText.getText().toString().trim();
-    }
-
-    private String getCommentName() {
-        return commentName.getText().toString().trim();
     }
 
     private long getTargetId() {
         Bundle arguments = getArguments();
-        if (arguments != null) {
-            return arguments.getLong(ARGUMENT_TARGET_ID, -1);
-        } else {
-            return -1;
-        }
+        return arguments != null ? arguments.getLong(ARGUMENT_TARGET_ID, -1) : -1;
     }
 
     private int getTargetType() {
         Bundle arguments = getArguments();
-        if (arguments != null) {
-            return arguments.getInt(ARGUMENT_TARGET_TYPE, -1);
-        } else {
-            return -1;
-        }
+        return arguments != null ? arguments.getInt(ARGUMENT_TARGET_TYPE, -1) : -1;
+    }
+
+    private int getCommentsCount() {
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getInt(ARGUMENT_COMMENTS_COUNT, 0) : -1;
+    }
+
+    private float getRating() {
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getFloat(ARGUMENT_RATING, EMPTY_RATING) : EMPTY_RATING;
+    }
+
+    private String getTargetName() {
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getString(ARGUMENT_TARGET_NAME, "") : "";
+    }
+
+    private String getTargetTypeName() {
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getString(ARGUMENT_TARGET_TYPE_NAME, "") : "";
     }
 
     @Override

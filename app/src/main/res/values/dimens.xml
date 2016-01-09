@@ -40,6 +40,7 @@
     <dimen name="actions_layout_vertical_padding">20dip</dimen>
     <dimen name="action_comments_count_text_size">14sp</dimen>
     <dimen name="comments_count_text_size">10sp</dimen>
+    <dimen name="gradient_button_text_size">13sp</dimen>
 
     <!--Calendar fragment-->
     <dimen name="calendar_header_padding_left">70dip</dimen>
@@ -92,6 +93,8 @@
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>
     <dimen name="comments_list_item_horizontal_padding">@dimen/application_padding</dimen>
+    <dimen name="comments_header_padding">@dimen/application_padding</dimen>
+    <dimen name="comments_target_name_margin_bottom">6dip</dimen>
     <dimen name="comments_list_item_padding_top">20dip</dimen>
     <dimen name="comment_author_name_margin_bottom">10dip</dimen>
     <dimen name="comment_author_name_text_size">12sp</dimen>
@@ -99,11 +102,10 @@
     <dimen name="comment_date_margin_bottom">18dip</dimen>
     <dimen name="comment_text_text_size">12sp</dimen>
     <dimen name="comment_text_margin_bottom">17dip</dimen>
-    <dimen name="add_comment_edit_text_padding">8dip</dimen>
-    <dimen name="add_comment_text_top_margin">16dip</dimen>
-    <dimen name="add_comment_button_min_size">50dip</dimen>
-    <dimen name="write_comment_text_size">18sp</dimen>
-    <dimen name="add_comment_panel_header_height">50dip</dimen>
+    <dimen name="add_comment_button_vertical_margin">10dip</dimen>
+    <dimen name="add_comment_button_horizontal_margin">33dip</dimen>
+    <dimen name="comments_target_type_text_size">12sp</dimen>
+    <dimen name="comments_target_name_text_size">20sp</dimen>
 
     <!--cinemas-->
     <dimen name="cinemas_list_item_arrow_margin_left">4dip</dimen>
