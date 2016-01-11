@@ -1,22 +1,30 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
+import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.network.event.CommentsLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.FontUtils;
+import com.squareup.otto.Subscribe;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 
@@ -27,17 +35,26 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * Time: 11:26
  * To change this template use File | Settings | File Templates.
  */
-public class CommentsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CommentsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                              AbsListView.OnScrollListener,
+                                                              SwipeRefreshLayout.OnRefreshListener {
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
     private static final String ARGUMENT_COMMENTS_COUNT = "com.kvest.odessatoday.argument.COMMENTS_COUNT";
     private static final String ARGUMENT_RATING = "com.kvest.odessatoday.argument.RATING";
     private static final String ARGUMENT_TARGET_NAME = "com.kvest.odessatoday.argument.TARGET_NAME";
     private static final String ARGUMENT_TARGET_TYPE_NAME = "com.kvest.odessatoday.argument.TARGET_TYPE_NAME";
+    private static final int MIN_ITEMS_FOR_MORE_LOAD = 2;
+    private static final int LOAD_LIMIT = 20;
     public static final float EMPTY_RATING = -1;
     private static final int COMMENTS_LOADER_ID = 1;
 
     private CommentsAdapter adapter;
+
+    private ImageView progress;
+    private SwipeRefreshLayout refreshLayout;
+
+    private boolean hasMoreComments = false;
 
     public static CommentsFragment newInstance(long targetId, int targetType,
                                                String targetName, String targetTypeName,
@@ -58,8 +75,9 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.comments_fragment, container, false);
+        View footerView = inflater.inflate(R.layout.comments_fragment_footer, null);
 
-        init(rootView);
+        init(rootView, footerView);
 
         return rootView;
     }
@@ -68,7 +86,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        NetworkService.loadComments(activity, getTargetId(), getTargetType());
+        loadComments(activity);
     }
 
     @Override
@@ -78,7 +96,24 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         getLoaderManager().initLoader(COMMENTS_LOADER_ID, null, this);
     }
 
-    private void init(View rootView) {
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        //stop all progresses
+        stopProgress();
+
+        BusProvider.getInstance().unregister(this);
+    }
+
+    private void init(View rootView, View footer) {
         //store widgets
         View addComment = rootView.findViewById(R.id.add_comment);
         TextView addCommentLabel = (TextView)rootView.findViewById(R.id.add_comment_label);
@@ -87,8 +122,13 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         TextView targetName = (TextView)rootView.findViewById(R.id.target_name);
         TextView targetTypeName = (TextView)rootView.findViewById(R.id.target_type);
 
+        refreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setColorSchemeResources(R.color.application_green);
+
         //store list view
         ListView commentsList = (ListView)rootView.findViewById(R.id.comments_list);
+        commentsList.setOnScrollListener(this);
 
         //create and set an adapter
         adapter = new CommentsAdapter(getActivity());
@@ -113,6 +153,10 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
                 showAddCommentFragment();
             }
         });
+
+        //setup footer
+        progress = (ImageView)footer.findViewById(R.id.progress);
+        commentsList.addFooterView(footer);
     }
 
     private void showAddCommentFragment() {
@@ -124,6 +168,16 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         } finally {
             transaction.commit();
         }
+    }
+
+    //method loads first set of the comments
+    private void loadComments(Context context) {
+        NetworkService.loadComments(context, getTargetId(), getTargetType(), 0, LOAD_LIMIT, true);
+    }
+
+    //method loads next set of the comments
+    private void loadNextComments(Context context, int offset) {
+        NetworkService.loadComments(context, getTargetId(), getTargetType(), offset, LOAD_LIMIT, false);
     }
 
     private long getTargetId() {
@@ -156,6 +210,39 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         return arguments != null ? arguments.getString(ARGUMENT_TARGET_TYPE_NAME, "") : "";
     }
 
+    private void startFooterProgress() {
+        AnimationDrawable frameAnimation = (AnimationDrawable) progress.getBackground();
+        frameAnimation.start();
+
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    private void stopFooterProgress() {
+        AnimationDrawable frameAnimation = (AnimationDrawable) progress.getBackground();
+        frameAnimation.stop();
+
+        progress.setVisibility(View.GONE);
+    }
+
+    private void stopProgress() {
+        refreshLayout.setRefreshing(false);
+
+        stopFooterProgress();
+    }
+
+    @Override
+    public void onRefresh() {
+        //reload comments
+        Activity activity = getActivity();
+        if (activity != null) {
+            stopFooterProgress();
+
+            hasMoreComments = false;
+
+            loadComments(activity);
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == COMMENTS_LOADER_ID) {
@@ -181,6 +268,43 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
             case COMMENTS_LOADER_ID :
                 adapter.swapCursor(null);
                 break;
+        }
+    }
+
+    @Subscribe
+    public void onCommentsLoaded(CommentsLoadedEvent event) {
+        hasMoreComments = event.hasMoreComments();
+
+        //event dispatched not in the UI thread
+        progress.post(new Runnable() {
+            @Override
+            public void run() {
+                stopProgress();
+            }
+        });
+
+        Activity activity = getActivity();
+        if (!event.isSuccessful() && activity != null) {
+            showErrorSnackbar(activity, R.string.error_loading_comments);
+        }
+
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {}
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (totalItemCount > 0 && (totalItemCount - firstVisibleItem - visibleItemCount) < MIN_ITEMS_FOR_MORE_LOAD) {
+            Context context = getActivity();
+            if (hasMoreComments && context != null) {
+                hasMoreComments = false;
+
+                //show progress
+                startFooterProgress();
+
+                loadNextComments(context, totalItemCount);
+            }
         }
     }
 }

@@ -50,9 +50,10 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
-    public static void loadComments(Context context, long targetId, int targetType) {
+    public static void loadComments(Context context, long targetId, int targetType,
+                                    int offset, int limit, boolean deleteComments) {
         Intent intent = createIntent(context, ACTION_LOAD_COMMENTS);
-        LoadCommentsHandler.putExtras(intent, targetId, targetType);
+        LoadCommentsHandler.putExtras(intent, targetId, targetType, offset, limit, deleteComments);
 
         context.startService(intent);
     }

@@ -29,64 +29,53 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 public class LoadCommentsHandler extends RequestHandler {
     private static final String TARGET_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.TARGET_ID";
     private static final String TARGET_TYPE_EXTRA = "com.kvest.odessatoday.EXTRAS.TARGET_TYPE";
+    private static final String LIMIT_EXTRA = "com.kvest.odessatoday.EXTRAS.LIMIT";
+    private static final String OFFSET_EXTRA = "com.kvest.odessatoday.EXTRAS.OFFSET";
+    private static final String DELETE_COMMENTS_EXTRA = "com.kvest.odessatoday.EXTRAS.DELETE_COMMENTS";
 
     private static final int DEFAULT_OFFSET = 0;
     private static final int DEFAULT_LIMIT = 50;
 
-    public static void putExtras(Intent intent, long targetId, int targetType) {
+    public static void putExtras(Intent intent, long targetId, int targetType,
+                                 int offset, int limit, boolean deleteComments) {
         intent.putExtra(TARGET_ID_EXTRA, targetId);
         intent.putExtra(TARGET_TYPE_EXTRA, targetType);
+        intent.putExtra(OFFSET_EXTRA, offset);
+        intent.putExtra(LIMIT_EXTRA, limit);
+        intent.putExtra(DELETE_COMMENTS_EXTRA, deleteComments);
     }
 
     @Override
     public void processIntent(Context context, Intent intent) {
-        boolean hasMoreComments = true;
-        boolean deleteOldComments = true;
-        int offset = DEFAULT_OFFSET;
-        int limit = DEFAULT_LIMIT;
+        boolean deleteOldComments = intent.getBooleanExtra(DELETE_COMMENTS_EXTRA, false);
 
-        while (hasMoreComments) {
-            hasMoreComments = false;
+        RequestFuture<GetCommentsResponse> future = RequestFuture.newFuture();
+        GetCommentsRequest request = createRequest(intent, future);
+        TodayApplication.getApplication().getVolleyHelper().addRequest(request);
+        try {
+            GetCommentsResponse response = future.get();
+            if (response.isSuccessful()) {
+                //save comments
+                saveComments(context, response.data.comments, request.getTargetId(), request.getTargetType(), deleteOldComments);
 
-            RequestFuture<GetCommentsResponse> future = RequestFuture.newFuture();
-            GetCommentsRequest request = createRequest(intent, offset, limit, future);
-            TodayApplication.getApplication().getVolleyHelper().addRequest(request);
-            try {
-                GetCommentsResponse response = future.get();
-                if (response.isSuccessful()) {
-                    //save comments
-                    saveComments(context, response.data.comments, request.getTargetId(), request.getTargetType(), deleteOldComments);
-                    deleteOldComments = false;
-
-                    if (response.data.comments_remained > 0) {
-                        hasMoreComments = true;
-                        offset += response.data.comments.size();
-                    } else {
-                        notifySuccess(context, intent);
-                    }
-                } else {
-                    LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
-
-                    //notify listeners about unsuccessful loading comments
-                    notifyError(context, response.error, intent);
-
-                    break;
-                }
-            } catch (InterruptedException e) {
-                LOGE(Constants.TAG, e.getLocalizedMessage());
+                boolean hasMoreComments = response.data.comments_remained > 0;
+                notifySuccess(context, intent, hasMoreComments);
+            } else {
+                LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading comments
-                notifyError(context, e.getLocalizedMessage(), intent);
-
-                break;
-            } catch (ExecutionException e) {
-                LOGE(Constants.TAG, e.getLocalizedMessage());
-
-                //notify listeners about unsuccessful loading comments
-                notifyError(context, e.getLocalizedMessage(), intent);
-
-                break;
+                notifyError(context, response.error, intent);
             }
+        } catch (InterruptedException e) {
+            LOGE(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading comments
+            notifyError(context, e.getLocalizedMessage(), intent);
+        } catch (ExecutionException e) {
+            LOGE(Constants.TAG, e.getLocalizedMessage());
+
+            //notify listeners about unsuccessful loading comments
+            notifyError(context, e.getLocalizedMessage(), intent);
         }
     }
 
@@ -121,10 +110,12 @@ public class LoadCommentsHandler extends RequestHandler {
         }
     }
 
-    private GetCommentsRequest createRequest(Intent intent, int offset, int limit, RequestFuture<GetCommentsResponse> future) {
+    private GetCommentsRequest createRequest(Intent intent, RequestFuture<GetCommentsResponse> future) {
         //get extra data
         long targetId = intent.getLongExtra(TARGET_ID_EXTRA, -1);
         int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.CommentTargetType.UNKNOWN);
+        int offset = intent.getIntExtra(OFFSET_EXTRA, DEFAULT_OFFSET);
+        int limit = intent.getIntExtra(LIMIT_EXTRA, DEFAULT_LIMIT);
 
         GetCommentsRequest request = new GetCommentsRequest(targetId, targetType, offset, limit, future, future);
         return request;
@@ -138,11 +129,11 @@ public class LoadCommentsHandler extends RequestHandler {
         BusProvider.getInstance().post(new CommentsLoadedEvent(targetId, targetType, message));
     }
 
-    protected void notifySuccess(Context context, Intent intent) {
+    protected void notifySuccess(Context context, Intent intent, boolean hasMoreComments) {
         //get extra data
         long targetId = intent.getLongExtra(TARGET_ID_EXTRA, -1);
         int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.CommentTargetType.UNKNOWN);
 
-        BusProvider.getInstance().post(new CommentsLoadedEvent(targetId, targetType));
+        BusProvider.getInstance().post(new CommentsLoadedEvent(targetId, targetType, hasMoreComments));
     }
 }

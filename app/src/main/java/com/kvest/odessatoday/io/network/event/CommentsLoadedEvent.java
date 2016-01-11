@@ -7,13 +7,15 @@ public class CommentsLoadedEvent {
     private long targetId;
     private int targetType;
     private boolean successful;
+    private boolean hasMoreComments;
     private String errorMessage;
 
-    public CommentsLoadedEvent(long targetId, int targetType) {
+    public CommentsLoadedEvent(long targetId, int targetType, boolean hasMoreComments) {
         this.successful = true;
         this.errorMessage = null;
         this.targetId = targetId;
         this.targetType = targetType;
+        this.hasMoreComments = hasMoreComments;
     }
 
     public CommentsLoadedEvent(long targetId, int targetType, String errorMessage) {
@@ -21,6 +23,7 @@ public class CommentsLoadedEvent {
         this.errorMessage = errorMessage;
         this.targetId = targetId;
         this.targetType = targetType;
+        this.hasMoreComments = true;
     }
 
     public long getTargetId() {
@@ -37,5 +40,9 @@ public class CommentsLoadedEvent {
 
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    public boolean hasMoreComments() {
+        return hasMoreComments;
     }
 }

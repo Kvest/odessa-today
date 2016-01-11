@@ -177,6 +177,10 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
                 youTubeThumbnailLoader = null;
             }
         }
+
+        //stop animation
+        AnimationDrawable frameAnimation = (AnimationDrawable) videoThumbnailLoadProgress.getBackground();
+        frameAnimation.stop();
     }
 
     protected void setFilmData(Cursor cursor) {

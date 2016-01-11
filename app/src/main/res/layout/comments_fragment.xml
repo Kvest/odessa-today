@@ -97,16 +97,21 @@
             android:layout_above="@id/footer"
             android:background="?attr/CommentsListDividerColor" />
         <!--list-->
-        <ListView
-            android:id="@+id/comments_list"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/header_divider"
-            android:layout_above="@id/footer_divider"
-            android:listSelector="@android:color/transparent"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="?attr/CommentsListDividerColor"
-            android:dividerHeight="@dimen/comments_list_divider_height" />
+            android:layout_above="@id/footer_divider">
+            <ListView
+                android:id="@+id/comments_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:listSelector="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="?attr/CommentsListDividerColor"
+                android:dividerHeight="@dimen/comments_list_divider_height" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
     <FrameLayout
         android:id="@+id/add_comment_fragment_container"
