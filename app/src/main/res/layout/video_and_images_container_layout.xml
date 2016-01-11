@@ -38,7 +38,7 @@
                 android:visibility="gone"
                 android:layout_width="160dip"
                 android:layout_height="@dimen/film_details_posters_height"
-                android:background="@drawable/video_thumbnail_load"
+                android:background="@drawable/loading"
                 android:layout_gravity="center"/>
         </FrameLayout>
     </LinearLayout>

@@ -128,6 +128,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
 
         //store list view
         ListView commentsList = (ListView)rootView.findViewById(R.id.comments_list);
+        commentsList.addFooterView(footer);
         commentsList.setOnScrollListener(this);
 
         //create and set an adapter
@@ -156,7 +157,6 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
 
         //setup footer
         progress = (ImageView)footer.findViewById(R.id.progress);
-        commentsList.addFooterView(footer);
     }
 
     private void showAddCommentFragment() {

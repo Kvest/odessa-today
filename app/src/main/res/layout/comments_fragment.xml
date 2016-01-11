@@ -110,6 +110,7 @@
                 android:listSelector="@android:color/transparent"
                 android:cacheColorHint="@android:color/transparent"
                 android:divider="?attr/CommentsListDividerColor"
+                android:footerDividersEnabled="false"
                 android:dividerHeight="@dimen/comments_list_divider_height" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
