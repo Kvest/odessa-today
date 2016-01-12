@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
     private void init() {
         //setup sliding menu
-        slidingMenu = new SlidingMenu(this, SlidingMenu.SLIDING_WINDOW);
+        slidingMenu = new SlidingMenu(this, SlidingMenu.SLIDING_CONTENT);
         slidingMenu.setMenu(R.layout.menu_layout);
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         slidingMenu.setBehindOffsetRes(R.dimen.main_menu_behind_offset);
