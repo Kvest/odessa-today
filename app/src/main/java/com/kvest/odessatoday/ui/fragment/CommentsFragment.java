@@ -129,11 +129,12 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         //store list view
         ListView commentsList = (ListView)rootView.findViewById(R.id.comments_list);
         commentsList.addFooterView(footer);
-        commentsList.setOnScrollListener(this);
 
         //create and set an adapter
         adapter = new CommentsAdapter(getActivity());
         commentsList.setAdapter(adapter);
+
+        commentsList.setOnScrollListener(this);
 
         //setup header
         commentsCount.setCommentsCount(getCommentsCount());
@@ -295,7 +296,8 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (totalItemCount > 0 && (totalItemCount - firstVisibleItem - visibleItemCount) < MIN_ITEMS_FOR_MORE_LOAD) {
+        int count = adapter.getCount();
+        if (count > 0 && (count - firstVisibleItem - visibleItemCount) < MIN_ITEMS_FOR_MORE_LOAD) {
             Context context = getActivity();
             if (hasMoreComments && context != null) {
                 hasMoreComments = false;
@@ -303,7 +305,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
                 //show progress
                 startFooterProgress();
 
-                loadNextComments(context, totalItemCount);
+                loadNextComments(context, count);
             }
         }
     }
