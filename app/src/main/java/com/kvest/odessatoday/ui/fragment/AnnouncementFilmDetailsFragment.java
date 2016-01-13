@@ -31,7 +31,7 @@ public class AnnouncementFilmDetailsFragment extends BaseFilmDetailsFragment  im
 
     private TextView premiereDate;
 
-    public static AnnouncementFilmDetailsFragment getInstance(long filmId) {
+    public static AnnouncementFilmDetailsFragment newInstance(long filmId) {
         Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
 

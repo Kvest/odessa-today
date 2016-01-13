@@ -20,7 +20,7 @@ import com.kvest.odessatoday.ui.widget.CirclePagerIndicator;
 public class PhotoGalleryFragment extends BaseFragment {
     private static final String ARGUMENT_PHOTO_URLS = "com.kvest.odessatoday.argument.PHOTO_URLS";
 
-    public static PhotoGalleryFragment getInstance(String[] photoURLs) {
+    public static PhotoGalleryFragment newInstance(String[] photoURLs) {
         Bundle arguments = new Bundle(1);
         arguments.putStringArray(ARGUMENT_PHOTO_URLS, photoURLs);
 

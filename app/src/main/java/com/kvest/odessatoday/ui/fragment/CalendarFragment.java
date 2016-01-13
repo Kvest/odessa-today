@@ -47,7 +47,7 @@ public class CalendarFragment extends Fragment {
 
     private CalendarEventsListener calendarEventsListener;
 
-    public static CalendarFragment getInstance(int day, int month, int year) {
+    public static CalendarFragment newInstance(int day, int month, int year) {
         Bundle arguments = new Bundle(3);
         arguments.putInt(ARGUMENT_SELECTED_DATE_DAY, day);
         arguments.putInt(ARGUMENT_SELECTED_DATE_MONTH, month);

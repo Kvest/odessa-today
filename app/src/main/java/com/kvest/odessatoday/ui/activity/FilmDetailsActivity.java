@@ -57,7 +57,7 @@ public class FilmDetailsActivity extends BaseActivity implements FilmDetailsFrag
             long timetableDate = intent.getLongExtra(EXTRA_TIMETABLE_DATE, 0);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                FilmDetailsFragment filmDetailsFragment = FilmDetailsFragment.getInstance(filmId, timetableDate);
+                FilmDetailsFragment filmDetailsFragment = FilmDetailsFragment.newInstance(filmId, timetableDate);
                 transaction.add(R.id.fragment_container, filmDetailsFragment);
             } finally {
                 transaction.commit();

@@ -54,7 +54,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
 
     private View actionTickets;
 
-    public static FilmDetailsFragment getInstance(long filmId, long timetableDate) {
+    public static FilmDetailsFragment newInstance(long filmId, long timetableDate) {
         Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
         arguments.putLong(ARGUMENT_TIMETABLE_DATE, timetableDate);

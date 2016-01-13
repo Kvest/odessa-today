@@ -37,7 +37,7 @@ public class AnnouncementFilmsListFragment extends BaseFragment implements Loade
     private AnnouncementFilmSelectedListener announcementFilmSelectedListener;
     private SwipeRefreshLayout refreshLayout;
 
-    public static AnnouncementFilmsListFragment getInstance() {
+    public static AnnouncementFilmsListFragment newInstance() {
         AnnouncementFilmsListFragment result = new AnnouncementFilmsListFragment();
         return result;
     }

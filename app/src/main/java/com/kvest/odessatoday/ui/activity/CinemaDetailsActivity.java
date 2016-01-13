@@ -71,7 +71,7 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
             long cinemaId = intent.getLongExtra(EXTRA_CINEMA_ID, -1);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                CinemaDetailsFragment cinemaDetailsFragment = CinemaDetailsFragment.getInstance(cinemaId);
+                CinemaDetailsFragment cinemaDetailsFragment = CinemaDetailsFragment.newInstance(cinemaId);
 
                 transaction.add(R.id.fragment_container, cinemaDetailsFragment);
             } finally {
@@ -116,7 +116,7 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            PhotoGalleryFragment photoGalleryFragment = PhotoGalleryFragment.getInstance(photoURLs);
+            PhotoGalleryFragment photoGalleryFragment = PhotoGalleryFragment.newInstance(photoURLs);
             transaction.replace(R.id.fragment_container, photoGalleryFragment);
             transaction.addToBackStack(null);
         } finally {
@@ -199,7 +199,7 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
                 calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(withDate));
-                CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
+                CalendarFragment calendarFragment = CalendarFragment.newInstance(calendar.get(Calendar.DAY_OF_MONTH),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.YEAR));
                 transaction.replace(R.id.calendar_fragment_container, calendarFragment);

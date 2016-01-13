@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +19,7 @@ import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.event.CommentsLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
+import com.kvest.odessatoday.ui.activity.AddCommentActivity;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.utils.BusProvider;
@@ -161,13 +161,9 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     }
 
     private void showAddCommentFragment() {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        try {
-            transaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_up, R.anim.slide_down, R.anim.slide_down);
-            transaction.add(R.id.add_comment_fragment_container, AddCommentFragment.newInstance(getTargetId(), getTargetType()));
-            transaction.addToBackStack(null);
-        } finally {
-            transaction.commit();
+        Context context = getActivity();
+        if (context != null) {
+            AddCommentActivity.start(context, getTargetId(), getTargetType());
         }
     }
 

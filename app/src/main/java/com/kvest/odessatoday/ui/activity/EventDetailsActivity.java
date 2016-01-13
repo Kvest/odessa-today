@@ -41,7 +41,7 @@ public class EventDetailsActivity extends BaseActivity implements EventDetailsFr
             long eventId = intent.getLongExtra(EXTRA_EVENT_ID, -1);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                EventDetailsFragment fragment = EventDetailsFragment.getInstance(eventId);
+                EventDetailsFragment fragment = EventDetailsFragment.newInstance(eventId);
                 transaction.add(R.id.fragment_container, fragment);
             } finally {
                 transaction.commit();

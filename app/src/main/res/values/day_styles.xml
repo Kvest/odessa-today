@@ -23,6 +23,7 @@
         <item name="NoImage">@drawable/no_image_day</item>
         <item name="LoadingImage">@drawable/loading_image_day</item>
         <item name="ActionsLayoutBg">#f5f5f5</item>
+        <item name="CloseIcon">@drawable/ic_close</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuHeaderBgColor">#24282b</item>

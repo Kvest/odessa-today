@@ -45,7 +45,7 @@ public class PlaceDetailsActivity extends BaseActivity implements PlaceDetailsFr
             int placeType = intent.getIntExtra(EXTRA_PLACE_TYPE, -1);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                PlaceDetailsFragment fragment = PlaceDetailsFragment.getInstance(placeId, placeType);
+                PlaceDetailsFragment fragment = PlaceDetailsFragment.newInstance(placeId, placeType);
                 transaction.add(R.id.fragment_container, fragment);
             } finally {
                 transaction.commit();
@@ -87,7 +87,7 @@ public class PlaceDetailsActivity extends BaseActivity implements PlaceDetailsFr
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            PhotoGalleryFragment photoGalleryFragment = PhotoGalleryFragment.getInstance(photoURLs);
+            PhotoGalleryFragment photoGalleryFragment = PhotoGalleryFragment.newInstance(photoURLs);
             transaction.replace(R.id.fragment_container, photoGalleryFragment);
             transaction.addToBackStack(null);
         } finally {

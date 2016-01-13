@@ -31,7 +31,7 @@ public class PhotoGalleryActivity extends BaseActivity {
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                PhotoGalleryFragment fragment = PhotoGalleryFragment.getInstance(urls);
+                PhotoGalleryFragment fragment = PhotoGalleryFragment.newInstance(urls);
                 transaction.add(R.id.fragment_container, fragment);
             } finally {
                 transaction.commit();

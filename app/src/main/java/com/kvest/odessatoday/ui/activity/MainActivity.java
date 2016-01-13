@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
             //set menu fragment
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                MainMenuFragment mainMenuFragment = MainMenuFragment.getInstance(MainMenuFragment.MENU_FILMS_ID);
+                MainMenuFragment mainMenuFragment = MainMenuFragment.newInstance(MainMenuFragment.MENU_FILMS_ID);
                 transaction.add(R.id.menu_container, mainMenuFragment);
             } finally {
                 transaction.commit();
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
             //show films fragment
             transaction = getSupportFragmentManager().beginTransaction();
             try {
-                FilmsFragment filmsFragment = FilmsFragment.getInstance();
+                FilmsFragment filmsFragment = FilmsFragment.newInstance();
                 transaction.add(R.id.fragment_container, filmsFragment);
                 updateToolbarForFragment(filmsFragment);
             } finally {
@@ -175,9 +175,9 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         try {
             //create calendar fragment
             calendar.setTimeInMillis(TimeUnit.SECONDS.toMillis(selectedDate));
-            CalendarFragment calendarFragment = CalendarFragment.getInstance(calendar.get(Calendar.DAY_OF_MONTH),
-                                                                             calendar.get(Calendar.MONTH),
-                                                                             calendar.get(Calendar.YEAR));
+            CalendarFragment calendarFragment = CalendarFragment.newInstance(calendar.get(Calendar.DAY_OF_MONTH),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.YEAR));
 
             transaction.setCustomAnimations(R.anim.slide_down, R.anim.slide_up, R.anim.slide_down, R.anim.slide_up);
             transaction.replace(R.id.calendar_fragment_container, calendarFragment);
@@ -262,7 +262,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
         switch (menuItemId) {
             case MainMenuFragment.MENU_FILMS_ID :
-                replaceFragment(FilmsFragment.getInstance());
+                replaceFragment(FilmsFragment.newInstance());
                 setTitle(R.string.menu_films);
                 break;
             case MainMenuFragment.MENU_CONCERT_ID :
@@ -296,7 +296,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 setTitle(R.string.menu_workshop);
                 break;
             case MainMenuFragment.MENU_CINEMA_ID :
-                replaceFragment(CinemasListFragment.getInstance());
+                replaceFragment(CinemasListFragment.newInstance());
                 setTitle(R.string.menu_cinema);
                 break;
             case MainMenuFragment.MENU_THEATRE_ID :

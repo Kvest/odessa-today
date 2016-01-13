@@ -47,7 +47,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
 
     private SwipeRefreshLayout refreshLayout;
 
-    public static FilmsListFragment getInstance(long date) {
+    public static FilmsListFragment newInstance(long date) {
         Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_DATE, date);
 

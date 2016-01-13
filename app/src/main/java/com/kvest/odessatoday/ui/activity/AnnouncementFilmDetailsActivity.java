@@ -44,7 +44,7 @@ public class AnnouncementFilmDetailsActivity extends BaseActivity implements Ann
             long filmId = intent.getLongExtra(EXTRA_FILM_ID, -1);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                AnnouncementFilmDetailsFragment fragment = AnnouncementFilmDetailsFragment.getInstance(filmId);
+                AnnouncementFilmDetailsFragment fragment = AnnouncementFilmDetailsFragment.newInstance(filmId);
                 transaction.add(R.id.fragment_container, fragment);
             } finally {
                 transaction.commit();

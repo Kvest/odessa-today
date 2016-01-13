@@ -37,7 +37,7 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
 
     private SwipeRefreshLayout refreshLayout;
 
-    public static CinemasListFragment getInstance() {
+    public static CinemasListFragment newInstance() {
         CinemasListFragment result = new CinemasListFragment();
         return result;
     }

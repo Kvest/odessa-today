@@ -96,7 +96,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     private OnShowEventCommentsListener onShowEventCommentsListener;
     private int eventType = -1;
 
-    public static EventDetailsFragment getInstance(long eventId) {
+    public static EventDetailsFragment newInstance(long eventId) {
         Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_EVENT_ID, eventId);
 

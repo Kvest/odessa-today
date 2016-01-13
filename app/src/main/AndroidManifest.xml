@@ -51,6 +51,10 @@
         <activity
             android:name=".ui.activity.PlaceDetailsActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.AddCommentActivity"
+            android:label="@string/add_comment"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:authorities="com.kvest.odessatoday"

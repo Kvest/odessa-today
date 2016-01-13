@@ -66,7 +66,7 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
 
     private PlaceDetailsActionsListener placeDetailsActionsListener;
 
-    public static PlaceDetailsFragment getInstance(long placeId, int placeType) {
+    public static PlaceDetailsFragment newInstance(long placeId, int placeType) {
         Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_PLACE_ID, placeId);
         arguments.putInt(ARGUMENT_PLACE_TYPE, placeType);

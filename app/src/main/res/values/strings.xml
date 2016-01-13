@@ -57,6 +57,7 @@
     <string name="selector_concert_halls">концертные залы</string>
     <string name="timetable">Расписание</string>
     <string name="add_comment">Написать отзыв</string>
+    <string name="close">Закрыть</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>

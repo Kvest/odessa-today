@@ -71,7 +71,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
     private CinemaDetailsActionsListener cinemaDetailsActionsListener;
 
-    public static CinemaDetailsFragment getInstance(long cinemaId) {
+    public static CinemaDetailsFragment newInstance(long cinemaId) {
         Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_CINEMA_ID, cinemaId);
 

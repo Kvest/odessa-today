@@ -47,7 +47,7 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
     private View previousDay;
     private View nextDay;
 
-    public static FilmsFragment getInstance() {
+    public static FilmsFragment newInstance() {
         FilmsFragment result = new FilmsFragment();
         return result;
     }
@@ -246,13 +246,13 @@ public class FilmsFragment extends BaseFragment implements MainActivity.ToolbarE
         public Fragment getItem(int index) {
             switch (index) {
                 case FILMS_LIST_FRAGMENT_POSITION:
-                    FilmsListFragment filmsListFragment = FilmsListFragment.getInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                    FilmsListFragment filmsListFragment = FilmsListFragment.newInstance(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
                     filmsListFragment.setDateChangedListener(FilmsFragment.this);
                     return filmsListFragment;
                 case CINEMAS_LIST_FRAGMENT_POSITION:
-                    return CinemasListFragment.getInstance();
+                    return CinemasListFragment.newInstance();
                 case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION:
-                    AnnouncementFilmsListFragment announcementFilmsListFragment = AnnouncementFilmsListFragment.getInstance();
+                    AnnouncementFilmsListFragment announcementFilmsListFragment = AnnouncementFilmsListFragment.newInstance();
                     return announcementFilmsListFragment;
                 default :
                     return null;

@@ -49,7 +49,7 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
     private MainMenuAdapter adapter;
     private MainMenuItemSelectedListener mainMenuItemSelectedListener;
 
-    public static MainMenuFragment getInstance(int defaultSelectedItemId) {
+    public static MainMenuFragment newInstance(int defaultSelectedItemId) {
         Bundle arguments = new Bundle(1);
         arguments.putInt(ARGUMENT_DEFAULT_SELECTED_ITEM_ID, defaultSelectedItemId);
 
