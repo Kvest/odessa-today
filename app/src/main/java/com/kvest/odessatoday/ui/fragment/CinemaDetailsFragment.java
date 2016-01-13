@@ -60,6 +60,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private String[] photoUrls = null;
     private double latitude = 0d;
     private double longitude = 0d;
+    private float rating;
 
     private int drawablesColor;
 
@@ -235,7 +236,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private void showComments() {
         if (cinemaDetailsActionsListener != null) {
             cinemaDetailsActionsListener.onShowCinemaComments(getCinemaId(), cinemaName.getText().toString(),
-                                                              actionCommentsCount.getCommentsCount());
+                                                              actionCommentsCount.getCommentsCount(), rating);
         }
     }
 
@@ -343,6 +344,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
             //remember geo location
             longitude = cursor.getDouble(cursor.getColumnIndex(Tables.Cinemas.Columns.LON));
             latitude = cursor.getDouble(cursor.getColumnIndex(Tables.Cinemas.Columns.LAT));
+
+            rating = cursor.getFloat(cursor.getColumnIndex(Tables.Cinemas.Columns.RATING));
         }
     }
 
@@ -355,7 +358,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     }
 
     public interface CinemaDetailsActionsListener {
-        void onShowCinemaComments(long cinemaId, String cinemaName, int commentsCount);
+        void onShowCinemaComments(long cinemaId, String cinemaName, int commentsCount, float rating);
         void onShowCinemaPhotos(String[] photoURLs);
         void onShowCalendar(long withDate);
     }

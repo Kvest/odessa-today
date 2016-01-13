@@ -26,6 +26,8 @@ public class Cinema {
     public String transport;
     @SerializedName("description")
     public String description;
+    @SerializedName("rating")
+    public float rating;
     @SerializedName("worktime")
     public String worktime;
     @SerializedName("images")
@@ -38,7 +40,7 @@ public class Cinema {
     public double lon;
 
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues(11);
+        ContentValues values = new ContentValues(12);
         values.put(Cinemas.Columns.CINEMA_ID, id);
         values.put(Cinemas.Columns.NAME, name);
         values.put(Cinemas.Columns.ADDRESS, address);
@@ -50,6 +52,7 @@ public class Cinema {
         values.put(Cinemas.Columns.COMMENTS_COUNT, comments_count);
         values.put(Cinemas.Columns.LON, lon);
         values.put(Cinemas.Columns.LAT, lat);
+        values.put(Cinemas.Columns.RATING, rating);
 
         return values;
     }

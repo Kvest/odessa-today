@@ -40,7 +40,8 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     private static final String[] PLACE_PROJECTION = new String[]{Places.Columns.NAME, Places.Columns.ADDRESS,
                                                                   Places.Columns.PHONES, Places.Columns.DESCRIPTION,
                                                                   Places.Columns.COMMENTS_COUNT, Places.Columns.IMAGE,
-                                                                  Places.Columns.LON, Places.Columns.LAT};
+                                                                  Places.Columns.LON, Places.Columns.LAT,
+                                                                  Places.Columns.RATING};
 
     private static final String ARGUMENT_PLACE_ID = "com.kvest.odessatoday.argument.PLACE_ID";
     private static final String ARGUMENT_PLACE_TYPE = "com.kvest.odessatoday.argument.PLACE_TYPE";
@@ -59,6 +60,7 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     private String[] photoUrls = null;
     private double latitude = 0d;
     private double longitude = 0d;
+    private float rating;
 
     private int drawablesColor;
 
@@ -241,7 +243,7 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     private void showComments() {
         if (placeDetailsActionsListener != null) {
             placeDetailsActionsListener.onShowPlaceComments(getPlaceId(), getPlaceType(), placeName.getText().toString(),
-                                                            actionCommentsCount.getCommentsCount());
+                                                            actionCommentsCount.getCommentsCount(), rating);
         }
     }
 
@@ -304,11 +306,13 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
             //remember geo location
             longitude = cursor.getDouble(cursor.getColumnIndex(Places.Columns.LON));
             latitude = cursor.getDouble(cursor.getColumnIndex(Places.Columns.LAT));
+
+            rating = cursor.getFloat(cursor.getColumnIndex(Places.Columns.RATING));
         }
     }
 
     public interface PlaceDetailsActionsListener {
-        void onShowPlaceComments(long placeId, int placeType, String placeName, int commentsCount);
+        void onShowPlaceComments(long placeId, int placeType, String placeName, int commentsCount, float rating);
         void onShowPlacePhotos(String[] photoURLs);
     }
 }

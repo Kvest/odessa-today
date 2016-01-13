@@ -220,6 +220,7 @@ public class TodayProviderContract {
                 String WORK_TIME = "worktime";
                 String IMAGE = "image";
                 String COMMENTS_COUNT = "comments_count";
+                String RATING = "rating";
                 String LON = "lon";
                 String LAT = "lat";
             }
@@ -237,6 +238,7 @@ public class TodayProviderContract {
                     + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
                     + Columns.LON + " REAL,"
                     + Columns.LAT + " REAL,"
+                    + Columns.RATING + " REAL,"
                     + "UNIQUE(" + Columns.CINEMA_ID + ") ON CONFLICT REPLACE);";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
