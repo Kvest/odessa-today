@@ -21,6 +21,7 @@ public class TodayProviderContract {
     static final String CINEMA_VIEW_PATH = "cinema_view";
     static final String CINEMAS_PATH = "cinemas";
     static final String COMMENTS_PATH = "comments";
+    static final String COMMENTS_RATING_PATH = "comments_rating";
     static final String ANNOUNCEMENTS_PATH = "announcements";
     static final String ANNOUNCEMENT_FILMS_VIEW_PATH = "announcement_films_view";
     static final String PLACES_PATH = "places";
@@ -33,6 +34,7 @@ public class TodayProviderContract {
     public static final Uri CINEMA_TIMETABLE_URI = Uri.withAppendedPath(FILM_TIMETABLE_URI, CINEMA_VIEW_PATH);
     public static final Uri CINEMAS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, CINEMAS_PATH);
     public static final Uri COMMENTS_URI = Uri.withAppendedPath(BASE_CONTENT_URI, COMMENTS_PATH);
+    public static final Uri COMMENTS_RATING_URI = Uri.withAppendedPath(BASE_CONTENT_URI, COMMENTS_RATING_PATH);
     public static final Uri ANNOUNCEMENT_FILMS_URI = Uri.withAppendedPath(FILMS_URI, ANNOUNCEMENTS_PATH);
     public static final Uri ANNOUNCEMENT_FILMS_VIEW_URI = Uri.withAppendedPath(ANNOUNCEMENT_FILMS_URI, ANNOUNCEMENT_FILMS_VIEW_PATH);
     public static final Uri PLACES_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PLACES_PATH);
@@ -206,6 +208,21 @@ public class TodayProviderContract {
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String DATE_ORDER_DESC = Comments.Columns.DATE + " DESC";
             String DATE_ORDER_ASC = Comments.Columns.DATE + " ASC";
+        }
+
+        interface CommentsRating {
+            String TABLE_NAME = "comments_rating";
+            interface Columns extends BaseColumns {
+                String COMMENT_ID = "comment_id";
+                String RATING = "rating";
+            }
+
+            String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
+                    + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Columns.COMMENT_ID + " INTEGER NOT NULL,"
+                    + Columns.RATING + " REAL)";
+
+            String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
         }
 
         interface Cinemas {

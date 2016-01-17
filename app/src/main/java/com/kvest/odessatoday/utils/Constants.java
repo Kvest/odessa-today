@@ -25,14 +25,12 @@ public abstract class Constants {
         int UNKNOWN = -1;
         int FILM = 0;
         int CINEMA = 1;
-
         int CONCERT = 2;
         int PARTY = 3;
         int SPECTACLE = 4;
         int EXHIBITION = 5;
         int SPORT = 6;
         int WORKSHOP = 7;
-
         int THEATRE = 8;
         int CONCERT_HALL = 9;
         int CLUB = 10;

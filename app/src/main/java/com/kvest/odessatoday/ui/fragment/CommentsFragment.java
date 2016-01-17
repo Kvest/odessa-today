@@ -3,15 +3,14 @@ package com.kvest.odessatoday.ui.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -23,6 +22,7 @@ import com.kvest.odessatoday.ui.activity.AddCommentActivity;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.utils.BusProvider;
+import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.FontUtils;
 import com.squareup.otto.Subscribe;
 
@@ -46,12 +46,12 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     private static final String ARGUMENT_TARGET_TYPE_NAME = "com.kvest.odessatoday.argument.TARGET_TYPE_NAME";
     private static final int MIN_ITEMS_FOR_MORE_LOAD = 2;
     private static final int LOAD_LIMIT = 20;
-    public static final float EMPTY_RATING = -1;
+    private static final float EMPTY_RATING = -1;
     private static final int COMMENTS_LOADER_ID = 1;
 
     private CommentsAdapter adapter;
 
-    private ImageView progress;
+    private ProgressBar progress;
     private SwipeRefreshLayout refreshLayout;
 
     private boolean hasMoreComments = false;
@@ -157,14 +157,23 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         });
 
         //setup footer
-        progress = (ImageView)footer.findViewById(R.id.progress);
+        progress = (ProgressBar)footer.findViewById(R.id.progress);
     }
 
     private void showAddCommentFragment() {
         Context context = getActivity();
         if (context != null) {
-            AddCommentActivity.start(context, getTargetId(), getTargetType());
+            AddCommentActivity.start(context, getTargetId(), getTargetType(), canRate());
         }
+    }
+
+    private boolean canRate() {
+        int targetType = getTargetType();
+
+        return (targetType == Constants.CommentTargetType.FILM || targetType == Constants.CommentTargetType.CONCERT
+                || targetType == Constants.CommentTargetType.PARTY || targetType == Constants.CommentTargetType.SPECTACLE
+                || targetType == Constants.CommentTargetType.EXHIBITION || targetType == Constants.CommentTargetType.SPORT
+                || targetType == Constants.CommentTargetType.WORKSHOP);
     }
 
     //method loads first set of the comments
@@ -208,16 +217,10 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     }
 
     private void startFooterProgress() {
-        AnimationDrawable frameAnimation = (AnimationDrawable) progress.getBackground();
-        frameAnimation.start();
-
         progress.setVisibility(View.VISIBLE);
     }
 
     private void stopFooterProgress() {
-        AnimationDrawable frameAnimation = (AnimationDrawable) progress.getBackground();
-        frameAnimation.stop();
-
         progress.setVisibility(View.GONE);
     }
 

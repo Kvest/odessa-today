@@ -106,6 +106,8 @@
     <dimen name="add_comment_button_horizontal_margin">33dip</dimen>
     <dimen name="comments_target_type_text_size">12sp</dimen>
     <dimen name="comments_target_name_text_size">20sp</dimen>
+    <dimen name="send_comment_button_vertical_margin">10dip</dimen>
+    <dimen name="send_comment_button_horizontal_margin">33dip</dimen>
 
     <!--cinemas-->
     <dimen name="cinemas_list_item_arrow_margin_left">4dip</dimen>

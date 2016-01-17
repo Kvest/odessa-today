@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -85,7 +85,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     private YouTubeThumbnailLoader youTubeThumbnailLoader;
     private boolean isYoutubeInitInProgress = false;
     private ImageView videoPreview;
-    private ImageView videoThumbnailLoadProgress;
+    private ProgressBar videoThumbnailLoadProgress;
     private View videoThumbnailContainer;
     private View videoThumbnailPlay;
     private String videoId;
@@ -146,7 +146,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         actionCommentsCount = (CommentsCountView) headerView.findViewById(R.id.action_comments_count);
         ((TextView) headerView.findViewById(R.id.action_tickets_title)).setText(R.string.action_tickets_soon);
         videoPreview = (ImageView) headerView.findViewById(R.id.video_preview);
-        videoThumbnailLoadProgress = (ImageView) headerView.findViewById(R.id.video_thumbnail_load_progress);
+        videoThumbnailLoadProgress = (ProgressBar) headerView.findViewById(R.id.video_thumbnail_load_progress);
         videoThumbnailContainer = headerView.findViewById(R.id.video_thumbnail_container);
         videoThumbnailPlay = headerView.findViewById(R.id.video_thumbnail_play);
 
@@ -185,9 +185,6 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
                 YoutubeFullscreenActivity.start(getActivity(), videoId);
             }
         });
-
-        AnimationDrawable frameAnimation = (AnimationDrawable) videoThumbnailLoadProgress.getBackground();
-        frameAnimation.start();
     }
 
     @Override

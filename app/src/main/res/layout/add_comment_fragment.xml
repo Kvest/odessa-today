@@ -1,7 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ff0000">
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/comment_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:singleLine="true"
+            android:maxLength="100" />
+        <EditText
+            android:id="@+id/comment_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:maxLength="1000"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"/>
+        <com.kvest.odessatoday.ui.widget.FontTextView
+            android:id="@+id/rate_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+            android:text="@string/rate" />
+        <RadioGroup
+            android:id="@+id/rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+            <RadioButton
+                android:id="@+id/rating1"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <RadioButton
+                android:id="@+id/rating2"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <RadioButton
+                android:id="@+id/rating3"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <RadioButton
+                android:id="@+id/rating4"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <RadioButton
+                android:id="@+id/rating5"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </RadioGroup>
+        <com.kvest.odessatoday.ui.widget.FontTextView
+            android:id="@+id/send_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="0dip"
+            android:layout_marginLeft="@dimen/send_comment_button_horizontal_margin"
+            android:layout_marginRight="@dimen/send_comment_button_horizontal_margin"
+            android:layout_marginTop="@dimen/send_comment_button_vertical_margin"
+            android:layout_marginBottom="@dimen/send_comment_button_vertical_margin"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/gradient_button_text_size"
+            app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
+            android:background="@drawable/gradient_button_bg"
+            android:text="@string/send"
+            android:clickable="true"/>
+    </LinearLayout>
+</ScrollView>

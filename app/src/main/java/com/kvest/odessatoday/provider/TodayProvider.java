@@ -42,6 +42,8 @@ public class TodayProvider extends ContentProvider {
     private static final int EVENT_TIMETABLE_LIST_URI_INDICATOR = 18;
     private static final int EVENT_TIMETABLE_ITEM_URI_INDICATOR = 19;
     private static final int EVENT_TIMETABLE_VIEW_LIST_URI_INDICATOR = 20;
+    private static final int COMMENTS_RATING_LIST_URI_INDICATOR = 21;
+    private static final int COMMENTS_RATING_ITEM_URI_INDICATOR = 22;
 
     private static final UriMatcher uriMatcher;
     static {
@@ -66,6 +68,8 @@ public class TodayProvider extends ContentProvider {
         uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/" + TIMETABLE_PATH, EVENT_TIMETABLE_LIST_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/" + TIMETABLE_PATH + "/#", EVENT_TIMETABLE_ITEM_URI_INDICATOR);
         uriMatcher.addURI(CONTENT_AUTHORITY, EVENTS_PATH + "/" + TIMETABLE_PATH + "/" + EVENTS_VIEW_PATH, EVENT_TIMETABLE_VIEW_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, COMMENTS_RATING_PATH, COMMENTS_RATING_LIST_URI_INDICATOR);
+        uriMatcher.addURI(CONTENT_AUTHORITY, COMMENTS_RATING_PATH + "/#", COMMENTS_RATING_ITEM_URI_INDICATOR);
     }
 
     @Override
@@ -141,6 +145,13 @@ public class TodayProvider extends ContentProvider {
                         (hasSelection ? selectionArgs : null), sortOrder);
             case EVENT_TIMETABLE_VIEW_LIST_URI_INDICATOR :
                 return simpleQuery(Tables.EventsTimetableView.VIEW_NAME, uri, projection, selection, selectionArgs, sortOrder);
+
+            case COMMENTS_RATING_LIST_URI_INDICATOR :
+                return simpleQuery(Tables.CommentsRating.TABLE_NAME, uri, projection, selection, selectionArgs, sortOrder);
+            case COMMENTS_RATING_ITEM_URI_INDICATOR :
+                return simpleQuery(Tables.CommentsRating.TABLE_NAME, uri, projection,
+                        Tables.CommentsRating.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null), sortOrder);
         }
 
         throw new IllegalArgumentException("Unknown uri for query : " + uri);
@@ -166,6 +177,8 @@ public class TodayProvider extends ContentProvider {
                 return simpleInsert(Tables.Events.TABLE_NAME, uri, values);
             case EVENT_TIMETABLE_LIST_URI_INDICATOR :
                 return simpleInsert(Tables.EventsTimetable.TABLE_NAME, uri, values);
+            case COMMENTS_RATING_LIST_URI_INDICATOR :
+                return simpleInsert(Tables.CommentsRating.TABLE_NAME, uri, values);
         }
         throw new IllegalArgumentException("Unknown uri for insert : " + uri);
     }
@@ -226,6 +239,12 @@ public class TodayProvider extends ContentProvider {
             case EVENT_TIMETABLE_ITEM_URI_INDICATOR :
                 return simpleDelete(Tables.EventsTimetable.TABLE_NAME, uri,
                         Tables.EventsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case COMMENTS_RATING_LIST_URI_INDICATOR :
+                return simpleDelete(Tables.CommentsRating.TABLE_NAME, uri, selection, selectionArgs);
+            case COMMENTS_RATING_ITEM_URI_INDICATOR :
+                return simpleDelete(Tables.CommentsRating.TABLE_NAME, uri,
+                        Tables.CommentsRating.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 
@@ -288,6 +307,12 @@ public class TodayProvider extends ContentProvider {
             case EVENT_TIMETABLE_ITEM_URI_INDICATOR :
                 return simpleUpdate(Tables.EventsTimetable.TABLE_NAME, uri, values,
                         Tables.EventsTimetable.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
+                        (hasSelection ? selectionArgs : null));
+            case COMMENTS_RATING_LIST_URI_INDICATOR :
+                return simpleUpdate(Tables.CommentsRating.TABLE_NAME, uri, values, selection, selectionArgs);
+            case COMMENTS_RATING_ITEM_URI_INDICATOR :
+                return simpleUpdate(Tables.CommentsRating.TABLE_NAME, uri, values,
+                        Tables.CommentsRating.Columns._ID + "=" + uri.getLastPathSegment() + (hasSelection ? (" AND " + selection) : ""),
                         (hasSelection ? selectionArgs : null));
         }
 

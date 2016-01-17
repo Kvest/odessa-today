@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -62,7 +61,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     private YouTubeThumbnailLoader youTubeThumbnailLoader;
     private boolean isYoutubeInitInProgress = false;
     private ImageView videoPreview;
-    private ImageView videoThumbnailLoadProgress;
+    private ProgressBar videoThumbnailLoadProgress;
     private View videoThumbnailContainer;
     private View videoThumbnailPlay;
 
@@ -113,7 +112,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         imagesContainer = (LinearLayout)view.findViewById(R.id.images_container);
         actionCommentsCount = (CommentsCountView) view.findViewById(R.id.action_comments_count);
         videoPreview = (ImageView) view.findViewById(R.id.video_preview);
-        videoThumbnailLoadProgress = (ImageView) view.findViewById(R.id.video_thumbnail_load_progress);
+        videoThumbnailLoadProgress = (ProgressBar) view.findViewById(R.id.video_thumbnail_load_progress);
         videoThumbnailContainer = view.findViewById(R.id.video_thumbnail_container);
         videoThumbnailPlay = view.findViewById(R.id.video_thumbnail_play);
 
@@ -146,9 +145,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
                 YoutubeFullscreenActivity.start(getActivity(), trailerVideoId);
             }
         });
-
-        AnimationDrawable frameAnimation = (AnimationDrawable) videoThumbnailLoadProgress.getBackground();
-        frameAnimation.start();
     }
 
     @Override
@@ -177,10 +173,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
                 youTubeThumbnailLoader = null;
             }
         }
-
-        //stop animation
-        AnimationDrawable frameAnimation = (AnimationDrawable) videoThumbnailLoadProgress.getBackground();
-        frameAnimation.stop();
     }
 
     protected void setFilmData(Cursor cursor) {

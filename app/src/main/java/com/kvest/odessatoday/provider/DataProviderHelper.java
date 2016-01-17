@@ -1,13 +1,20 @@
 package com.kvest.odessatoday.provider;
 
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
+import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.net.Uri;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;
 
+import java.util.ArrayList;
+
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
+import static com.kvest.odessatoday.utils.LogUtils.LOGE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +24,10 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class DataProviderHelper {
-    public static void addComment(Context context, int targetType, long targetId, String name, String text, long date) {
+    public static void addComment(Context context, int targetType, long targetId, String name,
+                                  String text, float rating,  long date) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(rating > 0 ? 2 : 1);
+
         //fill ContentValues
         ContentValues values = new ContentValues(6);
         values.put(Tables.Comments.Columns.TARGET_ID, targetId);
@@ -27,14 +37,30 @@ public abstract class DataProviderHelper {
         values.put(Tables.Comments.Columns.NAME, name);
         values.put(Tables.Comments.Columns.TEXT, text);
 
-        //insert comment
-        Uri uri = context.getContentResolver().insert(TodayProviderContract.COMMENTS_URI, values);
+        //store comment
+        operations.add(ContentProviderOperation.newInsert(TodayProviderContract.COMMENTS_URI).withValues(values).build());
 
-        //start upload comment to the server
-        Long recordId = Long.parseLong(uri.getLastPathSegment());
-        NetworkService.uploadComment(context, recordId);
+        //rating
+        if (rating > 0) {
+            ContentProviderOperation operation = ContentProviderOperation.newInsert(TodayProviderContract.COMMENTS_RATING_URI)
+                                                        .withValueBackReference(Tables.CommentsRating.Columns.COMMENT_ID, 0)
+                                                        .withValue(Tables.CommentsRating.Columns.RATING, rating).build();
+            operations.add(operation);
+        }
+
+        //apply
+        try {
+            ContentProviderResult[] result = context.getContentResolver().applyBatch(CONTENT_AUTHORITY, operations);
+
+            //start upload comment to the server
+            Long recordId = Long.parseLong(result[0].uri.getLastPathSegment());
+            NetworkService.uploadComment(context, recordId);
+        }catch (RemoteException re) {
+            LOGE(Constants.TAG, re.getMessage());
+        }catch (OperationApplicationException oae) {
+            LOGE(Constants.TAG, oae.getMessage());
+        }
     }
-
 
     public static CursorLoader getFilmsFullTimetableLoader(Context context, long filmId, long timetableStartDate,
                                                            long timetableEndDate, String[] projection, String order) {

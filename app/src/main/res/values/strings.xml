@@ -58,6 +58,9 @@
     <string name="timetable">Расписание</string>
     <string name="add_comment">Написать отзыв</string>
     <string name="close">Закрыть</string>
+    <string name="rate">Оценить</string>
+    <string name="send">Отправить</string>
+    <string name="fill_field">Заполните поле</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>

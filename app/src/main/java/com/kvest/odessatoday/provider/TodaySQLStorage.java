@@ -32,6 +32,7 @@ class TodaySQLStorage extends SQLiteOpenHelper {
         db.execSQL(FilmsTimetable.CREATE_TABLE_SQL);
         db.execSQL(Cinemas.CREATE_TABLE_SQL);
         db.execSQL(Comments.CREATE_TABLE_SQL);
+        db.execSQL(CommentsRating.CREATE_TABLE_SQL);
         db.execSQL(AnnouncementsMetadata.CREATE_TABLE_SQL);
         db.execSQL(CinemaTimetableView.CREATE_VIEW_SQL);
         db.execSQL(AnnouncementFilmsView.CREATE_VIEW_SQL);
@@ -50,19 +51,11 @@ class TodaySQLStorage extends SQLiteOpenHelper {
             db.execSQL(Cinemas.DROP_TABLE_SQL);
             db.execSQL(Cinemas.CREATE_TABLE_SQL);
 
+            db.execSQL(CommentsRating.CREATE_TABLE_SQL);
             db.execSQL(Places.CREATE_TABLE_SQL);
             db.execSQL(Events.CREATE_TABLE_SQL);
             db.execSQL(EventsTimetable.CREATE_TABLE_SQL);
             db.execSQL(EventsTimetableView.CREATE_VIEW_SQL);
         }
     }
-
-//    @Override
-//    public void onOpen(SQLiteDatabase db) {
-//        super.onOpen(db);
-//        if (!db.isReadOnly()) {
-//            // Enable foreign key constraints
-//            db.execSQL("PRAGMA foreign_keys=ON;");
-//        }
-//    }
 }
