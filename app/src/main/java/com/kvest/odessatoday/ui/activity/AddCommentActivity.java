@@ -18,13 +18,11 @@ import com.kvest.odessatoday.ui.fragment.AddCommentFragment;
 public class AddCommentActivity extends BaseActivity {
     private static final String EXTRA_TARGET_ID = "com.kvest.odessatoday.extra.TARGET_ID";
     private static final String EXTRA_TARGET_TYPE = "com.kvest.odessatoday.extra.TARGET_TYPE";
-    private static final String EXTRA_CAN_RATE = "com.kvest.odessatoday.extra.CAN_RATE";
 
-    public static void start(Context context, long targetId, int targetType, boolean canRate) {
+    public static void start(Context context, long targetId, int targetType) {
         Intent intent = new Intent(context, AddCommentActivity.class);
         intent.putExtra(EXTRA_TARGET_ID, targetId);
         intent.putExtra(EXTRA_TARGET_TYPE, targetType);
-        intent.putExtra(EXTRA_CAN_RATE, canRate);
         context.startActivity(intent);
     }
 
@@ -43,10 +41,9 @@ public class AddCommentActivity extends BaseActivity {
         if (savedInstanceState == null && intent != null) {
             long targetId = intent.getLongExtra(EXTRA_TARGET_ID, -1);
             int targetType = intent.getIntExtra(EXTRA_TARGET_TYPE, -1);
-            boolean canRate = intent.getBooleanExtra(EXTRA_CAN_RATE, false);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                AddCommentFragment addCommentFragment = AddCommentFragment.newInstance(targetId, targetType, canRate);
+                AddCommentFragment addCommentFragment = AddCommentFragment.newInstance(targetId, targetType);
                 transaction.add(R.id.fragment_container, addCommentFragment);
             } finally {
                 transaction.commit();

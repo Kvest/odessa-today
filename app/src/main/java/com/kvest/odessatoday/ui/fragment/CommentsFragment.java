@@ -22,7 +22,6 @@ import com.kvest.odessatoday.ui.activity.AddCommentActivity;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.utils.BusProvider;
-import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.FontUtils;
 import com.squareup.otto.Subscribe;
 
@@ -163,17 +162,8 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     private void showAddCommentFragment() {
         Context context = getActivity();
         if (context != null) {
-            AddCommentActivity.start(context, getTargetId(), getTargetType(), canRate());
+            AddCommentActivity.start(context, getTargetId(), getTargetType());
         }
-    }
-
-    private boolean canRate() {
-        int targetType = getTargetType();
-
-        return (targetType == Constants.CommentTargetType.FILM || targetType == Constants.CommentTargetType.CONCERT
-                || targetType == Constants.CommentTargetType.PARTY || targetType == Constants.CommentTargetType.SPECTACLE
-                || targetType == Constants.CommentTargetType.EXHIBITION || targetType == Constants.CommentTargetType.SPORT
-                || targetType == Constants.CommentTargetType.WORKSHOP);
     }
 
     //method loads first set of the comments

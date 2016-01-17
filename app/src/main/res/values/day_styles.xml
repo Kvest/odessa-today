@@ -23,7 +23,8 @@
         <item name="NoImage">@drawable/no_image_day</item>
         <item name="LoadingImage">@drawable/loading_image_day</item>
         <item name="ActionsLayoutBg">#f5f5f5</item>
-        <item name="CloseIcon">@drawable/ic_close</item>
+        <item name="CloseIcon">@drawable/ic_close_day_centered</item>
+        <item name="EditTextBg">@drawable/edit_text_bg_day</item>
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuHeaderBgColor">#24282b</item>
@@ -113,5 +114,7 @@
         <item name="CommentsHeaderBgColor">#f9f9f9</item>
         <item name="CommentsFooterBgColor">@android:color/white</item>
         <item name="CommentsTargetNameTextColor">#24282b</item>
+        <item name="AddCommentHintTextColor">#828282</item>
+        <item name="AddCommentTextColor">#2d2d2d</item>
     </style>
 </resources>

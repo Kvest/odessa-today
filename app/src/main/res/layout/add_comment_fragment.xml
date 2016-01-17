@@ -8,22 +8,35 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <EditText
             android:id="@+id/comment_author"
+            style="@style/TodayEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginTop="@dimen/add_comment_vertical_margin"
+            android:layout_marginLeft="@dimen/add_comment_horizontal_padding"
+            android:layout_marginRight="@dimen/add_comment_horizontal_padding"
+            android:hint="@string/comment_author_hint"
+            android:textColorHint="?attr/AddCommentHintTextColor"
+            android:textColor="?attr/AddCommentTextColor"
+            android:textSize="@dimen/add_comment_text_size"
             android:singleLine="true"
             android:maxLength="100" />
         <EditText
             android:id="@+id/comment_text"
+            style="@style/TodayEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_comment_vertical_margin"
+            android:layout_marginLeft="@dimen/add_comment_horizontal_padding"
+            android:layout_marginRight="@dimen/add_comment_horizontal_padding"
             android:gravity="top|left"
             android:maxLength="1000"
             android:inputType="textMultiLine"
-            android:scrollbars="vertical"/>
+            android:hint="@string/comment_text_hint"
+            android:textColorHint="?attr/AddCommentHintTextColor"
+            android:textColor="?attr/AddCommentTextColor"
+            android:textSize="@dimen/add_comment_text_size"/>
         <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/rate_label"
             android:layout_width="match_parent"

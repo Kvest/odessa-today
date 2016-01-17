@@ -92,4 +92,9 @@
         <item name="android:textSize">@dimen/gradient_button_text_size</item>
         <item name="android:drawablePadding">12dip</item>
     </style>
+
+    <style name="TodayEditText" parent="android:Widget.EditText">
+        <item name="android:background">?attr/EditTextBg</item>
+        <item name="android:textCursorDrawable">@drawable/edit_text_cursor_drawable</item>
+    </style>
 </resources>

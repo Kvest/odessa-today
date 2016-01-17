@@ -19,6 +19,7 @@
     <attr format="color" name="TitleTextColor"/>
     <attr format="color" name="ABIconColor"/>
     <attr format="reference" name="ABCalendarIcon"/>
+    <attr format="reference" name="EditTextBg"/>
     <attr format="color" name="DetailsArrowTint"/>
     <attr format="color" name="CloseIconTintColor"/>
     <attr format="reference" name="CloseIcon"/>
@@ -99,4 +100,6 @@
     <attr format="color" name="CommentTextColor"/>
     <attr format="color" name="CommentNeedUploadBgColor"/>
     <attr format="color" name="CommentsTargetNameTextColor"/>
+    <attr format="color" name="AddCommentHintTextColor"/>
+    <attr format="color" name="AddCommentTextColor"/>
 </resources>
