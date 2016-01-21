@@ -5,6 +5,7 @@ import com.android.volley.toolbox.JsonRequest;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,7 @@ public abstract class BaseRequest<T> extends JsonRequest<T> {
         //add API key
         Map headers = new HashMap();
         headers.put(NetworkContract.API_KEY_HEADER_NAME, TodayApplication.getApplication().getTodayApiKey());
+        headers.put(NetworkContract.CLIENT_ID_HEADER_NAME, TodayApplication.getApplication().getClientId());
         return headers;
     }
 }

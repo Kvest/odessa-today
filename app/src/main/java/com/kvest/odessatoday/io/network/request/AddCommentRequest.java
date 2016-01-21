@@ -39,17 +39,25 @@ public class AddCommentRequest extends BaseRequest<AddCommentResponse> {
     }
 
     private static String getUrl(long targetId, int targetType) {
-        switch (targetType) {
-            case Constants.CommentTargetType.CINEMA : return NetworkContract.createCinemaCommentsUri(targetId).toString();
-            case Constants.CommentTargetType.FILM : return NetworkContract.createFilmCommentsUri(targetId).toString();
+        String url;
+
+        if (targetType == Constants.CommentTargetType.FILM) {
+            url = NetworkContract.createFilmCommentsUri(targetId).toString();
+        } else if (targetType == Constants.CommentTargetType.CINEMA) {
+            url = NetworkContract.createCinemaCommentsUri(targetId).toString();
+        } else if (targetType >= Constants.CommentTargetType.CONCERT && targetType <= Constants.CommentTargetType.WORKSHOP) {
+            url = NetworkContract.createEventCommentsUri(targetId).toString();
+        } else if (targetType >= Constants.CommentTargetType.THEATRE && targetType <= Constants.CommentTargetType.BATH) {
+            url = NetworkContract.createPlaceCommentsUri(targetId).toString();
+        } else {
+            throw new IllegalArgumentException("Unknown targetType of the comment type");
         }
 
-        return "";
+        return url;
     }
 
     public static class Comment {
         public String name = "";
         public String text = "";
-        public String device_id = "";
     }
 }

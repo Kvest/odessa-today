@@ -23,7 +23,6 @@ public class UploadAllCommentsHandler extends CommentHandler {
         try {
             //create comment object
             AddCommentRequest.Comment comment = new AddCommentRequest.Comment();
-            comment.device_id = Utils.getDeviceId(context);
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {

@@ -20,6 +20,7 @@ public class NetworkContract {
     private static final String EVENTS_PATH = "events";
 
     public static final String API_KEY_HEADER_NAME = "api-key";
+    public static final String CLIENT_ID_HEADER_NAME = "Client-Id";
 
     public interface FilmsRequest {
         Uri url = Uri.parse(BASE_URL + FILMS_PATH);

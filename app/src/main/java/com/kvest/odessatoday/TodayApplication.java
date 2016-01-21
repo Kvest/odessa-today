@@ -18,6 +18,7 @@ public class TodayApplication extends Application {
     private static TodayApplication applicaion;
 
     private String todayApiKey;
+    private String clientId;
     private VolleyHelper volleyHelper = new VolleyHelper();
     private int currentTheme;
 
@@ -39,8 +40,9 @@ public class TodayApplication extends Application {
         //save application instance
         applicaion = this;
 
-        //get api key
+        //get api key and client id
         todayApiKey = Utils.getCertificateSignature(this);
+        clientId = Utils.getDeviceId(this);
 
         //init volley
         volleyHelper.init(getApplicationContext());
@@ -48,6 +50,10 @@ public class TodayApplication extends Application {
 
     public String getTodayApiKey() {
         return todayApiKey;
+    }
+
+    public String getClientId() {
+        return clientId;
     }
 
     public VolleyHelper getVolleyHelper() {
