@@ -80,13 +80,14 @@ public class FilmDetailsActivity extends BaseActivity implements FilmDetailsFrag
     }
 
     @Override
-    public void onShowFilmComments(long filmId, String filmName, String genre, int commentsCount, float rating) {
+    public void onShowFilmComments(long filmId, String filmName, String genre,
+                                   int commentsCount, float rating, boolean canRate) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
             CommentsFragment commentsFragment = CommentsFragment.newInstance(filmId, Constants.CommentTargetType.FILM,
                                                                              filmName, genre,
-                                                                             commentsCount, rating);
+                                                                             commentsCount, rating, canRate);
             transaction.replace(R.id.fragment_container, commentsFragment);
             transaction.addToBackStack(null);
         } finally {

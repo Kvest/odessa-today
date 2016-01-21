@@ -26,16 +26,18 @@ import java.util.concurrent.TimeUnit;
 public class AddCommentFragment extends BaseFragment {
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
+    private static final String ARGUMENT_CAN_RATE = "com.kvest.odessatoday.argument.CAN_RATE";
 
     private EditText commentAuthor;
     private EditText commentText;
     private TextView rateLabel;
     private RadioGroup rate;
 
-    public static AddCommentFragment newInstance(long targetId, int targetType) {
-        Bundle arguments = new Bundle(2);
+    public static AddCommentFragment newInstance(long targetId, int targetType, boolean canRate) {
+        Bundle arguments = new Bundle(3);
         arguments.putInt(ARGUMENT_TARGET_TYPE, targetType);
         arguments.putLong(ARGUMENT_TARGET_ID, targetId);
+        arguments.putBoolean(ARGUMENT_CAN_RATE, canRate);
 
         AddCommentFragment result = new AddCommentFragment();
         result.setArguments(arguments);
@@ -150,11 +152,7 @@ public class AddCommentFragment extends BaseFragment {
     }
 
     private boolean canRate() {
-        int targetType = getTargetType();
-
-        return (targetType == Constants.CommentTargetType.FILM || targetType == Constants.CommentTargetType.CONCERT
-                || targetType == Constants.CommentTargetType.PARTY || targetType == Constants.CommentTargetType.SPECTACLE
-                || targetType == Constants.CommentTargetType.EXHIBITION || targetType == Constants.CommentTargetType.SPORT
-                || targetType == Constants.CommentTargetType.WORKSHOP);
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getBoolean(ARGUMENT_CAN_RATE, false) : false;
     }
 }

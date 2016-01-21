@@ -58,6 +58,7 @@ public class TodayProviderContract {
                 String VIDEO = "video";
                 String GENRE = "genre";
                 String RATING = "rating";
+                String RATED = "rated";
                 String COMMENTS_COUNT = "comments_count";
                 String IS_PREMIERE = "is_premiere";
                 String FILM_DURATION = "film_duration";
@@ -78,6 +79,7 @@ public class TodayProviderContract {
                     + Columns.VIDEO + " TEXT, "
                     + Columns.GENRE + " TEXT, "
                     + Columns.RATING + " REAL, "
+                    + Columns.RATED + " INTEGER DEFAULT 0, "
                     + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
                     + Columns.IS_PREMIERE + " INTEGER DEFAULT 0, "
                     + Columns.FILM_DURATION + " INTEGER DEFAULT 0, "
@@ -86,6 +88,8 @@ public class TodayProviderContract {
                     + "UNIQUE (" + Columns.FILM_ID + ") ON CONFLICT REPLACE)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+            String ALTER_TABLE_ADD_RATED = "ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + Columns.RATED + " INTEGER DEFAULT 0;";
         }
 
         interface FilmsFullTimetableView {
@@ -214,12 +218,14 @@ public class TodayProviderContract {
             String TABLE_NAME = "comments_rating";
             interface Columns extends BaseColumns {
                 String COMMENT_ID = "comment_id";
+                String TARGET_ID = "target_id";
                 String RATING = "rating";
             }
 
             String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " ("
                     + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Columns.COMMENT_ID + " INTEGER NOT NULL,"
+                    + Columns.TARGET_ID + " INTEGER NOT NULL UNIQUE ON CONFLICT REPLACE,"
                     + Columns.RATING + " REAL)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -361,6 +367,7 @@ public class TodayProviderContract {
                 String ACTORS = "actors";
                 String DESCRIPTION = "description";
                 String RATING = "rating";
+                String RATED = "rated";
                 String COMMENTS_COUNT = "comments_count";
                 String POSTERS = "posters";
                 String SHARE_TEXT = "share_text";
@@ -377,6 +384,7 @@ public class TodayProviderContract {
                     + Columns.ACTORS + " TEXT, "
                     + Columns.DESCRIPTION + " TEXT, "
                     + Columns.RATING + " REAL, "
+                    + Columns.RATED + " INTEGER DEFAULT 0, "
                     + Columns.COMMENTS_COUNT + " INTEGER DEFAULT 0, "
                     + Columns.POSTERS + " TEXT, "
                     + Columns.SHARE_TEXT + " TEXT DEFAULT \'\', "
@@ -385,6 +393,8 @@ public class TodayProviderContract {
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String GET_EVENTS_ID_BY_TYPE_SQL = "SELECT DISTINCT " + Columns.EVENT_ID + " FROM " + TABLE_NAME +
                                                " WHERE " + Columns.EVENT_TYPE + "=?";
+
+            String ALTER_TABLE_ADD_RATED = "ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + Columns.RATED + " INTEGER DEFAULT 0;";
         }
 
         interface EventsTimetable {

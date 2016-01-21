@@ -28,7 +28,6 @@ public class UploadCommentHandler extends CommentHandler {
         long targetId = -1;
         int targetType = -1;
         AddCommentRequest.Comment comment = new AddCommentRequest.Comment();
-        comment.device_id = Utils.getDeviceId(context);
 
         Cursor cursor = context.getContentResolver().query(commentUri, ADD_COMMENTS_PROJECTION, null, null, null);
         try {

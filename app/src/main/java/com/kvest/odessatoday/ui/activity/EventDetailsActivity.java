@@ -64,13 +64,14 @@ public class EventDetailsActivity extends BaseActivity implements EventDetailsFr
     }
 
     @Override
-    public void onShowEventComments(long eventId, int eventType, String eventName, int commentsCount, float rating) {
+    public void onShowEventComments(long eventId, int eventType, String eventName,
+                                    int commentsCount, float rating, boolean canRate) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
             CommentsFragment commentsFragment = CommentsFragment.newInstance(eventId, Utils.eventType2CommentTargetType(eventType),
                                                                              eventName, Utils.eventType2String(this, eventType),
-                                                                             commentsCount, rating);
+                                                                             commentsCount, rating, canRate);
             transaction.replace(R.id.fragment_container, commentsFragment);
             transaction.addToBackStack(null);
         } finally {

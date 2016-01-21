@@ -90,6 +90,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     private View videoThumbnailPlay;
     private String videoId;
     private String shareTitle, shareText;
+    private boolean canRate = false;
 
     private int noImageResId, loadingImageResId;
 
@@ -335,6 +336,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
             shareTitle = eventNameValue;
             shareText = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.SHARE_TEXT));
 
+            canRate = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.RATED)) == 0;
+
             String value = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.DIRECTOR));
             if (TextUtils.isEmpty(value)) {
                 directorContainer.setVisibility(View.GONE);
@@ -362,7 +365,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     private void showComments() {
         if (onShowEventCommentsListener != null && eventType != -1) {
             onShowEventCommentsListener.onShowEventComments(getEventId(), eventType, eventName.getText().toString(),
-                                                            actionCommentsCount.getCommentsCount(), eventRating.getRating());
+                                                            actionCommentsCount.getCommentsCount(),
+                                                            eventRating.getRating(), canRate);
         }
     }
 
@@ -628,6 +632,6 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     }
 
     public interface OnShowEventCommentsListener {
-        void onShowEventComments(long eventId, int eventType, String eventName, int commentsCount, float rating);
+        void onShowEventComments(long eventId, int eventType, String eventName, int commentsCount, float rating, boolean canRate);
     }
 }

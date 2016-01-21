@@ -103,7 +103,7 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
             CommentsFragment commentsFragment = CommentsFragment.newInstance(cinemaId, Constants.CommentTargetType.CINEMA,
                                                                              cinemaName, getString(R.string.menu_cinema).toLowerCase(),
-                                                                             commentsCount, rating);
+                                                                             commentsCount, rating, false);
             transaction.replace(R.id.fragment_container, commentsFragment);
             transaction.addToBackStack(null);
         } finally {

@@ -56,6 +56,9 @@ class TodaySQLStorage extends SQLiteOpenHelper {
             db.execSQL(Events.CREATE_TABLE_SQL);
             db.execSQL(EventsTimetable.CREATE_TABLE_SQL);
             db.execSQL(EventsTimetableView.CREATE_VIEW_SQL);
+
+            db.execSQL(Films.ALTER_TABLE_ADD_RATED);
+            db.execSQL(Events.ALTER_TABLE_ADD_RATED);
         }
     }
 }

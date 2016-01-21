@@ -44,7 +44,9 @@ public abstract class DataProviderHelper {
         if (rating > 0) {
             ContentProviderOperation operation = ContentProviderOperation.newInsert(TodayProviderContract.COMMENTS_RATING_URI)
                                                         .withValueBackReference(Tables.CommentsRating.Columns.COMMENT_ID, 0)
-                                                        .withValue(Tables.CommentsRating.Columns.RATING, rating).build();
+                                                        .withValue(Tables.CommentsRating.Columns.TARGET_ID, targetId)
+                                                        .withValue(Tables.CommentsRating.Columns.RATING, rating)
+                    .build();
             operations.add(operation);
         }
 

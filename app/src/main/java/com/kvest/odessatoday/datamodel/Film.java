@@ -38,6 +38,8 @@ public class Film {
     public float rating;
     @SerializedName("comments_count")
     public int comments_count;
+    @SerializedName("rated")
+    public boolean rated;
     @SerializedName("is_premiere")
     public int is_premiere;
     @SerializedName("film_duration")
@@ -48,7 +50,7 @@ public class Film {
     public String share_text;
 
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues(16);
+        ContentValues values = new ContentValues(17);
         values.put(TodayProviderContract.Tables.Films.Columns.FILM_ID, id);
         values.put(TodayProviderContract.Tables.Films.Columns.NAME, filmname);
         values.put(TodayProviderContract.Tables.Films.Columns.COUNTRY, country);
@@ -60,6 +62,7 @@ public class Film {
         values.put(TodayProviderContract.Tables.Films.Columns.VIDEO, video);
         values.put(TodayProviderContract.Tables.Films.Columns.GENRE, genre);
         values.put(TodayProviderContract.Tables.Films.Columns.RATING, rating);
+        values.put(TodayProviderContract.Tables.Films.Columns.RATED, rated ? 1 : 0);
         values.put(TodayProviderContract.Tables.Films.Columns.COMMENTS_COUNT, comments_count);
         values.put(TodayProviderContract.Tables.Films.Columns.IS_PREMIERE, is_premiere);
         values.put(TodayProviderContract.Tables.Films.Columns.FILM_DURATION, film_duration);

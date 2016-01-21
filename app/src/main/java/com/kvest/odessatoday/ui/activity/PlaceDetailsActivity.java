@@ -74,7 +74,7 @@ public class PlaceDetailsActivity extends BaseActivity implements PlaceDetailsFr
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
             CommentsFragment commentsFragment = CommentsFragment.newInstance(placeId, Utils.placeType2CommentTargetType(placeType),
                                                                              placeName, Utils.placeType2String(this, placeType).toLowerCase(),
-                                                                             commentsCount, rating);
+                                                                             commentsCount, rating, false);
             transaction.replace(R.id.fragment_container, commentsFragment);
             transaction.addToBackStack(null);
         } finally {

@@ -67,6 +67,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
     protected String trailerVideoId;
     private String shareTitle, shareText;
+    private boolean canRate = false;
 
     private int noImageResId, loadingImageResId;
 
@@ -234,6 +235,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
             shareTitle = filmNameValue;
             shareText = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.SHARE_TEXT));
+
+            canRate = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.RATED)) == 0;
         }
     }
 
@@ -371,7 +374,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         if (onShowFilmCommentsListener != null) {
             onShowFilmCommentsListener.onShowFilmComments(getFilmId(), filmName.getText().toString(),
                                                           genre.getText().toString(), actionCommentsCount.getCommentsCount(),
-                                                          filmRating.getRating());
+                                                          filmRating.getRating(), canRate);
         }
     }
 
@@ -399,10 +402,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         }
     }
 
-    public interface OnShowFilmCommentsListener {
-        void onShowFilmComments(long filmId, String filmName, String genre, int commentsCount, float rating);
-    }
-
     private void initResources(Context context) {
         // The attributes you want retrieved
         int[] attrs = {R.attr.NoImage, R.attr.LoadingImage};
@@ -417,6 +416,11 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         } finally {
             ta.recycle();
         }
+    }
+
+    public interface OnShowFilmCommentsListener {
+        void onShowFilmComments(long filmId, String filmName, String genre, int commentsCount,
+                                float rating, boolean canRate);
     }
 
     private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {

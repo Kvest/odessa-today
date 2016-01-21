@@ -28,6 +28,8 @@ public class Event {
     public String description;
     @SerializedName("rating")
     public float rating;
+    @SerializedName("rated")
+    public boolean rated;
     @SerializedName("comments_count")
     public int commentsCount;
     @SerializedName("posters")
@@ -38,7 +40,7 @@ public class Event {
     public Timetable[] timetable;
 
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues(12);
+        ContentValues values = new ContentValues(13);
         values.put(Events.Columns.EVENT_ID, id);
         values.put(Events.Columns.EVENT_TYPE, type);
         values.put(Events.Columns.IMAGE, image);
@@ -48,6 +50,7 @@ public class Event {
         values.put(Events.Columns.ACTORS, actors);
         values.put(Events.Columns.DESCRIPTION, description);
         values.put(Events.Columns.RATING, rating);
+        values.put(Events.Columns.RATED, rated ? 1 : 0);
         values.put(Events.Columns.COMMENTS_COUNT, commentsCount);
         values.put(Events.Columns.POSTERS, Utils.images2String(posters));
         values.put(Events.Columns.SHARE_TEXT, share_text);

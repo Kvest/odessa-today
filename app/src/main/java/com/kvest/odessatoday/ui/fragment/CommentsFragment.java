@@ -41,6 +41,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
     private static final String ARGUMENT_COMMENTS_COUNT = "com.kvest.odessatoday.argument.COMMENTS_COUNT";
     private static final String ARGUMENT_RATING = "com.kvest.odessatoday.argument.RATING";
+    private static final String ARGUMENT_CAN_RATE = "com.kvest.odessatoday.argument.CAN_RATE";
     private static final String ARGUMENT_TARGET_NAME = "com.kvest.odessatoday.argument.TARGET_NAME";
     private static final String ARGUMENT_TARGET_TYPE_NAME = "com.kvest.odessatoday.argument.TARGET_TYPE_NAME";
     private static final int MIN_ITEMS_FOR_MORE_LOAD = 2;
@@ -57,12 +58,13 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
 
     public static CommentsFragment newInstance(long targetId, int targetType,
                                                String targetName, String targetTypeName,
-                                               int commentsCount, float rating) {
-        Bundle arguments = new Bundle(6);
+                                               int commentsCount, float rating, boolean canRate) {
+        Bundle arguments = new Bundle(7);
         arguments.putInt(ARGUMENT_TARGET_TYPE, targetType);
         arguments.putLong(ARGUMENT_TARGET_ID, targetId);
         arguments.putInt(ARGUMENT_COMMENTS_COUNT, commentsCount);
         arguments.putFloat(ARGUMENT_RATING, rating);
+        arguments.putBoolean(ARGUMENT_CAN_RATE, canRate);
         arguments.putString(ARGUMENT_TARGET_NAME, targetName);
         arguments.putString(ARGUMENT_TARGET_TYPE_NAME, targetTypeName);
 
@@ -162,7 +164,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     private void showAddCommentFragment() {
         Context context = getActivity();
         if (context != null) {
-            AddCommentActivity.start(context, getTargetId(), getTargetType());
+            AddCommentActivity.start(context, getTargetId(), getTargetType(), getCanRate());
         }
     }
 
@@ -194,6 +196,11 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     private float getRating() {
         Bundle arguments = getArguments();
         return arguments != null ? arguments.getFloat(ARGUMENT_RATING, EMPTY_RATING) : EMPTY_RATING;
+    }
+
+    private boolean getCanRate() {
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getBoolean(ARGUMENT_CAN_RATE, false) : false;
     }
 
     private String getTargetName() {

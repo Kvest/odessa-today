@@ -58,7 +58,7 @@
     <string name="timetable">Расписание</string>
     <string name="add_comment">Написать отзыв</string>
     <string name="comment_author_hint">Ваше имя</string>
-    <string name="comment_text_hint">Текст комментария</string>
+    <string name="comment_text_hint">Текст отзыва</string>
     <string name="close">Закрыть</string>
     <string name="rate">Оценить</string>
     <string name="send">Отправить</string>
