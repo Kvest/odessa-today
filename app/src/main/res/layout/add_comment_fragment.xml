@@ -41,39 +41,58 @@
             android:id="@+id/rate_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
-            android:text="@string/rate" />
+            android:gravity="center"
+            android:layout_marginTop="@dimen/rate_label_top_margin"
+            android:textColor="@color/rate_label_text_color"
+            android:textSize="@dimen/rate_label_text_size"
+            android:text="@string/rate"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
         <RadioGroup
             android:id="@+id/rate"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="5">
+            android:weightSum="4"
+            android:layout_marginLeft="@dimen/comment_rate_horizontal_margin"
+            android:layout_marginRight="@dimen/comment_rate_horizontal_margin"
+            android:layout_marginTop="@dimen/comment_rate_top_margin"
+            android:layout_marginBottom="@dimen/comment_rate_bottom_margin">
             <RadioButton
                 android:id="@+id/rating1"
+                style="@style/CommentRatingRadioButton"
+                android:text="1"/>
+            <View
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
             <RadioButton
                 android:id="@+id/rating2"
+                style="@style/CommentRatingRadioButton"
+                android:text="2"/>
+            <View
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
             <RadioButton
                 android:id="@+id/rating3"
+                style="@style/CommentRatingRadioButton"
+                android:text="3"/>
+            <View
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
             <RadioButton
                 android:id="@+id/rating4"
+                style="@style/CommentRatingRadioButton"
+                android:text="4"/>
+            <View
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
             <RadioButton
                 android:id="@+id/rating5"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                style="@style/CommentRatingRadioButton"
+                android:text="5"/>
         </RadioGroup>
         <com.kvest.odessatoday.ui.widget.FontTextView
             android:id="@+id/send_comment"

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape
+            android:shape="oval">
+            <size
+                android:width="@dimen/comment_rating_size"
+                android:height="@dimen/comment_rating_size" />
+            <solid android:color="@color/application_green" />
+        </shape>
+    </item>
+    <item>
+        <shape
+            android:shape="ring"
+            android:innerRadius="@dimen/comment_rating_unselected_ring_radius"
+            android:thickness="1dip"
+            android:useLevel="false">
+            <size
+                android:width="@dimen/comment_rating_size"
+                android:height="@dimen/comment_rating_size" />
+            <solid android:color="#1b1b1b" />
+        </shape>
+    </item>
+</selector>

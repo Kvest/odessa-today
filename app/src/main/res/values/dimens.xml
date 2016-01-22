@@ -111,6 +111,14 @@
     <dimen name="add_comment_text_size">14sp</dimen>
     <dimen name="add_comment_horizontal_padding">10dip</dimen>
     <dimen name="add_comment_vertical_margin">30dip</dimen>
+    <dimen name="rate_label_text_size">14sp</dimen>
+    <dimen name="rate_label_top_margin">40dip</dimen>
+    <dimen name="comment_rate_top_margin">10dip</dimen>
+    <dimen name="comment_rate_bottom_margin">30dip</dimen>
+    <dimen name="comment_rate_horizontal_margin">33dip</dimen>
+    <dimen name="comment_rating_text_size">13sp</dimen>
+    <dimen name="comment_rating_size">50dip</dimen>
+    <dimen name="comment_rating_unselected_ring_radius">24dip</dimen>
 
     <!--cinemas-->
     <dimen name="cinemas_list_item_arrow_margin_left">4dip</dimen>

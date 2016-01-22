@@ -35,6 +35,7 @@
 
     <!--comments-->
     <color name="comments_target_type_text_color">#828282</color>
+    <color name="rate_label_text_color">#828282</color>
 
     <!--cinemas-->
     <color name="cinema_address_text_color">#828282</color>

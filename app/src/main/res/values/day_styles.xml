@@ -116,5 +116,7 @@
         <item name="CommentsTargetNameTextColor">#24282b</item>
         <item name="AddCommentHintTextColor">#828282</item>
         <item name="AddCommentTextColor">#2d2d2d</item>
+        <item name="CommentRatingTextColor">@color/comment_rating_text_day</item>
+        <item name="CommentRatingBg">@drawable/comment_rating_bg_day</item>
     </style>
 </resources>

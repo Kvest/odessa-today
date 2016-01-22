@@ -97,4 +97,14 @@
         <item name="android:background">?attr/EditTextBg</item>
         <item name="android:textCursorDrawable">@drawable/edit_text_cursor_drawable</item>
     </style>
+
+    <style name="CommentRatingRadioButton" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/comment_rating_text_size</item>
+        <item name="android:textColor">?attr/CommentRatingTextColor</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">?attr/CommentRatingBg</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

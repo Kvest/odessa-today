@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -61,9 +62,16 @@ public class AddCommentFragment extends BaseFragment {
         rate = (RadioGroup)rootView.findViewById(R.id.rate);
         View sendCommentButton = rootView.findViewById(R.id.send_comment);
 
+        //set fonts
         Typeface helveticaneuecyrRoman = FontUtils.getFont(getActivity().getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
         commentAuthor.setTypeface(helveticaneuecyrRoman);
         commentText.setTypeface(helveticaneuecyrRoman);
+        Typeface helveticaneuecyrBold = FontUtils.getFont(getActivity().getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT);
+        ((RadioButton) rootView.findViewById(R.id.rating1)).setTypeface(helveticaneuecyrBold);
+        ((RadioButton) rootView.findViewById(R.id.rating2)).setTypeface(helveticaneuecyrBold);
+        ((RadioButton) rootView.findViewById(R.id.rating3)).setTypeface(helveticaneuecyrBold);
+        ((RadioButton) rootView.findViewById(R.id.rating4)).setTypeface(helveticaneuecyrBold);
+        ((RadioButton) rootView.findViewById(R.id.rating5)).setTypeface(helveticaneuecyrBold);
 
         commentAuthor.setText(SettingsSPStorage.getCommentAuthorName(getActivity()));
 

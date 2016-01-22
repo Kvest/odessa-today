@@ -102,4 +102,6 @@
     <attr format="color" name="CommentsTargetNameTextColor"/>
     <attr format="color" name="AddCommentHintTextColor"/>
     <attr format="color" name="AddCommentTextColor"/>
+    <attr format="color" name="CommentRatingTextColor"/>
+    <attr format="reference" name="CommentRatingBg"/>
 </resources>
