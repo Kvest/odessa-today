@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.network.NetworkContract;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -280,6 +281,20 @@ public class Utils {
                 return context.getString(R.string.menu_bath);
             default:
                 return "";
+        }
+    }
+
+    public static int CommentTargetType2Group(int targetType) {
+        if (targetType == Constants.CommentTargetType.FILM) {
+            return Constants.CommentTargetTypeGroup.FILM;
+        } else if (targetType == Constants.CommentTargetType.CINEMA) {
+            return Constants.CommentTargetTypeGroup.CINEMA;
+        } else if (targetType >= Constants.CommentTargetType.CONCERT && targetType <= Constants.CommentTargetType.WORKSHOP) {
+            return Constants.CommentTargetTypeGroup.EVENT;
+        } else if (targetType >= Constants.CommentTargetType.THEATRE && targetType <= Constants.CommentTargetType.BATH) {
+            return Constants.CommentTargetTypeGroup.PLACE;
+        } else {
+            throw new IllegalArgumentException("Unknown targetType [" + targetType + "] of the comment type");
         }
     }
 }

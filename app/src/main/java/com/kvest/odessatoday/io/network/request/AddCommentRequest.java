@@ -5,9 +5,11 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.AddCommentResponse;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.io.UnsupportedEncodingException;
 
@@ -39,25 +41,26 @@ public class AddCommentRequest extends BaseRequest<AddCommentResponse> {
     }
 
     private static String getUrl(long targetId, int targetType) {
-        String url;
-
-        if (targetType == Constants.CommentTargetType.FILM) {
-            url = NetworkContract.createFilmCommentsUri(targetId).toString();
-        } else if (targetType == Constants.CommentTargetType.CINEMA) {
-            url = NetworkContract.createCinemaCommentsUri(targetId).toString();
-        } else if (targetType >= Constants.CommentTargetType.CONCERT && targetType <= Constants.CommentTargetType.WORKSHOP) {
-            url = NetworkContract.createEventCommentsUri(targetId).toString();
-        } else if (targetType >= Constants.CommentTargetType.THEATRE && targetType <= Constants.CommentTargetType.BATH) {
-            url = NetworkContract.createPlaceCommentsUri(targetId).toString();
-        } else {
-            throw new IllegalArgumentException("Unknown targetType of the comment type");
+        switch (Utils.CommentTargetType2Group(targetType)) {
+            case Constants.CommentTargetTypeGroup.FILM :
+                return NetworkContract.createFilmCommentsUri(targetId).toString();
+            case Constants.CommentTargetTypeGroup.CINEMA :
+                return NetworkContract.createCinemaCommentsUri(targetId).toString();
+            case Constants.CommentTargetTypeGroup.EVENT :
+                return NetworkContract.createEventCommentsUri(targetId).toString();
+            case Constants.CommentTargetTypeGroup.PLACE :
+                return NetworkContract.createPlaceCommentsUri(targetId).toString();
+            default:
+                throw new RuntimeException("Unknown Constants.CommentTargetTypeGroup");
         }
-
-        return url;
     }
 
     public static class Comment {
+        @SerializedName("name")
         public String name = "";
+        @SerializedName("text")
         public String text = "";
+        @SerializedName("rating")
+        public Float rating;
     }
 }

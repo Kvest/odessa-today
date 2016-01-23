@@ -20,11 +20,10 @@ public class NetworkService extends IntentService {
     private static final int ACTION_LOAD_CINEMAS = 1;
     private static final int ACTION_LOAD_TIMETABLE = 2;
     private static final int ACTION_LOAD_COMMENTS = 3;
-    private static final int ACTION_UPLOAD_COMMENT = 4;
-    private static final int ACTION_UPLOAD_ALL_COMMENTS = 5;
-    private static final int ACTION_LOAD_ANNOUNCEMENTS = 6;
-    private static final int ACTION_LOAD_PLACES = 7;
-    private static final int ACTION_LOAD_EVENTS = 8;
+    private static final int ACTION_UPLOAD_COMMENTS = 4;
+    private static final int ACTION_LOAD_ANNOUNCEMENTS = 5;
+    private static final int ACTION_LOAD_PLACES = 6;
+    private static final int ACTION_LOAD_EVENTS = 7;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
         loadFilms(context, startDate, endDate, -1);
@@ -59,14 +58,14 @@ public class NetworkService extends IntentService {
     }
 
     public static void uploadComment(Context context, long recordId) {
-        Intent intent = createIntent(context, ACTION_UPLOAD_COMMENT);
-        UploadCommentHandler.putExtras(intent, recordId);
+        Intent intent = createIntent(context, ACTION_UPLOAD_COMMENTS);
+        UploadCommentsHandler.putExtras(intent, recordId);
 
         context.startService(intent);
     }
 
     public static void uploadAllComments(Context context) {
-        Intent intent = createIntent(context, ACTION_UPLOAD_ALL_COMMENTS);
+        Intent intent = createIntent(context, ACTION_UPLOAD_COMMENTS);
 
         context.startService(intent);
     }
@@ -137,10 +136,8 @@ public class NetworkService extends IntentService {
                 return new LoadTimetableHandler();
             case ACTION_LOAD_COMMENTS :
                 return new LoadCommentsHandler();
-            case ACTION_UPLOAD_COMMENT :
-                return new UploadCommentHandler();
-            case ACTION_UPLOAD_ALL_COMMENTS :
-                return new UploadAllCommentsHandler();
+            case ACTION_UPLOAD_COMMENTS :
+                return new UploadCommentsHandler();
             case ACTION_LOAD_ANNOUNCEMENTS:
                 return new LoadAnnouncementsHandler();
             case ACTION_LOAD_PLACES :

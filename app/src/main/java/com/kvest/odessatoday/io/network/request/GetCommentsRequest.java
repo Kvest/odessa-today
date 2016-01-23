@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.GetCommentsResponse;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.io.UnsupportedEncodingException;
 
@@ -58,16 +59,21 @@ public class GetCommentsRequest extends BaseRequest<GetCommentsResponse> {
 
     private static String generateUrl(long targetId, int targetType, int offset, int limit) {
         Uri.Builder builder;
-        if (targetType == Constants.CommentTargetType.FILM) {
-            builder = NetworkContract.createFilmCommentsUri(targetId).buildUpon();
-        } else if (targetType == Constants.CommentTargetType.CINEMA) {
-            builder = NetworkContract.createCinemaCommentsUri(targetId).buildUpon();
-        } else if (targetType >= Constants.CommentTargetType.CONCERT && targetType <= Constants.CommentTargetType.WORKSHOP) {
-            builder = NetworkContract.createEventCommentsUri(targetId).buildUpon();
-        } else if (targetType >= Constants.CommentTargetType.THEATRE && targetType <= Constants.CommentTargetType.BATH) {
-            builder = NetworkContract.createPlaceCommentsUri(targetId).buildUpon();
-        } else {
-            throw new IllegalArgumentException("Unknown targetType of the comment type");
+        switch (Utils.CommentTargetType2Group(targetType)) {
+            case Constants.CommentTargetTypeGroup.FILM :
+                builder = NetworkContract.createFilmCommentsUri(targetId).buildUpon();
+                break;
+            case Constants.CommentTargetTypeGroup.CINEMA :
+                builder = NetworkContract.createCinemaCommentsUri(targetId).buildUpon();
+                break;
+            case Constants.CommentTargetTypeGroup.EVENT :
+                builder = NetworkContract.createEventCommentsUri(targetId).buildUpon();
+                break;
+            case Constants.CommentTargetTypeGroup.PLACE :
+                builder = NetworkContract.createPlaceCommentsUri(targetId).buildUpon();
+                break;
+            default:
+                throw new RuntimeException("Unknown Constants.CommentTargetTypeGroup");
         }
 
         if (offset >= 0) {

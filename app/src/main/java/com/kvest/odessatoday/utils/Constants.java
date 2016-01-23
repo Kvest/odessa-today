@@ -50,6 +50,13 @@ public abstract class Constants {
         int BATH = 24;
     }
 
+    public interface CommentTargetTypeGroup {
+        int FILM = 0;
+        int CINEMA = 1;
+        int EVENT = 2;
+        int PLACE = 3;
+    }
+
     public interface FilmFormat {
         int UNKNOWN = 0;
         int THIRTY_FIFE_MM = 1;
