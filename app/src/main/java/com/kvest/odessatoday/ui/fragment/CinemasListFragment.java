@@ -3,6 +3,7 @@ package com.kvest.odessatoday.ui.fragment;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,6 +29,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  * To change this template use File | Settings | File Templates.
  */
 public class CinemasListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+    private static final long STOP_REFRESHING_DELAY = 2000L;
     private static final int CINEMAS_LOADER_ID = 1;
 
     private ListView cinemasList;
@@ -44,6 +46,8 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        BusProvider.getInstance().register(this);
+
         View rootView = inflater.inflate(R.layout.cinemas_list_fragment, container, false);
 
         init(rootView);
@@ -64,13 +68,15 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
         //Request all cinemas
         NetworkService.loadCinemas(activity);
 
-//        //workaround - start showing progress
-//        new Handler().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                refreshLayout.setRefreshing(true);
-//            }
-//        });
+        //workaround - start showing progress
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshLayout != null) {
+                    refreshLayout.setRefreshing(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -101,18 +107,16 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
         //stop progress
         refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
         BusProvider.getInstance().unregister(this);
     }
@@ -160,12 +164,12 @@ public class CinemasListFragment extends BaseFragment implements LoaderManager.L
     @Subscribe
     public void onCinemasLoaded(CinemasLoadedEvent event) {
         //event dispatched not in the UI thread
-        refreshLayout.post(new Runnable() {
+        refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 refreshLayout.setRefreshing(false);
             }
-        });
+        }, event.isSuccessful() ? STOP_REFRESHING_DELAY : 0L);
 
         Activity activity = getActivity();
         if (!event.isSuccessful() && activity != null) {

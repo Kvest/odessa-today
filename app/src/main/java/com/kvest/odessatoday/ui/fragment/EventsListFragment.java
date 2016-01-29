@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -42,6 +43,7 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
                                                                 SwipeRefreshLayout.OnRefreshListener,
                                                                 MainActivity.ToolbarExtendable,
                                                                 DateSelectionListener {
+    private static final long STOP_REFRESHING_DELAY = 2000L;
     private final SimpleDateFormat EVENTS_LIST_DATE_FORMAT = new SimpleDateFormat("dd MMMM, cc.");
 
 
@@ -61,6 +63,7 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     private ListView eventsList;
     private EventsAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
+    private Handler handler = new Handler();
 
     private EventSelectedListener eventSelectedListener;
     private ShowCalendarListener showCalendarListener;
@@ -78,6 +81,7 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        BusProvider.getInstance().register(this);
 
         View rootView = inflater.inflate(R.layout.events_list_fragment, container, false);
 
@@ -170,18 +174,16 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
         //stop progress
         refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
         BusProvider.getInstance().unregister(this);
     }
@@ -212,12 +214,12 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     public void onEventsLoaded(EventsLoadedEvent event) {
         if (event.getType() == getEventType()) {
             //event dispatched not in the UI thread
-            refreshLayout.post(new Runnable() {
+            refreshLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     refreshLayout.setRefreshing(false);
                 }
-            });
+            }, event.isSuccessful() ? STOP_REFRESHING_DELAY : 0L);
 
 
             Activity activity = getActivity();
@@ -353,9 +355,14 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
 
         //show progress
-        if (refreshLayout != null) {
-            refreshLayout.setRefreshing(true);
-        }
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshLayout != null) {
+                    refreshLayout.setRefreshing(true);
+                }
+            }
+        });
 
         NetworkService.loadEvents(context, startDate, -1, getEventType());
     }

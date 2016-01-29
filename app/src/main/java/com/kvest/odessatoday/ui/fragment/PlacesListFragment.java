@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,6 +29,7 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  * Created by kvest on 08.10.15.
  */
 public class PlacesListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+    private static final long STOP_REFRESHING_DELAY = 2000L;
     private static final String ARGUMENT_PLACE_TYPE = "com.kvest.odessatoday.argument.PLACE_TYPE";
     private static final int PLACES_LOADER_ID = 1;
 
@@ -48,6 +50,8 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        BusProvider.getInstance().register(this);
+
         View rootView = inflater.inflate(R.layout.places_list_fragment, container, false);
 
         init(rootView);
@@ -94,6 +98,16 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
 
         //Request places
         NetworkService.loadPlaces(activity, getPlaceType());
+
+        //workaround - start showing progress
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshLayout != null) {
+                    refreshLayout.setRefreshing(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -104,18 +118,16 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
         //stop progress
         refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
         BusProvider.getInstance().unregister(this);
     }
@@ -166,12 +178,12 @@ public class PlacesListFragment extends BaseFragment implements LoaderManager.Lo
     public void onPlacesLoaded(PlacesLoadedEvent event) {
         if (event.getPlaceType() == getPlaceType()) {
             //event dispatched not in the UI thread
-            refreshLayout.post(new Runnable() {
+            refreshLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     refreshLayout.setRefreshing(false);
                 }
-            });
+            }, event.isSuccessful() ? STOP_REFRESHING_DELAY : 0L);
 
             Activity activity = getActivity();
             if (!event.isSuccessful() && activity != null) {

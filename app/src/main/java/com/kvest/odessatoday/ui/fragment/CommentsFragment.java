@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -37,6 +38,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.*;
 public class CommentsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
                                                               AbsListView.OnScrollListener,
                                                               SwipeRefreshLayout.OnRefreshListener {
+    private static final long STOP_REFRESHING_DELAY = 2000L;
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
     private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
     private static final String ARGUMENT_COMMENTS_COUNT = "com.kvest.odessatoday.argument.COMMENTS_COUNT";
@@ -75,6 +77,8 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        BusProvider.getInstance().register(this);
+
         View rootView = inflater.inflate(R.layout.comments_fragment, container, false);
         View footerView = inflater.inflate(R.layout.comments_fragment_footer, null);
 
@@ -88,6 +92,16 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         super.onAttach(activity);
 
         loadComments(activity);
+
+        //workaround - start showing progress
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshLayout != null) {
+                    refreshLayout.setRefreshing(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -98,18 +112,16 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
         //stop all progresses
         stopProgress();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
         BusProvider.getInstance().unregister(this);
     }
@@ -273,12 +285,12 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         hasMoreComments = event.hasMoreComments();
 
         //event dispatched not in the UI thread
-        progress.post(new Runnable() {
+        progress.postDelayed(new Runnable() {
             @Override
             public void run() {
                 stopProgress();
             }
-        });
+        }, event.isSuccessful() ? STOP_REFRESHING_DELAY : 0L);
 
         Activity activity = getActivity();
         if (!event.isSuccessful() && activity != null) {

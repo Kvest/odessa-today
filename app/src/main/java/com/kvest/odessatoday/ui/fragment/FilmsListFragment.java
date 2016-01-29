@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,6 +33,7 @@ import static com.kvest.odessatoday.utils.LogUtils.*;
  */
 public class FilmsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
                                                                SwipeRefreshLayout.OnRefreshListener {
+    private static final long STOP_REFRESHING_DELAY = 2000L;
     private static final String KEY_DATE = "com.kvest.odessatoday.key.DATE";
     private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
     private static final int FILMS_LOADER_ID = 1;
@@ -46,6 +48,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     private FilmSelectedListener filmSelectedListener;
 
     private SwipeRefreshLayout refreshLayout;
+    private Handler handler = new Handler();
 
     public static FilmsListFragment newInstance(long date) {
         Bundle arguments = new Bundle(1);
@@ -94,6 +97,7 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        BusProvider.getInstance().register(this);
 
         View root = inflater.inflate(R.layout.films_list_fragment, container, false);
 
@@ -124,9 +128,14 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         long endDate = TimeUtils.getEndOfTheDay(startDate);
 
         //show progress
-        if (refreshLayout != null) {
-            refreshLayout.setRefreshing(true);
-        }
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshLayout != null) {
+                    refreshLayout.setRefreshing(true);
+                }
+            }
+        });
 
         NetworkService.loadFilms(context, startDate, endDate);
     }
@@ -147,18 +156,16 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
         //stop progress
         refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
         BusProvider.getInstance().unregister(this);
     }
@@ -293,12 +300,12 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     @Subscribe
     public void onFilmsLoaded(FilmsLoadedEvent event) {
         //event dispatched not in the UI thread
-        refreshLayout.post(new Runnable() {
+        refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 refreshLayout.setRefreshing(false);
             }
-        });
+        }, event.isSuccessful() ? STOP_REFRESHING_DELAY : 0L);
 
         Activity activity = getActivity();
         if (!event.isSuccessful() && activity != null) {
