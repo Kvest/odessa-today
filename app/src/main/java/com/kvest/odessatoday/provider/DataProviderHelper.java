@@ -120,6 +120,13 @@ public abstract class DataProviderHelper {
                                 new String[]{Long.toString(startDate), Long.toString(endDate), Integer.toString(eventType)}, order);
     }
 
+    public static CursorLoader getFullEventsAnnouncementsLoader(Context context, int eventType, long startDate, String[] projection, String order) {
+        String selection = Tables.EventsTimetableView.Columns.DATE + ">=? AND "
+                + Tables.EventsTimetableView.Columns.EVENT_TYPE + "=?";
+        return new CursorLoader(context, TodayProviderContract.EVENTS_TIMETABLE_VIEW_URI, projection, selection,
+                new String[]{Long.toString(startDate), Integer.toString(eventType)}, order);
+    }
+
     public static CursorLoader getCinemaLoader(Context context, long cinemaId, String[] projection) {
         String selection = Tables.Cinemas.Columns.CINEMA_ID + "=?";
         return new CursorLoader(context, CINEMAS_URI, projection, selection, new String[]{Long.toString(cinemaId)}, null);

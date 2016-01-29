@@ -66,4 +66,14 @@ public class TimeUtils {
                         + TimeUnit.DAYS.toSeconds(1);
         return getBeginningOfTheDay(date) == tomorrow;
     }
+
+    /**
+     * Method returns beginning of the tomorrow for the date in seconds
+     * @param date Date in seconds
+     * @return Beginning of the tomorrow for the date in seconds
+     */
+    public static long getTomorrow(long date) {
+        return getBeginningOfTheDay(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()))
+               + TimeUnit.DAYS.toSeconds(1);
+    }
 }

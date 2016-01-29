@@ -38,6 +38,7 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
 
     private static final int EVENTS_LIST_FRAGMENT_POSITION = 0;
     private static final int PLACES_LIST_FRAGMENT_POSITION = 1;
+    private static final int ANNOUNCEMENTS_LIST_FRAGMENT_POSITION = 2;
 
     private MainMenuController mainMenuController;
 
@@ -101,6 +102,9 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
                     case PLACES_LIST_FRAGMENT_POSITION:
                         categorySelector.check(R.id.selector_places);
                         break;
+                    case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION:
+                        categorySelector.check(R.id.selector_announcements);
+                        break;
                 }
             }
 
@@ -128,6 +132,10 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
                         fragmentsPager.setCurrentItem(PLACES_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.GONE);
                         break;
+                    case R.id.selector_announcements:
+                        fragmentsPager.setCurrentItem(ANNOUNCEMENTS_LIST_FRAGMENT_POSITION, true);
+                        setToolbarExtensionVisibility(View.GONE);
+                        break;
                 }
             }
         });
@@ -140,6 +148,8 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
         RadioButton placesSelector = (RadioButton)view.findViewById(R.id.selector_places);
         setPlacesSelectorTitle(placesSelector);
         placesSelector.setTypeface(helveticaneuecyrBold);
+        RadioButton announcementsSelector = (RadioButton)view.findViewById(R.id.selector_announcements);
+        announcementsSelector.setTypeface(helveticaneuecyrBold);
     }
 
     @Override
@@ -275,7 +285,7 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
     }
 
     public class EventsWithPlacesPagerAdapter extends FragmentPagerAdapter {
-        private static final int FRAGMENTS_COUNT = 2;
+        private static final int FRAGMENTS_COUNT = 3;
 
         private int eventType;
         private int placeType;
@@ -291,11 +301,15 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
         public Fragment getItem(int index) {
             switch (index) {
                 case EVENTS_LIST_FRAGMENT_POSITION :
-                    EventsListFragment eventsListFragment = EventsListFragment.newInstance(eventType, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                    EventsListFragment eventsListFragment = EventsListFragment.newInstance(eventType, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()), false);
                     eventsListFragment.setDateChangedListener(EventsWithPlacesFragment.this);
                     return eventsListFragment;
                 case PLACES_LIST_FRAGMENT_POSITION :
                     return PlacesListFragment.newInstance(placeType);
+                case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION :
+                    long tomorrow = TimeUtils.getTomorrow(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                    EventsListFragment announcementsListFragment = EventsListFragment.newInstance(eventType, tomorrow, true);
+                    return announcementsListFragment;
                 default :
                     return null;
             }

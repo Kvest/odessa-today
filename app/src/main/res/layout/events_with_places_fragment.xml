@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/SelectorBg"
-            android:weightSum="2">
+            android:weightSum="3">
             <RadioButton
                 android:id="@+id/selector_events"
                 android:layout_width="0dip"
@@ -28,8 +28,16 @@
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:background="?attr/RightSelectorBg"
+                android:background="?attr/MiddleSelectorBg"
                 style="@style/CategorySelectorRadioButton"/>
+            <RadioButton
+                android:id="@+id/selector_announcements"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="?attr/RightSelectorBg"
+                style="@style/CategorySelectorRadioButton"
+                android:text="@string/selector_announcements"/>
         </RadioGroup>
     </FrameLayout>
     <View
