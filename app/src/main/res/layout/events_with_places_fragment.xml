@@ -23,6 +23,11 @@
                 android:checked="true"
                 android:background="?attr/LeftSelectorBg"
                 style="@style/CategorySelectorRadioButton"/>
+            <View
+                android:id="@+id/selector_divider_left"
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:background="?attr/SelectorDividerColor"/>
             <RadioButton
                 android:id="@+id/selector_places"
                 android:layout_width="0dip"
@@ -30,6 +35,11 @@
                 android:layout_height="match_parent"
                 android:background="?attr/MiddleSelectorBg"
                 style="@style/CategorySelectorRadioButton"/>
+            <View
+                android:id="@+id/selector_divider_right"
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:background="?attr/SelectorDividerColor"/>
             <RadioButton
                 android:id="@+id/selector_announcements"
                 android:layout_width="0dip"

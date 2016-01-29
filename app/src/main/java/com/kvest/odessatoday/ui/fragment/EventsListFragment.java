@@ -41,7 +41,6 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  */
 public class EventsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
                                                                 SwipeRefreshLayout.OnRefreshListener,
-                                                                MainActivity.ToolbarExtendable,
                                                                 DateSelectionListener {
     private static final long STOP_REFRESHING_DELAY = 2000L;
     private final SimpleDateFormat EVENTS_LIST_DATE_FORMAT = new SimpleDateFormat("dd MMMM, cc.");
@@ -56,10 +55,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     //date of the shown events in seconds
     private long date = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
     private DateChangedListener dateChangedListener;
-
-    private TextView extensionTitle;
-    private View previousDay;
-    private View nextDay;
 
     private ListView eventsList;
     private EventsAdapter adapter;
@@ -299,20 +294,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     }
 
     public void onDateChanged(long date) {
-        if (extensionTitle != null && previousDay != null) {
-            int previousDayVisibility = View.VISIBLE;
-            if (TimeUtils.isCurrentDay(date)) {
-                extensionTitle.setText(R.string.odessa_today);
-                previousDayVisibility = View.INVISIBLE;
-            } else if (TimeUtils.isTomorrow(date)) {
-                extensionTitle.setText(R.string.odessa_tomorrow);
-            } else {
-                extensionTitle.setText(EVENTS_LIST_DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(date)));
-            }
-
-            previousDay.setVisibility(previousDayVisibility);
-        }
-
         //notify listener
         if (dateChangedListener != null) {
             dateChangedListener.onDateChanged(this.date);
@@ -325,30 +306,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         if (context != null) {
             loadEvents(context);
         }
-    }
-
-    @Override
-    public int getExtensionLayoutId() {
-        return R.layout.toolbar_extension_with_calendar;
-    }
-
-    @Override
-    public void setExtensionView(View extension) {
-        extensionTitle = (TextView) extension.findViewById(R.id.title);
-        previousDay = extension.findViewById(R.id.previous_day);
-        previousDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPreviousDay();
-            }
-        });
-        nextDay = extension.findViewById(R.id.next_day);
-        nextDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showNextDay();
-            }
-        });
     }
 
     private boolean isAnnouncement() {

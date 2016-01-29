@@ -44,6 +44,7 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
 
     private ViewPager fragmentsPager;
     private RadioGroup categorySelector;
+    private View leftDivider, rightDivider;
     private EventsWithPlacesPagerAdapter pagerAdapter;
 
     private View toolbarExtension;
@@ -119,6 +120,9 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
         fragmentsPager.setAdapter(pagerAdapter);
 
         //category selector
+        leftDivider = view.findViewById(R.id.selector_divider_left);
+        rightDivider = view.findViewById(R.id.selector_divider_right);
+        setSelectorDividersVisibility(false, true);
         categorySelector = (RadioGroup)view.findViewById(R.id.category_selector);
         categorySelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -127,14 +131,17 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
                     case R.id.selector_events:
                         fragmentsPager.setCurrentItem(EVENTS_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.VISIBLE);
+                        setSelectorDividersVisibility(false, true);
                         break;
                     case R.id.selector_places:
                         fragmentsPager.setCurrentItem(PLACES_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.GONE);
+                        setSelectorDividersVisibility(false, false);
                         break;
                     case R.id.selector_announcements:
                         fragmentsPager.setCurrentItem(ANNOUNCEMENTS_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.GONE);
+                        setSelectorDividersVisibility(true, false);
                         break;
                 }
             }
@@ -194,6 +201,11 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
         }
 
         previousDay.setVisibility(previousDayVisibility);
+    }
+
+    private void setSelectorDividersVisibility(boolean isLeftVisible, boolean isRightVisible) {
+        leftDivider.setVisibility(isLeftVisible ? View.VISIBLE : View.GONE);
+        rightDivider.setVisibility(isRightVisible ? View.VISIBLE : View.GONE);
     }
 
     private EventsListFragment getEventsListFragment() {
