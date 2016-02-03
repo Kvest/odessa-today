@@ -25,29 +25,32 @@ public abstract class Constants {
         int UNKNOWN = -1;
         int FILM = 0;
         int CINEMA = 1;
+        //events
         int CONCERT = 2;
         int PARTY = 3;
         int SPECTACLE = 4;
         int EXHIBITION = 5;
         int SPORT = 6;
         int WORKSHOP = 7;
-        int THEATRE = 8;
-        int CONCERT_HALL = 9;
-        int CLUB = 10;
-        int MUSEUM = 11;
-        int GALLERY = 12;
-        int ZOO = 13;
-        int QUEST = 14;
-        int RESTAURANT = 15;
-        int CAFE = 16;
-        int PIZZA = 17;
-        int SUSHI = 18;
-        int KARAOKE = 19;
-        int SKATING_RINK = 20;
-        int BOWLING = 21;
-        int BILLIARD = 22;
-        int SAUNA = 23;
-        int BATH = 24;
+        int ZOO_PRESENTATION = 8;
+        //places
+        int THEATRE = 100;
+        int CONCERT_HALL = 101;
+        int CLUB = 102;
+        int MUSEUM = 103;
+        int GALLERY = 104;
+        int ZOO = 105;
+        int QUEST = 106;
+        int RESTAURANT = 107;
+        int CAFE = 108;
+        int PIZZA = 109;
+        int SUSHI = 110;
+        int KARAOKE = 111;
+        int SKATING_RINK = 112;
+        int BOWLING = 113;
+        int BILLIARD = 114;
+        int SAUNA = 115;
+        int BATH = 116;
     }
 
     public interface CommentTargetTypeGroup {
@@ -102,5 +105,6 @@ public abstract class Constants {
         int EXHIBITION = 4;
         int SPORT = 5;
         int WORKSHOP = 6;
+        int ZOO_PRESENTATION = 7;
     }
 }

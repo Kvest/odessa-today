@@ -178,6 +178,8 @@ public class Utils {
                 return Constants.CommentTargetType.SPORT;
             case Constants.EventType.WORKSHOP:
                 return Constants.CommentTargetType.WORKSHOP;
+            case Constants.EventType.ZOO_PRESENTATION:
+                return Constants.CommentTargetType.ZOO_PRESENTATION;
             default:
                 return Constants.CommentTargetType.UNKNOWN;
         }
@@ -289,7 +291,7 @@ public class Utils {
             return Constants.CommentTargetTypeGroup.FILM;
         } else if (targetType == Constants.CommentTargetType.CINEMA) {
             return Constants.CommentTargetTypeGroup.CINEMA;
-        } else if (targetType >= Constants.CommentTargetType.CONCERT && targetType <= Constants.CommentTargetType.WORKSHOP) {
+        } else if (targetType >= Constants.CommentTargetType.CONCERT && targetType <= Constants.CommentTargetType.ZOO_PRESENTATION) {
             return Constants.CommentTargetTypeGroup.EVENT;
         } else if (targetType >= Constants.CommentTargetType.THEATRE && targetType <= Constants.CommentTargetType.BATH) {
             return Constants.CommentTargetTypeGroup.PLACE;
