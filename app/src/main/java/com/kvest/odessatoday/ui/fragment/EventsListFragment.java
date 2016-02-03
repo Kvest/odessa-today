@@ -41,7 +41,6 @@ import static com.kvest.odessatoday.utils.LogUtils.LOGE;
  */
 public class EventsListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
                                                                 SwipeRefreshLayout.OnRefreshListener,
-                                                                MainActivity.ToolbarExtendable,
                                                                 DateSelectionListener {
     private static final long STOP_REFRESHING_DELAY = 2000L;
     private final SimpleDateFormat EVENTS_LIST_DATE_FORMAT = new SimpleDateFormat("dd MMMM, cc.");
@@ -50,15 +49,12 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     private static final String KEY_DATE = "com.kvest.odessatoday.key.DATE";
     private static final String ARGUMENT_EVENT_TYPE = "com.kvest.odessatoday.argument.EVENT_TYPE";
     private static final String ARGUMENT_DATE = "com.kvest.odessatoday.argiment.DATE";
+    private static final String ARGUMENT_IS_ANNOUNCEMENT = "com.kvest.odessatoday.argiment.IS_ANNOUNCEMENT";
     private static final int EVENTS_LOADER_ID = 1;
 
     //date of the shown events in seconds
     private long date = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
     private DateChangedListener dateChangedListener;
-
-    private TextView extensionTitle;
-    private View previousDay;
-    private View nextDay;
 
     private ListView eventsList;
     private EventsAdapter adapter;
@@ -68,10 +64,11 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     private EventSelectedListener eventSelectedListener;
     private ShowCalendarListener showCalendarListener;
 
-    public static EventsListFragment newInstance(int eventType, long date) {
-        Bundle arguments = new Bundle(2);
+    public static EventsListFragment newInstance(int eventType, long date, boolean isAnnouncement) {
+        Bundle arguments = new Bundle(3);
         arguments.putInt(ARGUMENT_EVENT_TYPE, eventType);
         arguments.putLong(ARGUMENT_DATE, date);
+        arguments.putBoolean(ARGUMENT_IS_ANNOUNCEMENT, isAnnouncement);
 
         EventsListFragment result = new EventsListFragment();
         result.setArguments(arguments);
@@ -139,8 +136,10 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.calendar_menu, menu);
+        if (!isAnnouncement()) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            inflater.inflate(R.menu.calendar_menu, menu);
+        }
     }
 
     @Override
@@ -233,9 +232,13 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == EVENTS_LOADER_ID) {
             long startDate = date;
-            long endDate = TimeUtils.getEndOfTheDay(startDate);
 
-            return DataProviderHelper.getFullEventsForPeriodLoader(getActivity(), getEventType(), startDate, endDate, EventsAdapter.PROJECTION, TodayProviderContract.Tables.EventsTimetableView.ORDER_ASC);
+            if (isAnnouncement()) {
+                return DataProviderHelper.getFullEventsAnnouncementsLoader(getActivity(), getEventType(), startDate, EventsAdapter.PROJECTION, TodayProviderContract.Tables.EventsTimetableView.ORDER_ASC);
+            } else {
+                long endDate = TimeUtils.getEndOfTheDay(startDate);
+                return DataProviderHelper.getFullEventsForPeriodLoader(getActivity(), getEventType(), startDate, endDate, EventsAdapter.PROJECTION, TodayProviderContract.Tables.EventsTimetableView.ORDER_ASC);
+            }
         }
 
         return null;
@@ -291,20 +294,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     }
 
     public void onDateChanged(long date) {
-        if (extensionTitle != null && previousDay != null) {
-            int previousDayVisibility = View.VISIBLE;
-            if (TimeUtils.isCurrentDay(date)) {
-                extensionTitle.setText(R.string.odessa_today);
-                previousDayVisibility = View.INVISIBLE;
-            } else if (TimeUtils.isTomorrow(date)) {
-                extensionTitle.setText(R.string.odessa_tomorrow);
-            } else {
-                extensionTitle.setText(EVENTS_LIST_DATE_FORMAT.format(TimeUnit.SECONDS.toMillis(date)));
-            }
-
-            previousDay.setVisibility(previousDayVisibility);
-        }
-
         //notify listener
         if (dateChangedListener != null) {
             dateChangedListener.onDateChanged(this.date);
@@ -319,28 +308,9 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         }
     }
 
-    @Override
-    public int getExtensionLayoutId() {
-        return R.layout.toolbar_extension_with_calendar;
-    }
-
-    @Override
-    public void setExtensionView(View extension) {
-        extensionTitle = (TextView) extension.findViewById(R.id.title);
-        previousDay = extension.findViewById(R.id.previous_day);
-        previousDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPreviousDay();
-            }
-        });
-        nextDay = extension.findViewById(R.id.next_day);
-        nextDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showNextDay();
-            }
-        });
+    private boolean isAnnouncement() {
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getBoolean(ARGUMENT_IS_ANNOUNCEMENT, false) : false;
     }
 
     public DateChangedListener getDateChangedListener() {

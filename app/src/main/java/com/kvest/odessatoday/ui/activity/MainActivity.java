@@ -286,13 +286,11 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 setTitle(R.string.menu_exhibition);
                 break;
             case MainMenuFragment.MENU_SPORT_ID :
-                replaceFragment(EventsListFragment.newInstance(Constants.EventType.SPORT,
-                                                               TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
+                replaceFragment(EventsWithAnnouncementsFragment.newInstance(Constants.EventType.SPORT));
                 setTitle(R.string.menu_sport);
                 break;
             case MainMenuFragment.MENU_WORKSHOP_ID :
-                replaceFragment(EventsListFragment.newInstance(Constants.EventType.WORKSHOP,
-                                                               TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
+                replaceFragment(EventsWithAnnouncementsFragment.newInstance(Constants.EventType.WORKSHOP));
                 setTitle(R.string.menu_workshop);
                 break;
             case MainMenuFragment.MENU_CINEMA_ID :

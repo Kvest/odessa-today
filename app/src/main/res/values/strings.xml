@@ -50,6 +50,8 @@
     <string name="selector_spectacles">спектакли</string>
     <string name="selector_theatres">театры</string>
     <string name="selector_parties">вечеринки</string>
+    <string name="selector_sport">спорт</string>
+    <string name="selector_workshop">семинары, акции</string>
     <string name="selector_clubs">клубы</string>
     <string name="selector_exhibitions">выставки</string>
     <string name="selector_museums">музеи</string>

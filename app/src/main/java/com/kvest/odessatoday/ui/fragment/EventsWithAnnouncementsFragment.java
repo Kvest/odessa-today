@@ -27,44 +27,40 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by kvest on 12.12.15.
+ * Created by kvest on 29.01.16.
  */
-public class EventsWithPlacesFragment extends BaseFragment implements MainActivity.ToolbarExtendable,
-                                                                      DateChangedListener,
-                                                                      DateSelectionListener {
+public class EventsWithAnnouncementsFragment extends BaseFragment implements MainActivity.ToolbarExtendable,
+                                                                             DateChangedListener,
+                                                                             DateSelectionListener {
     private static final String ARGUMENT_EVENT_TYPE = "com.kvest.odessatoday.argument.EVENT_TYPE";
-    private static final String ARGUMENT_PLACE_TYPE = "com.kvest.odessatoday.argument.PLACE_TYPE";
     private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMMM, cc.");
 
     private static final int EVENTS_LIST_FRAGMENT_POSITION = 0;
-    private static final int PLACES_LIST_FRAGMENT_POSITION = 1;
-    private static final int ANNOUNCEMENTS_LIST_FRAGMENT_POSITION = 2;
+    private static final int ANNOUNCEMENTS_LIST_FRAGMENT_POSITION = 1;
 
     private MainMenuController mainMenuController;
 
     private ViewPager fragmentsPager;
     private RadioGroup categorySelector;
-    private View leftDivider, rightDivider;
-    private EventsWithPlacesPagerAdapter pagerAdapter;
+    private EventsWithAnnouncementsPagerAdapter pagerAdapter;
 
     private View toolbarExtension;
     private TextView extensionTitle;
     private View previousDay;
     private View nextDay;
 
-    public static EventsWithPlacesFragment newInstance(int eventType, int placeType) {
-        Bundle arguments = new Bundle(2);
+    public static EventsWithAnnouncementsFragment newInstance(int eventType) {
+        Bundle arguments = new Bundle(1);
         arguments.putInt(ARGUMENT_EVENT_TYPE, eventType);
-        arguments.putInt(ARGUMENT_PLACE_TYPE, placeType);
 
-        EventsWithPlacesFragment result = new EventsWithPlacesFragment();
+        EventsWithAnnouncementsFragment result = new EventsWithAnnouncementsFragment();
         result.setArguments(arguments);
         return result;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.events_with_places_fragment, container, false);
+        View root = inflater.inflate(R.layout.events_with_announcements_fragment, container, false);
 
         init(root);
 
@@ -100,9 +96,6 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
                     case EVENTS_LIST_FRAGMENT_POSITION:
                         categorySelector.check(R.id.selector_events);
                         break;
-                    case PLACES_LIST_FRAGMENT_POSITION:
-                        categorySelector.check(R.id.selector_places);
-                        break;
                     case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION:
                         categorySelector.check(R.id.selector_announcements);
                         break;
@@ -116,13 +109,10 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
             public void onPageScrollStateChanged(int i) {}
         });
 
-        pagerAdapter = new EventsWithPlacesPagerAdapter(getChildFragmentManager(), getEventType(), getPlaceType());
+        pagerAdapter = new EventsWithAnnouncementsPagerAdapter(getChildFragmentManager(), getEventType());
         fragmentsPager.setAdapter(pagerAdapter);
 
         //category selector
-        leftDivider = view.findViewById(R.id.selector_divider_left);
-        rightDivider = view.findViewById(R.id.selector_divider_right);
-        setSelectorDividersVisibility(false, true);
         categorySelector = (RadioGroup)view.findViewById(R.id.category_selector);
         categorySelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -131,17 +121,10 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
                     case R.id.selector_events:
                         fragmentsPager.setCurrentItem(EVENTS_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.VISIBLE);
-                        setSelectorDividersVisibility(false, true);
-                        break;
-                    case R.id.selector_places:
-                        fragmentsPager.setCurrentItem(PLACES_LIST_FRAGMENT_POSITION, true);
-                        setToolbarExtensionVisibility(View.GONE);
-                        setSelectorDividersVisibility(false, false);
                         break;
                     case R.id.selector_announcements:
                         fragmentsPager.setCurrentItem(ANNOUNCEMENTS_LIST_FRAGMENT_POSITION, true);
                         setToolbarExtensionVisibility(View.GONE);
-                        setSelectorDividersVisibility(true, false);
                         break;
                 }
             }
@@ -152,9 +135,6 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
         RadioButton eventsSelector = (RadioButton)view.findViewById(R.id.selector_events);
         setEventsSelectorTitle(eventsSelector);
         eventsSelector.setTypeface(helveticaneuecyrBold);
-        RadioButton placesSelector = (RadioButton)view.findViewById(R.id.selector_places);
-        setPlacesSelectorTitle(placesSelector);
-        placesSelector.setTypeface(helveticaneuecyrBold);
         RadioButton announcementsSelector = (RadioButton)view.findViewById(R.id.selector_announcements);
         announcementsSelector.setTypeface(helveticaneuecyrBold);
     }
@@ -203,11 +183,6 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
         previousDay.setVisibility(previousDayVisibility);
     }
 
-    private void setSelectorDividersVisibility(boolean isLeftVisible, boolean isRightVisible) {
-        leftDivider.setVisibility(isLeftVisible ? View.VISIBLE : View.GONE);
-        rightDivider.setVisibility(isRightVisible ? View.VISIBLE : View.GONE);
-    }
-
     private EventsListFragment getEventsListFragment() {
         //workaround
         return (EventsListFragment)getChildFragmentManager().findFragmentByTag("android:switcher:" + fragmentsPager.getId() + ":" + EVENTS_LIST_FRAGMENT_POSITION);
@@ -252,35 +227,13 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
 
     private void setEventsSelectorTitle(RadioButton eventsSelector) {
         switch (getEventType()) {
-            case Constants.EventType.CONCERT:
-                eventsSelector.setText(R.string.selector_concerts);
+            case Constants.EventType.SPORT:
+                eventsSelector.setText(R.string.selector_sport);
                 break;
-            case Constants.EventType.PARTY:
-                eventsSelector.setText(R.string.selector_parties);
+            case Constants.EventType.WORKSHOP:
+                eventsSelector.setText(R.string.selector_workshop);
                 break;
-            case Constants.EventType.SPECTACLE:
-                eventsSelector.setText(R.string.selector_spectacles);
-                break;
-            case Constants.EventType.EXHIBITION:
-                eventsSelector.setText(R.string.selector_exhibitions);
-                break;
-        }
-    }
 
-    private void setPlacesSelectorTitle(RadioButton placesSelector) {
-        switch (getPlaceType()) {
-            case Constants.PlaceType.THEATRE:
-                placesSelector.setText(R.string.selector_theatres);
-                break;
-            case Constants.PlaceType.CONCERT_HALL:
-                placesSelector.setText(R.string.selector_concert_halls);
-                break;
-            case Constants.PlaceType.CLUB:
-                placesSelector.setText(R.string.selector_clubs);
-                break;
-            case Constants.PlaceType.MUSEUM:
-                placesSelector.setText(R.string.selector_museums);
-                break;
         }
     }
 
@@ -290,23 +243,15 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
         return (arguments != null) ? arguments.getInt(ARGUMENT_EVENT_TYPE, -1) : -1;
     }
 
-    private int getPlaceType() {
-        Bundle arguments = getArguments();
-
-        return (arguments != null) ? arguments.getInt(ARGUMENT_PLACE_TYPE, -1) : -1;
-    }
-
-    public class EventsWithPlacesPagerAdapter extends FragmentPagerAdapter {
-        private static final int FRAGMENTS_COUNT = 3;
+    public class EventsWithAnnouncementsPagerAdapter extends FragmentPagerAdapter {
+        private static final int FRAGMENTS_COUNT = 2;
 
         private int eventType;
-        private int placeType;
 
-        public EventsWithPlacesPagerAdapter(FragmentManager fm, int eventType, int placeType) {
+        public EventsWithAnnouncementsPagerAdapter(FragmentManager fm, int eventType) {
             super(fm);
 
             this.eventType = eventType;
-            this.placeType = placeType;
         }
 
         @Override
@@ -314,10 +259,8 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
             switch (index) {
                 case EVENTS_LIST_FRAGMENT_POSITION :
                     EventsListFragment eventsListFragment = EventsListFragment.newInstance(eventType, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()), false);
-                    eventsListFragment.setDateChangedListener(EventsWithPlacesFragment.this);
+                    eventsListFragment.setDateChangedListener(EventsWithAnnouncementsFragment.this);
                     return eventsListFragment;
-                case PLACES_LIST_FRAGMENT_POSITION :
-                    return PlacesListFragment.newInstance(placeType);
                 case ANNOUNCEMENTS_LIST_FRAGMENT_POSITION :
                     long tomorrow = TimeUtils.getTomorrow(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
                     EventsListFragment announcementsListFragment = EventsListFragment.newInstance(eventType, tomorrow, true);
