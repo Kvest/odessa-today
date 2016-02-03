@@ -88,7 +88,7 @@
     <dimen name="timetable_list_cinema_address_text_size">12sp</dimen>
     <dimen name="timetable_list_cinema_padding_top">26dip</dimen>
     <dimen name="timetable_list_cinema_padding_bottom">8dip</dimen>
-    <dimen name="timetable_list_item_padding_top">5dip</dimen>
+    <dimen name="timetable_list_item_vertical_padding">4dip</dimen>
 
     <!--comments-->
     <dimen name="comments_list_divider_height">1dip</dimen>

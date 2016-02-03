@@ -8,7 +8,8 @@
     android:weightSum="1"
     android:paddingLeft="@dimen/film_details_padding"
     android:paddingRight="@dimen/film_details_padding"
-    android:paddingTop="@dimen/timetable_list_item_padding_top">
+    android:paddingTop="@dimen/timetable_list_item_vertical_padding"
+    android:paddingBottom="@dimen/timetable_list_item_vertical_padding">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
