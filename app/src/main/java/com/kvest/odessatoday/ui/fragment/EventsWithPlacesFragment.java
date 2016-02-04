@@ -264,6 +264,9 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
             case Constants.EventType.EXHIBITION:
                 eventsSelector.setText(R.string.selector_exhibitions);
                 break;
+            case Constants.EventType.ZOO_PRESENTATION:
+                eventsSelector.setText(R.string.selector_events);
+                break;
         }
     }
 
@@ -280,6 +283,9 @@ public class EventsWithPlacesFragment extends BaseFragment implements MainActivi
                 break;
             case Constants.PlaceType.MUSEUM:
                 placesSelector.setText(R.string.selector_museums);
+                break;
+            case Constants.PlaceType.ZOO:
+                placesSelector.setText(R.string.selector_places);
                 break;
         }
     }

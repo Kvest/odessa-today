@@ -27,6 +27,9 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
     public static final int MENU_EXHIBITION_ID = 4;
     public static final int MENU_SPORT_ID = 5;
     public static final int MENU_WORKSHOP_ID = 6;
+    public static final int MENU_ZOO_PRESENTATION_ID = 117;
+
+
     public static final int MENU_CINEMA_ID = 7;
     public static final int MENU_THEATRE_ID = 8;
     public static final int MENU_CONCERT_HALL_ID = 9;

@@ -54,9 +54,11 @@
     <string name="selector_workshop">семинары, акции</string>
     <string name="selector_clubs">клубы</string>
     <string name="selector_exhibitions">выставки</string>
+    <string name="selector_events">события</string>
     <string name="selector_museums">музеи</string>
     <string name="selector_concerts">концерты</string>
     <string name="selector_concert_halls">концертные залы</string>
+    <string name="selector_places">места</string>
     <string name="timetable">Расписание</string>
     <string name="add_comment">Написать отзыв</string>
     <string name="comment_author_hint">Ваше имя</string>

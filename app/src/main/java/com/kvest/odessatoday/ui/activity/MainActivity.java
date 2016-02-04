@@ -293,6 +293,11 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
                 replaceFragment(EventsWithAnnouncementsFragment.newInstance(Constants.EventType.WORKSHOP));
                 setTitle(R.string.menu_workshop);
                 break;
+            case MainMenuFragment.MENU_ZOO_PRESENTATION_ID:
+                replaceFragment(EventsWithPlacesFragment.newInstance(Constants.EventType.ZOO_PRESENTATION,
+                                                                     Constants.PlaceType.ZOO));
+                setTitle(R.string.menu_zoo);
+                break;
             case MainMenuFragment.MENU_CINEMA_ID :
                 replaceFragment(CinemasListFragment.newInstance());
                 setTitle(R.string.menu_cinema);

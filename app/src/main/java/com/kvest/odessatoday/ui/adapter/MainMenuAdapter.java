@@ -31,6 +31,7 @@ public class MainMenuAdapter extends BaseAdapter {
             new SubcategoryItem(MainMenuFragment.MENU_EXHIBITION_ID, R.string.menu_exhibition, R.drawable.ic_menu_exhibition, true),
             new SubcategoryItem(MainMenuFragment.MENU_SPORT_ID, R.string.menu_sport, R.drawable.ic_menu_sport, true),
             new SubcategoryItem(MainMenuFragment.MENU_WORKSHOP_ID, R.string.menu_workshop, R.drawable.ic_menu_workshop, true),
+            new SubcategoryItem(MainMenuFragment.MENU_ZOO_PRESENTATION_ID, R.string.menu_zoo, R.drawable.ic_menu_zoo, true),
             new DividerItem(),
             new CategoryItem(R.string.menu_category_place),
             new DividerItem(),
