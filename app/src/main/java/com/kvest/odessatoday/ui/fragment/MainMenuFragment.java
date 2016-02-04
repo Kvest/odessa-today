@@ -27,27 +27,25 @@ public class MainMenuFragment extends ListFragment implements AdapterView.OnItem
     public static final int MENU_EXHIBITION_ID = 4;
     public static final int MENU_SPORT_ID = 5;
     public static final int MENU_WORKSHOP_ID = 6;
-    public static final int MENU_ZOO_PRESENTATION_ID = 117;
-
-
-    public static final int MENU_CINEMA_ID = 7;
-    public static final int MENU_THEATRE_ID = 8;
-    public static final int MENU_CONCERT_HALL_ID = 9;
-    public static final int MENU_CLUB_ID = 10;
-    public static final int MENU_MUSEUM_ID = 11;
-    public static final int MENU_GALLERY_ID = 12;
-    public static final int MENU_ZOO_ID = 13;
-    public static final int MENU_QUEST_ID = 14;
-    public static final int MENU_RESTAURANT_ID = 15;
-    public static final int MENU_CAFE_ID = 16;
-    public static final int MENU_PIZZA_ID = 17;
-    public static final int MENU_SUSHI_ID = 18;
-    public static final int MENU_KARAOKE_ID = 19;
-    public static final int MENU_SKATING_RINK_ID = 20;
-    public static final int MENU_BOWLING_ID = 21;
-    public static final int MENU_BILLIARD_ID = 22;
-    public static final int MENU_SAUNA_ID = 23;
-    public static final int MENU_BATH_ID = 24;
+    public static final int MENU_ZOO_PRESENTATION_ID = 7;
+    public static final int MENU_CINEMA_ID = 8;
+    public static final int MENU_THEATRE_ID = 9;
+    public static final int MENU_CONCERT_HALL_ID = 10;
+    public static final int MENU_CLUB_ID = 11;
+    public static final int MENU_MUSEUM_ID = 12;
+    public static final int MENU_GALLERY_ID = 13;
+    public static final int MENU_ZOO_ID = 14;
+    public static final int MENU_QUEST_ID = 15;
+    public static final int MENU_RESTAURANT_ID = 16;
+    public static final int MENU_CAFE_ID = 17;
+    public static final int MENU_PIZZA_ID = 18;
+    public static final int MENU_SUSHI_ID = 19;
+    public static final int MENU_KARAOKE_ID = 20;
+    public static final int MENU_SKATING_RINK_ID = 21;
+    public static final int MENU_BOWLING_ID = 22;
+    public static final int MENU_BILLIARD_ID = 23;
+    public static final int MENU_SAUNA_ID = 24;
+    public static final int MENU_BATH_ID = 25;
 
     private MainMenuAdapter adapter;
     private MainMenuItemSelectedListener mainMenuItemSelectedListener;
