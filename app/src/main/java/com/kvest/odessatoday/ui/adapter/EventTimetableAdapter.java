@@ -1,7 +1,9 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ public class EventTimetableAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private List<BaseTimetableItem> dataset;
+    private int evenItemBgColor, oddItemBgColor;
     private String currencyStr;
 
     public EventTimetableAdapter(Context context) {
@@ -47,7 +50,8 @@ public class EventTimetableAdapter extends BaseAdapter {
 
         inflater = LayoutInflater.from(context);
         dataset = new ArrayList<>();
-        currencyStr = context.getString(R.string.currency);
+
+        initResources(context);
     }
 
     @Override
@@ -132,6 +136,7 @@ public class EventTimetableAdapter extends BaseAdapter {
             int placeNameIndex = cursor.getColumnIndex(EventsTimetable.Columns.PLACE_NAME);
             int dateIndex = cursor.getColumnIndex(EventsTimetable.Columns.DATE);
             int pricesIndex = cursor.getColumnIndex(EventsTimetable.Columns.PRICES);
+            int rowNumber = 0;
             do {
                 date = cursor.getLong(dateIndex);
                 if (prevDay != TimeUtils.getBeginningOfTheDay(date)) {
@@ -140,18 +145,39 @@ public class EventTimetableAdapter extends BaseAdapter {
                     dataset.add(dateItem);
 
                     prevDay = TimeUtils.getBeginningOfTheDay(date);
+                    rowNumber = 0;
                 }
 
                 TimetableItem timetableItem = new TimetableItem(cursor.getLong(idIndex));
                 timetableItem.date = date;
                 timetableItem.placeName = cursor.getString(placeNameIndex);
                 timetableItem.prices = convertPrices(cursor.getString(pricesIndex));
+                timetableItem.bgColor = ((rowNumber % 2) == 0 ? evenItemBgColor : oddItemBgColor);
+                ++rowNumber;
 
                 dataset.add(timetableItem);
             } while (cursor.moveToNext());
         }
 
         notifyDataSetChanged();
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        try {
+            // Fetching the resources defined in the style
+            evenItemBgColor = ta.getColor(0, Color.BLACK);
+            oddItemBgColor = ta.getColor(1, Color.BLACK);
+        } finally {
+            ta.recycle();
+        }
+
+        currencyStr = context.getString(R.string.currency);
     }
 
     private String convertPrices(String prices) {
@@ -209,6 +235,7 @@ public class EventTimetableAdapter extends BaseAdapter {
         public long date;
         public String placeName;
         public String prices;
+        public int bgColor;
 
         public TimetableItem(long id) {
             super(id);
@@ -233,17 +260,21 @@ public class EventTimetableAdapter extends BaseAdapter {
     }
 
     private static class TimetableItemViewHolder {
+        private View parent;
         private TextView seanceTime;
         private TextView placeName;
         private TextView prices;
 
         public TimetableItemViewHolder(View view) {
-            seanceTime = (TextView)view.findViewById(R.id.seance_time);
-            placeName = (TextView)view.findViewById(R.id.place_name);
-            prices = (TextView)view.findViewById(R.id.prices);
+            parent = view;
+            seanceTime = (TextView)parent.findViewById(R.id.seance_time);
+            placeName = (TextView)parent.findViewById(R.id.place_name);
+            prices = (TextView)parent.findViewById(R.id.prices);
         }
 
         public void bind(TimetableItem timetableItem) {
+            parent.setBackgroundColor(timetableItem.bgColor);
+
             long dateValue = TimeUnit.SECONDS.toMillis(timetableItem.date);
             seanceTime.setText(TIME_FORMAT.format(dateValue));
             placeName.setText(timetableItem.placeName);

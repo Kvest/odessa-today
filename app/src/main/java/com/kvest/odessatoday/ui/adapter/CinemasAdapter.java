@@ -31,8 +31,6 @@ public class CinemasAdapter extends CursorAdapter {
     private int commentsCountColumnIndex = -1;
     private int evenItemBgColor, oddItemBgColor, pinColor;
 
- //   private Typeface helveticaneuecyrRoman, helveticaneuecyrBold;
-
     public CinemasAdapter(Context context) {
         super(context, null, 0);
 

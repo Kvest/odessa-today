@@ -1,7 +1,9 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +50,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<BaseTimetableItem> dataset;
     private String currencyStr;
+    private int evenItemBgColor, oddItemBgColor;
 
     public PlaceTimetableAdapter(Context context) {
         super();
@@ -55,7 +58,8 @@ public class PlaceTimetableAdapter extends BaseAdapter {
         this.context = context;
         inflater = LayoutInflater.from(context);
         dataset = new ArrayList<>();
-        currencyStr = context.getString(R.string.currency);
+
+        initResources(context);
     }
 
     @Override
@@ -203,6 +207,24 @@ public class PlaceTimetableAdapter extends BaseAdapter {
         }
 
         notifyDataSetChanged();
+    }
+
+    private void initResources(Context context) {
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        try {
+            // Fetching the resources defined in the style
+            evenItemBgColor = ta.getColor(0, Color.BLACK);
+            oddItemBgColor = ta.getColor(1, Color.BLACK);
+        } finally {
+            ta.recycle();
+        }
+
+        currencyStr = context.getString(R.string.currency);
     }
 
     private String convertPrices(String prices) {
