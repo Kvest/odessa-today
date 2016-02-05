@@ -7,7 +7,8 @@
     android:weightSum="1"
     android:paddingLeft="@dimen/event_details_padding"
     android:paddingRight="@dimen/event_details_padding"
-    android:paddingTop="@dimen/event_timetable_list_seance_padding_top">
+    android:paddingTop="@dimen/event_timetable_list_seance_vertical_padding"
+    android:paddingBottom="@dimen/event_timetable_list_seance_vertical_padding">
     <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/prices"
         android:layout_width="wrap_content"
