@@ -100,22 +100,22 @@ public class TodayProviderContract {
                         Cinemas.TABLE_NAME + "." + Cinemas.Columns.CINEMA_ID;
 
             interface Columns extends BaseColumns {
-                String TIMETABLE_ID = "timetable_id";
-                String FILM_ID = "film_id";
-                String CINEMA_ID = "cinema_id";
-                String DATE = "date";
-                String PRICES = "prices";
-                String FORMAT = "format";
-                String _ID1 = "_id:1";
-                String CINEMA_ID1 = "cinema_id:1";
-                String CINEMA_NAME = "name";
-                String CINEMA_ADDRESS = "address";
-                String CINEMA_PHONES = "phones";
-                String CINEMA_TRANSPORT = "transport";
-                String CINEMA_DESCRIPTION = "description";
-                String CINEMA_WORK_TIME = "worktime";
-                String CINEMA_IMAGE = "image";
-                String CINEMA_COMMENTS_COUNT = "comments_count";
+                String TIMETABLE_ID = FilmsTimetable.Columns.TIMETABLE_ID;
+                String FILM_ID = FilmsTimetable.Columns.FILM_ID;
+                String CINEMA_ID = FilmsTimetable.Columns.CINEMA_ID;
+                String DATE = FilmsTimetable.Columns.DATE;
+                String PRICES = FilmsTimetable.Columns.PRICES;
+                String FORMAT = FilmsTimetable.Columns.FORMAT;
+                String _ID1 = Cinemas.Columns._ID + ":1";
+                String CINEMA_ID1 = Cinemas.Columns.CINEMA_ID + ":1";
+                String CINEMA_NAME = Cinemas.Columns.NAME;
+                String CINEMA_ADDRESS = Cinemas.Columns.ADDRESS;
+                String CINEMA_PHONES = Cinemas.Columns.PHONES;
+                String CINEMA_TRANSPORT = Cinemas.Columns.TRANSPORT;
+                String CINEMA_DESCRIPTION = Cinemas.Columns.DESCRIPTION;
+                String CINEMA_WORK_TIME = Cinemas.Columns.WORK_TIME;
+                String CINEMA_IMAGE = Cinemas.Columns.IMAGE;
+                String CINEMA_COMMENTS_COUNT = Cinemas.Columns.COMMENTS_COUNT;
             }
 
             String ORDER_ASC = Columns.DATE + " ASC";
@@ -131,28 +131,28 @@ public class TodayProviderContract {
                                      Films.TABLE_NAME + "." + Films.Columns.FILM_ID + ";";
 
             interface Columns extends BaseColumns {
-                String TIMETABLE_ID = "timetable_id";
-                String FILM_ID = "film_id";
-                String CINEMA_ID = "cinema_id";
-                String DATE = "date";
-                String PRICES = "prices";
-                String FORMAT = "format";
-                String _ID1 = "_id:1";
-                String FILM_ID1 = "film_id:1";
-                String NAME = "name";
-                String COUNTRY = "country";
-                String YEAR = "year";
-                String DIRECTOR = "director";
-                String ACTORS = "actors";
-                String DESCRIPTION = "description";
-                String IMAGE = "image";
-                String VIDEO = "video";
-                String GENRE = "genre";
-                String RATING = "rating";
-                String COMMENTS_COUNT = "comments_count";
-                String IS_PREMIERE = "is_premiere";
-                String FILM_DURATION = "film_duration";
-                String POSTERS = "posters";
+                String TIMETABLE_ID = FilmsTimetable.Columns.TIMETABLE_ID;
+                String FILM_ID = FilmsTimetable.Columns.FILM_ID;
+                String CINEMA_ID = FilmsTimetable.Columns.CINEMA_ID;
+                String DATE = FilmsTimetable.Columns.DATE;
+                String PRICES = FilmsTimetable.Columns.PRICES;
+                String FORMAT = FilmsTimetable.Columns.FORMAT;
+                String _ID1 = Films.Columns._ID + ":1";
+                String FILM_ID1 = Films.Columns.FILM_ID + ":1";
+                String NAME = Films.Columns.NAME;
+                String COUNTRY = Films.Columns.COUNTRY;
+                String YEAR = Films.Columns.YEAR;
+                String DIRECTOR = Films.Columns.DIRECTOR;
+                String ACTORS = Films.Columns.ACTORS;
+                String DESCRIPTION = Films.Columns.DESCRIPTION;
+                String IMAGE = Films.Columns.IMAGE;
+                String VIDEO = Films.Columns.VIDEO;
+                String GENRE = Films.Columns.GENRE;
+                String RATING = Films.Columns.RATING;
+                String COMMENTS_COUNT = Films.Columns.COMMENTS_COUNT;
+                String IS_PREMIERE = Films.Columns.IS_PREMIERE;
+                String FILM_DURATION = Films.Columns.FILM_DURATION;
+                String POSTERS = Films.Columns.POSTERS;
             }
 
             String ORDER_ASC = Columns.DATE + " ASC";
@@ -292,24 +292,24 @@ public class TodayProviderContract {
                     Films.TABLE_NAME + "." + Films.Columns.FILM_ID + ";";
 
             interface Columns extends BaseColumns {
-                String FILM_ID = "film_id";
-                String NAME = "name";
-                String COUNTRY = "country";
-                String YEAR = "year";
-                String DIRECTOR = "director";
-                String ACTORS = "actors";
-                String DESCRIPTION = "description";
-                String IMAGE = "image";
-                String VIDEO = "video";
-                String GENRE = "genre";
-                String RATING = "rating";
-                String COMMENTS_COUNT = "comments_count";
-                String IS_PREMIERE = "is_premiere";
-                String FILM_DURATION = "film_duration";
-                String POSTERS = "posters";
-                String _ID1 = "_id:1";
-                String FILM_ID1 = "film_id:1";
-                String PREMIERE_DATE = "premiere_date";
+                String FILM_ID = Films.Columns.FILM_ID;
+                String NAME = Films.Columns.NAME;
+                String COUNTRY = Films.Columns.COUNTRY;
+                String YEAR = Films.Columns.YEAR;
+                String DIRECTOR = Films.Columns.DIRECTOR;
+                String ACTORS = Films.Columns.ACTORS;
+                String DESCRIPTION = Films.Columns.DESCRIPTION;
+                String IMAGE = Films.Columns.IMAGE;
+                String VIDEO = Films.Columns.VIDEO;
+                String GENRE = Films.Columns.GENRE;
+                String RATING = Films.Columns.RATING;
+                String COMMENTS_COUNT = Films.Columns.COMMENTS_COUNT;
+                String IS_PREMIERE = Films.Columns.IS_PREMIERE;
+                String FILM_DURATION = Films.Columns.FILM_DURATION;
+                String POSTERS = Films.Columns.POSTERS;
+                String _ID1 = AnnouncementsMetadata.Columns._ID + ":1";
+                String FILM_ID1 = AnnouncementsMetadata.Columns.FILM_ID + ":1";
+                String PREMIERE_DATE = AnnouncementsMetadata.Columns.PREMIERE_DATE;
             }
 
             String PREMIERE_DATE_ORDER_DESC = AnnouncementFilmsView.Columns.PREMIERE_DATE + " DESC";
@@ -433,23 +433,23 @@ public class TodayProviderContract {
                                      Events.TABLE_NAME + "." + Events.Columns.EVENT_ID;
 
             interface Columns extends BaseColumns {
-                String TIMETABLE_ID = "timetable_id";
-                String EVENT_ID = "event_id";
-                String PLACE_ID = "place_id";
-                String PLACE_NAME = "place_name";
-                String DATE = "date";
-                String PRICES = "prices";
-                String HAS_TICKETS = "has_tickets";
-                String _ID1 = "_id:1";
-                String EVENT_ID1 = "event_id:1";
-                String EVENT_TYPE = "event_type";
-                String IMAGE = "image";
-                String NAME = "name";
-                String DIRECTOR = "director";
-                String ACTORS = "actors";
-                String DESCRIPTION = "description";
-                String RATING = "rating";
-                String COMMENTS_COUNT = "comments_count";
+                String TIMETABLE_ID = EventsTimetable.Columns.TIMETABLE_ID;
+                String EVENT_ID = EventsTimetable.Columns.EVENT_ID;
+                String PLACE_ID = EventsTimetable.Columns.PLACE_ID;
+                String PLACE_NAME = EventsTimetable.Columns.PLACE_NAME;
+                String DATE = EventsTimetable.Columns.DATE;
+                String PRICES = EventsTimetable.Columns.PRICES;
+                String HAS_TICKETS = EventsTimetable.Columns.HAS_TICKETS;
+                String _ID1 = Events.Columns._ID + ":1";
+                String EVENT_ID1 = Events.Columns.EVENT_ID + ":1";
+                String EVENT_TYPE = Events.Columns.EVENT_TYPE;
+                String IMAGE = Events.Columns.IMAGE;
+                String NAME = Events.Columns.NAME;
+                String DIRECTOR = Events.Columns.DIRECTOR;
+                String ACTORS = Events.Columns.ACTORS;
+                String DESCRIPTION = Events.Columns.DESCRIPTION;
+                String RATING = Events.Columns.RATING;
+                String COMMENTS_COUNT = Events.Columns.COMMENTS_COUNT;
             }
 
             String ORDER_ASC = Columns.DATE + " ASC";
