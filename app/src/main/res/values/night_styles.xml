@@ -76,6 +76,8 @@
         <!--cinema details-->
         <item name="CinemaDetailsBgColor">#2d2d2d</item>
         <item name="CinemaDetailsDrawablesColor">#ff6600</item>
+        <item name="PlaceDetailsFullLabelTextColor">#1b1b1b</item>
+        <item name="PlaceDetailsExpandIcon">@drawable/ic_expand_night</item>
         <item name="CinemaDetailsDescriptionTextColor">#a5a5a5</item>
         <item name="CinemaDetailsDateDividerColor">#4a4a4a</item>
         <item name="CinemaDetailsDateTextColor">#828282</item>

@@ -45,13 +45,41 @@
     <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/place_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/place_details_description_height"
         android:paddingLeft="@dimen/place_details_padding"
         android:paddingRight="@dimen/place_details_padding"
         android:layout_marginTop="@dimen/place_details_description_margin_top"
+        android:layout_marginBottom="@dimen/place_details_description_margin_bottom"
         android:textColor="?attr/PlaceDetailsDescriptionTextColor"
         android:textSize="@dimen/place_details_description_text_size"
         app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+    <LinearLayout
+        android:id="@+id/expand_description_panel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/place_details_expand_description_height"
+        android:weightSum="1"
+        android:paddingLeft="@dimen/place_details_padding"
+        android:paddingRight="@dimen/place_details_padding"
+        android:background="@color/application_green">
+        <com.kvest.odessatoday.ui.widget.FontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/place_details_full_description_text_size"
+            android:textColor="?attr/PlaceDetailsFullLabelTextColor"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+            android:text="@string/full_description"/>
+        <ImageView
+            android:layout_width="0dip"
+            android:layout_height="0dip"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/trigger_full_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="?attr/PlaceDetailsExpandIcon"/>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -60,8 +88,7 @@
         android:layout_weight="3"
         android:background="?attr/ActionsLayoutBg"
         android:paddingTop="@dimen/actions_layout_vertical_padding"
-        android:paddingBottom="@dimen/actions_layout_vertical_padding"
-        android:layout_marginTop="@dimen/place_details_actions_margin_top">
+        android:paddingBottom="@dimen/actions_layout_vertical_padding">
         <include
             layout="@layout/action_comments"
             android:layout_height="wrap_content"

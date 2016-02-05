@@ -11,9 +11,12 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ import com.kvest.odessatoday.ui.activity.EventDetailsActivity;
 import com.kvest.odessatoday.ui.adapter.PlaceTimetableAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.HeightResizeAnimation;
 import com.kvest.odessatoday.utils.Utils;
 
 import java.util.concurrent.TimeUnit;
@@ -47,11 +51,15 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     private static final String ARGUMENT_PLACE_TYPE = "com.kvest.odessatoday.argument.PLACE_TYPE";
     private static final int PLACE_LOADER_ID = 0;
     private static final int TIMETABLE_LOADER_ID = 1;
+    private static final long ANIMATION_DURATION = 500L;
 
     private TextView placeName;
     private TextView placePhones;
     private TextView placeAddress;
     private TextView placeDescription;
+    private View expandDescriptionPanel;
+    private View triggerFullDescriptionView;
+    private boolean isDescriptionExpanded = false;
     private CommentsCountView actionCommentsCount;
 
     private ListView timetableList;
@@ -63,6 +71,7 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     private float rating;
 
     private int drawablesColor;
+    private int descriptionCollapsedHeight;
 
     private PlaceDetailsActionsListener placeDetailsActionsListener;
 
@@ -94,6 +103,8 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
         placePhones = (TextView)headerView.findViewById(R.id.place_phones);
         placeAddress = (TextView)headerView.findViewById(R.id.place_address);
         placeDescription = (TextView)headerView.findViewById(R.id.place_description);
+        expandDescriptionPanel = headerView.findViewById(R.id.expand_description_panel);
+        triggerFullDescriptionView = headerView.findViewById(R.id.trigger_full_description);
         actionCommentsCount = (CommentsCountView) headerView.findViewById(R.id.action_comments_count);
 
         //colorize drawables
@@ -130,6 +141,12 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
                 showPhotos();
             }
         });
+        triggerFullDescriptionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                triggerFullDescription();
+            }
+        });
     }
 
     private void showEvent(long eventId) {
@@ -148,6 +165,8 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
         } finally {
             ta.recycle();
         }
+
+        descriptionCollapsedHeight = getResources().getDimensionPixelSize(R.dimen.place_details_description_height);
     }
 
     @Override
@@ -170,6 +189,15 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
         } catch (ClassCastException cce) {
             LOGE(Constants.TAG, "Host activity for PlaceDetailsFragment should implements PlaceDetailsFragment.PlaceDetailsActionsListener");
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        //cancel animations
+        placeDescription.clearAnimation();
+        triggerFullDescriptionView.clearAnimation();
     }
 
     @Override
@@ -242,8 +270,9 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
 
     private void showComments() {
         if (placeDetailsActionsListener != null) {
-            placeDetailsActionsListener.onShowPlaceComments(getPlaceId(), getPlaceType(), placeName.getText().toString(),
-                                                            actionCommentsCount.getCommentsCount(), rating);
+            placeDetailsActionsListener.onShowPlaceComments(getPlaceId(), getPlaceType(),
+                    placeName.getText().toString(),
+                    actionCommentsCount.getCommentsCount(), rating);
         }
     }
 
@@ -254,13 +283,91 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     }
 
     private void showPlaceOnMap() {
-        Uri geoLocation = Uri.parse("geo:0,0?q=" + latitude + "," +longitude);
+        Uri geoLocation = Uri.parse("geo:0,0?q=" + latitude + "," + longitude);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLocation);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         } else {
             Toast.makeText(getActivity(), R.string.map_not_found, Toast.LENGTH_SHORT);
+        }
+    }
+
+    private void triggerFullDescription() {
+        //first stop previous animations
+        placeDescription.clearAnimation();
+        triggerFullDescriptionView.clearAnimation();
+
+        //calculate size
+        int fromHeight = placeDescription.getHeight();
+        int toHeight;
+        int rotateFrom;
+        int rotateTo;
+        if (isDescriptionExpanded) {
+            toHeight = descriptionCollapsedHeight;
+            rotateFrom = 180;
+            rotateTo = 0;
+        } else {
+            int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(placeDescription.getWidth(), View.MeasureSpec.AT_MOST);
+            int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(ViewGroup.LayoutParams.MATCH_PARENT, View.MeasureSpec.UNSPECIFIED);
+            placeDescription.measure(widthMeasureSpec, heightMeasureSpec);
+
+            toHeight = placeDescription.getMeasuredHeight();
+            rotateFrom = 0;
+            rotateTo = 180;
+        }
+
+        //animate
+        HeightResizeAnimation animation = new HeightResizeAnimation(placeDescription, fromHeight, toHeight);
+        animation.setDuration(ANIMATION_DURATION);
+        final boolean newIsDescriptionExpanded = !isDescriptionExpanded;
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isDescriptionExpanded = newIsDescriptionExpanded;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        placeDescription.startAnimation(animation);
+
+        float pivotX = triggerFullDescriptionView.getWidth() / 2;
+        float pivotY = triggerFullDescriptionView.getHeight() / 2;
+        RotateAnimation rotate = new RotateAnimation(rotateFrom, rotateTo, pivotX, pivotY);
+        rotate.setDuration(ANIMATION_DURATION);
+        rotate.setFillAfter(true);
+        triggerFullDescriptionView.startAnimation(rotate);
+    }
+
+    private void setDescription(String description) {
+        if (TextUtils.isEmpty(description)) {
+            placeDescription.setVisibility(View.GONE);
+            expandDescriptionPanel.setVisibility(View.GONE);
+            return;
+        }
+
+        //set description text
+        placeDescription.setText(description);
+        placeDescription.setVisibility(View.VISIBLE);
+
+        //measure height
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(placeDescription.getWidth(), View.MeasureSpec.AT_MOST);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(ViewGroup.LayoutParams.WRAP_CONTENT, View.MeasureSpec.UNSPECIFIED);
+        placeDescription.measure(widthMeasureSpec, heightMeasureSpec);
+
+        //set expandDescriptionPanel's visibility and placeDescription's size
+        if (placeDescription.getMeasuredHeight() <= descriptionCollapsedHeight) {
+            placeDescription.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            expandDescriptionPanel.setVisibility(View.GONE);
+        } else {
+            placeDescription.getLayoutParams().height = descriptionCollapsedHeight;
+            expandDescriptionPanel.setVisibility(View.VISIBLE);
         }
     }
 
@@ -290,12 +397,7 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
             }
 
             tmp = cursor.getString(cursor.getColumnIndex(Places.Columns.DESCRIPTION));
-            if (TextUtils.isEmpty(tmp)) {
-                placeDescription.setVisibility(View.GONE);
-            } else {
-                placeDescription.setText(tmp);
-                placeDescription.setVisibility(View.VISIBLE);
-            }
+            setDescription(tmp);
 
             int commentsCount = cursor.getInt(cursor.getColumnIndex(Places.Columns.COMMENTS_COUNT));
             actionCommentsCount.setCommentsCount(commentsCount);

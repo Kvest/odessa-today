@@ -86,6 +86,8 @@
     <attr format="color" name="EventTimetableListPinIconColor"/>
     <attr format="color" name="PlaceDetailsBgColor"/>
     <attr format="color" name="PlaceDetailsDescriptionTextColor"/>
+    <attr format="color" name="PlaceDetailsFullLabelTextColor"/>
+    <attr format="reference" name="PlaceDetailsExpandIcon"/>
     <attr format="color" name="PlaceDetailsDrawablesColor"/>
     <attr format="color" name="PlaceDetailsTimetableTextColor"/>
     <attr format="color" name="PlaceDetailsDividerColor"/>

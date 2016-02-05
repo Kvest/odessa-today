@@ -99,6 +99,8 @@
         <!--place details-->
         <item name="PlaceDetailsBgColor">@android:color/white</item>
         <item name="PlaceDetailsDescriptionTextColor">#4f4f4f</item>
+        <item name="PlaceDetailsFullLabelTextColor">#ffffff</item>
+        <item name="PlaceDetailsExpandIcon">@drawable/ic_expand_day</item>
         <item name="PlaceDetailsDrawablesColor">#24282b</item>
         <item name="PlaceDetailsTimetableTextColor">#24282b</item>
         <item name="PlaceDetailsDividerColor">#e2e2e2</item>

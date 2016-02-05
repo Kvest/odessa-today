@@ -59,6 +59,7 @@
     <string name="selector_concerts">концерты</string>
     <string name="selector_concert_halls">концертные залы</string>
     <string name="selector_places">места</string>
+    <string name="full_description">Полное описание</string>
     <string name="timetable">Расписание</string>
     <string name="add_comment">Написать отзыв</string>
     <string name="comment_author_hint">Ваше имя</string>
