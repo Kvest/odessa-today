@@ -173,11 +173,15 @@ public class PlaceTimetableAdapter extends BaseAdapter {
             int eventTypeIndex = cursor.getColumnIndex(EventsTimetableView.Columns.EVENT_TYPE);
             int hasTicketsIndex = cursor.getColumnIndex(EventsTimetableView.Columns.HAS_TICKETS);
             int pricesIndex = cursor.getColumnIndex(EventsTimetableView.Columns.PRICES);
+            int dayNumber = -1;
             do {
                 date = cursor.getLong(dateIndex);
                 if (prevDay != TimeUtils.getBeginningOfTheDay(date)) {
+                    dayNumber++;
+
                     DateItem dateItem = new DateItem(date);
                     dateItem.date = date;
+                    dateItem.bgColor = ((dayNumber % 2) == 0 ? evenItemBgColor : oddItemBgColor);
                     dataset.add(dateItem);
 
                     prevDay = TimeUtils.getBeginningOfTheDay(date);
@@ -191,6 +195,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
                     eventInfo.commentsCount = cursor.getInt(commentsCountIndex);
                     eventInfo.eventName = cursor.getString(eventNameIndex);
                     eventInfo.eventType = cursor.getInt(eventTypeIndex);
+                    eventInfo.bgColor = ((dayNumber % 2) == 0 ? evenItemBgColor : oddItemBgColor);
 
                     dataset.add(eventInfo);
 
@@ -201,6 +206,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
                 timetableItem.date = date;
                 timetableItem.hasTickets = (cursor.getInt(hasTicketsIndex) != 0);
                 timetableItem.prices = convertPrices(cursor.getString(pricesIndex));
+                timetableItem.bgColor = ((dayNumber % 2) == 0 ? evenItemBgColor : oddItemBgColor);
 
                 dataset.add(timetableItem);
             } while (cursor.moveToNext());
@@ -258,6 +264,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
 
     private static abstract class BaseTimetableItem {
         public final long id;
+        public int bgColor;
 
         public BaseTimetableItem(long id) {
             this.id = id;
@@ -315,25 +322,31 @@ public class PlaceTimetableAdapter extends BaseAdapter {
         }
 
         public void bind(DateItem dateItem) {
+            date.setBackgroundColor(dateItem.bgColor);
+
             long dateValue = TimeUnit.SECONDS.toMillis(dateItem.date);
             date.setText(DATE_FORMAT.format(dateValue));
         }
     }
 
     private static class EventInfoItemViewHolder {
+        private View parent;
         private RatingBar rating;
         private TextView commentsCount;
         private TextView eventName;
         private TextView eventType;
 
         public EventInfoItemViewHolder(View view) {
-            rating = (RatingBar) view.findViewById(R.id.event_rating);
-            commentsCount = (TextView) view.findViewById(R.id.comments_count);
-            eventName = (TextView) view.findViewById(R.id.event_name);
-            eventType = (TextView) view.findViewById(R.id.event_type);
+            parent = view;
+            rating = (RatingBar) parent.findViewById(R.id.event_rating);
+            commentsCount = (TextView) parent.findViewById(R.id.comments_count);
+            eventName = (TextView) parent.findViewById(R.id.event_name);
+            eventType = (TextView) parent.findViewById(R.id.event_type);
         }
 
         public void bind(Context context, EventInfoItem eventInfoItem) {
+            parent.setBackgroundColor(eventInfoItem.bgColor);
+
             rating.setRating(eventInfoItem.rating);
             commentsCount.setText(Utils.createCommentsString(context, eventInfoItem.commentsCount));
             eventName.setText(eventInfoItem.eventName);
@@ -370,17 +383,21 @@ public class PlaceTimetableAdapter extends BaseAdapter {
     }
 
     private static class TimetableItemViewHolder {
+        private View parent;
         private TextView time;
         private TextView hasTickets;
         private TextView prices;
 
         public TimetableItemViewHolder(View view) {
-            time = (TextView) view.findViewById(R.id.seance_time);
-            hasTickets = (TextView) view.findViewById(R.id.has_tickets);
-            prices = (TextView) view.findViewById(R.id.prices);
+            parent = view;
+            time = (TextView) parent.findViewById(R.id.seance_time);
+            hasTickets = (TextView) parent.findViewById(R.id.has_tickets);
+            prices = (TextView) parent.findViewById(R.id.prices);
         }
 
         public void bind(TimetableItem timetableItem) {
+            parent.setBackgroundColor(timetableItem.bgColor);
+
             long dateValue = TimeUnit.SECONDS.toMillis(timetableItem.date);
             time.setText(TIME_FORMAT.format(dateValue));
 

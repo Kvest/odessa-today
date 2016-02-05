@@ -8,7 +8,8 @@
     android:weightSum="1"
     android:paddingLeft="@dimen/place_details_padding"
     android:paddingRight="@dimen/place_details_padding"
-    android:paddingTop="@dimen/place_timetable_list_seance_item_padding_top">
+    android:paddingTop="@dimen/place_timetable_list_seance_item_padding_top"
+    android:paddingBottom="@dimen/place_timetable_list_seance_item_padding_bottom">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
