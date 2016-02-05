@@ -1,16 +1,20 @@
 package com.kvest.odessatoday.ui.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -100,6 +104,8 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
 
         //sync data
         NetworkService.sync(getApplicationContext());
+
+        checkPermissions();
     }
 
     @Override
@@ -124,6 +130,14 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         super.onPause();
 
         unregisterReceiver(networkChangeReceiver);
+    }
+
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    0);
+        }
     }
 
     private void init() {
