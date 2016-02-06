@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.*;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -57,6 +58,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     private SwipeRefreshLayout refreshLayout;
 
     private boolean hasMoreComments = false;
+    private ListView commentsList;
 
     public static CommentsFragment newInstance(long targetId, int targetType,
                                                String targetName, String targetTypeName,
@@ -85,6 +87,25 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         init(rootView, footerView);
 
         return rootView;
+    }
+
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //add placeholder
+        final View footer =view.findViewById(R.id.footer);
+        footer.post(new Runnable() {
+            @Override
+            public void run() {
+                View placeholder = new View(commentsList.getContext());
+                placeholder.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                                                       footer.getHeight()));
+                commentsList.addFooterView(placeholder, null, false);
+            }
+        });
     }
 
     @Override
@@ -140,7 +161,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         refreshLayout.setColorSchemeResources(R.color.application_green);
 
         //store list view
-        ListView commentsList = (ListView)rootView.findViewById(R.id.comments_list);
+        commentsList = (ListView)rootView.findViewById(R.id.comments_list);
         commentsList.addFooterView(footer, null, false);
 
         //create and set an adapter

@@ -68,6 +68,23 @@
             android:layout_height="@dimen/comments_list_divider_height"
             android:layout_below="@id/header"
             android:background="?attr/CommentsListDividerColor" />
+        <!--list-->
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/header_divider"
+            android:layout_alignParentBottom="true">
+            <ListView
+                android:id="@+id/comments_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:listSelector="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="?attr/CommentsListDividerColor"
+                android:footerDividersEnabled="false"
+                android:dividerHeight="@dimen/comments_list_divider_height" />
+        </android.support.v4.widget.SwipeRefreshLayout>
         <!--footer-->
         <FrameLayout
             android:id="@+id/footer"
@@ -91,28 +108,10 @@
                 android:text="@string/add_comment"/>
         </FrameLayout>
         <View
-            android:id="@+id/footer_divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/comments_list_divider_height"
             android:layout_above="@id/footer"
             android:background="?attr/CommentsListDividerColor" />
-        <!--list-->
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/header_divider"
-            android:layout_above="@id/footer_divider">
-            <ListView
-                android:id="@+id/comments_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:listSelector="@android:color/transparent"
-                android:cacheColorHint="@android:color/transparent"
-                android:divider="?attr/CommentsListDividerColor"
-                android:footerDividersEnabled="false"
-                android:dividerHeight="@dimen/comments_list_divider_height" />
-        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
     <FrameLayout
         android:id="@+id/add_comment_fragment_container"

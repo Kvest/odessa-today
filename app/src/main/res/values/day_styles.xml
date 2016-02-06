@@ -114,7 +114,7 @@
         <item name="CommentTextColor">#4f4f4f</item>
         <item name="CommentNeedUploadBgColor">#f4f4f4</item>
         <item name="CommentsHeaderBgColor">#f9f9f9</item>
-        <item name="CommentsFooterBgColor">@android:color/white</item>
+        <item name="CommentsFooterBgColor">#ccffffff</item>
         <item name="CommentsTargetNameTextColor">#24282b</item>
         <item name="AddCommentHintTextColor">#828282</item>
         <item name="AddCommentTextColor">#2d2d2d</item>

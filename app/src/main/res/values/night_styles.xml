@@ -114,7 +114,7 @@
         <item name="CommentTextColor">#a5a5a5</item>
         <item name="CommentNeedUploadBgColor">#4a4a4a</item>
         <item name="CommentsHeaderBgColor">#1b1b1b</item>
-        <item name="CommentsFooterBgColor">#090909</item>
+        <item name="CommentsFooterBgColor">#cc000000</item>
         <item name="CommentsTargetNameTextColor">#e1e1e1</item>
         <item name="AddCommentHintTextColor">#818181</item>
         <item name="AddCommentTextColor">#e1e1e1</item>
