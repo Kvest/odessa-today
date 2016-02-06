@@ -113,7 +113,7 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
 
         //setup timetable list
         timetableList = (ListView)rootView.findViewById(R.id.place_details_list);
-        timetableList.addHeaderView(headerView);
+        timetableList.addHeaderView(headerView, null, false);
         timetableAdapter = new PlaceTimetableAdapter(getActivity());
         timetableList.setAdapter(timetableAdapter);
 

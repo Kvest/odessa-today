@@ -110,7 +110,7 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     }
 
     private void initTimetableList(ListView rootView, View headerView) {
-        rootView.addHeaderView(headerView);
+        rootView.addHeaderView(headerView, null, false);
         timetableAdapter = new TimetableAdapter(getActivity());
         rootView.setAdapter(timetableAdapter);
 

@@ -141,7 +141,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
 
         //store list view
         ListView commentsList = (ListView)rootView.findViewById(R.id.comments_list);
-        commentsList.addFooterView(footer);
+        commentsList.addFooterView(footer, null, false);
 
         //create and set an adapter
         adapter = new CommentsAdapter(getActivity());

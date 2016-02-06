@@ -130,7 +130,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
         //setup timetable list
         timetableList = (ListView)rootView.findViewById(R.id.cinema_details_list);
-        timetableList.addHeaderView(headerView);
+        timetableList.addHeaderView(headerView, null, false);
         cinemaTimetableAdapter = new CinemaTimetableAdapter(getActivity());
         timetableList.setAdapter(cinemaTimetableAdapter);
 
