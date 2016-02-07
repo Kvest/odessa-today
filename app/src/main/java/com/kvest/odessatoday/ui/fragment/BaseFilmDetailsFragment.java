@@ -149,26 +149,13 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        Activity activity = getActivity();
-        if (activity != null && activity.isFinishing()) {
-            if (youTubeThumbnailLoader != null) {
-                youTubeThumbnailLoader.release();
-                youTubeThumbnailLoader = null;
-            }
-        }
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
 
         //one more check. In some situations happens "android.app.ServiceConnectionLeaked: Activity com.kvest.odessatoday.ui.activity.FilmDetailsActivity has leaked ServiceConnection.."
         //try to avoid it
         Activity activity = getActivity();
-        if (activity != null && activity.isFinishing()) {
+        if (activity != null) {
             if (youTubeThumbnailLoader != null) {
                 youTubeThumbnailLoader.release();
                 youTubeThumbnailLoader = null;
