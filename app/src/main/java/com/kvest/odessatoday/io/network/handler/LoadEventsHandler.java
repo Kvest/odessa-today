@@ -15,6 +15,7 @@ import com.kvest.odessatoday.io.network.response.GetEventsResponse;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.SelectionBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +36,6 @@ public class LoadEventsHandler extends RequestHandler {
     private static final String EXTRA_END_DATE = "com.kvest.odessatoday.EXTRAS.END_DATE";
     private static final String EXTRA_PLACE_ID = "com.kvest.odessatoday.EXTRAS.PLACE_ID";
     private static final String EXTRA_TYPE = "com.kvest.odessatoday.EXTRAS.TYPE";
-
-    private static final String SELECTION_WITH_PLACE_ID = TodayProviderContract.Tables.EventsTimetable.Columns.DATE + ">=? AND " +
-                                                          TodayProviderContract.Tables.EventsTimetable.Columns.DATE + "<=? AND " +
-                                                          TodayProviderContract.Tables.EventsTimetable.Columns.PLACE_ID + "=?";
-
-    private static final String SELECTION_WITH_TYPE = TodayProviderContract.Tables.EventsTimetable.Columns.DATE + ">=? AND " +
-                                                      TodayProviderContract.Tables.EventsTimetable.Columns.DATE + "<=? AND " +
-                                                      TodayProviderContract.Tables.EventsTimetable.Columns.EVENT_ID + " in (" + TodayProviderContract.Tables.Events.GET_EVENTS_ID_BY_TYPE_SQL + ")";
 
     public static void putExtras(Intent intent, long startDate, long endDate, long placeId) {
         intent.putExtra(EXTRA_START_DATE, startDate);
@@ -104,17 +97,25 @@ public class LoadEventsHandler extends RequestHandler {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
         //delete timetable from startDate to endDate
-        if (type == EMPTY_TYPE) {
-            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(EVENTS_TIMETABLE_URI)
-                    .withSelection(SELECTION_WITH_PLACE_ID, new String[]{Long.toString(startDate), Long.toString(endDate), Long.toString(placeId)})
-                    .build();
-            operations.add(deleteOperation);
-        } else {
-            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(EVENTS_TIMETABLE_URI)
-                    .withSelection(SELECTION_WITH_TYPE, new String[]{Long.toString(startDate), Long.toString(endDate), Integer.toString(type)})
-                    .build();
-            operations.add(deleteOperation);
+        SelectionBuilder selectionBuilder = new SelectionBuilder();
+        if (startDate >= 0) {
+            selectionBuilder.and(TodayProviderContract.Tables.EventsTimetable.Columns.DATE + ">=?", Long.toString(startDate));
         }
+        if (endDate >= 0) {
+            selectionBuilder.and(TodayProviderContract.Tables.EventsTimetable.Columns.DATE + "<=?", Long.toString(endDate));
+        }
+        if (placeId != EMPTY_PLACE_ID) {
+            selectionBuilder.and(TodayProviderContract.Tables.EventsTimetable.Columns.PLACE_ID + "=?", Long.toString(placeId));
+        }
+        if (type != EMPTY_TYPE) {
+            selectionBuilder.and(TodayProviderContract.Tables.EventsTimetable.Columns.EVENT_ID + " in (" +
+                                 TodayProviderContract.Tables.Events.GET_EVENTS_ID_BY_TYPE_SQL + ")",
+                                 Integer.toString(type));
+        }
+        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(EVENTS_TIMETABLE_URI)
+                .withSelection(selectionBuilder.getSelection(), selectionBuilder.getSelectionArgs())
+                .build();
+        operations.add(deleteOperation);
 
         for (Event event : events) {
             //insert event

@@ -15,6 +15,7 @@ import com.kvest.odessatoday.io.network.response.GetFilmsResponse;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.SelectionBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,6 @@ public class LoadFilmsHandler extends RequestHandler {
     private static final String START_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.START_DATE";
     private static final String END_DATE_EXTRA = "com.kvest.odessatoday.EXTRAS.END_DATE";
     private static final String CINEMA_ID_EXTRA = "com.kvest.odessatoday.EXTRAS.CINEMA_ID";
-
-    private static final String SELECTION_WITH_CINEMA_ID = Tables.FilmsTimetable.Columns.DATE + ">=? AND " + Tables.FilmsTimetable.Columns.DATE + "<=? AND " +  Tables.FilmsTimetable.Columns.CINEMA_ID + "=?";
-    private static final String SELECTION_WITHOUT_CINEMA_ID = Tables.FilmsTimetable.Columns.DATE + ">=? AND " + Tables.FilmsTimetable.Columns.DATE + "<=?";
 
     public static void putExtras(Intent intent, long startDate, long endDate, long cinemaId) {
         intent.putExtra(START_DATE_EXTRA, startDate);
@@ -86,17 +84,20 @@ public class LoadFilmsHandler extends RequestHandler {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
         //delete timetable from startDate to endDate
-        if (cinemaId != EMPTY_CINEMA_ID) {
-            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(FILM_TIMETABLE_URI)
-                    .withSelection(SELECTION_WITH_CINEMA_ID, new String[]{Long.toString(startDate), Long.toString(endDate), Long.toString(cinemaId)})
-                    .build();
-            operations.add(deleteOperation);
-        } else {
-            ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(FILM_TIMETABLE_URI)
-                    .withSelection(SELECTION_WITHOUT_CINEMA_ID, new String[]{Long.toString(startDate), Long.toString(endDate)})
-                    .build();
-            operations.add(deleteOperation);
+        SelectionBuilder selectionBuilder = new SelectionBuilder();
+        if (startDate >= 0) {
+            selectionBuilder.and(Tables.FilmsTimetable.Columns.DATE + ">=?", Long.toString(startDate));
         }
+        if (endDate >= 0) {
+            selectionBuilder.and(Tables.FilmsTimetable.Columns.DATE + "<=?", Long.toString(endDate));
+        }
+        if (cinemaId != EMPTY_CINEMA_ID) {
+            selectionBuilder.and(Tables.FilmsTimetable.Columns.CINEMA_ID + "=?", Long.toString(cinemaId));
+        }
+        ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(FILM_TIMETABLE_URI)
+                .withSelection(selectionBuilder.getSelection(), selectionBuilder.getSelectionArgs())
+                .build();
+        operations.add(deleteOperation);
 
         for (FilmWithTimetable film : films) {
             //insert film
