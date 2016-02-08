@@ -165,8 +165,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
 
         //one more check. In some situations happens "android.app.ServiceConnectionLeaked: Activity com.kvest.odessatoday.ui.activity.FilmDetailsActivity has leaked ServiceConnection.."
         //try to avoid it
