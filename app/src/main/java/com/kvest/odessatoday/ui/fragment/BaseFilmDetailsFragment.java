@@ -168,8 +168,6 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     public void onDestroyView() {
         super.onDestroyView();
 
-        //one more check. In some situations happens "android.app.ServiceConnectionLeaked: Activity com.kvest.odessatoday.ui.activity.FilmDetailsActivity has leaked ServiceConnection.."
-        //try to avoid it
         Activity activity = getActivity();
         if (activity != null) {
             if (youTubeThumbnailLoader != null) {
