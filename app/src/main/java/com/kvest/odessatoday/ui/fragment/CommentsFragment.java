@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.*;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -99,7 +98,7 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
             @Override
             public void run() {
                 View placeholder = new View(commentsList.getContext());
-                placeholder.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                placeholder.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT,
                                                                        footer.getHeight()));
                 commentsList.addFooterView(placeholder, null, false);
             }
