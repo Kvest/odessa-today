@@ -73,7 +73,11 @@ public class AddCommentFragment extends BaseFragment {
         ((RadioButton) rootView.findViewById(R.id.rating4)).setTypeface(helveticaneuecyrBold);
         ((RadioButton) rootView.findViewById(R.id.rating5)).setTypeface(helveticaneuecyrBold);
 
-        commentAuthor.setText(SettingsSPStorage.getCommentAuthorName(getActivity()));
+        String authorName = SettingsSPStorage.getCommentAuthorName(getActivity());
+        if (!TextUtils.isEmpty(authorName)) {
+            commentAuthor.setText(authorName);
+            commentText.requestFocus();
+        }
 
         if (!canRate()) {
             //hide rate components
