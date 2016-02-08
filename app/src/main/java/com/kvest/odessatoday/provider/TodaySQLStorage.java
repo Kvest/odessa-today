@@ -47,18 +47,17 @@ class TodaySQLStorage extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         LOGD(TAG, "onUpgrade() from " + oldVersion + " to " + newVersion);
         if (oldVersion < DATABASE_VERSION_V0_5) {
-            //upgrade cinemas table
+            //upgrade cinemas and films tables
             db.execSQL(Cinemas.DROP_TABLE_SQL);
             db.execSQL(Cinemas.CREATE_TABLE_SQL);
+            db.execSQL(Films.DROP_TABLE_SQL);
+            db.execSQL(Films.CREATE_TABLE_SQL);
 
             db.execSQL(CommentsRating.CREATE_TABLE_SQL);
             db.execSQL(Places.CREATE_TABLE_SQL);
             db.execSQL(Events.CREATE_TABLE_SQL);
             db.execSQL(EventsTimetable.CREATE_TABLE_SQL);
             db.execSQL(EventsTimetableView.CREATE_VIEW_SQL);
-
-            db.execSQL(Films.ALTER_TABLE_ADD_RATED);
-            db.execSQL(Events.ALTER_TABLE_ADD_RATED);
         }
     }
 }

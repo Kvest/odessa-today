@@ -88,8 +88,6 @@ public class TodayProviderContract {
                     + "UNIQUE (" + Columns.FILM_ID + ") ON CONFLICT REPLACE)";
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
-
-            String ALTER_TABLE_ADD_RATED = "ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + Columns.RATED + " INTEGER DEFAULT 0;";
         }
 
         interface FilmsFullTimetableView {
@@ -393,8 +391,6 @@ public class TodayProviderContract {
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String GET_EVENTS_ID_BY_TYPE_SQL = "SELECT DISTINCT " + Columns.EVENT_ID + " FROM " + TABLE_NAME +
                                                " WHERE " + Columns.EVENT_TYPE + "=?";
-
-            String ALTER_TABLE_ADD_RATED = "ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + Columns.RATED + " INTEGER DEFAULT 0;";
         }
 
         interface EventsTimetable {

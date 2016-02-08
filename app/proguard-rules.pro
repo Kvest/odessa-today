@@ -13,3 +13,6 @@
     @com.squareup.otto.Produce public *;
 }
 #=======================================
+
+#ignre warnings
+-ignorewarnings
