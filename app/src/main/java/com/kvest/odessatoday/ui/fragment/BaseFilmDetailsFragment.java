@@ -72,6 +72,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
     private int noImageResId, loadingImageResId;
 
     private OnShowFilmCommentsListener onShowFilmCommentsListener;
+    private String[] postersUrls;
 
     @Override
     public void onAttach(Activity activity) {
@@ -117,14 +118,29 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         videoThumbnailContainer = view.findViewById(R.id.video_thumbnail_container);
         videoThumbnailPlay = view.findViewById(R.id.video_thumbnail_play);
 
-        onImageClickListener = new View.OnClickListener() {
+        filmPoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String[] urls = new String[]{((NetworkImageView)view).getUrl()};
                 PhotoGalleryActivity.start(getActivity(), urls);
             }
+        });
+        onImageClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //find image position
+                String url = ((NetworkImageView)view).getUrl();
+                int position = 0;
+                for (int i = 0; i < postersUrls.length; i++) {
+                    if (url.equals(postersUrls[i])) {
+                        position = i;
+                        break;
+                    }
+                }
+
+                PhotoGalleryActivity.start(getActivity(), postersUrls, position);
+            }
         };
-        filmPoster.setOnClickListener(onImageClickListener);
 
         actionCommentsCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +216,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             setTrailer(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.VIDEO)));
 
             //add new posters
-            String[] postersUrls = Utils.string2Images(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
+            postersUrls = Utils.string2Images(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Films.Columns.POSTERS)));
             mergeImages(postersUrls);
 
             //set visibility for Youtube player and images
@@ -335,7 +351,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
         boolean found;
         for (String imageUrl : imageUrls) {
             found = false;
-            for (int i = 1; i < imagesContainer.getChildCount(); ++i) {
+            for (int i = 1; i < imagesContainer.getChildCount(); ++i) {//start from 1 because an 0 position there is video thumbnail
                 if (imageUrl.equals(((RoundNetworkImageView) imagesContainer.getChildAt(i)).getUrl())) {
                     found = true;
                     break;

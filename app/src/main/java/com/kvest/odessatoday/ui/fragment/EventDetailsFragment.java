@@ -96,6 +96,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
 
     private OnShowEventCommentsListener onShowEventCommentsListener;
     private int eventType = -1;
+    private String[] postersUrls;
 
     public static EventDetailsFragment newInstance(long eventId) {
         Bundle arguments = new Bundle(1);
@@ -171,14 +172,29 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
             }
         });
 
+        eventPoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] urls = new String[]{((NetworkImageView) view).getUrl()};
+                PhotoGalleryActivity.start(getActivity(), urls);
+            }
+        });
         onImageClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] urls = new String[]{((NetworkImageView)view).getUrl()};
-                PhotoGalleryActivity.start(getActivity(), urls);
+                //find image position
+                String url = ((NetworkImageView)view).getUrl();
+                int position = 0;
+                for (int i = 0; i < postersUrls.length; i++) {
+                    if (url.equals(postersUrls[i])) {
+                        position = i;
+                        break;
+                    }
+                }
+
+                PhotoGalleryActivity.start(getActivity(), postersUrls, position);
             }
         };
-        eventPoster.setOnClickListener(onImageClickListener);
 
         videoPreview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -313,7 +329,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
             setVideo(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.VIDEO)));
 
             //add new posters
-            String[] postersUrls = Utils.string2Images(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.POSTERS)));
+            postersUrls = Utils.string2Images(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.POSTERS)));
             mergeImages(postersUrls);
 
             //set visibility for Youtube player and images

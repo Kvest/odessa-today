@@ -18,11 +18,22 @@ import com.kvest.odessatoday.ui.widget.CirclePagerIndicator;
  * To change this template use File | Settings | File Templates.
  */
 public class PhotoGalleryFragment extends BaseFragment {
-    private static final String ARGUMENT_PHOTO_URLS = "com.kvest.odessatoday.argument.PHOTO_URLS";
+    private static final String ARGUMENT_URLS = "com.kvest.odessatoday.argument.URLS";
+    private static final String ARGUMENT_SELECTED_URL = "com.kvest.odessatoday.argument.SELCTED_URL";
+
+    public static PhotoGalleryFragment newInstance(String[] photoURLs, int selectedUrl) {
+        Bundle arguments = new Bundle(2);
+        arguments.putStringArray(ARGUMENT_URLS, photoURLs);
+        arguments.putInt(ARGUMENT_SELECTED_URL, selectedUrl);
+
+        PhotoGalleryFragment result = new PhotoGalleryFragment();
+        result.setArguments(arguments);
+        return result;
+    }
 
     public static PhotoGalleryFragment newInstance(String[] photoURLs) {
         Bundle arguments = new Bundle(1);
-        arguments.putStringArray(ARGUMENT_PHOTO_URLS, photoURLs);
+        arguments.putStringArray(ARGUMENT_URLS, photoURLs);
 
         PhotoGalleryFragment result = new PhotoGalleryFragment();
         result.setArguments(arguments);
@@ -43,6 +54,7 @@ public class PhotoGalleryFragment extends BaseFragment {
 
         ViewPager viewPager = (ViewPager)rootView.findViewById(R.id.images_pager);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(getSelectedUrl());
 
         CirclePagerIndicator pagerIndicator = (CirclePagerIndicator) rootView.findViewById(R.id.pager_indicator);
         pagerIndicator.setViewPager(viewPager);
@@ -51,9 +63,14 @@ public class PhotoGalleryFragment extends BaseFragment {
     private String[] getPhotoURLs() {
         Bundle arguments = getArguments();
         if (arguments != null) {
-            return arguments.getStringArray(ARGUMENT_PHOTO_URLS);
+            return arguments.getStringArray(ARGUMENT_URLS);
         } else {
             return new String[]{};
         }
+    }
+
+    private int getSelectedUrl() {
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getInt(ARGUMENT_SELECTED_URL, 0) : 0;
     }
 }
