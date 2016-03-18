@@ -84,14 +84,6 @@ public class PlaceDetailsActivity extends BaseActivity implements PlaceDetailsFr
 
     @Override
     public void onShowPlacePhotos(String[] photoURLs) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        try {
-            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            PhotoSlideFragment photoSlideFragment = PhotoSlideFragment.newInstance(photoURLs);
-            transaction.replace(R.id.fragment_container, photoSlideFragment);
-            transaction.addToBackStack(null);
-        } finally {
-            transaction.commit();
-        }
+        PhotoGalleryActivity.start(this, photoURLs, getTitle().toString());
     }
 }

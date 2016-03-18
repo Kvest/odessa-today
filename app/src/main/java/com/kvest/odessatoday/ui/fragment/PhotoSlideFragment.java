@@ -44,7 +44,7 @@ public class PhotoSlideFragment extends BaseFragment implements ViewPager.OnPage
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.photo_gallery_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.photo_slide_fragment, container, false);
 
         init(rootView);
 

@@ -1,0 +1,63 @@
+package com.kvest.odessatoday.ui.fragment;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.kvest.odessatoday.R;
+
+/**
+ * Created by roman on 3/18/16.
+ */
+public class PhotoGalleryFragment extends BaseFragment {
+    private static final String ARGUMENT_URLS = "com.kvest.odessatoday.argument.URLS";
+    private static final String ARGUMENT_TITLE = "com.kvest.odessatoday.argument.TITLE";
+
+    public static PhotoGalleryFragment newInstance(String[] photoURLs, String title) {
+        Bundle arguments = new Bundle(2);
+        arguments.putStringArray(ARGUMENT_URLS, photoURLs);
+        arguments.putString(ARGUMENT_TITLE, title);
+
+        PhotoGalleryFragment result = new PhotoGalleryFragment();
+        result.setArguments(arguments);
+        return result;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.photo_gallery_fragment, container, false);
+
+        init(rootView);
+
+        return rootView;
+    }
+
+    private void init(View rootView) {
+        String[] photoURLs = getPhotoURLs();
+
+        getActivity().setTitle(getTitle());
+
+        TextView photosCount = (TextView)rootView.findViewById(R.id.photos_count);
+        photosCount.setText(photoURLs.length + " photos");
+    }
+
+    private String[] getPhotoURLs() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getStringArray(ARGUMENT_URLS);
+        } else {
+            return new String[]{};
+        }
+    }
+
+    private String getTitle() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getString(ARGUMENT_TITLE);
+        } else {
+            return "";
+        }
+    }
+}
