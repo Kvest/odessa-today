@@ -68,6 +68,7 @@
     <string name="rate">Оценить</string>
     <string name="send">Отправить</string>
     <string name="fill_field">Заполните поле</string>
+    <string name="x_from_y">%1$d из %2$d</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>

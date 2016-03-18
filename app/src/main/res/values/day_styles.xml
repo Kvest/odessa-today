@@ -120,5 +120,7 @@
         <item name="AddCommentTextColor">#2d2d2d</item>
         <item name="CommentRatingTextColor">@color/comment_rating_text_day</item>
         <item name="CommentRatingBg">@drawable/comment_rating_bg_day</item>
+        <!--gallery-->
+        <item name="GalleryLabelTextColor">#24282b</item>
     </style>
 </resources>

@@ -1,39 +1,24 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.ui.adapter.PhotoGalleryAdapter;
-import com.kvest.odessatoday.ui.widget.CirclePagerIndicator;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Kvest
- * Date: 14.12.14
- * Time: 16:39
- * To change this template use File | Settings | File Templates.
+ * Created by roman on 3/18/16.
  */
 public class PhotoGalleryFragment extends BaseFragment {
     private static final String ARGUMENT_URLS = "com.kvest.odessatoday.argument.URLS";
-    private static final String ARGUMENT_SELECTED_URL = "com.kvest.odessatoday.argument.SELCTED_URL";
+    private static final String ARGUMENT_TITLE = "com.kvest.odessatoday.argument.TITLE";
 
-    public static PhotoGalleryFragment newInstance(String[] photoURLs, int selectedUrl) {
+    public static PhotoGalleryFragment newInstance(String[] photoURLs, String title) {
         Bundle arguments = new Bundle(2);
         arguments.putStringArray(ARGUMENT_URLS, photoURLs);
-        arguments.putInt(ARGUMENT_SELECTED_URL, selectedUrl);
-
-        PhotoGalleryFragment result = new PhotoGalleryFragment();
-        result.setArguments(arguments);
-        return result;
-    }
-
-    public static PhotoGalleryFragment newInstance(String[] photoURLs) {
-        Bundle arguments = new Bundle(1);
-        arguments.putStringArray(ARGUMENT_URLS, photoURLs);
+        arguments.putString(ARGUMENT_TITLE, title);
 
         PhotoGalleryFragment result = new PhotoGalleryFragment();
         result.setArguments(arguments);
@@ -50,14 +35,12 @@ public class PhotoGalleryFragment extends BaseFragment {
     }
 
     private void init(View rootView) {
-        PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(getActivity(), getPhotoURLs());
+        String[] photoURLs = getPhotoURLs();
 
-        ViewPager viewPager = (ViewPager)rootView.findViewById(R.id.images_pager);
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(getSelectedUrl());
+        getActivity().setTitle(getTitle());
 
-        CirclePagerIndicator pagerIndicator = (CirclePagerIndicator) rootView.findViewById(R.id.pager_indicator);
-        pagerIndicator.setViewPager(viewPager);
+        TextView photosCount = (TextView)rootView.findViewById(R.id.photos_count);
+        photosCount.setText(photoURLs.length + " photos");
     }
 
     private String[] getPhotoURLs() {
@@ -69,8 +52,12 @@ public class PhotoGalleryFragment extends BaseFragment {
         }
     }
 
-    private int getSelectedUrl() {
+    private String getTitle() {
         Bundle arguments = getArguments();
-        return arguments != null ? arguments.getInt(ARGUMENT_SELECTED_URL, 0) : 0;
+        if (arguments != null) {
+            return arguments.getString(ARGUMENT_TITLE);
+        } else {
+            return "";
+        }
     }
 }

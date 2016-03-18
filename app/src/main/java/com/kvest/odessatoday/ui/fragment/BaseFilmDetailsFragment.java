@@ -20,7 +20,7 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.provider.TodayProviderContract;
-import com.kvest.odessatoday.ui.activity.PhotoGalleryActivity;
+import com.kvest.odessatoday.ui.activity.PhotoSlideActivity;
 import com.kvest.odessatoday.ui.activity.YoutubeFullscreenActivity;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
@@ -122,7 +122,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
             @Override
             public void onClick(View view) {
                 String[] urls = new String[]{((NetworkImageView)view).getUrl()};
-                PhotoGalleryActivity.start(getActivity(), urls);
+                PhotoSlideActivity.start(getActivity(), urls);
             }
         });
         onImageClickListener = new View.OnClickListener() {
@@ -138,7 +138,7 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
                     }
                 }
 
-                PhotoGalleryActivity.start(getActivity(), postersUrls, position);
+                PhotoSlideActivity.start(getActivity(), postersUrls, position);
             }
         };
 

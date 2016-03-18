@@ -16,7 +16,7 @@ import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CalendarFragment;
 import com.kvest.odessatoday.ui.fragment.CinemaDetailsFragment;
 import com.kvest.odessatoday.ui.fragment.CommentsFragment;
-import com.kvest.odessatoday.ui.fragment.PhotoGalleryFragment;
+import com.kvest.odessatoday.ui.fragment.PhotoSlideFragment;
 import com.kvest.odessatoday.utils.Constants;
 
 import java.util.Calendar;
@@ -113,15 +113,7 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
 
     @Override
     public void onShowCinemaPhotos(String[] photoURLs) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        try {
-            transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            PhotoGalleryFragment photoGalleryFragment = PhotoGalleryFragment.newInstance(photoURLs);
-            transaction.replace(R.id.fragment_container, photoGalleryFragment);
-            transaction.addToBackStack(null);
-        } finally {
-            transaction.commit();
-        }
+        PhotoGalleryActivity.start(this, photoURLs, getTitle().toString());
     }
 
     @Override
