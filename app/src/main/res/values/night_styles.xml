@@ -120,5 +120,7 @@
         <item name="AddCommentTextColor">#e1e1e1</item>
         <item name="CommentRatingTextColor">@color/comment_rating_text_night</item>
         <item name="CommentRatingBg">@drawable/comment_rating_bg_night</item>
+        <!--gallery-->
+        <item name="GalleryLabelTextColor">#e1e1e1</item>
     </style>
 </resources>

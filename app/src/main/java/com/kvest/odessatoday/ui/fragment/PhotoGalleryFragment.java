@@ -1,14 +1,14 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.adapter.PhotoGalleryAdapter;
-import com.kvest.odessatoday.ui.widget.CirclePagerIndicator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,9 +17,11 @@ import com.kvest.odessatoday.ui.widget.CirclePagerIndicator;
  * Time: 16:39
  * To change this template use File | Settings | File Templates.
  */
-public class PhotoGalleryFragment extends BaseFragment {
+public class PhotoGalleryFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
     private static final String ARGUMENT_URLS = "com.kvest.odessatoday.argument.URLS";
     private static final String ARGUMENT_SELECTED_URL = "com.kvest.odessatoday.argument.SELCTED_URL";
+    private ViewPager viewPager;
+    private TextView photoNumber;
 
     public static PhotoGalleryFragment newInstance(String[] photoURLs, int selectedUrl) {
         Bundle arguments = new Bundle(2);
@@ -50,14 +52,28 @@ public class PhotoGalleryFragment extends BaseFragment {
     }
 
     private void init(View rootView) {
+        photoNumber = (TextView)rootView.findViewById(R.id.photo_number);
+
         PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(getActivity(), getPhotoURLs());
 
-        ViewPager viewPager = (ViewPager)rootView.findViewById(R.id.images_pager);
+        viewPager = (ViewPager)rootView.findViewById(R.id.images_pager);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(getSelectedUrl());
+        int selectedPhotoNumber = getSelectedUrl();
+        viewPager.setCurrentItem(selectedPhotoNumber);
+        viewPager.addOnPageChangeListener(this);
 
-        CirclePagerIndicator pagerIndicator = (CirclePagerIndicator) rootView.findViewById(R.id.pager_indicator);
-        pagerIndicator.setViewPager(viewPager);
+        if (adapter.getCount() > 1) {
+            photoNumber.setText(getString(R.string.x_from_y, selectedPhotoNumber + 1, viewPager.getAdapter().getCount()));
+        } else {
+            photoNumber.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        viewPager.removeOnPageChangeListener(this);
     }
 
     private String[] getPhotoURLs() {
@@ -73,4 +89,15 @@ public class PhotoGalleryFragment extends BaseFragment {
         Bundle arguments = getArguments();
         return arguments != null ? arguments.getInt(ARGUMENT_SELECTED_URL, 0) : 0;
     }
+
+    @Override
+    public void onPageSelected(int position) {
+        photoNumber.setText(getString(R.string.x_from_y, position + 1, viewPager.getAdapter().getCount()));
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+    @Override
+    public void onPageScrollStateChanged(int state) {}
 }

@@ -154,10 +154,6 @@
     <dimen name="timetable_list_film_item_arrow_margin_left">4dip</dimen>
     <dimen name="timetable_list_film_name_text_size">13sp</dimen>
 
-    <!--PhotoGalleryFragment-->
-    <dimen name="pager_indicator_vertical_margin">10dip</dimen>
-    <dimen name="pager_indicator_margin_between_circles">4dip</dimen>
-
     <!--main menu-->
     <dimen name="main_menu_behind_offset">100dip</dimen>
 
@@ -276,4 +272,8 @@
     <dimen name="place_timetable_list_seance_time_margin_left">8dip</dimen>
     <dimen name="place_timetable_list_seance_time_text_size">12sp</dimen>
     <dimen name="place_timetable_list_price_text_size">12sp</dimen>
+
+    <!--gallery-->
+    <dimen name="gallery_label_text_size">18sp</dimen>
+    <dimen name="gallery_label_padding">8dip</dimen>
 </resources>

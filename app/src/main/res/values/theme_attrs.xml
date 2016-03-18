@@ -106,4 +106,5 @@
     <attr format="color" name="AddCommentTextColor"/>
     <attr format="color" name="CommentRatingTextColor"/>
     <attr format="reference" name="CommentRatingBg"/>
+    <attr format="color" name="GalleryLabelTextColor"/>
 </resources>
