@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.CommentsFragment;
-import com.kvest.odessatoday.ui.fragment.PhotoGalleryFragment;
+import com.kvest.odessatoday.ui.fragment.PhotoSlideFragment;
 import com.kvest.odessatoday.ui.fragment.PlaceDetailsFragment;
 import com.kvest.odessatoday.utils.Utils;
 
@@ -87,8 +87,8 @@ public class PlaceDetailsActivity extends BaseActivity implements PlaceDetailsFr
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            PhotoGalleryFragment photoGalleryFragment = PhotoGalleryFragment.newInstance(photoURLs);
-            transaction.replace(R.id.fragment_container, photoGalleryFragment);
+            PhotoSlideFragment photoSlideFragment = PhotoSlideFragment.newInstance(photoURLs);
+            transaction.replace(R.id.fragment_container, photoSlideFragment);
             transaction.addToBackStack(null);
         } finally {
             transaction.commit();

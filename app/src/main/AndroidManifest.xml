@@ -38,7 +38,7 @@
             android:label="@string/cinema_info"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.activity.PhotoGalleryActivity"
+            android:name=".ui.activity.PhotoSlideActivity"
             android:theme="@style/OdessaTodayTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity

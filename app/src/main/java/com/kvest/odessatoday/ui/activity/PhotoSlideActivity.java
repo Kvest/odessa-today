@@ -5,24 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.ui.fragment.PhotoGalleryFragment;
+import com.kvest.odessatoday.ui.fragment.PhotoSlideFragment;
 
 /**
  * Created by Kvest on 07.02.2015.
  */
-public class PhotoGalleryActivity extends BaseActivity {
+public class PhotoSlideActivity extends BaseActivity {
     private static final String EXTRA_URLS = "com.kvest.odessatoday.extra.URLS";
     private static final String EXTRA_SELECTED_URL = "com.kvest.odessatoday.extra.SELECTED_URL";
 
     public static void start(Context context, String[] urls) {
-        Intent intent = new Intent(context, PhotoGalleryActivity.class);
+        Intent intent = new Intent(context, PhotoSlideActivity.class);
         intent.putExtra(EXTRA_URLS, urls);
 
         context.startActivity(intent);
     }
 
     public static void start(Context context, String[] urls, int selectedUrl) {
-        Intent intent = new Intent(context, PhotoGalleryActivity.class);
+        Intent intent = new Intent(context, PhotoSlideActivity.class);
         intent.putExtra(EXTRA_URLS, urls);
         intent.putExtra(EXTRA_SELECTED_URL, selectedUrl);
 
@@ -41,7 +41,7 @@ public class PhotoGalleryActivity extends BaseActivity {
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                PhotoGalleryFragment fragment = PhotoGalleryFragment.newInstance(urls, selectedUrl);
+                PhotoSlideFragment fragment = PhotoSlideFragment.newInstance(urls, selectedUrl);
                 transaction.add(R.id.fragment_container, fragment);
             } finally {
                 transaction.commit();

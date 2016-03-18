@@ -17,27 +17,27 @@ import com.kvest.odessatoday.ui.adapter.PhotoGalleryAdapter;
  * Time: 16:39
  * To change this template use File | Settings | File Templates.
  */
-public class PhotoGalleryFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
+public class PhotoSlideFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
     private static final String ARGUMENT_URLS = "com.kvest.odessatoday.argument.URLS";
     private static final String ARGUMENT_SELECTED_URL = "com.kvest.odessatoday.argument.SELCTED_URL";
     private ViewPager viewPager;
     private TextView photoNumber;
 
-    public static PhotoGalleryFragment newInstance(String[] photoURLs, int selectedUrl) {
+    public static PhotoSlideFragment newInstance(String[] photoURLs, int selectedUrl) {
         Bundle arguments = new Bundle(2);
         arguments.putStringArray(ARGUMENT_URLS, photoURLs);
         arguments.putInt(ARGUMENT_SELECTED_URL, selectedUrl);
 
-        PhotoGalleryFragment result = new PhotoGalleryFragment();
+        PhotoSlideFragment result = new PhotoSlideFragment();
         result.setArguments(arguments);
         return result;
     }
 
-    public static PhotoGalleryFragment newInstance(String[] photoURLs) {
+    public static PhotoSlideFragment newInstance(String[] photoURLs) {
         Bundle arguments = new Bundle(1);
         arguments.putStringArray(ARGUMENT_URLS, photoURLs);
 
-        PhotoGalleryFragment result = new PhotoGalleryFragment();
+        PhotoSlideFragment result = new PhotoSlideFragment();
         result.setArguments(arguments);
         return result;
     }
