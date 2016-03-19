@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -15,14 +16,13 @@ import com.kvest.odessatoday.ui.widget.RoundNetworkImageView;
  * Created by kvest on 18.03.16.
  */
 public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapter.ViewHolder> {
-    private Context context;
     private String[] photoURLs;
     private final LayoutInflater inflater;
     private final ImageLoader imageLoader;
     private int noImageResId, loadingImageResId;
+    private OnItemSelectedListener onItemSelectedListener;
 
     public PhotoGalleryAdapter(Context context, String[] photoURLs) {
-        this.context = context;
         this.photoURLs = photoURLs;
 
         inflater = LayoutInflater.from(context);
@@ -54,7 +54,7 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
         RoundNetworkImageView view = (RoundNetworkImageView) inflater.inflate(R.layout.photo_gallery_item, parent, false);
         view.setDefaultImageResId(loadingImageResId);
         view.setErrorImageResId(noImageResId);
-        return new ViewHolder(view);
+        return new ViewHolder(view, onItemSelectedListener);
     }
 
     @Override
@@ -67,13 +67,32 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
         return photoURLs.length;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public RoundNetworkImageView imageView;
+    public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener) {
+        this.onItemSelectedListener = onItemSelectedListener;
+    }
 
-        public ViewHolder(RoundNetworkImageView view) {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public RoundNetworkImageView imageView;
+        private OnItemSelectedListener onItemSelectedListener;
+
+        public ViewHolder(RoundNetworkImageView view, OnItemSelectedListener onItemSelectedListener) {
             super(view);
 
             imageView = view;
+            imageView.setOnClickListener(this);
+
+            this.onItemSelectedListener = onItemSelectedListener;
         }
+
+        @Override
+        public void onClick(View v) {
+            if (onItemSelectedListener != null) {
+                onItemSelectedListener.onItemSelected(v, getAdapterPosition(), getItemId());
+            }
+        }
+    }
+
+    public interface OnItemSelectedListener {
+        void onItemSelected(View view, int position, long id);
     }
 }

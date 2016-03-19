@@ -9,11 +9,12 @@ import android.view.MenuItem;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.ui.fragment.PhotoGalleryFragment;
+import com.kvest.odessatoday.ui.fragment.PhotoSlideFragment;
 
 /**
  * Created by roman on 3/18/16.
  */
-public class PhotoGalleryActivity extends BaseActivity {
+public class PhotoGalleryActivity extends BaseActivity implements PhotoGalleryFragment.OnPhotoSelectedListener {
     private static final String EXTRA_URLS = "com.kvest.odessatoday.extra.URLS";
     private static final String EXTRA_TITLE = "com.kvest.odessatoday.extra.TITLE";
 
@@ -59,5 +60,17 @@ public class PhotoGalleryActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPhotoSelected(String[] photoURLs, int position) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        try {
+            PhotoSlideFragment fragment = PhotoSlideFragment.newInstance(photoURLs, position);
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+        } finally {
+            transaction.commit();
+        }
     }
 }
