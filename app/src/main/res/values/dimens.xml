@@ -274,6 +274,9 @@
     <dimen name="place_timetable_list_price_text_size">12sp</dimen>
 
     <!--gallery-->
+    <dimen name="gallery_padding">5dip</dimen>
     <dimen name="gallery_label_text_size">18sp</dimen>
     <dimen name="gallery_label_padding">8dip</dimen>
+    <dimen name="gallery_image_width">102dip</dimen>
+    <dimen name="gallery_image_height">90dip</dimen>
 </resources>

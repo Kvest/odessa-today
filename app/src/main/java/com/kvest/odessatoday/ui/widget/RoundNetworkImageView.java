@@ -76,17 +76,32 @@ public class RoundNetworkImageView extends NetworkImageView {
 
         if (radius > 0 && drawable != null) {
             Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
+            if (bm == null) {
+                return;
+            }
 
             BitmapShader shader = new BitmapShader(bm, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
             paint.setShader(shader);
 
-            rect.set(0.0f, 0.0f, getWidth(), getHeight());
+            int saveCount = -1;
+            if (getScaleType() == ScaleType.CENTER) {
+                saveCount = canvas.save();
+                float dx = Math.max(0.0f, (getWidth() - bm.getWidth()) / 2);
+                float dy = Math.max(0.0f, (getHeight() - bm.getHeight()) / 2);
+                canvas.translate(dx, dy);
+            }
+
+            rect.set(0.0f, 0.0f, Math.min(getWidth(), bm.getWidth()), Math.min(getHeight(), bm.getHeight()));
 
             // rect contains the bounds of the shape
             // radius is the radius in pixels of the rounded corners
             // paint contains the shader that will texture the shape
             canvas.drawRoundRect(rect, radius, radius, paint);
+
+            if (getScaleType() == ScaleType.CENTER) {
+                canvas.restoreToCount(saveCount);
+            }
         } else {
             super.onDraw(canvas);
         }

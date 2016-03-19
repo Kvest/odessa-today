@@ -10,6 +10,9 @@
         android:layout_height="wrap_content"
         android:textColor="#ff0000"/>
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/photos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:padding="@dimen/gallery_padding"
+        android:scrollbars="vertical"/>
 </LinearLayout>

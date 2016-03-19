@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.ui.adapter.PhotoGalleryAdapter;
+import com.kvest.odessatoday.ui.adapter.PhotoSlideAdapter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,7 +54,7 @@ public class PhotoSlideFragment extends BaseFragment implements ViewPager.OnPage
     private void init(View rootView) {
         photoNumber = (TextView)rootView.findViewById(R.id.photo_number);
 
-        PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(getActivity(), getPhotoURLs());
+        PhotoSlideAdapter adapter = new PhotoSlideAdapter(getActivity(), getPhotoURLs());
 
         viewPager = (ViewPager)rootView.findViewById(R.id.images_pager);
         viewPager.setAdapter(adapter);

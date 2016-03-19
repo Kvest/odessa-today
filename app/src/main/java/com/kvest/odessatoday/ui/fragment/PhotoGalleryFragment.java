@@ -1,12 +1,16 @@
 package com.kvest.odessatoday.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.ui.adapter.PhotoGalleryAdapter;
+import com.kvest.odessatoday.ui.widget.GridAutofitLayoutManager;
 
 /**
  * Created by roman on 3/18/16.
@@ -40,7 +44,20 @@ public class PhotoGalleryFragment extends BaseFragment {
         getActivity().setTitle(getTitle());
 
         TextView photosCount = (TextView)rootView.findViewById(R.id.photos_count);
+        //TODO change
         photosCount.setText(photoURLs.length + " photos");
+
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.photos);
+
+        //set layout manager for recycler view
+        int columnWidth = getResources().getDimensionPixelSize(R.dimen.gallery_image_width) +
+                          2 * getResources().getDimensionPixelSize(R.dimen.gallery_padding);
+        GridAutofitLayoutManager lm = new GridAutofitLayoutManager(getActivity(), columnWidth, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(lm);
+
+        // specify an adapter (see also next example)
+        PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(rootView.getContext(), photoURLs);
+        recyclerView.setAdapter(adapter);
     }
 
     private String[] getPhotoURLs() {
