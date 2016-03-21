@@ -41,6 +41,8 @@
     <dimen name="action_comments_count_text_size">14sp</dimen>
     <dimen name="comments_count_text_size">10sp</dimen>
     <dimen name="gradient_button_text_size">13sp</dimen>
+    <dimen name="gradient_button_vertical_margin">10dip</dimen>
+    <dimen name="gradient_button_horizontal_margin">33dip</dimen>
 
     <!--Calendar fragment-->
     <dimen name="calendar_header_padding_left">70dip</dimen>
@@ -102,8 +104,6 @@
     <dimen name="comment_date_margin_bottom">18dip</dimen>
     <dimen name="comment_text_text_size">12sp</dimen>
     <dimen name="comment_text_margin_bottom">17dip</dimen>
-    <dimen name="add_comment_button_vertical_margin">10dip</dimen>
-    <dimen name="add_comment_button_horizontal_margin">33dip</dimen>
     <dimen name="comments_target_type_text_size">12sp</dimen>
     <dimen name="comments_target_name_text_size">20sp</dimen>
     <dimen name="send_comment_button_vertical_margin">10dip</dimen>

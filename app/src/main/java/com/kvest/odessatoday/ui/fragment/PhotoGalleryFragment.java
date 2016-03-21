@@ -63,6 +63,13 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
         PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(rootView.getContext(), photoURLs);
         adapter.setOnItemSelectedListener(this);
         recyclerView.setAdapter(adapter);
+
+        rootView.findViewById(R.id.propose_photo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                proposePhoto();
+            }
+        });
     }
 
     @Override
@@ -97,6 +104,10 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
         } else {
             return "";
         }
+    }
+
+    private void proposePhoto() {
+        //TODO
     }
 
     @Override

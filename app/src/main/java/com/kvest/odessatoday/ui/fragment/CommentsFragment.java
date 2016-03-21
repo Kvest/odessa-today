@@ -23,7 +23,6 @@ import com.kvest.odessatoday.ui.activity.AddCommentActivity;
 import com.kvest.odessatoday.ui.adapter.CommentsAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
 import com.kvest.odessatoday.utils.BusProvider;
-import com.kvest.odessatoday.utils.FontUtils;
 import com.squareup.otto.Subscribe;
 
 import static com.kvest.odessatoday.provider.TodayProviderContract.*;
@@ -147,7 +146,6 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     private void init(View rootView, View footer) {
         //store widgets
         View addComment = rootView.findViewById(R.id.add_comment);
-        TextView addCommentLabel = (TextView)rootView.findViewById(R.id.add_comment_label);
         CommentsCountView commentsCount = (CommentsCountView)rootView.findViewById(R.id.comments_count);
         RatingBar rating = (RatingBar)rootView.findViewById(R.id.rating);
         TextView targetName = (TextView)rootView.findViewById(R.id.target_name);
@@ -179,7 +177,6 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
         targetTypeName.setText(getTargetTypeName());
 
         //setup footer
-        addCommentLabel.setTypeface(FontUtils.getFont(getActivity().getAssets(), FontUtils.HELVETICANEUECYR_BOLD_FONT));
         addComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

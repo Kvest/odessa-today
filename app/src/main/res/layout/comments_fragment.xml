@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -8,7 +9,6 @@
         android:layout_height="match_parent">
         <!--header-->
         <RelativeLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,15 +96,16 @@
                 android:id="@+id/add_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/add_comment_button_horizontal_margin"
-                android:layout_marginRight="@dimen/add_comment_button_horizontal_margin"
-                android:layout_marginTop="@dimen/add_comment_button_vertical_margin"
-                android:layout_marginBottom="@dimen/add_comment_button_vertical_margin"
+                android:layout_marginLeft="@dimen/gradient_button_horizontal_margin"
+                android:layout_marginRight="@dimen/gradient_button_horizontal_margin"
+                android:layout_marginTop="@dimen/gradient_button_vertical_margin"
+                android:layout_marginBottom="@dimen/gradient_button_vertical_margin"
+                android:clickable="true"
                 android:background="@drawable/gradient_button_bg" />
-            <TextView
-                android:id="@+id/add_comment_label"
+            <com.kvest.odessatoday.ui.widget.FontTextView
                 style="@style/GradientButtonLabelStyle"
                 android:drawableLeft="@drawable/ic_add_comment"
+                app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
                 android:text="@string/add_comment"/>
         </FrameLayout>
         <View
