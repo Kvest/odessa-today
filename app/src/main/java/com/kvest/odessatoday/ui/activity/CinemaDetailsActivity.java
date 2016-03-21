@@ -112,8 +112,8 @@ public class CinemaDetailsActivity extends BaseActivity implements CinemaDetails
     }
 
     @Override
-    public void onShowCinemaPhotos(String[] photoURLs) {
-        PhotoGalleryActivity.start(this, photoURLs, getTitle().toString());
+    public void onShowCinemaPhotos(String[] photoURLs, String cinemaName) {
+        PhotoGalleryActivity.start(this, photoURLs, cinemaName);
     }
 
     @Override
