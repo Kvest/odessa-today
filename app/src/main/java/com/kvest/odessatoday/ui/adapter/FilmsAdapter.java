@@ -96,7 +96,7 @@ public class FilmsAdapter extends CursorAdapter {
         }
 
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
-        holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(Utils.createCountString(context, cursor.getInt(commentsCountColumnIndex), Utils.COMMENTS_COUNT_PATTERNS));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
     }

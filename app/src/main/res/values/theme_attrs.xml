@@ -107,4 +107,8 @@
     <attr format="color" name="CommentRatingTextColor"/>
     <attr format="reference" name="CommentRatingBg"/>
     <attr format="color" name="GalleryLabelTextColor"/>
+    <attr format="color" name="GalleryPhotosCountTextColor"/>
+    <attr format="color" name="GalleryPhotosCountBg"/>
+    <attr format="color" name="GalleryTopDividerColor"/>
+    <attr format="color" name="GalleryBottomDividerColor"/>
 </resources>

@@ -93,7 +93,7 @@ public class EventsAdapter extends CursorAdapter {
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
-        holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(Utils.createCountString(context, cursor.getInt(commentsCountColumnIndex), Utils.COMMENTS_COUNT_PATTERNS));
         holder.placeName.setText(cursor.getString(placeNameColumnIndex));
         holder.date.setText(dateFormat.format(TimeUnit.SECONDS.toMillis(cursor.getLong(dateColumnIndex))));
 

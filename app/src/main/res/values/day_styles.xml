@@ -122,5 +122,9 @@
         <item name="CommentRatingBg">@drawable/comment_rating_bg_day</item>
         <!--gallery-->
         <item name="GalleryLabelTextColor">#24282b</item>
+        <item name="GalleryPhotosCountTextColor">#828282</item>
+        <item name="GalleryPhotosCountBg">#f9f9f9</item>
+        <item name="GalleryTopDividerColor">#e2e2e2</item>
+        <item name="GalleryBottomDividerColor">#bcbcbc</item>
     </style>
 </resources>

@@ -76,7 +76,7 @@ public class PlacesAdapter extends CursorAdapter {
 
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.rating.setRating(cursor.getFloat(ratingColumnIndex));
-        holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(Utils.createCountString(context, cursor.getInt(commentsCountColumnIndex), Utils.COMMENTS_COUNT_PATTERNS));
 
         String value = cursor.getString(addressColumnIndex);
         holder.address.setVisibility(TextUtils.isEmpty(value) ? View.GONE : View.VISIBLE);

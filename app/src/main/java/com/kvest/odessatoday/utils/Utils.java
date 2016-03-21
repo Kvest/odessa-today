@@ -38,6 +38,9 @@ import java.security.MessageDigest;
 public class Utils {
     private static final String POSTER_SEPARATOR = ",";
 
+    public static final int[] COMMENTS_COUNT_PATTERNS = new int[] {R.string.comments_count, R.string.comments_count1, R.string.comments_count2};
+    public static final int[] PHOTOS_COUNT_PATTERNS = new int[] {R.string.photos_count, R.string.photos_count1, R.string.photos_count2};
+
     public static String getDeviceId(Context context)
     {
         //Serial number
@@ -91,20 +94,20 @@ public class Utils {
         return null;
     }
 
-    public static String createCommentsString(Context context, int commentsCount) {
-        int tmp = commentsCount % 100;
+    public static String createCountString(Context context, int count, int[] patterns) {
+        int tmp = count % 100;
         if (tmp >= 11 && tmp <= 19) {
-            return context.getString(R.string.comments_count, commentsCount);
+            return context.getString(patterns[0], count);
         }
         tmp %= 10;
         if (tmp == 1) {
-            return context.getString(R.string.comments_count1, commentsCount);
+            return context.getString(patterns[1], count);
         }
         if (tmp >= 2 && tmp <= 4) {
-            return context.getString(R.string.comments_count2, commentsCount);
+            return context.getString(patterns[2], count);
         }
 
-        return context.getString(R.string.comments_count, commentsCount);
+        return context.getString(patterns[0], count);
     }
 
     public static void setDrawablesColor(int color, Drawable... drawables) {

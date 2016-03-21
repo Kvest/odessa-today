@@ -71,7 +71,7 @@ public class CinemasAdapter extends CursorAdapter {
         holder.name.setText(cursor.getString(nameColumnIndex));
         holder.address.setText(cursor.getString(addressColumnIndex));
         Utils.setDrawablesColor(pinColor, holder.address.getCompoundDrawables());
-        holder.commentsCount.setText(Utils.createCommentsString(context, cursor.getInt(commentsCountColumnIndex)));
+        holder.commentsCount.setText(Utils.createCountString(context, cursor.getInt(commentsCountColumnIndex), Utils.COMMENTS_COUNT_PATTERNS));
     }
 
     private void initResources(Context context) {

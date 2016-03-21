@@ -348,7 +348,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
             parent.setBackgroundColor(eventInfoItem.bgColor);
 
             rating.setRating(eventInfoItem.rating);
-            commentsCount.setText(Utils.createCommentsString(context, eventInfoItem.commentsCount));
+            commentsCount.setText(Utils.createCountString(context, eventInfoItem.commentsCount, Utils.COMMENTS_COUNT_PATTERNS));
             eventName.setText(eventInfoItem.eventName);
             setEventType(eventInfoItem.eventType);
         }

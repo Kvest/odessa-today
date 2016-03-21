@@ -17,6 +17,9 @@
     <string name="comments_count">%1$d отзывов</string>
     <string name="comments_count1">%1$d отзыв</string>
     <string name="comments_count2">%1$d отзыва</string>
+    <string name="photos_count">%1$d фотографий</string>
+    <string name="photos_count1">%1$d фотография</string>
+    <string name="photos_count2">%1$d фотографии</string>
     <string name="comments_date_format">dd MMMM yyyy в HH:mm</string>
     <string name="error_loading_comments">Не удалось загрузить комментарии</string>
     <string name="error_loading_cinemas">Не удалось обновить список кинотеатров</string>

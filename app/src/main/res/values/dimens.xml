@@ -279,4 +279,7 @@
     <dimen name="gallery_label_padding">8dip</dimen>
     <dimen name="gallery_image_width">102dip</dimen>
     <dimen name="gallery_image_height">90dip</dimen>
+    <dimen name="gallery_divider_height">1dip</dimen>
+    <dimen name="gallery_photos_count_height">25dip</dimen>
+    <dimen name="gallery_photos_count_text_size">12sp</dimen>
 </resources>
