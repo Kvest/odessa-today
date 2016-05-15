@@ -91,15 +91,13 @@ public class CommentsFragment extends BaseFragment implements LoaderManager.Load
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //add placeholder
         final View footer =view.findViewById(R.id.footer);
         footer.post(new Runnable() {
             @Override
             public void run() {
-                View placeholder = new View(commentsList.getContext());
-                placeholder.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT,
-                                                                       footer.getHeight()));
-                commentsList.addFooterView(placeholder, null, false);
+                commentsList.setClipToPadding(false);
+                commentsList.setPadding(commentsList.getPaddingLeft(), commentsList.getPaddingTop(),
+                        commentsList.getPaddingRight(), footer.getHeight());
             }
         });
     }
