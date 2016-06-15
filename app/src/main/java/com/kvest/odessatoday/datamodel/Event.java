@@ -71,6 +71,8 @@ public class Event {
         public String prices;
         @SerializedName("have_tickets")
         public boolean hasTickets;
+        @SerializedName("sectors")
+        public Sector[] sectors;
 
         public ContentValues getContentValues(long eventId) {
             ContentValues values = new ContentValues(7);

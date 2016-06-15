@@ -11,6 +11,8 @@ import java.util.List;
 public class GetEventsData {
     @SerializedName("date")
     public long date;
+    @SerializedName("delivery_str")
+    public String deliveryStr;
     @SerializedName("events")
     public List<Event> events;
 }
