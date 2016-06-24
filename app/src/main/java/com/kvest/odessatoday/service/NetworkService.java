@@ -24,6 +24,7 @@ public class NetworkService extends IntentService {
     private static final int ACTION_LOAD_ANNOUNCEMENTS = 5;
     private static final int ACTION_LOAD_PLACES = 6;
     private static final int ACTION_LOAD_EVENTS = 7;
+    private static final int ACTION_UPLOAD_PHOTO = 8;
 
     public static void loadFilms(Context context, long startDate, long endDate) {
         loadFilms(context, startDate, endDate, -1);
@@ -103,6 +104,13 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
+    public static void uploadPhoto(Context context, String photoPath) {
+        Intent intent = createIntent(context, ACTION_UPLOAD_PHOTO);
+        UploadPhotoHandler.putExtras(intent, photoPath);
+
+        context.startService(intent);
+    }
+
     public NetworkService() {
         super("NetworkService");
     }
@@ -144,6 +152,8 @@ public class NetworkService extends IntentService {
                 return new LoadPlacesHandler();
             case ACTION_LOAD_EVENTS :
                 return new LoadEventsHandler();
+            case ACTION_UPLOAD_PHOTO :
+                return new UploadPhotoHandler();
         }
 
         return null;

@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.PhotoGalleryAdapter;
 import com.kvest.odessatoday.ui.widget.GridAutofitLayoutManager;
 import com.kvest.odessatoday.utils.Utils;
@@ -140,7 +141,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
         //TODO
 
         String photoPath = getPhotoPath(context, data);
-        //TODO
+        NetworkService.uploadPhoto(context, photoPath);
     }
 
     private String getPhotoPath(Context context, Uri uri) {
