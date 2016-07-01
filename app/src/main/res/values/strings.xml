@@ -75,6 +75,7 @@
     <string name="propose_photo">Предложить фото</string>
     <string name="error_propose_photo_no_permission">Для отправки фото необходимо предоставить доступ к SD-карте</string>
     <string name="error_propose_photo_no_permission_strict">Для отправки фото необходимо предоставить доступ к SD-карте в системных настройках</string>
+    <string name="error_uploading_photo">Не удалось отправить фото</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>

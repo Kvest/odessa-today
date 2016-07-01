@@ -2,7 +2,6 @@ package com.kvest.odessatoday.ui.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,9 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,10 +20,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.network.event.UploadPhotoEvent;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.PhotoGalleryAdapter;
+import com.kvest.odessatoday.ui.dialog.ProgressDialogFragment;
 import com.kvest.odessatoday.ui.widget.GridAutofitLayoutManager;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Utils;
+import com.squareup.otto.Subscribe;
 
 /**
  * Created by roman on 3/18/16.
@@ -40,6 +41,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
     private static final String ARGUMENT_TITLE = "com.kvest.odessatoday.argument.TITLE";
 
     private OnPhotoSelectedListener onPhotoSelectedListener;
+    private ProgressDialogFragment progressDialog;
 
     public static PhotoGalleryFragment newInstance(String[] photoURLs, String title) {
         Bundle arguments = new Bundle(2);
@@ -91,6 +93,22 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        BusProvider.getInstance().unregister(this);
+
+        hideWaitDialog();
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -137,11 +155,40 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
             return;
         }
 
-        //show wait dialog
-        //TODO
+        showWaitDialog();
 
         String photoPath = getPhotoPath(context, data);
         NetworkService.uploadPhoto(context, photoPath);
+    }
+
+    private void showWaitDialog() {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialogFragment.newInstance(false);
+        }
+
+        progressDialog.show(getFragmentManager(), null);
+    }
+
+    private void hideWaitDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    private void showUploadPhotoError() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            showErrorSnackbar(activity, R.string.error_uploading_photo);
+        }
+    }
+
+    @Subscribe
+    public void onUploadPhotoEvent(UploadPhotoEvent event) {
+        hideWaitDialog();
+
+        if (!event.isSuccessful()) {
+            showUploadPhotoError();
+        }
     }
 
     private String getPhotoPath(Context context, Uri uri) {
