@@ -21,7 +21,6 @@ public class UploadPhotoHandler extends RequestHandler {
         //get extra data
         String photoPath = intent.getStringExtra(EXTRA_PHOTO_PATH);
 
-        //TODO
         try {
             Thread.sleep(5000L);
         } catch (InterruptedException e) {

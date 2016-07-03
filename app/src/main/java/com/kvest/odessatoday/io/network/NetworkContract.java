@@ -18,6 +18,7 @@ public class NetworkContract {
     private static final String ANNOUNCEMENTS_PATH = "announcement";
     private static final String PLACES_PATH = "places";
     private static final String EVENTS_PATH = "events";
+    private static final String GALLERY_PATH = "gallery";
 
     public static final String API_KEY_HEADER_NAME = "api-key";
     public static final String CLIENT_ID_HEADER_NAME = "Client-Id";
@@ -69,6 +70,14 @@ public class NetworkContract {
         return Uri.parse(BASE_URL + PLACES_PATH + "/" + Long.toString(placeId) + "/" + COMMENTS_PATH);
     }
 
+    public static Uri createCinemaGalleryUri(long cinemaId) {
+        return Uri.parse(BASE_URL + CINEMAS_PATH + "/" + Long.toString(cinemaId) + "/" + GALLERY_PATH);
+    }
+
+    public static Uri createPlaceGalleryUri(long placeId) {
+        return Uri.parse(BASE_URL + PLACES_PATH + "/" + Long.toString(placeId) + "/" + GALLERY_PATH);
+    }
+
     public interface CommentsRequest {
         public int DEFAULT_OFFSET = 0;
         public int MAX_LIMIT = 100;
@@ -100,6 +109,12 @@ public class NetworkContract {
             String END_DATE = "end_date";
             String PLACE_ID = "place_id";
             String TYPE = "type";
+        }
+    }
+
+    public interface UploadPhotoRequest {
+        interface Params {
+            String PHOTOS = "photos";
         }
     }
 }

@@ -24,7 +24,6 @@ public class AddCommentRequest extends BaseRequest<AddCommentResponse> {
     public AddCommentRequest(long targetId, int targetType, Comment comment, Response.Listener<AddCommentResponse> listener,
                              Response.ErrorListener errorListener) {
         super(Method.POST, getUrl(targetId, targetType), gson.toJson(comment), listener, errorListener);
-
     }
 
     @Override
