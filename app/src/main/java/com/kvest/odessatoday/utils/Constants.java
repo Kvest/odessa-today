@@ -21,7 +21,7 @@ public abstract class Constants {
         int IS_PREMIERE = 1;
     }
 
-    public interface CommentTargetType {
+    public interface TargetType {
         int UNKNOWN = -1;
         int FILM = 0;
         int CINEMA = 1;
@@ -53,7 +53,7 @@ public abstract class Constants {
         int BATH = 116;
     }
 
-    public interface CommentTargetTypeGroup {
+    public interface TargetTypeGroup {
         int FILM = 0;
         int CINEMA = 1;
         int EVENT = 2;

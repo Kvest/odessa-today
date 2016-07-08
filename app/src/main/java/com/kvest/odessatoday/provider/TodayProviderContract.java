@@ -200,7 +200,7 @@ public class TodayProviderContract {
                     + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Columns.SYNC_STATUS + " INTEGER DEFAULT " + Constants.SyncStatus.UP_TO_DATE + ","
                     + Columns.TARGET_ID + " INTEGER,"
-                    + Columns.TARGET_TYPE + " INTEGER DEFAULT " + Constants.CommentTargetType.UNKNOWN + ","
+                    + Columns.TARGET_TYPE + " INTEGER DEFAULT " + Constants.TargetType.UNKNOWN + ","
                     + Columns.COMMENT_ID + " INTEGER,"
                     + Columns.DATE + " INTEGER,"
                     + Columns.NAME + " TEXT,"

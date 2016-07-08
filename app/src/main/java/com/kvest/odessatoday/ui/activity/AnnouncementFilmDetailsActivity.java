@@ -72,7 +72,7 @@ public class AnnouncementFilmDetailsActivity extends BaseActivity implements Ann
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            CommentsFragment commentsFragment = CommentsFragment.newInstance(filmId, Constants.CommentTargetType.FILM,
+            CommentsFragment commentsFragment = CommentsFragment.newInstance(filmId, Constants.TargetType.FILM,
                                                                              filmName, genre, commentsCount, rating, canRate);
             transaction.replace(R.id.fragment_container, commentsFragment);
             transaction.addToBackStack(null);

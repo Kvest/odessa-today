@@ -113,7 +113,7 @@ public class LoadCommentsHandler extends RequestHandler {
     private GetCommentsRequest createRequest(Intent intent, RequestFuture<GetCommentsResponse> future) {
         //get extra data
         long targetId = intent.getLongExtra(TARGET_ID_EXTRA, -1);
-        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.CommentTargetType.UNKNOWN);
+        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.TargetType.UNKNOWN);
         int offset = intent.getIntExtra(OFFSET_EXTRA, DEFAULT_OFFSET);
         int limit = intent.getIntExtra(LIMIT_EXTRA, DEFAULT_LIMIT);
 
@@ -124,7 +124,7 @@ public class LoadCommentsHandler extends RequestHandler {
     protected void notifyError(Context context, String message, Intent intent) {
         //get extra data
         long targetId = intent.getLongExtra(TARGET_ID_EXTRA, -1);
-        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.CommentTargetType.UNKNOWN);
+        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.TargetType.UNKNOWN);
 
         BusProvider.getInstance().post(new CommentsLoadedEvent(targetId, targetType, message));
     }
@@ -132,7 +132,7 @@ public class LoadCommentsHandler extends RequestHandler {
     protected void notifySuccess(Context context, Intent intent, boolean hasMoreComments) {
         //get extra data
         long targetId = intent.getLongExtra(TARGET_ID_EXTRA, -1);
-        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.CommentTargetType.UNKNOWN);
+        int targetType = intent.getIntExtra(TARGET_TYPE_EXTRA, Constants.TargetType.UNKNOWN);
 
         BusProvider.getInstance().post(new CommentsLoadedEvent(targetId, targetType, hasMoreComments));
     }

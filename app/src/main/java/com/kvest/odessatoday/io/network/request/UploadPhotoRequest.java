@@ -43,10 +43,10 @@ public class UploadPhotoRequest extends BaseRequest<UploadPhotoResponse>  {
     }
 
     private static String getUrl(long targetId, int targetType) {
-        switch (Utils.CommentTargetType2Group(targetType)) {
-            case Constants.CommentTargetTypeGroup.CINEMA :
+        switch (Utils.targetType2Group(targetType)) {
+            case Constants.TargetTypeGroup.CINEMA :
                 return NetworkContract.createCinemaGalleryUri(targetId).toString();
-            case Constants.CommentTargetTypeGroup.PLACE :
+            case Constants.TargetTypeGroup.PLACE :
                 return NetworkContract.createPlaceGalleryUri(targetId).toString();
             default:
                 throw new RuntimeException("Unknown Constants.CommentTargetTypeGroup");

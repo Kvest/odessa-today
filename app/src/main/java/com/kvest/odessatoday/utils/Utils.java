@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.io.network.NetworkContract;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -167,65 +166,65 @@ public class Utils {
         return result;
     }
 
-    public static int eventType2CommentTargetType(int eventType) {
+    public static int eventType2TargetType(int eventType) {
         switch (eventType) {
             case Constants.EventType.CONCERT:
-                return Constants.CommentTargetType.CONCERT;
+                return Constants.TargetType.CONCERT;
             case Constants.EventType.PARTY:
-                return Constants.CommentTargetType.PARTY;
+                return Constants.TargetType.PARTY;
             case Constants.EventType.SPECTACLE:
-                return Constants.CommentTargetType.SPECTACLE;
+                return Constants.TargetType.SPECTACLE;
             case Constants.EventType.EXHIBITION:
-                return Constants.CommentTargetType.EXHIBITION;
+                return Constants.TargetType.EXHIBITION;
             case Constants.EventType.SPORT:
-                return Constants.CommentTargetType.SPORT;
+                return Constants.TargetType.SPORT;
             case Constants.EventType.WORKSHOP:
-                return Constants.CommentTargetType.WORKSHOP;
+                return Constants.TargetType.WORKSHOP;
             case Constants.EventType.ZOO_PRESENTATION:
-                return Constants.CommentTargetType.ZOO_PRESENTATION;
+                return Constants.TargetType.ZOO_PRESENTATION;
             default:
-                return Constants.CommentTargetType.UNKNOWN;
+                return Constants.TargetType.UNKNOWN;
         }
     }
 
-    public static int placeType2CommentTargetType(int placeType) {
+    public static int placeType2TargetType(int placeType) {
         switch (placeType) {
             case Constants.PlaceType.THEATRE:
-                return Constants.CommentTargetType.THEATRE;
+                return Constants.TargetType.THEATRE;
             case Constants.PlaceType.CONCERT_HALL:
-                return Constants.CommentTargetType.CONCERT_HALL;
+                return Constants.TargetType.CONCERT_HALL;
             case Constants.PlaceType.CLUB:
-                return Constants.CommentTargetType.CLUB;
+                return Constants.TargetType.CLUB;
             case Constants.PlaceType.MUSEUM:
-                return Constants.CommentTargetType.MUSEUM;
+                return Constants.TargetType.MUSEUM;
             case Constants.PlaceType.GALLERY:
-                return Constants.CommentTargetType.GALLERY;
+                return Constants.TargetType.GALLERY;
             case Constants.PlaceType.ZOO:
-                return Constants.CommentTargetType.ZOO;
+                return Constants.TargetType.ZOO;
             case Constants.PlaceType.QUEST:
-                return Constants.CommentTargetType.QUEST;
+                return Constants.TargetType.QUEST;
             case Constants.PlaceType.RESTAURANT:
-                return Constants.CommentTargetType.RESTAURANT;
+                return Constants.TargetType.RESTAURANT;
             case Constants.PlaceType.CAFE:
-                return Constants.CommentTargetType.CAFE;
+                return Constants.TargetType.CAFE;
             case Constants.PlaceType.PIZZA:
-                return Constants.CommentTargetType.PIZZA;
+                return Constants.TargetType.PIZZA;
             case Constants.PlaceType.SUSHI:
-                return Constants.CommentTargetType.SUSHI;
+                return Constants.TargetType.SUSHI;
             case Constants.PlaceType.KARAOKE:
-                return Constants.CommentTargetType.KARAOKE;
+                return Constants.TargetType.KARAOKE;
             case Constants.PlaceType.SKATING_RINK:
-                return Constants.CommentTargetType.SKATING_RINK;
+                return Constants.TargetType.SKATING_RINK;
             case Constants.PlaceType.BOWLING:
-                return Constants.CommentTargetType.BOWLING;
+                return Constants.TargetType.BOWLING;
             case Constants.PlaceType.BILLIARD:
-                return Constants.CommentTargetType.BILLIARD;
+                return Constants.TargetType.BILLIARD;
             case Constants.PlaceType.SAUNA:
-                return Constants.CommentTargetType.SAUNA;
+                return Constants.TargetType.SAUNA;
             case Constants.PlaceType.BATH:
-                return Constants.CommentTargetType.BATH;
+                return Constants.TargetType.BATH;
             default:
-                return Constants.CommentTargetType.UNKNOWN;
+                return Constants.TargetType.UNKNOWN;
         }
     }
 
@@ -289,15 +288,15 @@ public class Utils {
         }
     }
 
-    public static int CommentTargetType2Group(int targetType) {
-        if (targetType == Constants.CommentTargetType.FILM) {
-            return Constants.CommentTargetTypeGroup.FILM;
-        } else if (targetType == Constants.CommentTargetType.CINEMA) {
-            return Constants.CommentTargetTypeGroup.CINEMA;
-        } else if (targetType >= Constants.CommentTargetType.CONCERT && targetType <= Constants.CommentTargetType.ZOO_PRESENTATION) {
-            return Constants.CommentTargetTypeGroup.EVENT;
-        } else if (targetType >= Constants.CommentTargetType.THEATRE && targetType <= Constants.CommentTargetType.BATH) {
-            return Constants.CommentTargetTypeGroup.PLACE;
+    public static int targetType2Group(int targetType) {
+        if (targetType == Constants.TargetType.FILM) {
+            return Constants.TargetTypeGroup.FILM;
+        } else if (targetType == Constants.TargetType.CINEMA) {
+            return Constants.TargetTypeGroup.CINEMA;
+        } else if (targetType >= Constants.TargetType.CONCERT && targetType <= Constants.TargetType.ZOO_PRESENTATION) {
+            return Constants.TargetTypeGroup.EVENT;
+        } else if (targetType >= Constants.TargetType.THEATRE && targetType <= Constants.TargetType.BATH) {
+            return Constants.TargetTypeGroup.PLACE;
         } else {
             throw new IllegalArgumentException("Unknown targetType [" + targetType + "] of the comment type");
         }

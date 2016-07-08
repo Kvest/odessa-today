@@ -40,14 +40,14 @@ public class AddCommentRequest extends BaseRequest<AddCommentResponse> {
     }
 
     private static String getUrl(long targetId, int targetType) {
-        switch (Utils.CommentTargetType2Group(targetType)) {
-            case Constants.CommentTargetTypeGroup.FILM :
+        switch (Utils.targetType2Group(targetType)) {
+            case Constants.TargetTypeGroup.FILM :
                 return NetworkContract.createFilmCommentsUri(targetId).toString();
-            case Constants.CommentTargetTypeGroup.CINEMA :
+            case Constants.TargetTypeGroup.CINEMA :
                 return NetworkContract.createCinemaCommentsUri(targetId).toString();
-            case Constants.CommentTargetTypeGroup.EVENT :
+            case Constants.TargetTypeGroup.EVENT :
                 return NetworkContract.createEventCommentsUri(targetId).toString();
-            case Constants.CommentTargetTypeGroup.PLACE :
+            case Constants.TargetTypeGroup.PLACE :
                 return NetworkContract.createPlaceCommentsUri(targetId).toString();
             default:
                 throw new RuntimeException("Unknown Constants.CommentTargetTypeGroup");

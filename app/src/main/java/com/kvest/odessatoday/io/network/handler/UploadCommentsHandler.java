@@ -12,7 +12,6 @@ import android.os.RemoteException;
 
 import com.android.volley.toolbox.RequestFuture;
 import com.kvest.odessatoday.TodayApplication;
-import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.request.AddCommentRequest;
 import com.kvest.odessatoday.io.network.response.AddCommentResponse;
 import com.kvest.odessatoday.provider.TodayProviderContract;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static com.kvest.odessatoday.provider.TodayProviderContract.CINEMAS_URI;
 import static com.kvest.odessatoday.provider.TodayProviderContract.CONTENT_AUTHORITY;
 import static com.kvest.odessatoday.provider.TodayProviderContract.EVENTS_URI;
 import static com.kvest.odessatoday.provider.TodayProviderContract.FILMS_URI;
@@ -174,12 +172,12 @@ public class UploadCommentsHandler extends RequestHandler {
     }
 
     private ContentProviderOperation createUpdateRatedOperation(long targetId, int targetType) {
-        switch (Utils.CommentTargetType2Group(targetType)) {
-            case Constants.CommentTargetTypeGroup.FILM :
+        switch (Utils.targetType2Group(targetType)) {
+            case Constants.TargetTypeGroup.FILM :
                 return ContentProviderOperation.newUpdate(FILMS_URI)
                         .withSelection(Films.Columns.FILM_ID + "=?", new String[]{Long.toString(targetId)})
                         .withValue(Films.Columns.RATED, 1).build();
-            case Constants.CommentTargetTypeGroup.EVENT :
+            case Constants.TargetTypeGroup.EVENT :
                 return ContentProviderOperation.newUpdate(EVENTS_URI)
                         .withSelection(Events.Columns.EVENT_ID + "=?", new String[]{Long.toString(targetId)})
                         .withValue(Events.Columns.RATED, 1).build();

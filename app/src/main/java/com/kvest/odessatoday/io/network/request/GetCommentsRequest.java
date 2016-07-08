@@ -59,17 +59,17 @@ public class GetCommentsRequest extends BaseRequest<GetCommentsResponse> {
 
     private static String generateUrl(long targetId, int targetType, int offset, int limit) {
         Uri.Builder builder;
-        switch (Utils.CommentTargetType2Group(targetType)) {
-            case Constants.CommentTargetTypeGroup.FILM :
+        switch (Utils.targetType2Group(targetType)) {
+            case Constants.TargetTypeGroup.FILM :
                 builder = NetworkContract.createFilmCommentsUri(targetId).buildUpon();
                 break;
-            case Constants.CommentTargetTypeGroup.CINEMA :
+            case Constants.TargetTypeGroup.CINEMA :
                 builder = NetworkContract.createCinemaCommentsUri(targetId).buildUpon();
                 break;
-            case Constants.CommentTargetTypeGroup.EVENT :
+            case Constants.TargetTypeGroup.EVENT :
                 builder = NetworkContract.createEventCommentsUri(targetId).buildUpon();
                 break;
-            case Constants.CommentTargetTypeGroup.PLACE :
+            case Constants.TargetTypeGroup.PLACE :
                 builder = NetworkContract.createPlaceCommentsUri(targetId).buildUpon();
                 break;
             default:

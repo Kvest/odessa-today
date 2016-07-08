@@ -69,7 +69,7 @@ public class EventDetailsActivity extends BaseActivity implements EventDetailsFr
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
             transaction.setCustomAnimations(R.anim.slide_left_in,  R.anim.slide_left_out, R.anim.slide_right_in, R.anim.slide_right_out);
-            CommentsFragment commentsFragment = CommentsFragment.newInstance(eventId, Utils.eventType2CommentTargetType(eventType),
+            CommentsFragment commentsFragment = CommentsFragment.newInstance(eventId, Utils.eventType2TargetType(eventType),
                                                                              eventName, Utils.eventType2String(this, eventType),
                                                                              commentsCount, rating, canRate);
             transaction.replace(R.id.fragment_container, commentsFragment);
