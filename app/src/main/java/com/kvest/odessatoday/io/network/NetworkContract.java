@@ -114,7 +114,7 @@ public class NetworkContract {
 
     public interface UploadPhotoRequest {
         interface Params {
-            String PHOTOS = "photos";
+            String PHOTOS_ARRAY = "photos[]";
         }
     }
 }
