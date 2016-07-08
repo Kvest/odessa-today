@@ -224,6 +224,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
 
     private void pickPhoto() {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickPhoto.setType("image/*");
         startActivityForResult(pickPhoto, PICK_PHOTO_REQUEST);
     }
 
