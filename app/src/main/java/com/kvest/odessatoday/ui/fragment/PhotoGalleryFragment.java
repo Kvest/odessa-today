@@ -39,14 +39,18 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
 
     private static final String ARGUMENT_URLS = "com.kvest.odessatoday.argument.URLS";
     private static final String ARGUMENT_TITLE = "com.kvest.odessatoday.argument.TITLE";
+    private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
+    private static final String ARGUMENT_TARGET_TYPE = "com.kvest.odessatoday.argument.TARGET_TYPE";
 
     private OnPhotoSelectedListener onPhotoSelectedListener;
     private ProgressDialogFragment progressDialog;
 
-    public static PhotoGalleryFragment newInstance(String[] photoURLs, String title) {
-        Bundle arguments = new Bundle(2);
+    public static PhotoGalleryFragment newInstance(String[] photoURLs, String title, long targetId, int targetType) {
+        Bundle arguments = new Bundle(4);
         arguments.putStringArray(ARGUMENT_URLS, photoURLs);
         arguments.putString(ARGUMENT_TITLE, title);
+        arguments.putLong(ARGUMENT_TARGET_ID, targetId);
+        arguments.putInt(ARGUMENT_TARGET_TYPE, targetType);
 
         PhotoGalleryFragment result = new PhotoGalleryFragment();
         result.setArguments(arguments);
@@ -142,6 +146,24 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
         }
     }
 
+    private long getTargetId() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getLong(ARGUMENT_TARGET_ID);
+        } else {
+            return -1;
+        }
+    }
+
+    private int getTargetType() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getInt(ARGUMENT_TARGET_TYPE);
+        } else {
+            return -1;
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == PICK_PHOTO_REQUEST && resultCode == Activity.RESULT_OK) {
@@ -158,7 +180,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
         showWaitDialog();
 
         String photoPath = getPhotoPath(context, data);
-        NetworkService.uploadPhoto(context, photoPath);
+        NetworkService.uploadPhoto(context, getTargetId(), getTargetType(), photoPath);
     }
 
     private void showWaitDialog() {

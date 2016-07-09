@@ -82,7 +82,7 @@ public class PlaceDetailsActivity extends BaseActivity implements PlaceDetailsFr
     }
 
     @Override
-    public void onShowPlacePhotos(String[] photoURLs, String placeName) {
-        PhotoGalleryActivity.start(this, photoURLs, placeName);
+    public void onShowPlacePhotos(long placeId, int placeType, String[] photoURLs, String placeName) {
+        PhotoGalleryActivity.start(this, photoURLs, placeName, placeId, placeType);
     }
 }

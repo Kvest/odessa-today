@@ -104,9 +104,9 @@ public class NetworkService extends IntentService {
         context.startService(intent);
     }
 
-    public static void uploadPhoto(Context context, String photoPath) {
+    public static void uploadPhoto(Context context, long targetId, int targetType, String photoPath) {
         Intent intent = createIntent(context, ACTION_UPLOAD_PHOTO);
-        UploadPhotoHandler.putExtras(intent, photoPath);
+        UploadPhotoHandler.putExtras(intent,targetId, targetType, photoPath);
 
         context.startService(intent);
     }

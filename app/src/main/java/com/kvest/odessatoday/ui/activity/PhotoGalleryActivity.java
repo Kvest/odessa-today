@@ -17,11 +17,15 @@ import com.kvest.odessatoday.ui.fragment.PhotoSlideFragment;
 public class PhotoGalleryActivity extends BaseActivity implements PhotoGalleryFragment.OnPhotoSelectedListener {
     private static final String EXTRA_URLS = "com.kvest.odessatoday.extra.URLS";
     private static final String EXTRA_TITLE = "com.kvest.odessatoday.extra.TITLE";
+    private static final String EXTRA_TARGET_ID = "com.kvest.odessatoday.extra.TARGET_ID";
+    private static final String EXTRA_TARGET_TYPE = "com.kvest.odessatoday.extra.TARGET_TYPE";
 
-    public static void start(Context context, String[] urls, String title) {
+    public static void start(Context context, String[] urls, String title, long targetId, int targetType) {
         Intent intent = new Intent(context, PhotoGalleryActivity.class);
         intent.putExtra(EXTRA_URLS, urls);
         intent.putExtra(EXTRA_TITLE, title);
+        intent.putExtra(EXTRA_TARGET_ID, targetId);
+        intent.putExtra(EXTRA_TARGET_TYPE, targetType);
 
         context.startActivity(intent);
     }
@@ -41,10 +45,12 @@ public class PhotoGalleryActivity extends BaseActivity implements PhotoGalleryFr
         if (savedInstanceState == null && intent != null) {
             String[] urls = intent.getStringArrayExtra(EXTRA_URLS);
             String title = intent.getStringExtra(EXTRA_TITLE);
+            long targetId = intent.getLongExtra(EXTRA_TARGET_ID, -1);
+            int targetType = intent.getIntExtra(EXTRA_TARGET_TYPE, -1);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             try {
-                PhotoGalleryFragment fragment = PhotoGalleryFragment.newInstance(urls, title);
+                PhotoGalleryFragment fragment = PhotoGalleryFragment.newInstance(urls, title, targetId, targetType);
                 transaction.add(R.id.fragment_container, fragment);
             } finally {
                 transaction.commit();

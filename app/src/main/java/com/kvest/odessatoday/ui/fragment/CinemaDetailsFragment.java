@@ -211,7 +211,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
     private void showPhotos() {
         if (cinemaDetailsActionsListener != null && photoUrls != null) {
-            cinemaDetailsActionsListener.onShowCinemaPhotos(photoUrls, cinemaName.getText().toString());
+            cinemaDetailsActionsListener.onShowCinemaPhotos(photoUrls, cinemaName.getText().toString(), getCinemaId());
         }
     }
 
@@ -359,7 +359,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
 
     public interface CinemaDetailsActionsListener {
         void onShowCinemaComments(long cinemaId, String cinemaName, int commentsCount, float rating);
-        void onShowCinemaPhotos(String[] photoURLs, String cinemaName);
+        void onShowCinemaPhotos(String[] photoURLs, String cinemaName, long cinemaId);
         void onShowCalendar(long withDate);
     }
 }
