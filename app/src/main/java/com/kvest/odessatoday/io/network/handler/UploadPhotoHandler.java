@@ -79,23 +79,26 @@ public class UploadPhotoHandler extends RequestHandler {
     private void savePhotos(Context context, long targetId, int targetType, String[] photos) {
         ContentValues cv = new ContentValues(1);
 
-        //get URI by target type + fill cv
-        Uri uri = null;
+        //get URI by target type + fill cv and "where" statement
+        Uri uri;
+        String where;
         switch (Utils.targetType2Group(targetType)) {
             case Constants.TargetTypeGroup.CINEMA :
-                uri = Uri.withAppendedPath(TodayProviderContract.CINEMAS_URI, Long.toString(targetId));
+                uri = TodayProviderContract.CINEMAS_URI;
                 cv.put(TodayProviderContract.Tables.Cinemas.Columns.IMAGE,
                        photos != null ? Utils.images2String(photos) : null);
+                where = TodayProviderContract.Tables.Cinemas.Columns.CINEMA_ID + "=?";
                 break;
             case Constants.TargetTypeGroup.PLACE :
-                uri = Uri.withAppendedPath(TodayProviderContract.PLACES_URI, Long.toString(targetId));
+                uri = TodayProviderContract.PLACES_URI;
                 cv.put(TodayProviderContract.Tables.Places.Columns.IMAGE,
                         photos != null ? Utils.images2String(photos) : null);
+                where = TodayProviderContract.Tables.Places.Columns.PLACE_ID + "=?";
                 break;
             default:
                 throw new IllegalArgumentException("targetType " + targetType + " not supported");
         }
 
-        int count = context.getContentResolver().update(uri, cv, null, null);
+        context.getContentResolver().update(uri, cv, where, new String[] {Long.toString(targetId)});
     }
 }
