@@ -44,6 +44,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
 
     private OnPhotoSelectedListener onPhotoSelectedListener;
     private ProgressDialogFragment progressDialog;
+    private PhotoGalleryAdapter adapter;
 
     public static PhotoGalleryFragment newInstance(String[] photoURLs, String title, long targetId, int targetType) {
         Bundle arguments = new Bundle(4);
@@ -84,7 +85,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(rootView.getContext(), photoURLs);
+        adapter = new PhotoGalleryAdapter(rootView.getContext(), photoURLs);
         adapter.setOnItemSelectedListener(this);
         recyclerView.setAdapter(adapter);
 
@@ -208,7 +209,16 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
     public void onUploadPhotoEvent(UploadPhotoEvent event) {
         hideWaitDialog();
 
-        if (!event.isSuccessful()) {
+        if (event.isSuccessful()) {
+            //update gallery
+            final String[] newPhotos = event.getNewPhotos();
+            getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.setPhotoURLs(newPhotos);
+                }
+            });
+        } else {
             showUploadPhotoError();
         }
     }

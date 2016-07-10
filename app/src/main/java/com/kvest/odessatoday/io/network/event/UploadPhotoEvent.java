@@ -6,10 +6,18 @@ package com.kvest.odessatoday.io.network.event;
 public class UploadPhotoEvent {
     private boolean successful;
     private String errorMessage;
+    private String[] newPhotos;
 
     public UploadPhotoEvent(boolean successful, String errorMessage) {
         this.successful = successful;
         this.errorMessage = errorMessage;
+        this.newPhotos = null;
+    }
+
+    public UploadPhotoEvent(String[] newPhotos) {
+        this.successful = true;
+        this.newPhotos = newPhotos;
+        this.errorMessage = null;
     }
 
     public boolean isSuccessful() {
@@ -18,5 +26,9 @@ public class UploadPhotoEvent {
 
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    public String[] getNewPhotos() {
+        return newPhotos;
     }
 }

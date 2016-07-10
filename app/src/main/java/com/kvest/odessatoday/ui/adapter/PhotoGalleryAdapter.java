@@ -67,6 +67,12 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
         return photoURLs.length;
     }
 
+    public void setPhotoURLs(String[] photoURLs) {
+        this.photoURLs = photoURLs;
+
+        notifyDataSetChanged();
+    }
+
     public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener) {
         this.onItemSelectedListener = onItemSelectedListener;
     }

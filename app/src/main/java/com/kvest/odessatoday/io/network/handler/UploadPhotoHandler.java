@@ -53,7 +53,7 @@ public class UploadPhotoHandler extends RequestHandler {
                 savePhotos(context, targetId, targetType, response.data);
 
                 //notify listeners about successful uploading photo
-                BusProvider.getInstance().post(new UploadPhotoEvent(true, null));
+                BusProvider.getInstance().post(new UploadPhotoEvent(response.data));
             } else {
                 LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
@@ -96,6 +96,6 @@ public class UploadPhotoHandler extends RequestHandler {
                 throw new IllegalArgumentException("targetType " + targetType + " not supported");
         }
 
-        context.getContentResolver().update(uri, cv, null, null);
+        int count = context.getContentResolver().update(uri, cv, null, null);
     }
 }
