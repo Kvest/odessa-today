@@ -6,7 +6,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.GetPlacesResponse;
 
@@ -16,8 +15,6 @@ import java.io.UnsupportedEncodingException;
  * Created by kvest on 16.09.15.
  */
 public class GetPlacesRequest extends BaseRequest<GetPlacesResponse> {
-    private static Gson gson = new Gson();
-
     public GetPlacesRequest(int type, int offset, int limit,
                             Response.Listener<GetPlacesResponse> listener, Response.ErrorListener errorListener) {
         super(Method.GET, generateUrl(type, offset, limit).toString(), null, listener, errorListener);

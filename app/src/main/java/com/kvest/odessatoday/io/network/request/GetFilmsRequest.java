@@ -5,7 +5,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.GetFilmsResponse;
 
@@ -18,8 +17,6 @@ import java.io.UnsupportedEncodingException;
  * To change this template use File | Settings | File Templates.
  */
 public class GetFilmsRequest extends BaseRequest<GetFilmsResponse> {
-    private static Gson gson = new Gson();
-
     private long startDate;
     private long endDate;
     private long cinemaId;

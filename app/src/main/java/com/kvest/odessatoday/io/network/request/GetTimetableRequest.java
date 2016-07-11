@@ -4,7 +4,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.GetTimetableResponse;
 
@@ -18,8 +17,6 @@ import java.io.UnsupportedEncodingException;
  * To change this template use File | Settings | File Templates.
  */
 public class GetTimetableRequest extends BaseRequest<GetTimetableResponse> {
-    private static Gson gson = new Gson();
-
     private long filmId;
 
     public GetTimetableRequest(long filmId, Response.Listener<GetTimetableResponse> listener, Response.ErrorListener errorListener) {

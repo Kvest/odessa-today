@@ -4,7 +4,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.UploadPhotoResponse;
 import com.kvest.odessatoday.utils.Constants;
@@ -24,7 +23,6 @@ public class UploadPhotoRequest extends BaseRequest<UploadPhotoResponse>  {
     String LINE_END = "\r\n";
     String TWO_HYPHENS = "--";
 
-    private static Gson gson = new Gson();
     private final String mimeType;
     private final String boundary;
     private final byte[] body;

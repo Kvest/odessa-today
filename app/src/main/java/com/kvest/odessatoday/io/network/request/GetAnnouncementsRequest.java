@@ -6,7 +6,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.GetAnnouncementsResponse;
 
@@ -20,8 +19,6 @@ import java.io.UnsupportedEncodingException;
  * To change this template use File | Settings | File Templates.
  */
 public class GetAnnouncementsRequest extends BaseRequest<GetAnnouncementsResponse> {
-    private static Gson gson = new Gson();
-
     public GetAnnouncementsRequest(int offset, int limit, String order, Response.Listener<GetAnnouncementsResponse> listener,
                                    Response.ErrorListener errorListener) {
         super(Method.GET, generateUrl(offset, limit, order), null, listener, errorListener);

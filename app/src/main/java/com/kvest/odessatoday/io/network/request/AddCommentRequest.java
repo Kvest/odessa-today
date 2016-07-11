@@ -4,7 +4,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.AddCommentResponse;
@@ -19,8 +18,6 @@ import java.io.UnsupportedEncodingException;
  * Time: 3:48 PM
  */
 public class AddCommentRequest extends BaseRequest<AddCommentResponse> {
-    private static Gson gson = new Gson();
-
     public AddCommentRequest(long targetId, int targetType, Comment comment, Response.Listener<AddCommentResponse> listener,
                              Response.ErrorListener errorListener) {
         super(Method.POST, getUrl(targetId, targetType), gson.toJson(comment), listener, errorListener);

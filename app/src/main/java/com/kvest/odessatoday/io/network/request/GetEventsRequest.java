@@ -6,7 +6,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.kvest.odessatoday.io.network.response.GetEventsResponse;
 
 import java.io.UnsupportedEncodingException;
@@ -16,8 +15,6 @@ import static com.kvest.odessatoday.io.network.NetworkContract.*;
  * Created by kvest on 29.11.15.
  */
 public class GetEventsRequest extends BaseRequest<GetEventsResponse> {
-    private static Gson gson = new Gson();
-
     private long startDate;
     private long endDate;
     private long placeId;

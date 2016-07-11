@@ -6,7 +6,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.GetCommentsResponse;
 import com.kvest.odessatoday.utils.Constants;
@@ -22,8 +21,6 @@ import java.io.UnsupportedEncodingException;
  * To change this template use File | Settings | File Templates.
  */
 public class GetCommentsRequest extends BaseRequest<GetCommentsResponse> {
-    private static Gson gson = new Gson();
-
     private long targetId;
     private int targetType;
 
