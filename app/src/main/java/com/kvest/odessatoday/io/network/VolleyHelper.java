@@ -17,7 +17,7 @@ import com.android.volley.toolbox.Volley;
  * To change this template use File | Settings | File Templates.
  */
 public class VolleyHelper {
-    private static final float DEFAULT_MEM_CACHE_PERCENT = 0.6f;
+    private static final float DEFAULT_MEM_CACHE_PERCENT = 0.4f;
 
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
