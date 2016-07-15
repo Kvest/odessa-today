@@ -83,8 +83,8 @@ public class CinemasAdapter extends CursorAdapter {
 
         try {
             // Fetching the resources defined in the style
-            evenItemBgResId = ta.getResourceId(0, Color.BLACK);
-            oddItemBgResId = ta.getResourceId(1, Color.BLACK);
+            evenItemBgResId = ta.getResourceId(0, 0);
+            oddItemBgResId = ta.getResourceId(1, 0);
             pinColor = ta.getColor(2, Color.BLACK);
         } finally {
             ta.recycle();
