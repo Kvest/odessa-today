@@ -3,7 +3,6 @@ package com.kvest.odessatoday.ui.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.TextUtils;
@@ -49,7 +48,7 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
     private int filmDurationColumnIndex = -1;
     private int premiereDateColumnIndex = -1;
 
-    private int evenItemBgColor, oddItemBgColor;
+    private int evenItemBgResId, oddItemBgResId;
     private int noImageResId, loadingImageResId;
 
     public AnnouncementFilmsAdapter(Context context) {
@@ -87,9 +86,9 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
 
         //set view background
         if (cursor.getPosition() % 2 == 0) {
-            view.setBackgroundColor(evenItemBgColor);
+            view.setBackgroundResource(evenItemBgResId);
         } else {
-            view.setBackgroundColor(oddItemBgColor);
+            view.setBackgroundResource(oddItemBgResId);
         }
 
         if (!isColumnIndexesCalculated()) {
@@ -123,8 +122,8 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
 
     private void initResources(Context context) {
         // The attributes you want retrieved
-        int[] attrs = {R.attr.ListEvenItemBg,
-                       R.attr.ListOddItemBg,
+        int[] attrs = {R.attr.ListEvenItemBgRes,
+                       R.attr.ListOddItemBgRes,
                        R.attr.NoImage,
                        R.attr.LoadingImage};
 
@@ -133,8 +132,8 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
 
         try {
             // Fetching the resources defined in the style
-            evenItemBgColor = ta.getColor(0, Color.BLACK);
-            oddItemBgColor = ta.getColor(1, Color.BLACK);
+            evenItemBgResId = ta.getResourceId(0, 0);
+            oddItemBgResId = ta.getResourceId(1, 0);
             noImageResId = ta.getResourceId(2, -1);
             loadingImageResId = ta.getResourceId(3, -1);
         } finally {

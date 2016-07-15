@@ -12,7 +12,6 @@
             android:id="@+id/announcement_films_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@null"
-            android:listSelector="@drawable/application_list_item_selector" />
+            android:divider="@null" />
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

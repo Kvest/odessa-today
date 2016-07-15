@@ -23,8 +23,8 @@
     <attr format="color" name="DetailsArrowTint"/>
     <attr format="color" name="CloseIconTintColor"/>
     <attr format="reference" name="CloseIcon"/>
-    <attr format="color" name="ListEvenItemBg"/>
-    <attr format="color" name="ListOddItemBg"/>
+    <attr format="reference" name="ListEvenItemBgRes"/>
+    <attr format="reference" name="ListOddItemBgRes"/>
     <attr format="color" name="FilmNameTextColor"/>
     <attr format="color" name="GenreNameTextColor"/>
     <attr format="reference" name="FilmsRatingBar"/>

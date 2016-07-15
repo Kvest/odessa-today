@@ -3,7 +3,6 @@ package com.kvest.odessatoday.ui.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<BaseTimetableItem> dataset;
     private String currencyStr;
-    private int evenItemBgColor, oddItemBgColor;
+    private int evenItemBgResId, oddItemBgResId;
 
     public PlaceTimetableAdapter(Context context) {
         super();
@@ -181,7 +180,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
 
                     DateItem dateItem = new DateItem(date);
                     dateItem.date = date;
-                    dateItem.bgColor = ((dayNumber % 2) == 0 ? evenItemBgColor : oddItemBgColor);
+                    dateItem.backgroundResId = ((dayNumber % 2) == 0 ? evenItemBgResId : oddItemBgResId);
                     dataset.add(dateItem);
 
                     prevDay = TimeUtils.getBeginningOfTheDay(date);
@@ -195,7 +194,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
                     eventInfo.commentsCount = cursor.getInt(commentsCountIndex);
                     eventInfo.eventName = cursor.getString(eventNameIndex);
                     eventInfo.eventType = cursor.getInt(eventTypeIndex);
-                    eventInfo.bgColor = ((dayNumber % 2) == 0 ? evenItemBgColor : oddItemBgColor);
+                    eventInfo.backgroundResId = ((dayNumber % 2) == 0 ? evenItemBgResId : oddItemBgResId);
 
                     dataset.add(eventInfo);
 
@@ -206,7 +205,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
                 timetableItem.date = date;
                 timetableItem.hasTickets = (cursor.getInt(hasTicketsIndex) != 0);
                 timetableItem.prices = convertPrices(cursor.getString(pricesIndex));
-                timetableItem.bgColor = ((dayNumber % 2) == 0 ? evenItemBgColor : oddItemBgColor);
+                timetableItem.backgroundResId = ((dayNumber % 2) == 0 ? evenItemBgResId : oddItemBgResId);
 
                 dataset.add(timetableItem);
             } while (cursor.moveToNext());
@@ -217,15 +216,15 @@ public class PlaceTimetableAdapter extends BaseAdapter {
 
     private void initResources(Context context) {
         // The attributes you want retrieved
-        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg};
+        int[] attrs = {R.attr.ListEvenItemBgRes, R.attr.ListOddItemBgRes};
 
-        // Parse style, using Context.obtainStyledAttributes()
+        //Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
 
         try {
             // Fetching the resources defined in the style
-            evenItemBgColor = ta.getColor(0, Color.BLACK);
-            oddItemBgColor = ta.getColor(1, Color.BLACK);
+            evenItemBgResId = ta.getResourceId(0, 0);
+            oddItemBgResId = ta.getResourceId(1, 0);
         } finally {
             ta.recycle();
         }
@@ -264,7 +263,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
 
     private static abstract class BaseTimetableItem {
         public final long id;
-        public int bgColor;
+        public int backgroundResId;
 
         public BaseTimetableItem(long id) {
             this.id = id;
@@ -322,7 +321,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
         }
 
         public void bind(DateItem dateItem) {
-            date.setBackgroundColor(dateItem.bgColor);
+            date.setBackgroundResource(dateItem.backgroundResId);
 
             long dateValue = TimeUnit.SECONDS.toMillis(dateItem.date);
             date.setText(DATE_FORMAT.format(dateValue));
@@ -345,7 +344,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
         }
 
         public void bind(Context context, EventInfoItem eventInfoItem) {
-            parent.setBackgroundColor(eventInfoItem.bgColor);
+            parent.setBackgroundResource(eventInfoItem.backgroundResId);
 
             rating.setRating(eventInfoItem.rating);
             commentsCount.setText(Utils.createCountString(context, eventInfoItem.commentsCount, Utils.COMMENTS_COUNT_PATTERNS));
@@ -396,7 +395,7 @@ public class PlaceTimetableAdapter extends BaseAdapter {
         }
 
         public void bind(TimetableItem timetableItem) {
-            parent.setBackgroundColor(timetableItem.bgColor);
+            parent.setBackgroundResource(timetableItem.backgroundResId);
 
             long dateValue = TimeUnit.SECONDS.toMillis(timetableItem.date);
             time.setText(TIME_FORMAT.format(dateValue));

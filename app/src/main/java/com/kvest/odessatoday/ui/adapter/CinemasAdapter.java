@@ -29,7 +29,7 @@ public class CinemasAdapter extends CursorAdapter {
     private int nameColumnIndex = -1;
     private int addressColumnIndex = -1;
     private int commentsCountColumnIndex = -1;
-    private int evenItemBgColor, oddItemBgColor, pinColor;
+    private int evenItemBgResId, oddItemBgResId, pinColor;
 
     public CinemasAdapter(Context context) {
         super(context, null, 0);
@@ -59,9 +59,9 @@ public class CinemasAdapter extends CursorAdapter {
 
         //set view background
         if (cursor.getPosition() % 2 == 0) {
-            view.setBackgroundColor(evenItemBgColor);
+            view.setBackgroundResource(evenItemBgResId);
         } else {
-            view.setBackgroundColor(oddItemBgColor);
+            view.setBackgroundResource(oddItemBgResId);
         }
 
         if (!isColumnIndexesCalculated()) {
@@ -76,15 +76,15 @@ public class CinemasAdapter extends CursorAdapter {
 
     private void initResources(Context context) {
         // The attributes you want retrieved
-        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg, R.attr.MapPinColor};
+        int[] attrs = {R.attr.ListEvenItemBgRes, R.attr.ListOddItemBgRes, R.attr.MapPinColor};
 
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
 
         try {
             // Fetching the resources defined in the style
-            evenItemBgColor = ta.getColor(0, Color.BLACK);
-            oddItemBgColor = ta.getColor(1, Color.BLACK);
+            evenItemBgResId = ta.getResourceId(0, Color.BLACK);
+            oddItemBgResId = ta.getResourceId(1, Color.BLACK);
             pinColor = ta.getColor(2, Color.BLACK);
         } finally {
             ta.recycle();

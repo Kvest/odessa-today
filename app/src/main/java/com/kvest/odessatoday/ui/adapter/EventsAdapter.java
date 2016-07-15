@@ -40,7 +40,7 @@ public class EventsAdapter extends CursorAdapter {
     private int pricesColumnIndex = -1;
     private int hasTicketsColumnIndex = -1;
 
-    private int evenItemBgColor, oddItemBgColor, drawablesColor, hasTicketsDrawablesColor;
+    private int evenItemBgResId, oddItemBgResId, drawablesColor, hasTicketsDrawablesColor;
     private int noImageResId, loadingImageResId;
 
     private SimpleDateFormat dateFormat;
@@ -84,7 +84,7 @@ public class EventsAdapter extends CursorAdapter {
         ViewHolder holder = (ViewHolder)view.getTag();
 
         //set view background
-        view.setBackgroundColor(cursor.getPosition() % 2 == 0 ? evenItemBgColor : oddItemBgColor);
+        view.setBackgroundResource(cursor.getPosition() % 2 == 0 ? evenItemBgResId : oddItemBgResId);
 
         if (!isColumnIndexesCalculated()) {
             calculateColumnIndexes(cursor);
@@ -126,15 +126,15 @@ public class EventsAdapter extends CursorAdapter {
 
     private void initResources(Context context) {
         // The attributes you want retrieved
-        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg, R.attr.NoImage, R.attr.LoadingImage};
+        int[] attrs = {R.attr.ListEvenItemBgRes, R.attr.ListOddItemBgRes, R.attr.NoImage, R.attr.LoadingImage};
 
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
 
         try {
             // Fetching the resources defined in the style
-            evenItemBgColor = ta.getColor(0, Color.BLACK);
-            oddItemBgColor = ta.getColor(1, Color.BLACK);
+            evenItemBgResId = ta.getResourceId(0, 0);
+            oddItemBgResId = ta.getResourceId(1, 0);
             noImageResId = ta.getResourceId(2, -1);
             loadingImageResId = ta.getResourceId(3, -1);
         } finally {

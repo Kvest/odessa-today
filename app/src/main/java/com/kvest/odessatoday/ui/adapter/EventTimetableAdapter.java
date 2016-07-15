@@ -3,7 +3,6 @@ package com.kvest.odessatoday.ui.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
-import com.kvest.odessatoday.ui.widget.FormatTextView;
 import com.kvest.odessatoday.utils.TimeUtils;
 
 import java.text.SimpleDateFormat;
@@ -42,7 +40,7 @@ public class EventTimetableAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private List<BaseTimetableItem> dataset;
-    private int evenItemBgColor, oddItemBgColor;
+    private int evenItemBgResId, oddItemBgResId;
     private String currencyStr;
 
     public EventTimetableAdapter(Context context) {
@@ -152,7 +150,7 @@ public class EventTimetableAdapter extends BaseAdapter {
                 timetableItem.date = date;
                 timetableItem.placeName = cursor.getString(placeNameIndex);
                 timetableItem.prices = convertPrices(cursor.getString(pricesIndex));
-                timetableItem.bgColor = ((rowNumber % 2) == 0 ? evenItemBgColor : oddItemBgColor);
+                timetableItem.bgResId = ((rowNumber % 2) == 0 ? evenItemBgResId : oddItemBgResId);
                 ++rowNumber;
 
                 dataset.add(timetableItem);
@@ -164,15 +162,15 @@ public class EventTimetableAdapter extends BaseAdapter {
 
     private void initResources(Context context) {
         // The attributes you want retrieved
-        int[] attrs = {R.attr.ListEvenItemBg, R.attr.ListOddItemBg};
+        int[] attrs = {R.attr.ListEvenItemBgRes, R.attr.ListOddItemBgRes};
 
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
 
         try {
             // Fetching the resources defined in the style
-            evenItemBgColor = ta.getColor(0, Color.BLACK);
-            oddItemBgColor = ta.getColor(1, Color.BLACK);
+            evenItemBgResId = ta.getResourceId(0, 0);
+            oddItemBgResId = ta.getResourceId(1, 0);
         } finally {
             ta.recycle();
         }
@@ -235,7 +233,7 @@ public class EventTimetableAdapter extends BaseAdapter {
         public long date;
         public String placeName;
         public String prices;
-        public int bgColor;
+        public int bgResId;
 
         public TimetableItem(long id) {
             super(id);
@@ -273,7 +271,7 @@ public class EventTimetableAdapter extends BaseAdapter {
         }
 
         public void bind(TimetableItem timetableItem) {
-            parent.setBackgroundColor(timetableItem.bgColor);
+            parent.setBackgroundResource(timetableItem.bgResId);
 
             long dateValue = TimeUnit.SECONDS.toMillis(timetableItem.date);
             seanceTime.setText(TIME_FORMAT.format(dateValue));

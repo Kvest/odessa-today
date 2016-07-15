@@ -5,5 +5,4 @@
     android:layout_width="match_parent"
     android:paddingBottom="@dimen/place_details_padding"
     android:background="?attr/PlaceDetailsBgColor"
-    android:listSelector="@drawable/application_list_item_selector"
     android:divider="@null" />

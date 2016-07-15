@@ -17,8 +17,8 @@
         <item name="ABCalendarIcon">@drawable/ic_ab_calendar_day</item>
         <item name="ABIconColor">@color/ab_icon_color_day</item>
         <item name="DetailsArrowTint">#bcbcbc</item>
-        <item name="ListEvenItemBg">@android:color/white</item>
-        <item name="ListOddItemBg">#f5f5f5</item>
+        <item name="ListEvenItemBgRes">@drawable/list_even_item_bg_day</item>
+        <item name="ListOddItemBgRes">@drawable/list_odd_item_bg_day</item>
         <item name="MapPinColor">#24282b</item>
         <item name="NoImage">@drawable/no_image_day</item>
         <item name="LoadingImage">@drawable/loading_image_day</item>
