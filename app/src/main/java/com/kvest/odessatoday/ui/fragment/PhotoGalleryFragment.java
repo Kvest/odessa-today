@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -37,6 +38,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
     private static final int PICK_PHOTO_REQUEST = 1;
     private static final int READ_EXTERNAL_STORAGE_PERMISSION = 1;
 
+    private static final String KEY_URLS = "com.kvest.odessatoday.key.URLS";
     private static final String ARGUMENT_URLS = "com.kvest.odessatoday.argument.URLS";
     private static final String ARGUMENT_TITLE = "com.kvest.odessatoday.argument.TITLE";
     private static final String ARGUMENT_TARGET_ID = "com.kvest.odessatoday.argument.TARGET_ID";
@@ -45,6 +47,8 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
     private OnPhotoSelectedListener onPhotoSelectedListener;
     private ProgressDialogFragment progressDialog;
     private PhotoGalleryAdapter adapter;
+    private String[] photoURLs;
+    private TextView photosCount;
 
     public static PhotoGalleryFragment newInstance(String[] photoURLs, String title, long targetId, int targetType) {
         Bundle arguments = new Bundle(4);
@@ -59,6 +63,17 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            photoURLs = getPhotoURLs();
+        } else {
+            photoURLs = savedInstanceState.getStringArray(KEY_URLS);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.photo_gallery_fragment, container, false);
 
@@ -68,13 +83,11 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
     }
 
     private void init(View rootView) {
-        String[] photoURLs = getPhotoURLs();
-
         Activity activity = getActivity();
         activity.setTitle(getTitle());
 
-        TextView photosCount = (TextView)rootView.findViewById(R.id.photos_count);
-        photosCount.setText(Utils.createCountString(activity, photoURLs.length, Utils.PHOTOS_COUNT_PATTERNS));
+        photosCount = (TextView)rootView.findViewById(R.id.photos_count);
+        updatePhotosCount(activity);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.photos);
 
@@ -95,6 +108,10 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
                 proposePhoto();
             }
         });
+    }
+
+    private void updatePhotosCount(Context context) {
+        photosCount.setText(Utils.createCountString(context, photoURLs.length, Utils.PHOTOS_COUNT_PATTERNS));
     }
 
     @Override
@@ -127,6 +144,13 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
         super.onDetach();
 
         onPhotoSelectedListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putStringArray(KEY_URLS, photoURLs);
     }
 
     private String[] getPhotoURLs() {
@@ -211,13 +235,21 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
 
         if (event.isSuccessful()) {
             //update gallery
-            final String[] newPhotos = event.getNewPhotos();
-            getView().post(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.setPhotoURLs(newPhotos);
-                }
-            });
+            photoURLs = event.getNewPhotos();
+            View rootView = getView();
+            if (rootView != null) {
+                getView().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setPhotoURLs(photoURLs);
+
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            updatePhotosCount(activity);
+                        }
+                    }
+                });
+            }
         } else {
             showUploadPhotoError();
         }
@@ -281,7 +313,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
     @Override
     public void onItemSelected(View view, int position, long id) {
         if (onPhotoSelectedListener != null) {
-            onPhotoSelectedListener.onPhotoSelected(getPhotoURLs(), position);
+            onPhotoSelectedListener.onPhotoSelected(photoURLs, position);
         }
     }
 
