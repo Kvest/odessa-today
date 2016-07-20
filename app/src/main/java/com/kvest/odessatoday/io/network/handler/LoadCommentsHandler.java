@@ -80,7 +80,8 @@ public class LoadCommentsHandler extends RequestHandler {
     }
 
     protected void saveComments(Context context, List<Comment> comments, long targetId, int targetType, boolean deleteOldComments) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(comments.size() + (deleteOldComments ? 1 : 0));
+        int count = comments != null ? comments.size() : 0;
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>(count + (deleteOldComments ? 1 : 0));
 
         if (deleteOldComments) {
             //delete old comments
@@ -93,9 +94,11 @@ public class LoadCommentsHandler extends RequestHandler {
         }
 
         //insert comments
-        for (Comment comment : comments) {
-            operations.add(ContentProviderOperation.newInsert(COMMENTS_URI)
-                    .withValues(comment.getContentValues(targetId, targetType)).build());
+        if (comments != null) {
+            for (Comment comment : comments) {
+                operations.add(ContentProviderOperation.newInsert(COMMENTS_URI)
+                        .withValues(comment.getContentValues(targetId, targetType)).build());
+            }
         }
 
         //apply

@@ -117,13 +117,15 @@ public class LoadEventsHandler extends RequestHandler {
                 .build();
         operations.add(deleteOperation);
 
-        for (Event event : events) {
-            //insert event
-            operations.add(ContentProviderOperation.newInsert(EVENTS_URI).withValues(event.getContentValues()).build());
+        if (events != null) {
+            for (Event event : events) {
+                //insert event
+                operations.add(ContentProviderOperation.newInsert(EVENTS_URI).withValues(event.getContentValues()).build());
 
-            //insert timetable
-            for (Event.Timetable timetableItem : event.timetable) {
-                operations.add(ContentProviderOperation.newInsert(EVENTS_TIMETABLE_URI).withValues(timetableItem.getContentValues(event.id)).build());
+                //insert timetable
+                for (Event.Timetable timetableItem : event.timetable) {
+                    operations.add(ContentProviderOperation.newInsert(EVENTS_TIMETABLE_URI).withValues(timetableItem.getContentValues(event.id)).build());
+                }
             }
         }
 
