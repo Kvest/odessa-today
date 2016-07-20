@@ -33,15 +33,6 @@ public class PhotoSlideFragment extends BaseFragment implements ViewPager.OnPage
         return result;
     }
 
-    public static PhotoSlideFragment newInstance(String[] photoURLs) {
-        Bundle arguments = new Bundle(1);
-        arguments.putStringArray(ARGUMENT_URLS, photoURLs);
-
-        PhotoSlideFragment result = new PhotoSlideFragment();
-        result.setArguments(arguments);
-        return result;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.photo_slide_fragment, container, false);
