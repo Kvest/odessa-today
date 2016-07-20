@@ -19,7 +19,7 @@ public class DBCleanerService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //Films + FilmsTimetable + AnnouncementsMetadata + comments
-        //Events + EventsTimetable + comments
+        //FilmsTimetable + Films(not in FilmsTimetable and AnnouncementsMetadata) + comments for films(check comment sync flag)
+        //EventsTimetable + Events(not in EventsTimetable) + comments for events(check comment sync flag)
     }
 }

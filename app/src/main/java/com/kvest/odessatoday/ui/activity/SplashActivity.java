@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DBCleanerService.start(this);
+        //DBCleanerService.start(this);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
