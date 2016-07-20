@@ -59,15 +59,18 @@ public class LoadCinemasHandler extends RequestHandler {
     }
 
     private void saveCinemas(Context context, List<Cinema> cinemas) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(cinemas.size() + 1);
+        int count = cinemas != null ? cinemas.size() : 0;
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(count + 1);
 
         //delete cinemas
         ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(CINEMAS_URI).build();
         operations.add(deleteOperation);
 
-        for (Cinema cinema : cinemas) {
-            //insert film
-            operations.add(ContentProviderOperation.newInsert(CINEMAS_URI).withValues(cinema.getContentValues()).build());
+        if (cinemas != null) {
+            for (Cinema cinema : cinemas) {
+                //insert film
+                operations.add(ContentProviderOperation.newInsert(CINEMAS_URI).withValues(cinema.getContentValues()).build());
+            }
         }
 
         //apply

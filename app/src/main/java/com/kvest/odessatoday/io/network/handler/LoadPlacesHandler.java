@@ -91,7 +91,8 @@ public class LoadPlacesHandler extends RequestHandler {
     }
 
     private void savePlaces(Context context, List<Place> places, Uri placesUri, boolean deleteOldPlaces) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(places.size() + (deleteOldPlaces ? 1 : 0));
+        int count = places != null ? places.size() : 0;
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>(count + (deleteOldPlaces ? 1 : 0));
 
         if (deleteOldPlaces) {
             //delete old places
@@ -100,9 +101,11 @@ public class LoadPlacesHandler extends RequestHandler {
         }
 
         //insert places
-        for (Place place : places) {
-            operations.add(ContentProviderOperation.newInsert(placesUri)
-                            .withValues(place.getContentValues()).build());
+        if (places != null) {
+            for (Place place : places) {
+                operations.add(ContentProviderOperation.newInsert(placesUri)
+                        .withValues(place.getContentValues()).build());
+            }
         }
 
         //apply
