@@ -52,6 +52,10 @@ public class UploadPhotoHandler extends RequestHandler {
                 //save new gallery photos
                 savePhotos(context, targetId, targetType, response.data);
 
+                //ugly hack : we have to clear cache in order to avoid loading old list of the images from cache.
+                //But we can't clear cache for the particular instance - so we need to delete all cache
+                TodayApplication.getApplication().getVolleyHelper().clearCache();
+
                 //notify listeners about successful uploading photo
                 BusProvider.getInstance().post(new UploadPhotoEvent(response.data));
             } else {

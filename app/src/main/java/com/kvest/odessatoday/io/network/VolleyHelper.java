@@ -50,6 +50,10 @@ public class VolleyHelper {
         return imageLoader;
     }
 
+    public void clearCache() {
+        requestQueue.getCache().clear();
+    }
+
     private static class LruBitmapCache implements ImageLoader.ImageCache {
         private LruCache<String, Bitmap> cache;
 
