@@ -99,13 +99,15 @@ public class LoadFilmsHandler extends RequestHandler {
                 .build();
         operations.add(deleteOperation);
 
-        for (FilmWithTimetable film : films) {
-            //insert film
-            operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
+        if (films != null) {
+            for (FilmWithTimetable film : films) {
+                //insert film
+                operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
 
-            //insert timetable
-            for (TimetableItem timetableItem : film.timetable) {
-                operations.add(ContentProviderOperation.newInsert(FILM_TIMETABLE_URI).withValues(timetableItem.getContentValues(film.id)).build());
+                //insert timetable
+                for (TimetableItem timetableItem : film.timetable) {
+                    operations.add(ContentProviderOperation.newInsert(FILM_TIMETABLE_URI).withValues(timetableItem.getContentValues(film.id)).build());
+                }
             }
         }
 

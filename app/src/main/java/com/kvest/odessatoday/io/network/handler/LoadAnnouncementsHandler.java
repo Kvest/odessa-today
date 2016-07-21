@@ -82,24 +82,27 @@ public class LoadAnnouncementsHandler extends RequestHandler {
     }
 
     private void saveAnnouncementFilms(Context context, List<AnnouncementFilm> films, boolean deletePreviousAnnouncement) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(films.size() * 2 + (deletePreviousAnnouncement ? 1 : 0));
+        int count = films != null ? films.size() : 0;
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(count * 2 + (deletePreviousAnnouncement ? 1 : 0));
 
         if (deletePreviousAnnouncement) {
             ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(ANNOUNCEMENT_FILMS_URI).build();
             operations.add(deleteOperation);
         }
 
-        for (AnnouncementFilm film : films) {
-            //insert film
-            operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
+        if (films != null) {
+            for (AnnouncementFilm film : films) {
+                //insert film
+                operations.add(ContentProviderOperation.newInsert(FILMS_URI).withValues(film.getContentValues()).build());
 
-            //insert film id and premiere date to metadata
-            ContentValues cv = new ContentValues(2);
-            cv.put(TodayProviderContract.Tables.AnnouncementsMetadata.Columns.FILM_ID, film.id);
-            if (film.premiere_date > 0) {
-                cv.put(TodayProviderContract.Tables.AnnouncementsMetadata.Columns.PREMIERE_DATE, film.premiere_date);
+                //insert film id and premiere date to metadata
+                ContentValues cv = new ContentValues(2);
+                cv.put(TodayProviderContract.Tables.AnnouncementsMetadata.Columns.FILM_ID, film.id);
+                if (film.premiere_date > 0) {
+                    cv.put(TodayProviderContract.Tables.AnnouncementsMetadata.Columns.PREMIERE_DATE, film.premiere_date);
+                }
+                operations.add(ContentProviderOperation.newInsert(ANNOUNCEMENT_FILMS_URI).withValues(cv).build());
             }
-            operations.add(ContentProviderOperation.newInsert(ANNOUNCEMENT_FILMS_URI).withValues(cv).build());
         }
 
         //apply

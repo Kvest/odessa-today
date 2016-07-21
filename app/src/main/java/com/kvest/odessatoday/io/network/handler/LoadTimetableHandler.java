@@ -69,7 +69,7 @@ public class LoadTimetableHandler extends RequestHandler {
     }
 
     private void saveTimetable(Context context, List<TimetableItem> timetable, long filmId) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
         //delete timetable for film with filmId
         ContentProviderOperation deleteOperation = ContentProviderOperation.newDelete(FILM_TIMETABLE_URI)
@@ -78,8 +78,10 @@ public class LoadTimetableHandler extends RequestHandler {
         operations.add(deleteOperation);
 
         //insert timetable items
-        for (TimetableItem timetableItem : timetable) {
-            operations.add(ContentProviderOperation.newInsert(FILM_TIMETABLE_URI).withValues(timetableItem.getContentValues(filmId)).build());
+        if (timetable != null) {
+            for (TimetableItem timetableItem : timetable) {
+                operations.add(ContentProviderOperation.newInsert(FILM_TIMETABLE_URI).withValues(timetableItem.getContentValues(filmId)).build());
+            }
         }
 
         //apply
