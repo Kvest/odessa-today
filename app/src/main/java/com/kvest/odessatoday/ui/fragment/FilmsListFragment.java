@@ -11,6 +11,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.event.FilmsLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
@@ -46,6 +48,8 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
 
     private ShowCalendarListener showCalendarListener;
     private FilmSelectedListener filmSelectedListener;
+
+    private View noFilmsLabel;
 
     private SwipeRefreshLayout refreshLayout;
     private Handler handler = new Handler();
@@ -223,6 +227,9 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         switch (loader.getId()) {
             case FILMS_LOADER_ID :
                 adapter.swapCursor(cursor);
+                if (cursor.getCount() > 0) {
+                    noFilmsLabel.setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -237,6 +244,8 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     private void init(View root) {
+        noFilmsLabel = root.findViewById(R.id.no_films);
+
         refreshLayout = (SwipeRefreshLayout)root.findViewById(R.id.refresh_layout);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.application_green);
@@ -310,6 +319,16 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         Activity activity = getActivity();
         if (!event.isSuccessful() && activity != null) {
             showErrorSnackbar(activity, R.string.error_loading_films);
+        }
+
+        //check films exists
+        if (event.isSuccessful() && event.startDate == date && event.filmsCount == 0) {
+            noFilmsLabel.post(new Runnable() {
+                @Override
+                public void run() {
+                    noFilmsLabel.setVisibility(View.VISIBLE);
+                }
+            });
         }
     }
 }

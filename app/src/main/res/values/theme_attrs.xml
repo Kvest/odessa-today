@@ -111,4 +111,5 @@
     <attr format="color" name="GalleryPhotosCountBg"/>
     <attr format="color" name="GalleryTopDividerColor"/>
     <attr format="color" name="GalleryBottomDividerColor"/>
+    <attr format="color" name="NoEventLabelTextColor"/>
 </resources>

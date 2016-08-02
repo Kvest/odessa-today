@@ -62,6 +62,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
     private double longitude = 0d;
     private float rating;
 
+    private View noFilmsLabel;
+
     private int drawablesColor;
 
     private TextView dateTextView;
@@ -120,6 +122,8 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         description = (TextView) headerView.findViewById(R.id.description);
         actionCommentsCount = (CommentsCountView) headerView.findViewById(R.id.action_comments_count);
         dateTextView = (TextView)headerView.findViewById(R.id.date);
+
+        noFilmsLabel = headerView.findViewById(R.id.no_films);
 
         //colorize drawables
         Utils.setDrawablesColor(drawablesColor, phones.getCompoundDrawables());
@@ -284,6 +288,9 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
                 break;
             case TIMETABLE_LOADER_ID :
                 cinemaTimetableAdapter.setCursor(data);
+                if (data.getCount() > 0) {
+                    noFilmsLabel.setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -354,6 +361,16 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         Activity activity = getActivity();
         if (!event.isSuccessful() && activity != null) {
             showErrorSnackbar(activity, R.string.error_loading_films);
+        }
+
+        //check films exists
+        if (event.isSuccessful() && event.startDate == shownDate && event.filmsCount == 0) {
+            noFilmsLabel.post(new Runnable() {
+                @Override
+                public void run() {
+                    noFilmsLabel.setVisibility(View.VISIBLE);
+                }
+            });
         }
     }
 

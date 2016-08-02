@@ -57,7 +57,8 @@ public class LoadFilmsHandler extends RequestHandler {
                 saveFilms(context, response.data.films, request.getStartDate(), request.getEndDate(), request.getCinemaId());
 
                 //notify listeners about successful loading films
-                BusProvider.getInstance().post(new FilmsLoadedEvent(true, null));
+                int filmsCount = response.data.films != null ? response.data.films.size() : 0;
+                BusProvider.getInstance().post(new FilmsLoadedEvent(true, null, startDate, endDate, filmsCount));
 
                 //update cinemas
                 NetworkService.loadCinemas(context);
@@ -65,18 +66,18 @@ public class LoadFilmsHandler extends RequestHandler {
                 LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading films
-                BusProvider.getInstance().post(new FilmsLoadedEvent(false, response.error));
+                BusProvider.getInstance().post(new FilmsLoadedEvent(false, response.error, startDate, endDate, 0));
             }
         } catch (InterruptedException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading films
-            BusProvider.getInstance().post(new FilmsLoadedEvent(false, e.getLocalizedMessage()));
+            BusProvider.getInstance().post(new FilmsLoadedEvent(false, e.getLocalizedMessage(), startDate, endDate, 0));
         } catch (ExecutionException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading films
-            BusProvider.getInstance().post(new FilmsLoadedEvent(false, e.getLocalizedMessage()));
+            BusProvider.getInstance().post(new FilmsLoadedEvent(false, e.getLocalizedMessage(), startDate, endDate, 0));
         }
     }
 

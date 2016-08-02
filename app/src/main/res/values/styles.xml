@@ -117,4 +117,13 @@
         <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="NoEventsStyle" parent="android:Widget.TextView" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?attr/NoEventLabelTextColor</item>
+        <item name="android:textSize">@dimen/no_event_label_text_size</item>
+        <item name="android:padding">@dimen/no_event_label_padding</item>
+    </style>
 </resources>

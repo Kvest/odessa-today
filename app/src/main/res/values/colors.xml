@@ -5,8 +5,6 @@
     <color name="premiere_label_bg">#FF4444</color>
     <color name="premiere_date_text_color">#24282b</color>
     <color name="premiere_label_text_color">#ffffff</color>
-    <color name="category_selector_checked_bg">#323232</color>
-    <color name="category_selector_unchecked_bg">#454954</color>
     <color name="film_duration_text_color">#bcbcbc</color>
     <color name="ab_icon_color_day">#ffffff</color>
     <color name="ab_icon_color_night">#1b1b1b</color>
@@ -25,8 +23,6 @@
 
     <!--film details-->
     <color name="min_max_prices_text_color">#828282</color>
-    <color name="film_details_director_text_color">#323232</color>
-    <color name="film_details_actors_text_color">#323232</color>
     <color name="film_details_role_text_color">#828282</color>
 
     <!--timetable list-->

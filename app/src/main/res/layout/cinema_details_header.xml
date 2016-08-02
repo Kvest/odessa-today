@@ -118,4 +118,6 @@
         android:layout_marginRight="@dimen/cinema_details_padding"
         android:layout_marginBottom="@dimen/cinema_details_date_margin_bottom"
         android:background="?attr/CinemaDetailsDateDividerColor" />
+    <include
+        layout="@layout/no_films_label"/>
 </LinearLayout>

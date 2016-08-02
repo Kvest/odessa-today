@@ -15,7 +15,6 @@
     <dimen name="film_thumbnail_margin_right">25dip</dimen>
     <dimen name="film_name_text_size">20sp</dimen>
     <dimen name="genre_text_size">12sp</dimen>
-    <dimen name="film_description_text_size">14sp</dimen>
     <dimen name="premiere_label_text_size">11sp</dimen>
     <dimen name="premiere_label_margin_top">8dip</dimen>
     <dimen name="premiere_label_padding">2dip</dimen>
@@ -28,8 +27,6 @@
     <dimen name="films_comments_count_margin_left">4dip</dimen>
     <dimen name="film_duration_icon_margin_right">10dip</dimen>
     <dimen name="film_duration_text_size">11sp</dimen>
-    <dimen name="film_format_icon_size">32dip</dimen>
-    <dimen name="menu_icon_size">24dip</dimen>
     <dimen name="announcement_ratingbar_margin_top">10dip</dimen>
     <dimen name="announcement_comments_count_margin_top">8dip</dimen>
     <dimen name="toolbar_horizontal_padding">10dip</dimen>
@@ -43,6 +40,8 @@
     <dimen name="gradient_button_text_size">13sp</dimen>
     <dimen name="gradient_button_vertical_margin">10dip</dimen>
     <dimen name="gradient_button_horizontal_margin">33dip</dimen>
+    <dimen name="no_event_label_text_size">20sp</dimen>
+    <dimen name="no_event_label_padding">@dimen/application_padding</dimen>
 
     <!--Calendar fragment-->
     <dimen name="calendar_header_padding_left">70dip</dimen>
@@ -139,7 +138,6 @@
     <dimen name="cinema_details_phones_margin_top">15dip</dimen>
     <dimen name="cinema_details_phones_drawable_padding">10dip</dimen>
     <dimen name="cinema_details_phones_text_size">12sp</dimen>
-    <dimen name="cinema_details_corner_radius">5dip</dimen>
     <dimen name="cinema_details_address_drawable_padding">10dip</dimen>
     <dimen name="cinema_details_address_padding_left">13dip</dimen>
     <dimen name="cinema_details_actions_margin_top">15dip</dimen>

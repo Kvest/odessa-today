@@ -25,6 +25,8 @@
         <item name="ActionsLayoutBg">#f5f5f5</item>
         <item name="CloseIcon">@drawable/ic_close_day_centered</item>
         <item name="EditTextBg">@drawable/edit_text_bg_day</item>
+        <item name="NoEventLabelTextColor">#24282b</item>
+
         <!--Main menu-->
         <item name="MainMenuBgColor">#e8e8e8</item>
         <item name="MainMenuHeaderBgColor">#24282b</item>
