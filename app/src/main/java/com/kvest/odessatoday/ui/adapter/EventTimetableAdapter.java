@@ -1,7 +1,6 @@
 package com.kvest.odessatoday.ui.adapter;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,6 @@ public class EventTimetableAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private List<BaseTimetableItem> dataset;
-    private int evenItemBgResId, oddItemBgResId;
     private String currencyStr;
 
     public EventTimetableAdapter(Context context) {
@@ -143,14 +141,12 @@ public class EventTimetableAdapter extends BaseAdapter {
                     dataset.add(dateItem);
 
                     prevDay = TimeUtils.getBeginningOfTheDay(date);
-                    rowNumber = 0;
                 }
 
                 TimetableItem timetableItem = new TimetableItem(cursor.getLong(idIndex));
                 timetableItem.date = date;
                 timetableItem.placeName = cursor.getString(placeNameIndex);
                 timetableItem.prices = convertPrices(cursor.getString(pricesIndex));
-                timetableItem.bgResId = ((rowNumber % 2) == 0 ? evenItemBgResId : oddItemBgResId);
                 ++rowNumber;
 
                 dataset.add(timetableItem);
@@ -161,20 +157,6 @@ public class EventTimetableAdapter extends BaseAdapter {
     }
 
     private void initResources(Context context) {
-        // The attributes you want retrieved
-        int[] attrs = {R.attr.ListEvenItemBgRes, R.attr.ListOddItemBgRes};
-
-        // Parse style, using Context.obtainStyledAttributes()
-        TypedArray ta = context.obtainStyledAttributes(attrs);
-
-        try {
-            // Fetching the resources defined in the style
-            evenItemBgResId = ta.getResourceId(0, 0);
-            oddItemBgResId = ta.getResourceId(1, 0);
-        } finally {
-            ta.recycle();
-        }
-
         currencyStr = context.getString(R.string.currency);
     }
 
@@ -209,6 +191,7 @@ public class EventTimetableAdapter extends BaseAdapter {
 
     private static abstract class BaseTimetableItem {
         public final long id;
+        //public int bgResId;
 
         public BaseTimetableItem(long id) {
             this.id = id;
@@ -233,7 +216,6 @@ public class EventTimetableAdapter extends BaseAdapter {
         public long date;
         public String placeName;
         public String prices;
-        public int bgResId;
 
         public TimetableItem(long id) {
             super(id);
@@ -271,8 +253,6 @@ public class EventTimetableAdapter extends BaseAdapter {
         }
 
         public void bind(TimetableItem timetableItem) {
-            parent.setBackgroundResource(timetableItem.bgResId);
-
             long dateValue = TimeUnit.SECONDS.toMillis(timetableItem.date);
             seanceTime.setText(TIME_FORMAT.format(dateValue));
             placeName.setText(timetableItem.placeName);
