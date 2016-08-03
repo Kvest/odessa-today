@@ -66,8 +66,5 @@
         <service
             android:name=".service.NetworkService"
             android:exported="false" />
-        <service
-            android:name=".service.DBCleanerService"
-            android:exported="false" />
     </application>
 </manifest>
