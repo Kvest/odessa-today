@@ -182,6 +182,8 @@ public class TodayProviderContract {
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String GET_FILMS_ID_BY_PERIOD_SQL = "SELECT DISTINCT " + Columns.FILM_ID + " FROM " + TABLE_NAME +
                                                 " WHERE " + Columns.DATE + ">=? AND " + Columns.DATE + "<=?";
+
+            String DISTINCT_FILM_ID = "distinct " + Columns.FILM_ID;
         }
 
         interface Comments {
@@ -419,6 +421,8 @@ public class TodayProviderContract {
 
             String DROP_TABLE_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
             String ORDER_DATE_ASC = Columns.DATE + " ASC";
+
+            String DISTINCT_EVENT_ID = "distinct " + Columns.EVENT_ID;
         }
 
         interface EventsTimetableView {
