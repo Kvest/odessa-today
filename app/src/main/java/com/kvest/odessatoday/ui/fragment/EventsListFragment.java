@@ -219,7 +219,6 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
                 }
             }, event.isSuccessful() ? STOP_REFRESHING_DELAY : 0L);
 
-
             Activity activity = getActivity();
             if (!event.isSuccessful() && activity != null) {
                 showErrorSnackbar(activity, R.string.error_loading_events);

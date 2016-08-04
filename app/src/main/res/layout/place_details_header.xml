@@ -121,4 +121,5 @@
         android:layout_marginLeft="@dimen/place_details_padding"
         android:layout_marginRight="@dimen/place_details_padding"
         android:background="?attr/PlaceDetailsDividerColor" />
+    <include layout="@layout/no_events_label" />
 </LinearLayout>

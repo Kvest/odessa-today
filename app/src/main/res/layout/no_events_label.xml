@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kvest.odessatoday.ui.widget.FontTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/no_events"
+    style="@style/NoEventsStyle"
+    android:visibility="gone"
+    android:text="@string/no_events_label"
+    app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>

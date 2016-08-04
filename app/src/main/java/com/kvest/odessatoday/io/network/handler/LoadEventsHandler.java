@@ -73,23 +73,24 @@ public class LoadEventsHandler extends RequestHandler {
                 saveEvents(context, response.data.events, request.getStartDate(), request.getEndDate(), request.getPlaceId(), request.getType());
 
                 //notify listeners about successful loading events
-                BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, true));
+                int eventsCount = response.data.events != null ? response.data.events.size() : 0;
+                BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, true, eventsCount));
             } else {
                 LOGE(Constants.TAG, "ERROR " + response.code + " = " + response.error);
 
                 //notify listeners about unsuccessful loading events
-                BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false));
+                BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false, 0));
             }
         } catch (InterruptedException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading events
-            BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false));
+            BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false, 0));
         } catch (ExecutionException e) {
             LOGE(Constants.TAG, e.getLocalizedMessage());
 
             //notify listeners about unsuccessful loading events
-            BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false));
+            BusProvider.getInstance().post(new EventsLoadedEvent(type, placeId, false, 0));
         }
     }
 

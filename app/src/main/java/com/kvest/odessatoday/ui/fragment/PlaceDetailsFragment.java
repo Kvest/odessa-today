@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kvest.odessatoday.R;
+import com.kvest.odessatoday.io.network.event.EventsLoadedEvent;
 import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.activity.EventDetailsActivity;
 import com.kvest.odessatoday.ui.adapter.PlaceTimetableAdapter;
 import com.kvest.odessatoday.ui.widget.CommentsCountView;
+import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.HeightResizeAnimation;
 import com.kvest.odessatoday.utils.Utils;
+import com.squareup.otto.Subscribe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -65,6 +67,8 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     private ListView timetableList;
     private PlaceTimetableAdapter timetableAdapter;
 
+    private View noEventsLabel;
+
     private String[] photoUrls = null;
     private double latitude = 0d;
     private double longitude = 0d;
@@ -87,6 +91,8 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        BusProvider.getInstance().register(this);
+
         View rootView = inflater.inflate(R.layout.place_details_fragment, container, false);
         View headerView = inflater.inflate(R.layout.place_details_header, null);
 
@@ -106,6 +112,8 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
         expandDescriptionPanel = headerView.findViewById(R.id.expand_description_panel);
         triggerFullDescriptionView = headerView.findViewById(R.id.trigger_full_description);
         actionCommentsCount = (CommentsCountView) headerView.findViewById(R.id.action_comments_count);
+
+        noEventsLabel = headerView.findViewById(R.id.no_events);
 
         //colorize drawables
         Utils.setDrawablesColor(drawablesColor, placePhones.getCompoundDrawables());
@@ -208,6 +216,13 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case PLACE_LOADER_ID :
@@ -231,6 +246,9 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
                 break;
             case TIMETABLE_LOADER_ID :
                 timetableAdapter.setCursor(cursor);
+                if (cursor.getCount() > 0) {
+                    noEventsLabel.setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -410,6 +428,25 @@ public class PlaceDetailsFragment extends BaseFragment implements LoaderManager.
             latitude = cursor.getDouble(cursor.getColumnIndex(Places.Columns.LAT));
 
             rating = cursor.getFloat(cursor.getColumnIndex(Places.Columns.RATING));
+        }
+    }
+
+    @Subscribe
+    public void onEventsLoaded(EventsLoadedEvent event) {
+        if (event.getPlaceId() == getPlaceId()) {
+            Activity activity = getActivity();
+            if (!event.isSuccessful() && activity != null) {
+                showErrorSnackbar(activity, R.string.error_loading_events);
+            }
+
+            if (event.isSuccessful() && event.getEventsCount() == 0) {
+                noEventsLabel.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        noEventsLabel.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
         }
     }
 
