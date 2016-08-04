@@ -105,7 +105,7 @@ public class CommentsAdapter extends CursorAdapter {
 
         try {
             // Fetching the resources defined in the style
-            needUploadBgColor = ta.getColor(0, Color.LTGRAY);
+            needUploadBgColor = ta.getColor(ta.getIndex(0), Color.LTGRAY);
         } finally {
             ta.recycle();
         }

@@ -412,8 +412,8 @@ public abstract class BaseFilmDetailsFragment extends BaseFragment implements Yo
 
         try {
             // Fetching the resources defined in the style
-            noImageResId = ta.getResourceId(0, -1);
-            loadingImageResId = ta.getResourceId(1, -1);
+            noImageResId = ta.getResourceId(ta.getIndex(0), -1);
+            loadingImageResId = ta.getResourceId(ta.getIndex(1), -1);
         } finally {
             ta.recycle();
         }

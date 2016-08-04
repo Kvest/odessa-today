@@ -223,8 +223,8 @@ public class PlaceTimetableAdapter extends BaseAdapter {
 
         try {
             // Fetching the resources defined in the style
-            evenItemBgResId = ta.getResourceId(0, 0);
-            oddItemBgResId = ta.getResourceId(1, 0);
+            evenItemBgResId = ta.getResourceId(ta.getIndex(0), 0);
+            oddItemBgResId = ta.getResourceId(ta.getIndex(1), 0);
         } finally {
             ta.recycle();
         }

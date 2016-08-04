@@ -132,10 +132,10 @@ public class AnnouncementFilmsAdapter extends CursorAdapter {
 
         try {
             // Fetching the resources defined in the style
-            evenItemBgResId = ta.getResourceId(0, 0);
-            oddItemBgResId = ta.getResourceId(1, 0);
-            noImageResId = ta.getResourceId(2, -1);
-            loadingImageResId = ta.getResourceId(3, -1);
+            evenItemBgResId = ta.getResourceId(ta.getIndex(0), 0);
+            oddItemBgResId = ta.getResourceId(ta.getIndex(1), 0);
+            noImageResId = ta.getResourceId(ta.getIndex(2), -1);
+            loadingImageResId = ta.getResourceId(ta.getIndex(3), -1);
         } finally {
             ta.recycle();
         }

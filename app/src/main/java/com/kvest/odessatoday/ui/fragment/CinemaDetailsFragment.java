@@ -179,7 +179,7 @@ public class CinemaDetailsFragment extends BaseFragment implements LoaderManager
         TypedArray ta = context.obtainStyledAttributes(attrs);
 
         try {
-            drawablesColor = ta.getColor(0, Color.BLACK);
+            drawablesColor = ta.getColor(ta.getIndex(0), Color.BLACK);
         } finally {
             ta.recycle();
         }

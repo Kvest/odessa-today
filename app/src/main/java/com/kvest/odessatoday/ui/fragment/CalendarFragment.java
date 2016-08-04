@@ -291,11 +291,11 @@ public class CalendarFragment extends Fragment {
             TypedArray ta = context.obtainStyledAttributes(attrs);
 
             try {
-                otherMonthTextColor = ta.getColor(0, Color.BLACK);
-                passedDaysTextColor = ta.getColor(1, Color.BLACK);
-                activeDaysTextColor = ta.getColor(2, Color.BLACK);
-                selectedDayTextColor = ta.getColor(3, Color.BLACK);
-                selectedDayBg = ta.getDrawable(4);
+                otherMonthTextColor = ta.getColor(ta.getIndex(0), Color.BLACK);
+                passedDaysTextColor = ta.getColor(ta.getIndex(1), Color.BLACK);
+                activeDaysTextColor = ta.getColor(ta.getIndex(2), Color.BLACK);
+                selectedDayTextColor = ta.getColor(ta.getIndex(3), Color.BLACK);
+                selectedDayBg = ta.getDrawable(ta.getIndex(4));
             }finally {
                 //cleanup
                 ta.recycle();

@@ -400,7 +400,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
         try {
             Drawable drawable = getResources().getDrawable(R.drawable.ic_menu);
 
-            Utils.setDrawablesColor(ta.getColor(0, Color.WHITE), drawable);
+            Utils.setDrawablesColor(ta.getColor(ta.getIndex(0), Color.WHITE), drawable);
 
             return drawable;
         } finally {

@@ -66,7 +66,7 @@ public class TimetableAdapter extends BaseAdapter {
 
         try {
             // Fetching the resources defined in the style
-            pinColor = ta.getColor(0, Color.BLACK);
+            pinColor = ta.getColor(ta.getIndex(0), Color.BLACK);
         } finally {
             ta.recycle();
         }

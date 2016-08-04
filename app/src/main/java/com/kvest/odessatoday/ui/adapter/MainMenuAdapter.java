@@ -87,14 +87,14 @@ public class MainMenuAdapter extends BaseAdapter {
 
         try {
             // Fetching the resources defined in the style
-            subcategoryTextColor = ta.getColor(0, Color.BLACK);
-            disabledSubcategoryTextColor = ta.getColor(1, Color.BLACK);
-            selectedSubcategoryTextColor = ta.getColor(2, Color.BLACK);
-            subcategoryIconTintColor = ta.getColor(3, Color.BLACK);
-            disabledSubcategoryIconTintColor = ta.getColor(4, Color.BLACK);
-            selectedSubcategoryIconTintColor = ta.getColor(5, Color.BLACK);
-            subcategoryBg = ta.getDrawable(6);
-            selectedSubcategoryBg = ta.getDrawable(7);
+            subcategoryTextColor = ta.getColor(ta.getIndex(0), Color.BLACK);
+            disabledSubcategoryTextColor = ta.getColor(ta.getIndex(1), Color.BLACK);
+            selectedSubcategoryTextColor = ta.getColor(ta.getIndex(2), Color.BLACK);
+            subcategoryIconTintColor = ta.getColor(ta.getIndex(3), Color.BLACK);
+            disabledSubcategoryIconTintColor = ta.getColor(ta.getIndex(4), Color.BLACK);
+            selectedSubcategoryIconTintColor = ta.getColor(ta.getIndex(5), Color.BLACK);
+            subcategoryBg = ta.getDrawable(ta.getIndex(6));
+            selectedSubcategoryBg = ta.getDrawable(ta.getIndex(7));
         } finally {
             ta.recycle();
         }
