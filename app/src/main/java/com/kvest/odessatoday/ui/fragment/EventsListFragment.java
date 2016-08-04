@@ -23,7 +23,6 @@ import com.kvest.odessatoday.provider.DataProviderHelper;
 import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.activity.DateSelectionListener;
-import com.kvest.odessatoday.ui.activity.MainActivity;
 import com.kvest.odessatoday.ui.adapter.EventsAdapter;
 import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
@@ -60,6 +59,8 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
     private SwipeRefreshLayout refreshLayout;
     private Handler handler = new Handler();
 
+    private View noEventsLabel;
+
     private EventSelectedListener eventSelectedListener;
     private ShowCalendarListener showCalendarListener;
 
@@ -90,6 +91,8 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         refreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_layout);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.application_green);
+
+        noEventsLabel = rootView.findViewById(R.id.no_events);
 
         eventsList = (ListView) rootView.findViewById(R.id.events_list);
         eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -247,6 +250,7 @@ public class EventsListFragment extends BaseFragment implements LoaderManager.Lo
         switch (loader.getId()) {
             case EVENTS_LOADER_ID :
                 adapter.swapCursor(cursor);
+                noEventsLabel.setVisibility(cursor.getCount() > 0 ? View.GONE : View.VISIBLE);
                 break;
         }
     }
