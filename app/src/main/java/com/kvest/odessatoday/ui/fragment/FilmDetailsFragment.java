@@ -52,8 +52,6 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
     private TextView dateTextView;
     private long shownTimetableDate;
 
-    private View actionTickets;
-
     public static FilmDetailsFragment newInstance(long filmId, long timetableDate) {
         Bundle arguments = new Bundle(2);
         arguments.putLong(ARGUMENT_FILM_ID, filmId);
@@ -104,9 +102,6 @@ public class FilmDetailsFragment extends BaseFilmDetailsFragment implements Load
 
         minMaxPricesView = (TextView)view.findViewById(R.id.min_max_prices);
         dateTextView = (TextView)view.findViewById(R.id.date);
-
-        actionTickets = view.findViewById(R.id.action_tickets);
-        actionTickets.setEnabled(false);
     }
 
     private void initTimetableList(ListView rootView, View headerView) {
