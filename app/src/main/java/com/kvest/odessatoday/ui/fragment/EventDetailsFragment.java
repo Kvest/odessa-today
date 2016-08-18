@@ -152,6 +152,16 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         videoThumbnailContainer = headerView.findViewById(R.id.video_thumbnail_container);
         videoThumbnailPlay = headerView.findViewById(R.id.video_thumbnail_play);
 
+        headerView.findViewById(R.id.action_tickets).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.order_tickets_container, OrderTicketsFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         //setup timetable list
         timetableList = (ListView)rootView.findViewById(R.id.event_details_list);
         timetableList.addHeaderView(headerView, null, false);
