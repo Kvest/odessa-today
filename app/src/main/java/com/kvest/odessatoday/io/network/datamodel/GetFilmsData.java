@@ -15,8 +15,6 @@ import java.util.List;
 public class GetFilmsData {
     @SerializedName("date")
     public long date;
-    @SerializedName("delivery_str")
-    public String deliveryStr;
     @SerializedName("films")
     public List<FilmWithTimetable> films;
 }
