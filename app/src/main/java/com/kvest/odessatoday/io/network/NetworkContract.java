@@ -19,6 +19,7 @@ public class NetworkContract {
     private static final String PLACES_PATH = "places";
     private static final String EVENTS_PATH = "events";
     private static final String GALLERY_PATH = "gallery";
+    private static final String TICKETS_PATH = "tickets";
 
     public static final String API_KEY_HEADER_NAME = "api-key";
     public static final String CLIENT_ID_HEADER_NAME = "Client-Id";
@@ -78,9 +79,13 @@ public class NetworkContract {
         return Uri.parse(BASE_URL + PLACES_PATH + "/" + Long.toString(placeId) + "/" + GALLERY_PATH);
     }
 
+    public static Uri createEventTicketsUri(long eventId) {
+        return Uri.parse(BASE_URL + EVENTS_PATH + "/" + Long.toString(eventId) + "/" + TICKETS_PATH);
+    }
+
     public interface CommentsRequest {
-        public int DEFAULT_OFFSET = 0;
-        public int MAX_LIMIT = 100;
+        int DEFAULT_OFFSET = 0;
+        int MAX_LIMIT = 100;
 
         public interface Params {
             String OFFSET = "offset";
@@ -91,8 +96,8 @@ public class NetworkContract {
     public interface PlacesRequest {
         Uri url = Uri.parse(BASE_URL + PLACES_PATH);
 
-        public int DEFAULT_OFFSET = 0;
-        public int MAX_LIMIT = 100;
+        int DEFAULT_OFFSET = 0;
+        int MAX_LIMIT = 100;
 
         public interface Params {
             String TYPE = "type";
