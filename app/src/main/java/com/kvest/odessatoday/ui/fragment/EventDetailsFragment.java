@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,7 +31,6 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
 import com.kvest.odessatoday.provider.DataProviderHelper;
-import com.kvest.odessatoday.provider.TodayProviderContract;
 import com.kvest.odessatoday.ui.activity.PhotoSlideActivity;
 import com.kvest.odessatoday.ui.activity.YoutubeFullscreenActivity;
 import com.kvest.odessatoday.ui.adapter.EventTimetableAdapter;
@@ -45,6 +45,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.kvest.odessatoday.utils.LogUtils.LOGE;
+import static com.kvest.odessatoday.provider.TodayProviderContract.Tables;
 
 /**
  * Created by kvest on 18.12.15.
@@ -53,8 +54,10 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
                                                                   YouTubeThumbnailView.OnInitializedListener,
                                                                   YouTubeThumbnailLoader.OnThumbnailLoadedListener {
     private static final String ARGUMENT_EVENT_ID = "com.kvest.odessatoday.argument.EVENT_ID";
+    private static final String[] WITH_TICKETS_PROJECTION = new String[] {Tables.EventsTimetable.COUNT_EVENT_ID};
     private static final int EVENT_LOADER_ID = 0;
     private static final int TIMETABLE_LOADER_ID = 1;
+    private static final int HAS_TICKETS_LOADER_ID = 2;
 
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private static final String VIDEO_ID_PARAM = "v";
@@ -77,6 +80,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     protected CommentsCountView actionCommentsCount;
     protected LinearLayout.LayoutParams postersLayoutParams;
     private View.OnClickListener onImageClickListener;
+    private TextView actionTicketsTitle;
+    private ImageView actionTickets;
 
     private ListView timetableList;
     private EventTimetableAdapter timetableAdapter;
@@ -97,6 +102,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     private OnShowEventCommentsListener onShowEventCommentsListener;
     private int eventType = -1;
     private String[] postersUrls;
+    private int ticketsDisabledColor, ticketsEnabledColor;
 
     public static EventDetailsFragment newInstance(long eventId) {
         Bundle arguments = new Bundle(1);
@@ -146,21 +152,12 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         minMaxPrices = (TextView) headerView.findViewById(R.id.min_max_prices);
         imagesContainer = (LinearLayout)headerView.findViewById(R.id.images_container);
         actionCommentsCount = (CommentsCountView) headerView.findViewById(R.id.action_comments_count);
-        ((TextView) headerView.findViewById(R.id.action_tickets_title)).setText(R.string.action_tickets_soon);
+        actionTicketsTitle = (TextView) headerView.findViewById(R.id.action_tickets_title);
+        actionTickets = (ImageView) headerView.findViewById(R.id.action_tickets);
         videoPreview = (ImageView) headerView.findViewById(R.id.video_preview);
         videoThumbnailLoadProgress = (ProgressBar) headerView.findViewById(R.id.video_thumbnail_load_progress);
         videoThumbnailContainer = headerView.findViewById(R.id.video_thumbnail_container);
         videoThumbnailPlay = headerView.findViewById(R.id.video_thumbnail_play);
-
-        headerView.findViewById(R.id.action_tickets).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.order_tickets_container, OrderTicketsFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
 
         //setup timetable list
         timetableList = (ListView)rootView.findViewById(R.id.event_details_list);
@@ -172,6 +169,16 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
             @Override
             public void onClick(View v) {
                 showComments();
+            }
+        });
+
+        actionTickets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.order_tickets_container, OrderTicketsFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -212,6 +219,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
                 YoutubeFullscreenActivity.start(getActivity(), videoId);
             }
         });
+
+        setHasTickets(false);
     }
 
     @Override
@@ -231,6 +240,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
 
         getLoaderManager().initLoader(EVENT_LOADER_ID, null, this);
         getLoaderManager().initLoader(TIMETABLE_LOADER_ID, null, this);
+        getLoaderManager().initLoader(HAS_TICKETS_LOADER_ID, null, this);
     }
 
     @Override
@@ -270,7 +280,11 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
                 long startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                 return DataProviderHelper.getEventTimetableLoader(getActivity(), getEventId(), startDate,
                                             EventTimetableAdapter.PROJECTION,
-                                            TodayProviderContract.Tables.EventsTimetable.ORDER_DATE_ASC);
+                                            Tables.EventsTimetable.ORDER_DATE_ASC);
+            case HAS_TICKETS_LOADER_ID :
+                startDate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                return DataProviderHelper.getEventTimetableWithTicketsLoader(getActivity(), getEventId(),
+                        startDate, WITH_TICKETS_PROJECTION);
         }
 
         return null;
@@ -286,6 +300,9 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
                 setMinMaxPrices(cursor);
                 timetableAdapter.setCursor(cursor);
                 break;
+            case HAS_TICKETS_LOADER_ID :
+                onHasTicketsLoaded(cursor);
+                break;
         }
     }
 
@@ -296,6 +313,15 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
                 timetableAdapter.setCursor(null);
                 break;
         }
+    }
+
+    private void onHasTicketsLoaded(Cursor cursor) {
+        boolean hasTickets = false;
+        if (cursor.moveToFirst()) {
+            hasTickets = cursor.getInt(cursor.getColumnIndex(Tables.EventsTimetable.COUNT_EVENT_ID)) > 0;
+        }
+
+        setHasTickets(hasTickets);
     }
 
     private void share(String imageFilePath) {
@@ -316,30 +342,30 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
     private void setEventData(Cursor cursor) {
         if (cursor.moveToFirst()) {
             //remember event type
-            eventType = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.EVENT_TYPE));
+            eventType = cursor.getInt(cursor.getColumnIndex(Tables.Events.Columns.EVENT_TYPE));
 
             //set data
-            String imageUrl = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.IMAGE));
+            String imageUrl = cursor.getString(cursor.getColumnIndex(Tables.Events.Columns.IMAGE));
             eventPoster.setImageUrl(imageUrl, TodayApplication.getApplication().getVolleyHelper().getImageLoader());
 
-            String eventNameValue = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.NAME));
+            String eventNameValue = cursor.getString(cursor.getColumnIndex(Tables.Events.Columns.NAME));
             Activity activity = getActivity();
             if (activity != null) {
                 activity.setTitle(eventNameValue);
             }
             eventName.setText(eventNameValue);
 
-            eventRating.setRating(cursor.getFloat(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.RATING)));
+            eventRating.setRating(cursor.getFloat(cursor.getColumnIndex(Tables.Events.Columns.RATING)));
 
-            int commentsCountValue = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.COMMENTS_COUNT));
+            int commentsCountValue = cursor.getInt(cursor.getColumnIndex(Tables.Events.Columns.COMMENTS_COUNT));
             commentsCount.setText(Integer.toString(commentsCountValue));
             actionCommentsCount.setCommentsCount(commentsCountValue);
 
             //setTrailer
-            setVideo(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.VIDEO)));
+            setVideo(cursor.getString(cursor.getColumnIndex(Tables.Events.Columns.VIDEO)));
 
             //add new posters
-            postersUrls = Utils.string2Images(cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.POSTERS)));
+            postersUrls = Utils.string2Images(cursor.getString(cursor.getColumnIndex(Tables.Events.Columns.POSTERS)));
             mergeImages(postersUrls);
 
             //set visibility for Youtube player and images
@@ -360,25 +386,25 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
             }
 
             shareTitle = eventNameValue;
-            shareText = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.SHARE_TEXT));
+            shareText = cursor.getString(cursor.getColumnIndex(Tables.Events.Columns.SHARE_TEXT));
 
-            canRate = cursor.getInt(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.RATED)) == 0;
+            canRate = cursor.getInt(cursor.getColumnIndex(Tables.Events.Columns.RATED)) == 0;
 
-            String value = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.DIRECTOR));
+            String value = cursor.getString(cursor.getColumnIndex(Tables.Events.Columns.DIRECTOR));
             if (TextUtils.isEmpty(value)) {
                 directorContainer.setVisibility(View.GONE);
             } else {
                 director.setText(value);
                 directorContainer.setVisibility(View.VISIBLE);
             }
-            value = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.ACTORS));
+            value = cursor.getString(cursor.getColumnIndex(Tables.Events.Columns.ACTORS));
             if (TextUtils.isEmpty(value)) {
                 actorsContainer.setVisibility(View.GONE);
             } else {
                 actors.setText(value);
                 actorsContainer.setVisibility(View.VISIBLE);
             }
-            value = cursor.getString(cursor.getColumnIndex(TodayProviderContract.Tables.Events.Columns.DESCRIPTION));
+            value = cursor.getString(cursor.getColumnIndex(Tables.Events.Columns.DESCRIPTION));
             if (TextUtils.isEmpty(value)) {
                 description.setVisibility(View.GONE);
             } else {
@@ -400,7 +426,10 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         currencyStr = getString(R.string.currency);
 
         // The attributes you want retrieved
-        int[] attrs = {R.attr.NoImage, R.attr.LoadingImage};
+        int[] attrs = {R.attr.NoImage,
+                        R.attr.LoadingImage,
+                        R.attr.ActionTicketsDisabledColor,
+                        R.attr.ActionTicketsEnabledColor};
 
         // Parse style, using Context.obtainStyledAttributes()
         TypedArray ta = context.obtainStyledAttributes(attrs);
@@ -409,6 +438,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
             // Fetching the resources defined in the style
             noImageResId = ta.getResourceId(ta.getIndex(0), -1);
             loadingImageResId = ta.getResourceId(ta.getIndex(1), -1);
+            ticketsDisabledColor = ta.getColor(ta.getIndex(2), Color.BLACK);
+            ticketsEnabledColor = ta.getColor(ta.getIndex(3), Color.BLACK);
         } finally {
             ta.recycle();
         }
@@ -556,7 +587,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
 
     private String calculateMinMaxPrices(Cursor cursor) {
         //get column index
-        int pricesColumnIndex = cursor.getColumnIndex(TodayProviderContract.Tables.EventsTimetable.Columns.PRICES);
+        int pricesColumnIndex = cursor.getColumnIndex(Tables.EventsTimetable.Columns.PRICES);
         if (pricesColumnIndex == -1) {
             return "";
         }
@@ -602,6 +633,13 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         } else {
             return -1;
         }
+    }
+
+    public void setHasTickets(boolean hasTickets) {
+        actionTicketsTitle.setText(hasTickets ? R.string.action_tickets : R.string.action_no_tickets);
+
+        actionTickets.setEnabled(hasTickets);
+        actionTickets.setColorFilter(hasTickets ? ticketsEnabledColor : ticketsDisabledColor);
     }
 
     private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {

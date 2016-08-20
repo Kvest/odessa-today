@@ -423,6 +423,7 @@ public class TodayProviderContract {
             String ORDER_DATE_ASC = Columns.DATE + " ASC";
 
             String DISTINCT_EVENT_ID = "distinct " + Columns.EVENT_ID;
+            String COUNT_EVENT_ID = "count(" + Columns.EVENT_ID + ")";
         }
 
         interface EventsTimetableView {

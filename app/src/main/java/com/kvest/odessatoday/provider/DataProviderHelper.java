@@ -147,6 +147,15 @@ public abstract class DataProviderHelper {
         return new CursorLoader(context, EVENTS_URI, projection, selection, new String[]{Long.toString(eventId)}, null);
     }
 
+    public static CursorLoader getEventTimetableWithTicketsLoader(Context context, long eventId,
+                                                                  long startDate, String[] projection) {
+        String selection = Tables.EventsTimetable.Columns.EVENT_ID + "=? AND " +
+                           Tables.EventsTimetable.Columns.DATE + ">=? AND " +
+                           Tables.EventsTimetable.Columns.HAS_TICKETS + "=?";
+        String[] selectionArgs = new String[]{ Long.toString(eventId), Long.toString(startDate), Integer.toString(1)};
+        return new CursorLoader(context, EVENTS_TIMETABLE_URI, projection, selection, selectionArgs, null);
+    }
+
     public static CursorLoader getEventTimetableLoader(Context context, long eventId, long startDate,
                                                        String[] projection, String order) {
         String selection = Tables.EventsTimetable.Columns.EVENT_ID + "=? AND " +
