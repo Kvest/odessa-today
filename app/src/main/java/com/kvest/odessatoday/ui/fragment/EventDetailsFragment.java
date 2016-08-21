@@ -11,6 +11,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
@@ -175,10 +178,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         actionTickets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.order_tickets_container, OrderTicketsFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
+                showOrderTicketsFragment();
             }
         });
 
@@ -221,6 +221,27 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         });
 
         setHasTickets(false);
+    }
+
+    private void showOrderTicketsFragment() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        Fragment oldOrderTicketsFragment = fragmentManager.findFragmentById(R.id.order_tickets_container);
+
+        if (oldOrderTicketsFragment == null) {
+            //this is the first showing of the fragment - just add it
+            fragmentManager.beginTransaction()
+                    .add(R.id.order_tickets_container, OrderTicketsFragment.newInstance())
+                    .addToBackStack("order_tickets_fragment")
+                    .commit();
+        } else {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            if (oldOrderTicketsFragment.isHidden()) {
+                transaction.show(oldOrderTicketsFragment);
+            } else {
+                transaction.hide(oldOrderTicketsFragment);
+            }
+            transaction.commit();
+        }
     }
 
     @Override

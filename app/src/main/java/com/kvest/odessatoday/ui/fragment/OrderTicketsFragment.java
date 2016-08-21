@@ -31,6 +31,13 @@ public class OrderTicketsFragment extends BaseFragment {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        //TODO
+    }
+
+    @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         View view = getView().findViewById(R.id.order_panel);
 
