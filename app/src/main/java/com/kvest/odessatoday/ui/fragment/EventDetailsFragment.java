@@ -230,8 +230,8 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         if (oldOrderTicketsFragment == null) {
             //this is the first showing of the fragment - just add it
             fragmentManager.beginTransaction()
-                    .add(R.id.order_tickets_container, OrderTicketsFragment.newInstance())
-                    .addToBackStack("order_tickets_fragment")
+                    .add(R.id.order_tickets_container, OrderTicketsFragment.newInstance(getEventId()))
+                    //.addToBackStack("order_tickets_fragment")
                     .commit();
         } else {
             FragmentTransaction transaction = fragmentManager.beginTransaction();

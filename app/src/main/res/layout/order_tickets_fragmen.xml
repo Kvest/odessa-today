@@ -5,6 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ff0000">
+
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date"
+        android:focusable="false"/>
+
+    <RadioGroup
+        android:id="@+id/sectors"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/tickets_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="count" />
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
@@ -16,16 +34,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="phone" />
-
+    <TextView
+        android:id="@+id/delivery_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
     <Button
         android:id="@+id/order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Order" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Extra fee text" />
 </LinearLayout>

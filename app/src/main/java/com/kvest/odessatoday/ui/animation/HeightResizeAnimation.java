@@ -11,16 +11,20 @@ public class HeightResizeAnimation extends Animation {
     private View targetView;
     private int startHeight;
     private int finishHeight;
+    private int finalHeight;
 
-    public HeightResizeAnimation(View targetView, int startHeight, int finishHeight) {
+    public HeightResizeAnimation(View targetView, int startHeight, int finishHeight, int finalHeight) {
         this.targetView = targetView;
         this.startHeight = startHeight;
         this.finishHeight = finishHeight;
+        this.finalHeight = finalHeight;
     }
 
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
-        targetView.getLayoutParams().height = startHeight + (int)((finishHeight - startHeight) * interpolatedTime);
+        int height = (interpolatedTime == 1) ? finalHeight :
+                                               startHeight + (int)((finishHeight - startHeight) * interpolatedTime);
+        targetView.getLayoutParams().height = height;
         targetView.requestLayout();
     }
 
