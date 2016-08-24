@@ -3,6 +3,7 @@ package com.kvest.odessatoday.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -137,12 +138,29 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     }
 
     private boolean isOrderDataValid() {
-        if (selectedSector == null) {
-            throw new RuntimeException("selectedSector is null");
-        }
-        //TODO
+        boolean isDataValid = true;
 
-        return true;
+        if (TextUtils.isEmpty(date.getText())) {
+            date.setError(getString(R.string.date_not_selected_error));
+            isDataValid = false;
+        }
+
+        if (TextUtils.isEmpty(ticketsCount.getText())) {
+            ticketsCount.setError(getString(R.string.fill_field));
+            isDataValid = false;
+        }
+
+        if (TextUtils.isEmpty(name.getText())) {
+            name.setError(getString(R.string.fill_field));
+            isDataValid = false;
+        }
+
+        if (TextUtils.isEmpty(phone.getText())) {
+            phone.setError(getString(R.string.fill_field));
+            isDataValid = false;
+        }
+
+        return isDataValid;
     }
 
     @Override
@@ -190,6 +208,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         }
 
         //TODO
+        //clear all fields
     }
 
     private void onHide() {

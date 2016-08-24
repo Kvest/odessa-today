@@ -70,6 +70,7 @@
     <string name="rate">Оценить</string>
     <string name="send">Отправить</string>
     <string name="fill_field">Заполните поле</string>
+    <string name="date_not_selected_error">Выберите дату</string>
     <string name="x_from_y">%1$d из %2$d</string>
     <string name="propose_photo">Предложить фото</string>
     <string name="error_propose_photo_no_permission">Для отправки фото необходимо предоставить доступ к SD-карте</string>
