@@ -3,7 +3,6 @@ package com.kvest.odessatoday.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,8 +11,8 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -42,10 +41,11 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMMM, EEEE, HH:mm");
 
     private List<TicketInfo> tickets;
-    private long[] ids;
 
     private EditText date;
-    private RadioGroup sectors;
+    private LinearLayout sectors;
+    private RadioButton selectedSector;
+    private View.OnClickListener onSectorNameClickListener;
     private EditText ticketsCount;
     private EditText name;
     private EditText phone;
@@ -101,7 +101,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private void init(View view) {
         date = (EditText) view.findViewById(R.id.date);
-        sectors = (RadioGroup)view.findViewById(R.id.sectors);
+        sectors = (LinearLayout)view.findViewById(R.id.sectors);
         ticketsCount = (EditText) view.findViewById(R.id.tickets_count);
         name = (EditText) view.findViewById(R.id.name);
         phone = (EditText) view.findViewById(R.id.phone);
@@ -113,6 +113,18 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
                 orderTickets();
             }
         });
+
+        onSectorNameClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //uncheck previous sector
+                selectedSector.setChecked(false);
+
+                //check new sector
+                selectedSector = (RadioButton) v;
+                selectedSector.setChecked(true);
+            }
+        };
     }
 
     private void orderTickets() {
@@ -121,10 +133,13 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         }
 
         //TODO
-        Log.d("KVEST_TAG", "order=" + ids[sectors.getCheckedRadioButtonId()]);
+        Long sectorId = (Long)selectedSector.getTag();
     }
 
     private boolean isOrderDataValid() {
+        if (selectedSector == null) {
+            throw new RuntimeException("selectedSector is null");
+        }
         //TODO
 
         return true;
@@ -185,35 +200,28 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         LayoutInflater inflater = LayoutInflater.from(sectors.getContext());
 
         sectors.removeAllViews();
+        selectedSector = null;
 
-        boolean firstItem = true;
-        int i = 0;
-        ids = new long[sectorsData.length];
         for (Sector sector : sectorsData) {
             //create item's view
             View sectorView = inflater.inflate(R.layout.sector_item, sectors, false);
 
             //set name and ids
             RadioButton sectorName = (RadioButton)sectorView.findViewById(R.id.sector_name);
-            sectorName.setChecked(firstItem);
+            sectorName.setChecked(false);
             sectorName.setText(sector.name);
-            sectorName.setId(i);
-            ids[i++] = sector.id;
+            sectorName.setTag(Long.valueOf(sector.id));
+            sectorName.setOnClickListener(onSectorNameClickListener);
+            if (selectedSector == null) {
+                selectedSector = sectorName;
+                selectedSector.setChecked(true);
+            }
 
             //set price
             ((TextView)sectorView.findViewById(R.id.price)).setText(sector.price + " " + currencyStr);
 
             sectors.addView(sectorView);
-
-            firstItem = false;
         }
-
-        sectors.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Log.d("KVEST_TAG", "checkedId=" + checkedId);
-            }
-        });
     }
 
     private long getEventId() {

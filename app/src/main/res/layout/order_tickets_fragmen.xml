@@ -13,7 +13,7 @@
         android:hint="Date"
         android:focusable="false"/>
 
-    <RadioGroup
+    <LinearLayout
         android:id="@+id/sectors"
         android:orientation="vertical"
         android:layout_width="match_parent"
