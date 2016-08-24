@@ -20,6 +20,7 @@ public class NetworkContract {
     private static final String EVENTS_PATH = "events";
     private static final String GALLERY_PATH = "gallery";
     private static final String TICKETS_PATH = "tickets";
+    private static final String ORDER_PATH = "order";
 
     public static final String API_KEY_HEADER_NAME = "api-key";
     public static final String CLIENT_ID_HEADER_NAME = "Client-Id";
@@ -83,6 +84,10 @@ public class NetworkContract {
         return Uri.parse(BASE_URL + EVENTS_PATH + "/" + Long.toString(eventId) + "/" + TICKETS_PATH);
     }
 
+    public static Uri createEventOrderTicketsUri(long eventId) {
+        return Uri.parse(BASE_URL + EVENTS_PATH + "/" + Long.toString(eventId) + "/" + ORDER_PATH);
+    }
+
     public interface CommentsRequest {
         int DEFAULT_OFFSET = 0;
         int MAX_LIMIT = 100;
@@ -120,6 +125,15 @@ public class NetworkContract {
     public interface UploadPhotoRequest {
         interface Params {
             String PHOTOS_ARRAY = "photos[]";
+        }
+    }
+
+    public interface OrderTicketsRequest {
+        interface Params {
+            String NAME = "name";
+            String PHONE = "phone";
+            String SECTOR = "sector";
+            String AMOUNT = "amount";
         }
     }
 }
