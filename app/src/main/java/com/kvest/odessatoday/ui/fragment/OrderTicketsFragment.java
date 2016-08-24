@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.PopupMenu;
@@ -26,6 +27,7 @@ import com.kvest.odessatoday.io.network.VolleyHelper;
 import com.kvest.odessatoday.io.network.request.GetEventTicketsRequest;
 import com.kvest.odessatoday.io.network.response.GetEventTicketsResponse;
 import com.kvest.odessatoday.ui.animation.HeightResizeAnimation;
+import com.kvest.odessatoday.utils.SettingsSPStorage;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -126,6 +128,13 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
                 selectedSector.setChecked(true);
             }
         };
+
+        //set user name and phone
+        Context context = getActivity();
+        if (context != null) {
+            name.setText(SettingsSPStorage.getUserName(context));
+            phone.setText(SettingsSPStorage.getPhone(context));
+        }
     }
 
     private void orderTickets() {
@@ -133,8 +142,14 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             return;
         }
 
-        //TODO
-        Long sectorId = (Long)selectedSector.getTag();
+        Context context = getActivity();
+        if (context != null) {
+            //TODO
+            Long sectorId = (Long)selectedSector.getTag();
+
+
+            rememberUserNameAndPhone(context);
+        }
     }
 
     private boolean isOrderDataValid() {
@@ -161,6 +176,11 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         }
 
         return isDataValid;
+    }
+
+    private void rememberUserNameAndPhone(Context context) {
+        SettingsSPStorage.setUserName(context, name.getText().toString());
+        SettingsSPStorage.setPhone(context, phone.getText().toString());
     }
 
     @Override
@@ -202,13 +222,42 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     }
 
     private void onShow() {
+        clearAllFields();
+
         //reload tickets info if it wasn't loaded yet
         if (tickets == null) {
             loadTicketsInfo();
         }
 
         //TODO
-        //clear all fields
+    }
+
+    private void clearAllFields() {
+        //clear date and sectors only if don't have sector's info yet
+        //                               or if we can order tickets or then for one date
+        if (tickets == null || tickets.size() > 1) {
+            date.setText("");
+            date.setError(null);
+
+            clearSectors();
+        }
+
+        ticketsCount.setText("");
+        ticketsCount.setError(null);
+
+        String userNameValue = "";
+        String phoneValue = "";
+        Context context = getActivity();
+        if (context != null) {
+            userNameValue = SettingsSPStorage.getUserName(context);
+            phoneValue = SettingsSPStorage.getPhone(context);
+        }
+
+        name.setText(userNameValue);
+        name.setError(null);
+
+        phone.setText(phoneValue);
+        phone.setError(null);
     }
 
     private void onHide() {
@@ -218,8 +267,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private void fillSectors(Sector[] sectorsData) {
         LayoutInflater inflater = LayoutInflater.from(sectors.getContext());
 
-        sectors.removeAllViews();
-        selectedSector = null;
+        clearSectors();
 
         for (Sector sector : sectorsData) {
             //create item's view
@@ -280,9 +328,9 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         } else {
             //clear date
             date.setText("");
+            date.setError(null);
 
-            //clear sectors
-            sectors.removeAllViews();
+            clearSectors();
 
             setupDateSelector();
             date.setOnClickListener(new View.OnClickListener() {
@@ -317,7 +365,13 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
         long dateValue = TimeUnit.SECONDS.toMillis(ticketInfo.date);
         date.setText(DATE_FORMAT.format(dateValue));
+        date.setError(null);
 
         fillSectors(ticketInfo.sectors);
+    }
+
+    private void clearSectors() {
+        sectors.removeAllViews();
+        selectedSector = null;
     }
 }
