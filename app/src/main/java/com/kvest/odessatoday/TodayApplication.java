@@ -6,6 +6,7 @@ import com.kvest.odessatoday.io.network.VolleyHelper;
 import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
 import com.kvest.odessatoday.utils.Utils;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +30,8 @@ public class TodayApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        LeakCanary.install(this);
 
         //load and apply theme
         currentTheme = SettingsSPStorage.getCurrentTheme(this);
