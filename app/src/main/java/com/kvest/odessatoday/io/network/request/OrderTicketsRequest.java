@@ -4,6 +4,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.google.gson.annotations.SerializedName;
 import com.kvest.odessatoday.io.network.NetworkContract;
 import com.kvest.odessatoday.io.network.response.OrderTicketsResponse;
 
@@ -14,23 +15,16 @@ import java.io.UnsupportedEncodingException;
  */
 public class OrderTicketsRequest extends BaseRequest<OrderTicketsResponse> {
     private final long eventId;
-    private final long sectorId;
-    private final int ticketsCount;
-    private final String name;
-    private final String phone;
+    private final OrderInfo orderInfo;
 
 
-    public OrderTicketsRequest(long eventId, long sectorId, int ticketsCount, String name, String phone,
-                               Response.Listener<OrderTicketsResponse> listener,
+    public OrderTicketsRequest(long eventId, OrderInfo orderInfo, Response.Listener<OrderTicketsResponse> listener,
                                Response.ErrorListener errorListener) {
         super(Method.POST, NetworkContract.createEventOrderTicketsUri(eventId).toString(),
-              createBody(sectorId, ticketsCount, name, phone), listener, errorListener);
+              gson.toJson(orderInfo), listener, errorListener);
 
         this.eventId = eventId;
-        this.sectorId = sectorId;
-        this.ticketsCount = ticketsCount;
-        this.name = name;
-        this.phone = phone;
+        this.orderInfo = orderInfo;
     }
 
     @Override
@@ -46,28 +40,22 @@ public class OrderTicketsRequest extends BaseRequest<OrderTicketsResponse> {
         }
     }
 
-    private static String createBody(long sectorId, int ticketsCount, String name, String phone) {
-        //TODO
-        return null;
-    }
-
     public long getEventId() {
         return eventId;
     }
 
-    public long getSectorId() {
-        return sectorId;
+    public OrderInfo getOrderInfo() {
+        return orderInfo;
     }
 
-    public int getTicketsCount() {
-        return ticketsCount;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPhone() {
-        return phone;
+    public static class OrderInfo {
+        @SerializedName(NetworkContract.OrderTicketsRequest.Params.SECTOR)
+        public long sectorId;
+        @SerializedName(NetworkContract.OrderTicketsRequest.Params.AMOUNT)
+        public int ticketsCount;
+        @SerializedName(NetworkContract.OrderTicketsRequest.Params.NAME)
+        public String name;
+        @SerializedName(NetworkContract.OrderTicketsRequest.Params.PHONE)
+        public String phone;
     }
 }
