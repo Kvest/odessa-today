@@ -78,6 +78,11 @@
     <string name="error_uploading_photo">Не удалось отправить фото</string>
     <string name="no_films_label">На выбранную дату нет фильмов</string>
     <string name="no_events_label">Нет событий</string>
+    <string name="date_hint">Выберите дату события</string>
+    <string name="tickets_count_hint">Количество билетов</string>
+    <string name="name_hint">Имя</string>
+    <string name="phone_hint">Телефон</string>
+    <string name="order">Заказать</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>

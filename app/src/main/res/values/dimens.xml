@@ -280,4 +280,21 @@
     <dimen name="gallery_divider_height">1dip</dimen>
     <dimen name="gallery_photos_count_height">25dip</dimen>
     <dimen name="gallery_photos_count_text_size">12sp</dimen>
+
+    <!--order tickets-->
+    <dimen name="order_tickets_horizontal_padding">9dip</dimen>
+    <dimen name="order_tickets_button_bottom_margin">18dip</dimen>
+    <dimen name="order_tickets_button_horizontal_margin">33dip</dimen>
+    <dimen name="delivery_label_text_size">12sp</dimen>
+    <dimen name="order_tickets_input_text_size">12sp</dimen>
+    <dimen name="delivery_label_bottom_margin">10dip</dimen>
+    <dimen name="order_tickets_phone_bottom_margin">18dip</dimen>
+    <dimen name="order_tickets_name_bottom_margin">35dip</dimen>
+    <dimen name="order_tickets_count_bottom_margin">35dip</dimen>
+    <dimen name="order_tickets_sectors_bottom_margin">35dip</dimen>
+    <dimen name="order_tickets_date_bottom_margin">35dip</dimen>
+    <dimen name="sector_item_text_size">12sp</dimen>
+    <dimen name="sector_name_text_padding">9dip</dimen>
+    <dimen name="sector_item_padding_bottom">5dip</dimen>
+    <dimen name="sector_prices_icon_padding">8dip</dimen>
 </resources>

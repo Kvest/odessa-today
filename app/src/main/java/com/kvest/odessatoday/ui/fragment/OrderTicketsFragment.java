@@ -1,6 +1,8 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.PopupMenu;
@@ -27,6 +29,8 @@ import com.kvest.odessatoday.io.network.VolleyHelper;
 import com.kvest.odessatoday.io.network.request.GetEventTicketsRequest;
 import com.kvest.odessatoday.io.network.response.GetEventTicketsResponse;
 import com.kvest.odessatoday.ui.animation.HeightResizeAnimation;
+import com.kvest.odessatoday.utils.FontUtils;
+import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
 
 import java.text.SimpleDateFormat;
@@ -131,10 +135,17 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
         //set user name and phone
         Context context = getActivity();
-        if (context != null) {
-            name.setText(SettingsSPStorage.getUserName(context));
-            phone.setText(SettingsSPStorage.getPhone(context));
-        }
+
+        //loaded remembered name and phone
+        name.setText(SettingsSPStorage.getUserName(context));
+        phone.setText(SettingsSPStorage.getPhone(context));
+
+        //set fonts
+        Typeface helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
+        date.setTypeface(helveticaneuecyrRoman);
+        ticketsCount.setTypeface(helveticaneuecyrRoman);
+        name.setTypeface(helveticaneuecyrRoman);
+        phone.setTypeface(helveticaneuecyrRoman);
     }
 
     private void orderTickets() {
@@ -142,13 +153,14 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             return;
         }
 
-        Context context = getActivity();
-        if (context != null) {
+        Activity activity = getActivity();
+        if (activity != null) {
             //TODO
             Long sectorId = (Long)selectedSector.getTag();
 
+            hideKeyboard(activity);
 
-            rememberUserNameAndPhone(context);
+            rememberUserNameAndPhone(activity);
         }
     }
 
@@ -262,10 +274,26 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private void onHide() {
         //TODO
+
+        //hide keyboard
+        Activity activity = getActivity();
+        if (activity != null) {
+            hideKeyboard(activity);
+        }
+    }
+
+    private void hideKeyboard(Activity activity) {
+        View currentFocuse = activity.getCurrentFocus();
+        if (currentFocuse != null) {
+            KeyboardUtils.hideKeyboard(activity, currentFocuse);
+        }
     }
 
     private void fillSectors(Sector[] sectorsData) {
-        LayoutInflater inflater = LayoutInflater.from(sectors.getContext());
+        Context context = sectors.getContext();
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        Typeface helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
 
         clearSectors();
 
@@ -283,6 +311,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
                 selectedSector = sectorName;
                 selectedSector.setChecked(true);
             }
+            sectorName.setTypeface(helveticaneuecyrRoman);
 
             //set price
             ((TextView)sectorView.findViewById(R.id.price)).setText(sector.price + " " + currencyStr);

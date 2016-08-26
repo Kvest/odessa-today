@@ -128,5 +128,11 @@
         <item name="GalleryPhotosCountBg">#f9f9f9</item>
         <item name="GalleryTopDividerColor">#e2e2e2</item>
         <item name="GalleryBottomDividerColor">#bcbcbc</item>
+        <!--order tickets-->
+        <item name="OrderTicketsBgColor">#ffffff</item>
+        <item name="OrderTicketsInputHintTextColor">#828282</item>
+        <item name="OrderTicketsInputTextColor">#2d2d2d</item>
+        <item name="SectorRadioButton">@drawable/sector_radio_button_day</item>
+        <item name="SectorNameTextColor">#2d2d2d</item>
     </style>
 </resources>

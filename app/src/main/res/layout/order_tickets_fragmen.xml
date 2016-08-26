@@ -1,47 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/order_panel"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#0000ff">
-
+    android:background="?attr/OrderTicketsBgColor">
     <EditText
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Date"
-        android:focusable="false"/>
-
+        android:layout_marginBottom="@dimen/order_tickets_date_bottom_margin"
+        android:layout_marginLeft="@dimen/order_tickets_horizontal_padding"
+        android:layout_marginRight="@dimen/order_tickets_horizontal_padding"
+        style="@style/TodayEditText"
+        android:hint="@string/date_hint"
+        android:drawableRight="@drawable/ic_arrow_details"
+        android:focusable="false"
+        android:textColorHint="?attr/OrderTicketsInputHintTextColor"
+        android:textColor="?attr/OrderTicketsInputTextColor"
+        android:textSize="@dimen/order_tickets_input_text_size"
+        android:singleLine="true"/>
     <LinearLayout
         android:id="@+id/sectors"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/order_tickets_sectors_bottom_margin"
+        android:layout_marginLeft="@dimen/order_tickets_horizontal_padding"
+        android:layout_marginRight="@dimen/order_tickets_horizontal_padding"/>
     <EditText
         android:id="@+id/tickets_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="count" />
+        android:layout_marginBottom="@dimen/order_tickets_count_bottom_margin"
+        android:layout_marginLeft="@dimen/order_tickets_horizontal_padding"
+        android:layout_marginRight="@dimen/order_tickets_horizontal_padding"
+        style="@style/TodayEditText"
+        android:inputType="number"
+        android:hint="@string/tickets_count_hint"
+        android:textColorHint="?attr/OrderTicketsInputHintTextColor"
+        android:textColor="?attr/OrderTicketsInputTextColor"
+        android:textSize="@dimen/order_tickets_input_text_size"
+        android:singleLine="true"/>
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="name" />
-
+        android:layout_marginBottom="@dimen/order_tickets_name_bottom_margin"
+        android:layout_marginLeft="@dimen/order_tickets_horizontal_padding"
+        android:layout_marginRight="@dimen/order_tickets_horizontal_padding"
+        style="@style/TodayEditText"
+        android:hint="@string/name_hint"
+        android:textColorHint="?attr/OrderTicketsInputHintTextColor"
+        android:textColor="?attr/OrderTicketsInputTextColor"
+        android:textSize="@dimen/order_tickets_input_text_size"
+        android:singleLine="true"/>
     <EditText
         android:id="@+id/phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="phone" />
-    <TextView
+        android:layout_marginBottom="@dimen/order_tickets_phone_bottom_margin"
+        android:layout_marginLeft="@dimen/order_tickets_horizontal_padding"
+        android:layout_marginRight="@dimen/order_tickets_horizontal_padding"
+        style="@style/TodayEditText"
+        android:inputType="phone"
+        android:hint="@string/phone_hint"
+        android:textColorHint="?attr/OrderTicketsInputHintTextColor"
+        android:textColor="?attr/OrderTicketsInputTextColor"
+        android:textSize="@dimen/order_tickets_input_text_size"
+        android:singleLine="true"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/delivery_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"/>
-    <Button
+        android:layout_marginBottom="@dimen/delivery_label_bottom_margin"
+        android:gravity="center"
+        android:textSize="@dimen/delivery_label_text_size"
+        android:textColor="@color/delivery_label_text_color"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Order" />
+        android:gravity="center"
+        android:minHeight="0dip"
+        android:layout_marginLeft="@dimen/order_tickets_button_horizontal_margin"
+        android:layout_marginRight="@dimen/order_tickets_button_horizontal_margin"
+        android:layout_marginBottom="@dimen/order_tickets_button_bottom_margin"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/gradient_button_text_size"
+        app:fontAsset="fonts/helveticaneuecyr-bold.ttf"
+        android:background="@drawable/gradient_button_bg"
+        android:clickable="true"
+        android:text="@string/order" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/application_green" />
 </LinearLayout>

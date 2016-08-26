@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:paddingBottom="@dimen/sector_item_padding_bottom">
     <RadioButton
         android:id="@+id/sector_name"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-    <TextView
+        android:layout_weight="1"
+        android:button="?attr/SectorRadioButton"
+        android:paddingLeft="@dimen/sector_name_text_padding"
+        android:textColor="?attr/SectorNameTextColor"
+        android:textSize="@dimen/sector_item_text_size"/>
+    <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sector_item_text_size"
+        android:textColor="@color/sector_prices_text_color"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+        android:drawableLeft="@drawable/ic_cash"
+        android:drawablePadding="@dimen/sector_prices_icon_padding"/>
 </LinearLayout>

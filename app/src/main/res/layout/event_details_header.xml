@@ -65,8 +65,7 @@
         android:layout_weight="3"
         android:background="?attr/ActionsLayoutBg"
         android:paddingTop="@dimen/actions_layout_vertical_padding"
-        android:paddingBottom="@dimen/actions_layout_vertical_padding"
-        android:layout_marginBottom="@dimen/event_details_actions_margin_bottom">
+        android:paddingBottom="@dimen/actions_layout_vertical_padding">
         <include
             layout="@layout/action_comments"
             android:layout_height="wrap_content"
@@ -86,7 +85,8 @@
     <FrameLayout
         android:id="@+id/order_tickets_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/event_details_actions_margin_bottom"/>
 
     <LinearLayout
         android:id="@+id/director_container"
