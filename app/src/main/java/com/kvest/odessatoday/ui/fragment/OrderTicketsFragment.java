@@ -2,6 +2,8 @@ package com.kvest.odessatoday.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +35,7 @@ import com.kvest.odessatoday.ui.animation.HeightResizeAnimation;
 import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
+import com.kvest.odessatoday.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -50,6 +53,8 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private List<TicketInfo> tickets;
 
+    private View progress;
+    private View orderPanel;
     private EditText date;
     private LinearLayout sectors;
     private RadioButton selectedSector;
@@ -61,6 +66,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private PopupMenu popupMenu;
 
     private String currencyStr;
+    private int dateArrowColor, headerImageColor;
 
     public static OrderTicketsFragment newInstance(long eventId) {
         Bundle arguments = new Bundle(1);
@@ -105,9 +111,26 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private void initResources() {
         currencyStr = getString(R.string.currency);
+
+        // The attributes you want retrieved
+        int[] attrs = {R.attr.DateArrowColor, R.attr.OrderTicketsHeaderContentColor};
+
+        // Parse style, using Context.obtainStyledAttributes()
+        TypedArray ta = getContext().obtainStyledAttributes(attrs);
+
+        try {
+            // Fetching the resources defined in the style
+            dateArrowColor = ta.getColor(ta.getIndex(0), Color.BLACK);
+            headerImageColor = ta.getColor(ta.getIndex(1), Color.BLACK);
+        } finally {
+            ta.recycle();
+        }
     }
 
     private void init(View view) {
+        progress = view.findViewById(R.id.progress);
+        orderPanel = view.findViewById(R.id.order_panel);
+        TextView header = (TextView)view.findViewById(R.id.order_tickets_header);
         date = (EditText) view.findViewById(R.id.date);
         sectors = (LinearLayout)view.findViewById(R.id.sectors);
         ticketsCount = (EditText) view.findViewById(R.id.tickets_count);
@@ -147,6 +170,10 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         ticketsCount.setTypeface(helveticaneuecyrRoman);
         name.setTypeface(helveticaneuecyrRoman);
         phone.setTypeface(helveticaneuecyrRoman);
+
+        //"paint" drawables
+        Utils.setDrawablesColor(dateArrowColor, date.getCompoundDrawables());
+        Utils.setDrawablesColor(headerImageColor, header.getCompoundDrawables());
     }
 
     private void orderTickets() {
@@ -216,7 +243,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        View view = getView().findViewById(R.id.order_panel);
+        View view = getView();
         int finalHeight = view.getLayoutParams().height;
 
         if (enter) {

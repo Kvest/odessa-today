@@ -135,5 +135,7 @@
         <item name="SectorRadioButton">@drawable/sector_radio_button_day</item>
         <item name="SectorNameTextColor">#2d2d2d</item>
         <item name="DatePopupMenuTextColor">#ffffff</item>
+        <item name="DateArrowColor">#24282b</item>
+        <item name="OrderTicketsHeaderContentColor">#ffffff</item>
     </style>
 </resources>

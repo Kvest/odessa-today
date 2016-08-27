@@ -86,7 +86,8 @@
         android:id="@+id/order_tickets_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/event_details_actions_margin_bottom"/>
+        android:layout_marginBottom="@dimen/event_details_actions_margin_bottom"
+        android:background="?attr/ActionsLayoutBg"/>
 
     <LinearLayout
         android:id="@+id/director_container"

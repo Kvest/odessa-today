@@ -293,8 +293,12 @@
     <dimen name="order_tickets_count_bottom_margin">35dip</dimen>
     <dimen name="order_tickets_sectors_bottom_margin">35dip</dimen>
     <dimen name="order_tickets_date_bottom_margin">35dip</dimen>
+    <dimen name="order_tickets_content_padding_top">38dip</dimen>
     <dimen name="sector_item_text_size">12sp</dimen>
     <dimen name="sector_name_text_padding">9dip</dimen>
     <dimen name="sector_item_padding_bottom">5dip</dimen>
     <dimen name="sector_prices_icon_padding">8dip</dimen>
+    <dimen name="order_tickets_header_padding_top">16dip</dimen>
+    <dimen name="order_tickets_header_padding_bottom">10dip</dimen>
+    <dimen name="order_tickets_header_text_size">18sp</dimen>
 </resources>

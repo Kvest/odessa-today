@@ -118,4 +118,6 @@
     <attr format="reference" name="SectorRadioButton"/>
     <attr format="color" name="SectorNameTextColor"/>
     <attr format="color" name="DatePopupMenuTextColor"/>
+    <attr format="color" name="DateArrowColor"/>
+    <attr format="color" name="OrderTicketsHeaderContentColor"/>
 </resources>
