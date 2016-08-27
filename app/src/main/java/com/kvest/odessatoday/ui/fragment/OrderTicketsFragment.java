@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -372,7 +373,8 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     }
 
     private void setupDateSelector() {
-        popupMenu = new PopupMenu(getActivity(), date, Gravity.FILL_HORIZONTAL);
+        Context wrapper = new ContextThemeWrapper(getActivity(), R.style.DatePopupMenu);
+        popupMenu = new PopupMenu(wrapper, date, Gravity.FILL_HORIZONTAL);
         for (int i = 0; i < tickets.size(); i++) {
             TicketInfo ticketInfo = tickets.get(i);
             long dateValue = TimeUnit.SECONDS.toMillis(ticketInfo.date);

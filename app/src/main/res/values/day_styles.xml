@@ -134,5 +134,6 @@
         <item name="OrderTicketsInputTextColor">#2d2d2d</item>
         <item name="SectorRadioButton">@drawable/sector_radio_button_day</item>
         <item name="SectorNameTextColor">#2d2d2d</item>
+        <item name="DatePopupMenuTextColor">#ffffff</item>
     </style>
 </resources>
