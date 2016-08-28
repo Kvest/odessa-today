@@ -1,5 +1,7 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -32,6 +34,7 @@ import com.kvest.odessatoday.io.network.VolleyHelper;
 import com.kvest.odessatoday.io.network.request.GetEventTicketsRequest;
 import com.kvest.odessatoday.io.network.response.GetEventTicketsResponse;
 import com.kvest.odessatoday.ui.animation.HeightResizeAnimation;
+import com.kvest.odessatoday.ui.animation.SimpleAnimatorListener;
 import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
@@ -166,9 +169,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (hideOrderTicketsListener != null) {
-                    hideOrderTicketsListener.onHideOrderTickets();
-                }
+                collapseFragment();
             }
         });
 
@@ -187,6 +188,37 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         //"paint" drawables
         Utils.setDrawablesColor(dateArrowColor, date.getCompoundDrawables());
         Utils.setDrawablesColor(headerImageColor, header.getCompoundDrawables());
+    }
+
+    private void collapseFragment() {
+        View targetView = getView();
+
+        ValueAnimator resizeAnimator = createResizeAnimator(targetView, targetView.getHeight(), 0);
+        resizeAnimator.addListener(new SimpleAnimatorListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (hideOrderTicketsListener != null) {
+                    hideOrderTicketsListener.onHideOrderTickets();
+                }
+            }
+        });
+
+        resizeAnimator.start();
+    }
+
+    private ValueAnimator createResizeAnimator(final View targetView, int startHeight, int endHeight) {
+        ValueAnimator animator = ValueAnimator.ofInt(startHeight, endHeight);
+        animator.setInterpolator(new AccelerateInterpolator(ANIMATION_ACCELERATION_FRACTION));
+        animator.setDuration(ANIMATION_DURATION);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                targetView.getLayoutParams().height = (Integer)animation.getAnimatedValue();
+                targetView.requestLayout();
+            }
+        });
+
+        return animator;
     }
 
     private void orderTickets() {
@@ -268,7 +300,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         }
 
         View view = getView();
-        int finalHeight = view.getLayoutParams().height;
+        int finalHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         //calculate target height
         view.measure(view.getLayoutParams().width, view.getLayoutParams().height);
