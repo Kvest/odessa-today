@@ -55,7 +55,7 @@ import static com.kvest.odessatoday.provider.TodayProviderContract.Tables;
  */
 public class EventDetailsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
                                                                   YouTubeThumbnailView.OnInitializedListener,
-                                                                  YouTubeThumbnailLoader.OnThumbnailLoadedListener {
+                                                                  YouTubeThumbnailLoader.OnThumbnailLoadedListener, OrderTicketsFragment.HideOrderTicketsListener {
     private static final String ARGUMENT_EVENT_ID = "com.kvest.odessatoday.argument.EVENT_ID";
     private static final String[] WITH_TICKETS_PROJECTION = new String[] {Tables.EventsTimetable.COUNT_EVENT_ID};
     private static final int EVENT_LOADER_ID = 0;
@@ -229,18 +229,29 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
 
         if (oldOrderTicketsFragment == null) {
             //this is the first showing of the fragment - just add it
+            OrderTicketsFragment orderTicketsFragment = OrderTicketsFragment.newInstance(getEventId());
+            orderTicketsFragment.setHideOrderTicketsListener(this);
+
             fragmentManager.beginTransaction()
-                    .add(R.id.order_tickets_container, OrderTicketsFragment.newInstance(getEventId()))
-                    //.addToBackStack("order_tickets_fragment")
+                    .add(R.id.order_tickets_container, orderTicketsFragment)
                     .commit();
         } else {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
             if (oldOrderTicketsFragment.isHidden()) {
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.show(oldOrderTicketsFragment);
-            } else {
-                transaction.hide(oldOrderTicketsFragment);
+                transaction.commit();
             }
-            transaction.commit();
+        }
+    }
+
+    private void hideOrderTicketsFragment() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        Fragment oldOrderTicketsFragment = fragmentManager.findFragmentById(R.id.order_tickets_container);
+
+        if (oldOrderTicketsFragment != null && !oldOrderTicketsFragment.isHidden()) {
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.hide(oldOrderTicketsFragment);
+                transaction.commit();
         }
     }
 
@@ -661,6 +672,11 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
 
         actionTickets.setEnabled(hasTickets);
         actionTickets.setColorFilter(hasTickets ? ticketsEnabledColor : ticketsDisabledColor);
+    }
+
+    @Override
+    public void onHideOrderTickets() {
+        hideOrderTicketsFragment();
     }
 
     private class CacheImageAsyncTask extends AsyncTask<Drawable, Void, String> {

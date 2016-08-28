@@ -68,6 +68,8 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private String currencyStr;
     private int dateArrowColor, headerImageColor;
 
+    private HideOrderTicketsListener hideOrderTicketsListener;
+
     public static OrderTicketsFragment newInstance(long eventId) {
         Bundle arguments = new Bundle(1);
         arguments.putLong(ARGUMENT_EVENT_ID, eventId);
@@ -107,6 +109,10 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         init(view);
 
         return view;
+    }
+
+    public void setHideOrderTicketsListener(HideOrderTicketsListener hideOrderTicketsListener) {
+        this.hideOrderTicketsListener = hideOrderTicketsListener;
     }
 
     private void initResources() {
@@ -157,10 +163,17 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             }
         };
 
-        //set user name and phone
-        Context context = getActivity();
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (hideOrderTicketsListener != null) {
+                    hideOrderTicketsListener.onHideOrderTickets();
+                }
+            }
+        });
 
         //loaded remembered name and phone
+        Context context = getActivity();
         name.setText(SettingsSPStorage.getUserName(context));
         phone.setText(SettingsSPStorage.getPhone(context));
 
@@ -242,18 +255,27 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+
+        onSectorNameClickListener = null;
+    }
+
+    @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        if (!enter) {
+            return null;
+        }
+
         View view = getView();
         int finalHeight = view.getLayoutParams().height;
 
-        if (enter) {
-            //calculate target height
-            view.measure(view.getLayoutParams().width, view.getLayoutParams().height);
-            view.getLayoutParams().height = 1;
-        }
+        //calculate target height
+        view.measure(view.getLayoutParams().width, view.getLayoutParams().height);
+        view.getLayoutParams().height = 1;
 
-        int statHeight = enter ? 0 : view.getHeight();
-        int finishHeight = enter ? view.getMeasuredHeight() : 0;
+        int statHeight = 0;
+        int finishHeight = view.getMeasuredHeight();
         Animation animation = new HeightResizeAnimation(view, statHeight, finishHeight, finalHeight);
         animation.setInterpolator(new AccelerateInterpolator(ANIMATION_ACCELERATION_FRACTION));
         animation.setDuration(ANIMATION_DURATION);
@@ -431,5 +453,9 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private void clearSectors() {
         sectors.removeAllViews();
         selectedSector = null;
+    }
+
+    public interface HideOrderTicketsListener {
+        void onHideOrderTickets();
     }
 }
