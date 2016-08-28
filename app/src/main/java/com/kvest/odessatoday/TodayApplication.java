@@ -7,6 +7,7 @@ import com.kvest.odessatoday.utils.Constants;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
 import com.kvest.odessatoday.utils.Utils;
 import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +23,7 @@ public class TodayApplication extends Application {
     private String clientId;
     private VolleyHelper volleyHelper = new VolleyHelper();
     private int currentTheme;
+    private RefWatcher refWatcher;
 
     public static TodayApplication getApplication() {
         return applicaion;
@@ -31,7 +33,7 @@ public class TodayApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        LeakCanary.install(this);
+        refWatcher = LeakCanary.install(this);
 
         //load and apply theme
         currentTheme = SettingsSPStorage.getCurrentTheme(this);
@@ -73,5 +75,9 @@ public class TodayApplication extends Application {
 
             SettingsSPStorage.setCurrentTheme(this, this.currentTheme);
         }
+    }
+
+    public RefWatcher getRefWatcher() {
+        return refWatcher;
     }
 }

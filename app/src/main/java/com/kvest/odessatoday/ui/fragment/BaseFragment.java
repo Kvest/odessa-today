@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 
+import com.kvest.odessatoday.TodayApplication;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
+import com.squareup.leakcanary.RefWatcher;
 
 /**
  * Created by kvest on 09.06.15.
@@ -22,5 +24,13 @@ public class BaseFragment extends Fragment {
                         .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
                         .animation(true)
                 , activity);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        RefWatcher refWatcher = TodayApplication.getApplication().getRefWatcher();
+        refWatcher.watch(this);
     }
 }
