@@ -65,4 +65,6 @@
     <!--order tickets-->
     <color name="delivery_label_text_color">#828282</color>
     <color name="sector_prices_text_color">#828282</color>
+    <color name="load_order_tickets_info_error_bg_color">#ff0000</color>
+    <color name="load_order_tickets_info_error_text_color">#ffffff</color>
 </resources>

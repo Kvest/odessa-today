@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
@@ -53,11 +54,13 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private static final float ANIMATION_ACCELERATION_FRACTION = 1.5f; //imperatively selected value
     private static final long ANIMATION_DURATION = 400;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMMM, EEEE, HH:mm");
+    private static final long MIN_LOAD_TIME = 2000;
 
     private List<TicketInfo> tickets;
 
     private View progress;
     private View orderPanel;
+    private View errorLabel;
     private EditText date;
     private LinearLayout sectors;
     private RadioButton selectedSector;
@@ -70,6 +73,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private String currencyStr;
     private int dateArrowColor, headerImageColor;
+    private long startLoadingTime;
 
     private HideOrderTicketsListener hideOrderTicketsListener;
 
@@ -90,6 +94,8 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     }
 
     private void loadTicketsInfo() {
+        showProgress();
+
         VolleyHelper volleyHelper = TodayApplication.getApplication().getVolleyHelper();
 
         //cancel previous request
@@ -101,6 +107,8 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
         //start new request
         volleyHelper.addRequest(getEventTicketsRequest);
+
+        startLoadingTime = System.currentTimeMillis();
     }
 
     @Nullable
@@ -116,6 +124,42 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     public void setHideOrderTicketsListener(HideOrderTicketsListener hideOrderTicketsListener) {
         this.hideOrderTicketsListener = hideOrderTicketsListener;
+    }
+
+    private void showProgress() {
+        if (progress != null) {
+            progress.setVisibility(View.VISIBLE);
+        }
+        if (orderPanel != null) {
+            orderPanel.setVisibility(View.GONE);
+        }
+        if (errorLabel != null) {
+            errorLabel.setVisibility(View.GONE);
+        }
+    }
+
+    private void showOrderPanel() {
+        if (orderPanel != null) {
+            orderPanel.setVisibility(View.VISIBLE);
+        }
+        if (progress != null) {
+            progress.setVisibility(View.GONE);
+        }
+        if (errorLabel != null) {
+            errorLabel.setVisibility(View.GONE);
+        }
+    }
+
+    private void onLoadTicketsInfoError() {
+        if (errorLabel != null) {
+            errorLabel.setVisibility(View.VISIBLE);
+        }
+        if (orderPanel != null) {
+            orderPanel.setVisibility(View.GONE);
+        }
+        if (progress != null) {
+            progress.setVisibility(View.GONE);
+        }
     }
 
     private void initResources() {
@@ -139,6 +183,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private void init(View view) {
         progress = view.findViewById(R.id.progress);
         orderPanel = view.findViewById(R.id.order_panel);
+        errorLabel = view.findViewById(R.id.error_label);
         TextView header = (TextView)view.findViewById(R.id.order_tickets_header);
         date = (EditText) view.findViewById(R.id.date);
         sectors = (LinearLayout)view.findViewById(R.id.sectors);
@@ -413,7 +458,14 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        //TODO
+        //we show the progress at least MIN_LOAD_TIME to avoid flickering
+        long delay = Math.max(MIN_LOAD_TIME - (System.currentTimeMillis() - startLoadingTime), 0);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onLoadTicketsInfoError();
+            }
+        }, delay);
     }
 
     @Override
@@ -423,8 +475,24 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             deliveryLabel.setText(response.data.deliveryStr);
 
             fillDates();
+
+            //we show the progress at least MIN_LOAD_TIME to avoid flickering
+            long delay = Math.max(MIN_LOAD_TIME - (System.currentTimeMillis() - startLoadingTime), 0);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showOrderPanel();
+                }
+            }, delay);
         } else {
-            //TODO
+            //we show the progress at least MIN_LOAD_TIME to avoid flickering
+            long delay = Math.max(MIN_LOAD_TIME - (System.currentTimeMillis() - startLoadingTime), 0);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onLoadTicketsInfoError();
+                }
+            }, delay);
         }
     }
 

@@ -84,6 +84,7 @@
     <string name="phone_hint">Телефон</string>
     <string name="order">Заказать</string>
     <string name="order_tickets_header">Заказ билетов</string>
+    <string name="load_order_tickets_info_error">Не удалось загрузить информацию о билетах</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>

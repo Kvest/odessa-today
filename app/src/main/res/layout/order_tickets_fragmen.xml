@@ -36,6 +36,18 @@
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/loading"/>
 
+        <com.kvest.odessatoday.ui.widget.FontTextView
+            android:id="@+id/error_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:padding="@dimen/load_order_tickets_info_error_padding"
+            android:textColor="@color/load_order_tickets_info_error_text_color"
+            android:textSize="@dimen/load_order_tickets_info_error_text_size"
+            android:background="@color/load_order_tickets_info_error_bg_color"
+            app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+            android:text="@string/load_order_tickets_info_error"/>
+
         <LinearLayout
             android:id="@+id/order_panel"
             android:orientation="vertical"

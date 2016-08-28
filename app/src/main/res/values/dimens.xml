@@ -301,4 +301,6 @@
     <dimen name="order_tickets_header_padding_top">16dip</dimen>
     <dimen name="order_tickets_header_padding_bottom">10dip</dimen>
     <dimen name="order_tickets_header_text_size">18sp</dimen>
+    <dimen name="load_order_tickets_info_error_text_size">14sp</dimen>
+    <dimen name="load_order_tickets_info_error_padding">12dip</dimen>
 </resources>
