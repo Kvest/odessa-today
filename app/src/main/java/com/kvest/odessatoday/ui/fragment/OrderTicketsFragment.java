@@ -400,8 +400,6 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         if (tickets == null) {
             loadTicketsInfo();
         }
-
-        //TODO
     }
 
     private void clearAllFields() {
@@ -433,8 +431,6 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     }
 
     private void onHide() {
-        //TODO
-
         //hide keyboard
         Activity activity = getActivity();
         if (activity != null) {
