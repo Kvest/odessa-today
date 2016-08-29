@@ -210,7 +210,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoGalleryAd
 
     private void showWaitDialog() {
         if (progressDialog == null) {
-            progressDialog = ProgressDialogFragment.newInstance(false);
+            progressDialog = ProgressDialogFragment.newInstance(false, true);
         }
 
         progressDialog.show(getFragmentManager(), null);

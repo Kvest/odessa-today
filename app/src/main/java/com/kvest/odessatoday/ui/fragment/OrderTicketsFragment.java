@@ -9,7 +9,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
@@ -33,9 +35,12 @@ import com.kvest.odessatoday.datamodel.Sector;
 import com.kvest.odessatoday.datamodel.TicketInfo;
 import com.kvest.odessatoday.io.network.VolleyHelper;
 import com.kvest.odessatoday.io.network.request.GetEventTicketsRequest;
+import com.kvest.odessatoday.io.network.request.OrderTicketsRequest;
 import com.kvest.odessatoday.io.network.response.GetEventTicketsResponse;
+import com.kvest.odessatoday.io.network.response.OrderTicketsResponse;
 import com.kvest.odessatoday.ui.animation.HeightResizeAnimation;
 import com.kvest.odessatoday.ui.animation.SimpleAnimatorListener;
+import com.kvest.odessatoday.ui.dialog.ProgressDialogFragment;
 import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
@@ -54,13 +59,13 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private static final float ANIMATION_ACCELERATION_FRACTION = 1.5f; //imperatively selected value
     private static final long ANIMATION_DURATION = 400;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMMM, EEEE, HH:mm");
-    private static final long MIN_LOAD_TIME = 2000;
+    private static final long REQUEST_MIN__TIME = 2000;
 
     private List<TicketInfo> tickets;
 
     private View progress;
     private View orderPanel;
-    private View errorLabel;
+    private TextView errorLabel;
     private EditText date;
     private LinearLayout sectors;
     private RadioButton selectedSector;
@@ -70,12 +75,15 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private EditText phone;
     private TextView deliveryLabel;
     private PopupMenu popupMenu;
+    private ProgressDialogFragment waitDialog;
 
     private String currencyStr;
     private int dateArrowColor, headerImageColor;
-    private long startLoadingTime;
+    private long loadTicketsInfoStartTime, orderTicketsStartTime;
 
     private HideOrderTicketsListener hideOrderTicketsListener;
+
+    private Handler handler = new Handler();
 
     public static OrderTicketsFragment newInstance(long eventId) {
         Bundle arguments = new Bundle(1);
@@ -108,7 +116,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         //start new request
         volleyHelper.addRequest(getEventTicketsRequest);
 
-        startLoadingTime = System.currentTimeMillis();
+        loadTicketsInfoStartTime = System.currentTimeMillis();
     }
 
     @Nullable
@@ -150,9 +158,11 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         }
     }
 
-    private void onLoadTicketsInfoError() {
+    private void showMessage(@StringRes int messageId, @ColorRes int bgColorId) {
         if (errorLabel != null) {
             errorLabel.setVisibility(View.VISIBLE);
+            errorLabel.setText(messageId);
+            errorLabel.setBackgroundResource(bgColorId);
         }
         if (orderPanel != null) {
             orderPanel.setVisibility(View.GONE);
@@ -183,14 +193,14 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private void init(View view) {
         progress = view.findViewById(R.id.progress);
         orderPanel = view.findViewById(R.id.order_panel);
-        errorLabel = view.findViewById(R.id.error_label);
-        TextView header = (TextView)view.findViewById(R.id.order_tickets_header);
+        errorLabel = (TextView) view.findViewById(R.id.error_label);
+        TextView header = (TextView) view.findViewById(R.id.order_tickets_header);
         date = (EditText) view.findViewById(R.id.date);
-        sectors = (LinearLayout)view.findViewById(R.id.sectors);
+        sectors = (LinearLayout) view.findViewById(R.id.sectors);
         ticketsCount = (EditText) view.findViewById(R.id.tickets_count);
         name = (EditText) view.findViewById(R.id.name);
         phone = (EditText) view.findViewById(R.id.phone);
-        deliveryLabel = (TextView)view.findViewById(R.id.delivery_label);
+        deliveryLabel = (TextView) view.findViewById(R.id.delivery_label);
 
         view.findViewById(R.id.order).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,7 +268,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                targetView.getLayoutParams().height = (Integer)animation.getAnimatedValue();
+                targetView.getLayoutParams().height = (Integer) animation.getAnimatedValue();
                 targetView.requestLayout();
             }
         });
@@ -273,12 +283,35 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
         Activity activity = getActivity();
         if (activity != null) {
-            //TODO
-            Long sectorId = (Long)selectedSector.getTag();
+            //show progress dialog
+            showWaitDialog();
+
+            //create request params
+            OrderTicketsRequest.OrderInfo orderInfo = new OrderTicketsRequest.OrderInfo();
+            orderInfo.sectorId = (Long) selectedSector.getTag();
+            orderInfo.ticketsCount = Integer.parseInt(ticketsCount.getText().toString());
+            orderInfo.name = name.getText().toString();
+            orderInfo.phone = phone.getText().toString();
+
+            sendOrderTicketsRequest(getEventId(), orderInfo);
 
             hideKeyboard(activity);
 
             rememberUserNameAndPhone(activity);
+        }
+    }
+
+    private void showWaitDialog() {
+        if (waitDialog == null) {
+            waitDialog = ProgressDialogFragment.newInstance(false, false);
+        }
+
+        waitDialog.show(getFragmentManager(), null);
+    }
+
+    private void hideWaitDialog() {
+        if (waitDialog != null) {
+            waitDialog.dismiss();
         }
     }
 
@@ -429,7 +462,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             View sectorView = inflater.inflate(R.layout.sector_item, sectors, false);
 
             //set name and ids
-            RadioButton sectorName = (RadioButton)sectorView.findViewById(R.id.sector_name);
+            RadioButton sectorName = (RadioButton) sectorView.findViewById(R.id.sector_name);
             sectorName.setChecked(false);
             sectorName.setText(sector.name);
             sectorName.setTag(Long.valueOf(sector.id));
@@ -441,7 +474,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             sectorName.setTypeface(helveticaneuecyrRoman);
 
             //set price
-            ((TextView)sectorView.findViewById(R.id.price)).setText(sector.price + " " + currencyStr);
+            ((TextView) sectorView.findViewById(R.id.price)).setText(sector.price + " " + currencyStr);
 
             sectors.addView(sectorView);
         }
@@ -458,12 +491,12 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        //we show the progress at least MIN_LOAD_TIME to avoid flickering
-        long delay = Math.max(MIN_LOAD_TIME - (System.currentTimeMillis() - startLoadingTime), 0);
-        new Handler().postDelayed(new Runnable() {
+        //we show the progress at least REQUEST_MIN__TIME to avoid flickering
+        long delay = Math.max(REQUEST_MIN__TIME - (System.currentTimeMillis() - loadTicketsInfoStartTime), 0);
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                onLoadTicketsInfoError();
+                showMessage(R.string.load_order_tickets_info_error, R.color.order_tickets_message_error_bg_color);
             }
         }, delay);
     }
@@ -476,21 +509,21 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
             fillDates();
 
-            //we show the progress at least MIN_LOAD_TIME to avoid flickering
-            long delay = Math.max(MIN_LOAD_TIME - (System.currentTimeMillis() - startLoadingTime), 0);
-            new Handler().postDelayed(new Runnable() {
+            //we show the progress at least REQUEST_MIN__TIME to avoid flickering
+            long delay = Math.max(REQUEST_MIN__TIME - (System.currentTimeMillis() - loadTicketsInfoStartTime), 0);
+            handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     showOrderPanel();
                 }
             }, delay);
         } else {
-            //we show the progress at least MIN_LOAD_TIME to avoid flickering
-            long delay = Math.max(MIN_LOAD_TIME - (System.currentTimeMillis() - startLoadingTime), 0);
-            new Handler().postDelayed(new Runnable() {
+            //we show the progress at least REQUEST_MIN__TIME to avoid flickering
+            long delay = Math.max(REQUEST_MIN__TIME - (System.currentTimeMillis() - loadTicketsInfoStartTime), 0);
+            handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    onLoadTicketsInfoError();
+                    showMessage(R.string.load_order_tickets_info_error, R.color.order_tickets_message_error_bg_color);
                 }
             }, delay);
         }
@@ -519,6 +552,64 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
                 }
             });
         }
+    }
+
+    private void sendOrderTicketsRequest(long eventId, OrderTicketsRequest.OrderInfo orderInfo) {
+        //create request
+        OrderTicketsRequest request = new OrderTicketsRequest(eventId, orderInfo, new Response.Listener<OrderTicketsResponse>() {
+            @Override
+            public void onResponse(OrderTicketsResponse response) {
+                if (response.isSuccessful() && response.data) {
+                    //tickets successfully ordered
+                    onTicketsOrdered();
+                } else {
+                    onOrderTicketsError();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onOrderTicketsError();
+            }
+        });
+
+        //send request
+        VolleyHelper volleyHelper = TodayApplication.getApplication().getVolleyHelper();
+        volleyHelper.addRequest(request);
+
+        orderTicketsStartTime = System.currentTimeMillis();
+    }
+
+    private void onOrderTicketsError() {
+        //we show the progress at least REQUEST_MIN__TIME to avoid flickering
+        long delay = Math.max(REQUEST_MIN__TIME - (System.currentTimeMillis() - orderTicketsStartTime), 0);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideWaitDialog();
+
+                showMessage(R.string.order_tickets_error, R.color.order_tickets_message_error_bg_color);
+
+                //make to reload tickets info again
+                tickets = null;
+            }
+        }, delay);
+    }
+
+    private void onTicketsOrdered() {
+        long delay = Math.max(REQUEST_MIN__TIME - (System.currentTimeMillis() - orderTicketsStartTime), 0);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideWaitDialog();
+
+                showMessage(R.string.order_tickets_done, R.color.order_tickets_message_success_bg_color);
+
+                //make to reload tickets info again
+                tickets = null;
+            }
+        }, delay);
     }
 
     private void setupDateSelector() {
