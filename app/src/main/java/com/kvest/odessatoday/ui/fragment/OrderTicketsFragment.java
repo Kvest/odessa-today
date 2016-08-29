@@ -311,7 +311,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private void hideWaitDialog() {
         if (waitDialog != null) {
-            waitDialog.dismiss();
+            waitDialog.dismissAllowingStateLoss();
         }
     }
 
