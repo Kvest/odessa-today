@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.io.network.request;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -14,6 +15,8 @@ import java.io.UnsupportedEncodingException;
  * Created by kvest on 24.08.16.
  */
 public class OrderTicketsRequest extends BaseRequest<OrderTicketsResponse> {
+    private static final int TIMEOUT = 20 * 1000;
+
     private final long eventId;
     private final OrderInfo orderInfo;
 
@@ -22,6 +25,10 @@ public class OrderTicketsRequest extends BaseRequest<OrderTicketsResponse> {
                                Response.ErrorListener errorListener) {
         super(Method.POST, NetworkContract.createEventOrderTicketsUri(eventId).toString(),
               gson.toJson(orderInfo), listener, errorListener);
+
+        //change timeout
+        setRetryPolicy(new DefaultRetryPolicy(TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                              DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         this.eventId = eventId;
         this.orderInfo = orderInfo;
