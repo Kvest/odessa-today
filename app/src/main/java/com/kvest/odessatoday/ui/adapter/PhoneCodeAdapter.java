@@ -1,8 +1,12 @@
 package com.kvest.odessatoday.ui.adapter;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.datamodel.PhoneCodeMetadata;
@@ -25,6 +29,12 @@ public class PhoneCodeAdapter extends BaseAdapter {
         new PhoneCodeMetadata(PhoneCodeMetadata.ID_UZBEKISTAN, R.string.uz, R.drawable.ic_flag_uz, "+998")
     };
 
+    private LayoutInflater inflater;
+
+    public PhoneCodeAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
+    }
+
     @Override
     public int getCount() {
         return DATA.length;
@@ -37,11 +47,37 @@ public class PhoneCodeAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return DATA[position].id;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.phone_code_item, parent, false);
+            convertView.setTag(new ViewHolder(convertView));
+        }
+
+        ViewHolder holder = (ViewHolder)convertView.getTag();
+        holder.bind(DATA[position]);
+
+        return convertView;
+    }
+
+    private static class ViewHolder {
+        private ImageView flag;
+        private TextView country;
+        private TextView phoneCode;
+
+        public ViewHolder(View view) {
+            flag = (ImageView) view.findViewById(R.id.flag);
+            country = (TextView)view.findViewById(R.id.country_name);
+            phoneCode = (TextView)view.findViewById(R.id.phone_code);
+        }
+
+        public void bind(PhoneCodeMetadata data) {
+            flag.setImageResource(data.flagRes);
+            country.setText(data.countryNameRes);
+            phoneCode.setText(data.code);
+        }
     }
 }
