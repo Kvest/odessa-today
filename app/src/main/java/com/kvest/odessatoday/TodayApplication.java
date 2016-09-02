@@ -17,7 +17,7 @@ import com.squareup.leakcanary.RefWatcher;
  * To change this template use File | Settings | File Templates.
  */
 public class TodayApplication extends Application {
-    private static TodayApplication applicaion;
+    private static TodayApplication application;
 
     private String todayApiKey;
     private String clientId;
@@ -26,7 +26,7 @@ public class TodayApplication extends Application {
     private RefWatcher refWatcher;
 
     public static TodayApplication getApplication() {
-        return applicaion;
+        return application;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class TodayApplication extends Application {
         }
 
         //save application instance
-        applicaion = this;
+        application = this;
 
         //get api key and client id
         todayApiKey = Utils.getCertificateSignature(this);
