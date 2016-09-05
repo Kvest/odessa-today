@@ -107,7 +107,7 @@
                 android:textSize="@dimen/order_tickets_input_text_size"
                 android:singleLine="true" />
 
-            <EditText
+            <com.kvest.odessatoday.ui.widget.MaskedEditText
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +120,9 @@
                 android:textColorHint="?attr/OrderTicketsInputHintTextColor"
                 android:textColor="?attr/OrderTicketsInputTextColor"
                 android:textSize="@dimen/order_tickets_input_text_size"
-                android:singleLine="true" />
+                app:allowed_chars="1234567890"
+                app:mask="## ###-####"
+                app:placeholder_char="_"/>
 
             <com.kvest.odessatoday.ui.widget.FontTextView
                 android:id="@+id/delivery_label"

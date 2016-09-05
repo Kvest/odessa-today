@@ -41,6 +41,7 @@ import com.kvest.odessatoday.io.network.response.OrderTicketsResponse;
 import com.kvest.odessatoday.ui.animation.HeightResizeAnimation;
 import com.kvest.odessatoday.ui.animation.SimpleAnimatorListener;
 import com.kvest.odessatoday.ui.dialog.ProgressDialogFragment;
+import com.kvest.odessatoday.ui.widget.MaskedEditText;
 import com.kvest.odessatoday.utils.FontUtils;
 import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.SettingsSPStorage;
@@ -60,6 +61,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private static final long ANIMATION_DURATION = 400;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMMM, EEEE, HH:mm");
     private static final long REQUEST_MIN__TIME = 2000;
+    private static final int PHONE_TARGET_LENGTH = 9;
 
     private List<TicketInfo> tickets;
 
@@ -72,7 +74,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private View.OnClickListener onSectorNameClickListener;
     private EditText ticketsCount;
     private EditText name;
-    private EditText phone;
+    private MaskedEditText phone;
     private TextView deliveryLabel;
     private PopupMenu popupMenu;
     private ProgressDialogFragment waitDialog;
@@ -199,7 +201,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         sectors = (LinearLayout) view.findViewById(R.id.sectors);
         ticketsCount = (EditText) view.findViewById(R.id.tickets_count);
         name = (EditText) view.findViewById(R.id.name);
-        phone = (EditText) view.findViewById(R.id.phone);
+        phone = (MaskedEditText) view.findViewById(R.id.phone);
         deliveryLabel = (TextView) view.findViewById(R.id.delivery_label);
 
         view.findViewById(R.id.order).setOnClickListener(new View.OnClickListener() {
@@ -291,7 +293,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             orderInfo.sectorId = (Long) selectedSector.getTag();
             orderInfo.ticketsCount = Integer.parseInt(ticketsCount.getText().toString());
             orderInfo.name = name.getText().toString();
-            orderInfo.phone = phone.getText().toString();
+            orderInfo.phone = phone.getRawText();
 
             sendOrderTicketsRequest(getEventId(), orderInfo);
 
@@ -333,7 +335,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             isDataValid = false;
         }
 
-        if (TextUtils.isEmpty(phone.getText())) {
+        if (phone.getRawText().length() != PHONE_TARGET_LENGTH) {
             phone.setError(getString(R.string.fill_field));
             isDataValid = false;
         }
@@ -343,7 +345,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private void rememberUserNameAndPhone(Context context) {
         SettingsSPStorage.setUserName(context, name.getText().toString());
-        SettingsSPStorage.setPhone(context, phone.getText().toString());
+        SettingsSPStorage.setPhone(context, phone.getRawText().toString());
     }
 
     @Override
