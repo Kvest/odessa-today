@@ -36,6 +36,16 @@ public class PhoneCodeAdapter extends BaseAdapter {
     }
 
     @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        return getView(position, convertView, parent, true);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return getView(position, convertView, parent, false);
+    }
+
+    @Override
     public int getCount() {
         return DATA.length;
     }
@@ -50,15 +60,14 @@ public class PhoneCodeAdapter extends BaseAdapter {
         return DATA[position].id;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent, boolean isForDropDown) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.phone_code_item, parent, false);
             convertView.setTag(new ViewHolder(convertView));
         }
 
         ViewHolder holder = (ViewHolder)convertView.getTag();
-        holder.bind(DATA[position]);
+        holder.bind(DATA[position], isForDropDown);
 
         return convertView;
     }
@@ -74,9 +83,10 @@ public class PhoneCodeAdapter extends BaseAdapter {
             phoneCode = (TextView)view.findViewById(R.id.phone_code);
         }
 
-        public void bind(PhoneCodeMetadata data) {
+        public void bind(PhoneCodeMetadata data, boolean isForDropDown) {
             flag.setImageResource(data.flagRes);
             country.setText(data.countryNameRes);
+            country.setVisibility(isForDropDown ? View.VISIBLE : View.GONE);
             phoneCode.setText(data.code);
         }
     }
