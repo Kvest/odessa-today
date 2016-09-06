@@ -574,7 +574,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         OrderTicketsRequest request = new OrderTicketsRequest(eventId, orderInfo, new Response.Listener<OrderTicketsResponse>() {
             @Override
             public void onResponse(OrderTicketsResponse response) {
-                if (response.isSuccessful() && response.data) {
+                if (response.isSuccessful()) {
                     //tickets successfully ordered
                     onTicketsOrdered();
                 } else {
