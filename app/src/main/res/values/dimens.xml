@@ -303,4 +303,5 @@
     <dimen name="order_tickets_header_text_size">18sp</dimen>
     <dimen name="load_order_tickets_info_error_text_size">14sp</dimen>
     <dimen name="load_order_tickets_info_error_padding">12dip</dimen>
+    <dimen name="phone_code_item_padding">4dip</dimen>
 </resources>

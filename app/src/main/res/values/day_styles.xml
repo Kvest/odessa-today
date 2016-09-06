@@ -137,5 +137,9 @@
         <item name="DatePopupMenuTextColor">#ffffff</item>
         <item name="DateArrowColor">#24282b</item>
         <item name="OrderTicketsHeaderContentColor">#ffffff</item>
+        <item name="OrderTicketsCountryCodeSpinnerTint">#2d2d2d</item>
+        <item name="OrderTicketsCountryCodeTextColor">#828282</item>
+        <item name="OrderTicketsCountryNameTextColor">#2d2d2d</item>
+        <item name="PhoneCodePopupBg">@drawable/phone_code_popup_bg_day</item>
     </style>
 </resources>

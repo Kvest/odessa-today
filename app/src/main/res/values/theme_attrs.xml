@@ -120,4 +120,8 @@
     <attr format="color" name="DatePopupMenuTextColor"/>
     <attr format="color" name="DateArrowColor"/>
     <attr format="color" name="OrderTicketsHeaderContentColor"/>
+    <attr format="color" name="OrderTicketsCountryCodeSpinnerTint"/>
+    <attr format="color" name="OrderTicketsCountryCodeTextColor"/>
+    <attr format="color" name="OrderTicketsCountryNameTextColor"/>
+    <attr format="reference" name="PhoneCodePopupBg"/>
 </resources>

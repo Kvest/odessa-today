@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/phone_code_item_padding">
     <ImageView
         android:id="@+id/flag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingRight="@dimen/phone_code_item_padding"
         android:layout_gravity="center_vertical"/>
     <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/country_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingRight="@dimen/phone_code_item_padding"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+        android:textColor="?attr/OrderTicketsCountryNameTextColor"
+        android:textSize="@dimen/order_tickets_input_text_size"
         android:layout_gravity="center_vertical"/>
     <com.kvest.odessatoday.ui.widget.FontTextView
         android:id="@+id/phone_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingRight="@dimen/phone_code_item_padding"
+        app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+        android:textColor="?attr/OrderTicketsCountryCodeTextColor"
+        android:textSize="@dimen/order_tickets_input_text_size"
         android:layout_gravity="center_vertical"/>
 </LinearLayout>

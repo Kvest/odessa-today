@@ -110,20 +110,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Spinner
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/order_tickets_phone_bottom_margin"
+                android:layout_marginLeft="@dimen/order_tickets_horizontal_padding"
+                android:layout_marginRight="@dimen/order_tickets_horizontal_padding">
+                <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/phone_code"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="?attr/OrderTicketsCountryCodeSpinnerTint"
+                    android:popupBackground="?attr/PhoneCodePopupBg"/>
                 <com.kvest.odessatoday.ui.widget.MaskedEditText
                     android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/order_tickets_phone_bottom_margin"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/order_tickets_horizontal_padding"
-                    android:layout_marginRight="@dimen/order_tickets_horizontal_padding"
                     style="@style/TodayEditText"
                     android:inputType="phone"
                     android:hint="@string/phone_hint"
@@ -134,7 +136,6 @@
                     app:mask="## ###-####"
                     app:placeholder_char="_" />
             </LinearLayout>
-
 
             <com.kvest.odessatoday.ui.widget.FontTextView
                 android:id="@+id/delivery_label"
