@@ -25,12 +25,14 @@ import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.TodayApplication;
+import com.kvest.odessatoday.datamodel.PhoneCodeMetadata;
 import com.kvest.odessatoday.datamodel.Sector;
 import com.kvest.odessatoday.datamodel.TicketInfo;
 import com.kvest.odessatoday.io.network.VolleyHelper;
@@ -38,6 +40,7 @@ import com.kvest.odessatoday.io.network.request.GetEventTicketsRequest;
 import com.kvest.odessatoday.io.network.request.OrderTicketsRequest;
 import com.kvest.odessatoday.io.network.response.GetEventTicketsResponse;
 import com.kvest.odessatoday.io.network.response.OrderTicketsResponse;
+import com.kvest.odessatoday.ui.adapter.PhoneCodeAdapter;
 import com.kvest.odessatoday.ui.animation.HeightResizeAnimation;
 import com.kvest.odessatoday.ui.animation.SimpleAnimatorListener;
 import com.kvest.odessatoday.ui.dialog.ProgressDialogFragment;
@@ -74,6 +77,8 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     private View.OnClickListener onSectorNameClickListener;
     private EditText ticketsCount;
     private EditText name;
+    private Spinner phoneCode;
+    private PhoneCodeAdapter phoneCodeAdapter;
     private MaskedEditText phone;
     private TextView deliveryLabel;
     private PopupMenu popupMenu;
@@ -201,8 +206,12 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         sectors = (LinearLayout) view.findViewById(R.id.sectors);
         ticketsCount = (EditText) view.findViewById(R.id.tickets_count);
         name = (EditText) view.findViewById(R.id.name);
+        phoneCode = (Spinner) view.findViewById(R.id.phone_code);
         phone = (MaskedEditText) view.findViewById(R.id.phone);
         deliveryLabel = (TextView) view.findViewById(R.id.delivery_label);
+
+        phoneCodeAdapter = new PhoneCodeAdapter(getActivity());
+        phoneCode.setAdapter(phoneCodeAdapter);
 
         view.findViewById(R.id.order).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,6 +243,8 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         Context context = getActivity();
         name.setText(SettingsSPStorage.getUserName(context));
         phone.setText(SettingsSPStorage.getPhone(context));
+        int phoneCodeId = SettingsSPStorage.getPhoneCodeId(context);
+        phoneCode.setSelection(phoneCodeAdapter.getPositionById(phoneCodeId));
 
         //set fonts
         Typeface helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
@@ -293,7 +304,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             orderInfo.sectorId = (Long) selectedSector.getTag();
             orderInfo.ticketsCount = Integer.parseInt(ticketsCount.getText().toString());
             orderInfo.name = name.getText().toString();
-            orderInfo.phone = phone.getRawText();
+            orderInfo.phone = ((PhoneCodeMetadata)phoneCode.getSelectedItem()).code +  phone.getRawText();
 
             sendOrderTicketsRequest(getEventId(), orderInfo);
 
@@ -345,6 +356,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private void rememberUserNameAndPhone(Context context) {
         SettingsSPStorage.setUserName(context, name.getText().toString());
+        SettingsSPStorage.setPhoneCodeId(context, (int)phoneCode.getSelectedItemId());
         SettingsSPStorage.setPhone(context, phone.getRawText().toString());
     }
 
@@ -419,14 +431,19 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
         String userNameValue = "";
         String phoneValue = "";
+        int phoneCodeId = -1;
+
         Context context = getActivity();
         if (context != null) {
             userNameValue = SettingsSPStorage.getUserName(context);
             phoneValue = SettingsSPStorage.getPhone(context);
+            phoneCodeId = SettingsSPStorage.getPhoneCodeId(context);
         }
 
         name.setText(userNameValue);
         name.setError(null);
+
+        phoneCode.setSelection(phoneCodeAdapter.getPositionById(phoneCodeId));
 
         phone.setText(phoneValue);
         phone.setError(null);

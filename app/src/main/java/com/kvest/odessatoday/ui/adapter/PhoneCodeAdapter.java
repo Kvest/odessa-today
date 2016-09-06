@@ -60,6 +60,16 @@ public class PhoneCodeAdapter extends BaseAdapter {
         return DATA[position].id;
     }
 
+    public int getPositionById(int id) {
+        for (int i = 0; i < DATA.length; i++) {
+            if (DATA[i].id == id) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     public View getView(int position, View convertView, ViewGroup parent, boolean isForDropDown) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.phone_code_item, parent, false);
