@@ -43,6 +43,7 @@ import com.kvest.odessatoday.io.network.response.OrderTicketsResponse;
 import com.kvest.odessatoday.ui.adapter.PhoneCodeAdapter;
 import com.kvest.odessatoday.ui.animation.HeightResizeAnimation;
 import com.kvest.odessatoday.ui.animation.SimpleAnimatorListener;
+import com.kvest.odessatoday.ui.dialog.MessageDialogFragment;
 import com.kvest.odessatoday.ui.dialog.ProgressDialogFragment;
 import com.kvest.odessatoday.ui.widget.MaskedEditText;
 import com.kvest.odessatoday.utils.FontUtils;
@@ -90,6 +91,8 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
     private HideOrderTicketsListener hideOrderTicketsListener;
 
+    private String ticketsOrderedMessage = null;
+
     private Handler handler = new Handler();
 
     public static OrderTicketsFragment newInstance(long eventId) {
@@ -135,6 +138,17 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         init(view);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (ticketsOrderedMessage != null)  {
+            showMessageDialog(ticketsOrderedMessage);
+
+            ticketsOrderedMessage = null;
+        }
     }
 
     public void setHideOrderTicketsListener(HideOrderTicketsListener hideOrderTicketsListener) {
@@ -576,7 +590,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
             public void onResponse(OrderTicketsResponse response) {
                 if (response.isSuccessful()) {
                     //tickets successfully ordered
-                    onTicketsOrdered();
+                    onTicketsOrdered(response.data);
                 } else {
                     onOrderTicketsError();
                 }
@@ -612,19 +626,28 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         }, delay);
     }
 
-    private void onTicketsOrdered() {
+    private void onTicketsOrdered(final String message) {
         long delay = Math.max(REQUEST_MIN__TIME - (System.currentTimeMillis() - orderTicketsStartTime), 0);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 hideWaitDialog();
 
-                showMessage(R.string.order_tickets_done, R.color.order_tickets_message_success_bg_color);
+                if (isResumed()) {
+                    showMessageDialog(message);
+                } else {
+                    ticketsOrderedMessage = message;
+                }
 
                 //make to reload tickets info again
                 tickets = null;
             }
         }, delay);
+    }
+
+    private void showMessageDialog(String message) {
+        MessageDialogFragment messageDialog = MessageDialogFragment.newInstance(message);
+        messageDialog.show(getFragmentManager(), null);
     }
 
     private void setupDateSelector() {

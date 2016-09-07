@@ -66,6 +66,5 @@
     <color name="delivery_label_text_color">#828282</color>
     <color name="sector_prices_text_color">#828282</color>
     <color name="order_tickets_message_error_bg_color">#ff0000</color>
-    <color name="order_tickets_message_success_bg_color">@color/application_green</color>
     <color name="load_order_tickets_info_error_text_color">#ffffff</color>
 </resources>

@@ -86,7 +86,6 @@
     <string name="order_tickets_header">Заказ билетов</string>
     <string name="load_order_tickets_info_error">Не удалось загрузить информацию о билетах</string>
     <string name="order_tickets_error">Произошла ошибка при заказе билетов</string>
-    <string name="order_tickets_done">Билеты заказаны</string>
 
     <!--main menu-->
     <string name="menu_category_event">События</string>
