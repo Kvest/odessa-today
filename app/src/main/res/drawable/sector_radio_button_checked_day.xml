@@ -25,13 +25,12 @@
     <item
         android:gravity="center">
         <shape
-            android:shape="oval"
+            android:shape="ring"
+            android:innerRadius="0dip"
+            android:thickness="3dip"
             android:useLevel="false">
             <solid
                 android:color="#24282b" />
-            <size
-                android:height="6dip"
-                android:width="6dip" />
         </shape>
     </item>
 </layer-list>
