@@ -1,5 +1,6 @@
 package com.kvest.odessatoday.io.network.request;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -20,6 +21,7 @@ import java.io.UnsupportedEncodingException;
  * Created by kvest on 03.07.16.
  */
 public class UploadPhotoRequest extends BaseRequest<UploadPhotoResponse>  {
+    private static final int TIMEOUT = 60 * 1000;
     String LINE_END = "\r\n";
     String TWO_HYPHENS = "--";
 
@@ -31,6 +33,10 @@ public class UploadPhotoRequest extends BaseRequest<UploadPhotoResponse>  {
     public UploadPhotoRequest(long targetId, int targetType, String filePath, Response.Listener<UploadPhotoResponse> listener,
                              Response.ErrorListener errorListener) throws IOException {
         super(Method.POST, getUrl(targetId, targetType), null, listener, errorListener);
+
+        //change timeout
+        setRetryPolicy(new DefaultRetryPolicy(TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                              DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         File file = new File(filePath);
 
