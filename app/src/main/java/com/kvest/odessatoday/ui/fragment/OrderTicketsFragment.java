@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -58,7 +59,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by kvest on 15.08.16.
  */
-public class OrderTicketsFragment extends BaseFragment implements Response.ErrorListener, Response.Listener<GetEventTicketsResponse> {
+public class OrderTicketsFragment extends BaseFragment implements Response.ErrorListener, Response.Listener<GetEventTicketsResponse>, DialogInterface.OnDismissListener {
     private static final String ARGUMENT_EVENT_ID = "com.kvest.odessatoday.argument.EVENT_ID";
     private static final String GET_TICKETS_INFO_TAG = "com.kvest.odessatoday.tag.GET_TICKETS_INFO";
     private static final float ANIMATION_ACCELERATION_FRACTION = 1.5f; //imperatively selected value
@@ -645,8 +646,14 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         }, delay);
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        collapseFragment();
+    }
+
     private void showMessageDialog(String message) {
         MessageDialogFragment messageDialog = MessageDialogFragment.newInstance(message);
+        messageDialog.setOnDismissListener(this);
         messageDialog.show(getFragmentManager(), null);
     }
 
