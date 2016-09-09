@@ -56,11 +56,16 @@ class RawText {
         if(start >= 0 && start < text.length()) {
             lastPart = text.substring(start, text.length());
         }
-        if(text.length() + newString.length() > maxLength) {
-            count = maxLength - text.length();
-            newString = newString.substring(0, count);
+
+        if (firstPart.length() + count > maxLength) {
+            count = maxLength - firstPart.length();
         }
+
         text = firstPart.concat(newString).concat(lastPart);
+        if (text.length() > maxLength) {
+            text = text.substring(0, maxLength);
+        }
+
         return count;
     }
 
