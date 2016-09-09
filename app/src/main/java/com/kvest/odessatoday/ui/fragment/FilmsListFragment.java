@@ -11,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.event.FilmsLoadedEvent;

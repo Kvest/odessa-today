@@ -124,4 +124,7 @@
     <attr format="color" name="OrderTicketsCountryCodeTextColor"/>
     <attr format="color" name="OrderTicketsCountryNameTextColor"/>
     <attr format="reference" name="PhoneCodePopupBg"/>
+
+    <attr format="reference" name="MessageDialogBg"/>
+    <attr format="color" name="MessageDialogTextColor"/>
 </resources>

@@ -6,6 +6,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.text.method.ScrollingMovementMethod;
+import android.view.LayoutInflater;
+import android.widget.TextView;
+
+import com.kvest.odessatoday.R;
 
 /**
  * Created by kvest on 9/7/16.
@@ -29,8 +34,12 @@ public class MessageDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String message = getArguments().getString(ARGUMENT_MESSAGE);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(message);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MessageDialogStyle);
+
+        TextView view = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.message_dialog_view, null);
+        view.setMovementMethod(new ScrollingMovementMethod());
+        view.setText(message);
+        builder.setView(view);
 
         return builder.create();
     }

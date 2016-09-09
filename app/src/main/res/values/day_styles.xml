@@ -140,6 +140,9 @@
         <item name="OrderTicketsCountryCodeSpinnerTint">#2d2d2d</item>
         <item name="OrderTicketsCountryCodeTextColor">#828282</item>
         <item name="OrderTicketsCountryNameTextColor">#2d2d2d</item>
-        <item name="PhoneCodePopupBg">@drawable/phone_code_popup_bg_day</item>
+        <item name="PhoneCodePopupBg">@drawable/white_with_black_border</item>
+
+        <item name="MessageDialogBg">@drawable/white_with_black_border</item>
+        <item name="MessageDialogTextColor">#2d2d2d</item>
     </style>
 </resources>

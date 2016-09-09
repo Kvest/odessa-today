@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kvest.odessatoday.ui.widget.FontTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/message_dialog_padding"
+    android:background="?attr/MessageDialogBg"
+    android:textColor="?attr/MessageDialogTextColor"
+    android:textSize="@dimen/message_dialog_text_size"
+    app:fontAsset="fonts/helveticaneuecyr-roman.ttf"
+    android:scrollbars="vertical"/>
