@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -27,7 +28,6 @@ public class UploadPhotoRequest extends BaseRequest<UploadPhotoResponse>  {
 
     private final String mimeType;
     private final String boundary;
-    private final byte[] body;
     private final String fileName;
 
     public UploadPhotoRequest(long targetId, int targetType, String filePath, Response.Listener<UploadPhotoResponse> listener,
@@ -38,12 +38,9 @@ public class UploadPhotoRequest extends BaseRequest<UploadPhotoResponse>  {
         setRetryPolicy(new DefaultRetryPolicy(TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                               DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        File file = new File(filePath);
-
         boundary = "apiclient-" + System.currentTimeMillis();
         mimeType = "multipart/form-data;boundary=" + boundary;
-        body = FileUtils.readFileToByteArray(file);
-        fileName = file.getName();
+        fileName = filePath;
     }
 
     private static String getUrl(long targetId, int targetType) {
@@ -86,7 +83,19 @@ public class UploadPhotoRequest extends BaseRequest<UploadPhotoResponse>  {
                     "\"; filename=\"" + fileName + "\"" + LINE_END);
             dos.writeBytes(LINE_END);
 
-            dos.write(body);
+            //write body
+            File file = new File(fileName);
+            InputStream in = null;
+            try {
+                in = FileUtils.openInputStream(file);
+                byte[] buffer = new byte[FileUtils.DEFAULT_BUFFER_SIZE];
+                int n;
+                while (-1 != (n = in.read(buffer))) {
+                    dos.write(buffer, 0, n);
+                }
+            } finally {
+                FileUtils.closeQuietly(in);
+            }
 
             // send multipart form data necessary after file data...
             dos.writeBytes(LINE_END);

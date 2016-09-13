@@ -12,7 +12,7 @@ import java.io.OutputStream;
  * Created by kvest on 03.07.16.
  */
 public class FileUtils {
-    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+    public static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
     public static byte[] readFileToByteArray(File file) throws IOException {
         InputStream in = null;
@@ -21,7 +21,7 @@ public class FileUtils {
             return toByteArray(in);
         } finally {
             closeQuietly(in);
-         }
+        }
     }
 
     public static FileInputStream openInputStream(File file) throws IOException {
