@@ -39,6 +39,11 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    dexOptions {
+        javaMaxHeapSize "2g"
+        incremental true
+    }
 }
 
 dependencies {
