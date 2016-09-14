@@ -94,7 +94,7 @@ public class UploadPhotoHandler extends RequestHandler {
                 where = TodayProviderContract.Tables.Cinemas.Columns.CINEMA_ID + "=?";
                 break;
             case Constants.TargetTypeGroup.PLACE :
-                uri = TodayProviderContract.PLACES_URI;
+                uri = Uri.withAppendedPath(TodayProviderContract.PLACES_URI, Integer.toString(targetType));
                 cv.put(TodayProviderContract.Tables.Places.Columns.IMAGE,
                         photos != null ? Utils.images2String(photos) : null);
                 where = TodayProviderContract.Tables.Places.Columns.PLACE_ID + "=?";
