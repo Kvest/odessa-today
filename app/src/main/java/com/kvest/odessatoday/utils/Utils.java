@@ -228,6 +228,47 @@ public class Utils {
         }
     }
 
+    public static int targetType2PlaceType(int targetType) {
+        switch (targetType) {
+            case Constants.TargetType.THEATRE:
+                return Constants.PlaceType.THEATRE;
+            case Constants.TargetType.CONCERT_HALL:
+                return Constants.PlaceType.CONCERT_HALL;
+            case Constants.TargetType.CLUB:
+                return Constants.PlaceType.CLUB;
+            case Constants.TargetType.MUSEUM:
+                return Constants.PlaceType.MUSEUM;
+            case Constants.TargetType.GALLERY:
+                return Constants.PlaceType.GALLERY;
+            case Constants.TargetType.ZOO:
+                return Constants.PlaceType.ZOO;
+            case Constants.TargetType.QUEST:
+                return Constants.PlaceType.QUEST;
+            case Constants.TargetType.RESTAURANT:
+                return Constants.PlaceType.RESTAURANT;
+            case Constants.TargetType.CAFE:
+                return Constants.PlaceType.CAFE;
+            case Constants.TargetType.PIZZA:
+                return Constants.PlaceType.PIZZA;
+            case Constants.TargetType.SUSHI:
+                return Constants.PlaceType.SUSHI;
+            case Constants.TargetType.KARAOKE:
+                return Constants.PlaceType.KARAOKE;
+            case Constants.TargetType.SKATING_RINK:
+                return Constants.PlaceType.SKATING_RINK;
+            case Constants.TargetType.BOWLING:
+                return Constants.PlaceType.BOWLING;
+            case Constants.TargetType.BILLIARD:
+                return Constants.PlaceType.BILLIARD;
+            case Constants.TargetType.SAUNA:
+                return Constants.PlaceType.SAUNA;
+            case Constants.TargetType.BATH:
+                return Constants.PlaceType.BATH;
+            default:
+                throw new IllegalArgumentException("Wrong target type " + targetType);
+        }
+    }
+
     public static String eventType2String(Context context, int eventType) {
         switch (eventType) {
             case Constants.EventType.CONCERT:
