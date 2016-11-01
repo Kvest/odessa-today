@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,8 +74,8 @@ public class CommentsAdapter extends CursorAdapter {
 
         long dateMillis = TimeUnit.SECONDS.toMillis(cursor.getLong(dateColumnIndex));
         holder.date.setText(dateFormat.format(dateMillis));
-        holder.name.setText(Html.fromHtml(cursor.getString(nameColumnIndex)));
-        holder.text.setText(Html.fromHtml(cursor.getString(textColumnIndex)));
+        holder.name.setText(string2Spanned(cursor.getString(nameColumnIndex)));
+        holder.text.setText(string2Spanned(cursor.getString(textColumnIndex)));
 
         boolean needUpload = (cursor.getInt(syncStatusColumnIndex) & Constants.SyncStatus.NEED_UPLOAD) == Constants.SyncStatus.NEED_UPLOAD;
         holder.inProgress.setVisibility(needUpload ? View.VISIBLE : View.INVISIBLE);
@@ -83,6 +84,10 @@ public class CommentsAdapter extends CursorAdapter {
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
+    }
+
+    private static Spanned string2Spanned(String str) {
+        return Html.fromHtml(str == null ? "" : str);
     }
 
     private boolean isColumnIndexesCalculated() {
