@@ -568,7 +568,7 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
     }
 
     private void fillDates() {
-        if (tickets.isEmpty()) {
+        if (tickets == null || tickets.isEmpty()) {
             return;
         }
 
