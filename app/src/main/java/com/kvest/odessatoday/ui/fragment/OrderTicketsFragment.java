@@ -311,21 +311,25 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
 
         Activity activity = getActivity();
         if (activity != null) {
-            //show progress dialog
-            showWaitDialog();
+            if (selectedSector != null) {
+                //show progress dialog
+                showWaitDialog();
 
-            //create request params
-            OrderTicketsRequest.OrderInfo orderInfo = new OrderTicketsRequest.OrderInfo();
-            orderInfo.sectorId = (Long) selectedSector.getTag();
-            orderInfo.ticketsCount = Integer.parseInt(ticketsCount.getText().toString());
-            orderInfo.name = name.getText().toString();
-            orderInfo.phone = ((PhoneCodeMetadata)phoneCode.getSelectedItem()).code +  phone.getRawText();
+                //create request params
+                OrderTicketsRequest.OrderInfo orderInfo = new OrderTicketsRequest.OrderInfo();
+                orderInfo.sectorId = (Long) selectedSector.getTag();
+                orderInfo.ticketsCount = Integer.parseInt(ticketsCount.getText().toString());
+                orderInfo.name = name.getText().toString();
+                orderInfo.phone = ((PhoneCodeMetadata)phoneCode.getSelectedItem()).code +  phone.getRawText();
 
-            sendOrderTicketsRequest(getEventId(), orderInfo);
+                sendOrderTicketsRequest(getEventId(), orderInfo);
 
-            hideKeyboard(activity);
+                hideKeyboard(activity);
 
-            rememberUserNameAndPhone(activity);
+                rememberUserNameAndPhone(activity);
+            } else {
+                showErrorSnackbar(activity, R.string.order_tickets_error);
+            }
         }
     }
 
@@ -486,6 +490,10 @@ public class OrderTicketsFragment extends BaseFragment implements Response.Error
         Typeface helveticaneuecyrRoman = FontUtils.getFont(context.getAssets(), FontUtils.HELVETICANEUECYR_ROMAN_FONT);
 
         clearSectors();
+
+        if (sectorsData == null) {
+            return;
+        }
 
         for (Sector sector : sectorsData) {
             //create item's view
