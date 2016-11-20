@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filter_panel"
+    android:layout_height="@dimen/filter_panel_height"
+    android:layout_width="match_parent"
+    android:translationY="@dimen/filter_panel_height"
+    android:background="?attr/FilterPanelBgColor">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/filter_panel_divider_height"
+        android:layout_alignParentTop="true"
+        android:background="@color/application_green"/>
+    <ImageView
+        android:id="@+id/close_filter_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/filter_panel_padding"
+        android:layout_marginLeft="@dimen/filter_panel_close_margin_left"
+        android:clickable="true"
+        android:tint="@color/application_green"
+        android:src="@drawable/ic_close" />
+    <EditText
+        style="@style/TodayEditText"
+        android:id="@+id/filter_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/close_filter_panel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:hint="@string/filter_hint"
+        android:textColorHint="?attr/FilterHintTextColor"
+        android:textColor="?attr/FilterTextColor"
+        android:textSize="@dimen/filter_text_size"
+        android:singleLine="true"
+        android:maxLength="10"
+        android:layout_marginLeft="@dimen/filter_panel_padding"
+        android:layout_marginBottom="@dimen/filter_panel_padding"/>
+</RelativeLayout>

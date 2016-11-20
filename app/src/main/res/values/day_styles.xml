@@ -144,5 +144,11 @@
 
         <item name="MessageDialogBg">@drawable/white_with_black_border</item>
         <item name="MessageDialogTextColor">#2d2d2d</item>
+
+        <!--search stuff-->
+        <item name="SearchIconTint">@android:color/white</item>
+        <item name="FilterPanelBgColor">#ddffffff</item>
+        <item name="FilterHintTextColor">#828282</item>
+        <item name="FilterTextColor">#2d2d2d</item>
     </style>
 </resources>

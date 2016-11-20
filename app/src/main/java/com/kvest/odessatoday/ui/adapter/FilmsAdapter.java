@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,7 @@ public class FilmsAdapter extends CursorAdapter {
 
     private int evenItemBgResId, oddItemBgResId;
     private int noImageResId, loadingImageResId;
+    private String filter;
 
     public FilmsAdapter(Context context) {
         super(context, null, 0);
@@ -83,7 +86,7 @@ public class FilmsAdapter extends CursorAdapter {
         if (!isColumnIndexesCalculated()) {
             calculateColumnIndexes(cursor);
         }
-        holder.name.setText(cursor.getString(nameColumnIndex));
+        setFormatedName(holder.name, cursor.getString(nameColumnIndex));
         holder.genre.setText(cursor.getString(genreColumnIndex));
         holder.genre.setVisibility(TextUtils.isEmpty(holder.genre.getText()) ? View.GONE : View.VISIBLE);
 
@@ -98,6 +101,15 @@ public class FilmsAdapter extends CursorAdapter {
         holder.commentsCount.setText(Utils.createCountString(context, cursor.getInt(commentsCountColumnIndex), Utils.COMMENTS_COUNT_PATTERNS));
         holder.image.setImageUrl(cursor.getString(imageColumnIndex), TodayApplication.getApplication().getVolleyHelper().getImageLoader());
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
+    }
+
+    private void setFormatedName(TextView nameView, String value) {
+        if (TextUtils.isEmpty(filter)) {
+            nameView.setText(value);
+        } else {
+            //TODO make case insensitive
+            nameView.setText(Html.fromHtml(value.replaceAll(filter, "<u>" + filter + "</u>")));
+        }
     }
 
     private void initResources(Context context) {
@@ -133,6 +145,10 @@ public class FilmsAdapter extends CursorAdapter {
         ratingColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.RATING);
         commentsCountColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.COMMENTS_COUNT);
         isPremiereColumnIndex = cursor.getColumnIndex(Tables.Films.Columns.IS_PREMIERE);
+    }
+
+    public void setFilterKey(String filter) {
+        this.filter = filter;
     }
 
     private static class ViewHolder {

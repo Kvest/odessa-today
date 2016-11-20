@@ -119,7 +119,7 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="NoEventsStyle" parent="android:Widget.TextView" >
+    <style name="NoEventsStyle" pareSent="android:Widget.TextView" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
@@ -137,5 +137,16 @@
     <style name="MessageDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="SearchFABStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom|right</item>
+        <item name="fabSize">normal</item>
+        <item name="backgroundTint">@color/application_green</item>
+        <item name="android:src">@drawable/ic_search</item>
+        <item name="android:tint">?attr/SearchIconTint</item>
+        <item name="android:layout_margin">@dimen/search_fab_margin</item>
     </style>
 </resources>

@@ -308,4 +308,12 @@
     <!--message dialog-->
     <dimen name="message_dialog_padding">8dip</dimen>
     <dimen name="message_dialog_text_size">14sp</dimen>
+
+    <!--search-->
+    <dimen name="search_fab_margin">0dip</dimen>
+    <dimen name="filter_panel_height">60dip</dimen>
+    <dimen name="filter_panel_padding">8dip</dimen>
+    <dimen name="filter_panel_close_margin_left">20dip</dimen>
+    <dimen name="filter_panel_divider_height">1dip</dimen>
+    <dimen name="filter_text_size">14sp</dimen>
 </resources>

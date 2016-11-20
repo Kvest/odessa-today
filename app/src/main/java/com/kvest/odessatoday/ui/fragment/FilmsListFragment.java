@@ -1,16 +1,21 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.kvest.odessatoday.R;
 import com.kvest.odessatoday.io.network.event.FilmsLoadedEvent;
@@ -19,6 +24,7 @@ import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.ui.adapter.FilmsAdapter;
 import com.kvest.odessatoday.utils.BusProvider;
 import com.kvest.odessatoday.utils.Constants;
+import com.kvest.odessatoday.utils.KeyboardUtils;
 import com.kvest.odessatoday.utils.TimeUtils;
 import com.squareup.otto.Subscribe;
 
@@ -50,8 +56,15 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
 
     private View noFilmsLabel;
 
+    private FloatingActionButton filterButton;
+    private View filterPanel;
+    private View closeFilterPanelButton;
+
     private SwipeRefreshLayout refreshLayout;
     private Handler handler = new Handler();
+    private FilterPanelAnimationListener filterPanelAnimationListener;
+
+    private TextView filterValue;
 
     public static FilmsListFragment newInstance(long date) {
         Bundle arguments = new Bundle(1);
@@ -82,6 +95,8 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_DATE)) {
             setDate(savedInstanceState.getLong(KEY_DATE));
@@ -214,8 +229,10 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
             case FILMS_LOADER_ID :
                 long startDate = date;
                 long endDate = TimeUtils.getEndOfTheDay(startDate);
+                String filter = filterValue.getText().toString();
 
-                return DataProviderHelper.getFilmsForPeriodLoader(getActivity(), startDate, endDate, FilmsAdapter.PROJECTION);
+                return DataProviderHelper.getFilmsForPeriodLoader(getActivity(), startDate, endDate,
+                                                                  filter, FilmsAdapter.PROJECTION);
             default :
                 return null;
         }
@@ -243,6 +260,8 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     private void init(View root) {
+        filterPanelAnimationListener = new FilterPanelAnimationListener();
+
         noFilmsLabel = root.findViewById(R.id.no_films);
 
         refreshLayout = (SwipeRefreshLayout)root.findViewById(R.id.refresh_layout);
@@ -263,6 +282,38 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
         //create and set an adapter
         adapter = new FilmsAdapter(getActivity());
         filmsList.setAdapter(adapter);
+
+        filterButton = (FloatingActionButton) root.findViewById(R.id.filter);
+        filterPanel = root.findViewById(R.id.filter_panel);
+        closeFilterPanelButton = root.findViewById(R.id.close_filter_panel);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFilterPanel();
+            }
+        });
+        closeFilterPanelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideFilterPanel();
+            }
+        });
+
+        filterValue = (TextView) root.findViewById(R.id.filter_value);
+        filterValue.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.setFilterKey(s.toString());
+                //reload content
+                getLoaderManager().restartLoader(FILMS_LOADER_ID, null, FilmsListFragment.this);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     public void onDateSelected(long date) {
@@ -329,5 +380,44 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
                 }
             });
         }
+    }
+
+    private void showFilterPanel() {
+        filterValue.requestFocus();
+
+        filterButton.hide();
+        filterPanel.animate()
+                .translationY(0)
+                .setListener(null)
+                .start();
+    }
+
+    private void hideFilterPanel() {
+        KeyboardUtils.hideKeyboard(getContext(), filterValue);
+
+        //clear filter
+        filterValue.setText("");
+        getLoaderManager().restartLoader(FILMS_LOADER_ID, null, this);
+
+        filterPanel.animate()
+                .translationY(filterPanel.getMeasuredHeight())
+                .setListener(filterPanelAnimationListener)
+                .start();
+    }
+
+    public class FilterPanelAnimationListener implements Animator.AnimatorListener {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            filterButton.show();
+        }
+
+        @Override
+        public void onAnimationStart(Animator animation) {}
+
+        @Override
+        public void onAnimationCancel(Animator animation) {}
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {}
     }
 }

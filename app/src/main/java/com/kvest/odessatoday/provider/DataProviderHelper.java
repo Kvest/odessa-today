@@ -8,6 +8,8 @@ import android.content.OperationApplicationException;
 import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.net.Uri;
+import android.text.TextUtils;
+
 import com.kvest.odessatoday.service.NetworkService;
 import com.kvest.odessatoday.utils.Constants;
 
@@ -84,8 +86,13 @@ public abstract class DataProviderHelper {
                                 order);
     }
 
-    public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate, String[] projection) {
+    public static CursorLoader getFilmsForPeriodLoader(Context context, long startDate, long endDate,
+                                                       String filter, String[] projection) {
         String selection = Tables.Films.Columns.FILM_ID + " in (" + Tables.FilmsTimetable.GET_FILMS_ID_BY_PERIOD_SQL + ")";
+        if (!TextUtils.isEmpty(filter)) {
+            selection += " AND " + Tables.Films.Columns.NAME + " LIKE \'%" + filter + "%\'";
+        }
+
         return new CursorLoader(context, TodayProviderContract.FILMS_URI, projection, selection,
                                 new String[]{Long.toString(startDate), Long.toString(endDate)}, null);
     }

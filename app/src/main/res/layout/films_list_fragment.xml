@@ -15,4 +15,12 @@
             android:layout_height="match_parent"
             android:divider="@null"/>
     </android.support.v4.widget.SwipeRefreshLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/filter"
+        style="@style/SearchFABStyle"/>
+    <include
+        layout="@layout/filter_panel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/filter_panel_height"
+        android:layout_gravity="bottom"/>
 </FrameLayout>
