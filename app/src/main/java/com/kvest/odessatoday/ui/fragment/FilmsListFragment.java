@@ -59,12 +59,11 @@ public class FilmsListFragment extends BaseFragment implements LoaderManager.Loa
     private FloatingActionButton filterButton;
     private View filterPanel;
     private View closeFilterPanelButton;
+    private TextView filterValue;
+    private FilterPanelAnimationListener filterPanelAnimationListener;
 
     private SwipeRefreshLayout refreshLayout;
     private Handler handler = new Handler();
-    private FilterPanelAnimationListener filterPanelAnimationListener;
-
-    private TextView filterValue;
 
     public static FilmsListFragment newInstance(long date) {
         Bundle arguments = new Bundle(1);
