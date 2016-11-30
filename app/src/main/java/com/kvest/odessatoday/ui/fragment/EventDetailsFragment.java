@@ -251,7 +251,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         if (oldOrderTicketsFragment != null && !oldOrderTicketsFragment.isHidden()) {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.hide(oldOrderTicketsFragment);
-                transaction.commit();
+                transaction.commitAllowingStateLoss();
         }
     }
 
