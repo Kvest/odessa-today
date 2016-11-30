@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,7 +85,7 @@ public class FilmsAdapter extends CursorAdapter {
         if (!isColumnIndexesCalculated()) {
             calculateColumnIndexes(cursor);
         }
-        setFormatedName(holder.name, cursor.getString(nameColumnIndex));
+        setFormattedName(holder.name, cursor.getString(nameColumnIndex));
         holder.genre.setText(cursor.getString(genreColumnIndex));
         holder.genre.setVisibility(TextUtils.isEmpty(holder.genre.getText()) ? View.GONE : View.VISIBLE);
 
@@ -103,12 +102,12 @@ public class FilmsAdapter extends CursorAdapter {
         holder.isPremiere.setVisibility(cursor.getInt(isPremiereColumnIndex) == Constants.Premiere.IS_PREMIERE ? View.VISIBLE : View.GONE);
     }
 
-    private void setFormatedName(TextView nameView, String value) {
+    private void setFormattedName(TextView nameView, String value) {
         if (TextUtils.isEmpty(filter)) {
             nameView.setText(value);
         } else {
-            //TODO make case insensitive
-            nameView.setText(Html.fromHtml(value.replaceAll(filter, "<u>" + filter + "</u>")));
+            String formattedValue = value.replaceAll("(?i)(" + filter + ")", "<u>" + "$1" + "</u>");
+            nameView.setText(Html.fromHtml(formattedValue));
         }
     }
 
