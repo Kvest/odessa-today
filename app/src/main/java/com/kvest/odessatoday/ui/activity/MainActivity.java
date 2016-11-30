@@ -197,7 +197,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
             transaction.replace(R.id.calendar_fragment_container, calendarFragment);
             transaction.addToBackStack(CALENDAR_FRAGMENT_TAG);
         } finally {
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
         }
     }
 
@@ -239,6 +239,10 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
     }
 
     private void hideCalendar() {
+        if (isFinishing()) {
+            return;
+        }
+
         getSupportFragmentManager().popBackStack(CALENDAR_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
@@ -248,7 +252,7 @@ public class MainActivity extends BaseActivity implements MainMenuFragment.MainM
             transaction.setCustomAnimations(R.anim.fade_in, 0);
             transaction.replace(R.id.fragment_container, fragment);
         } finally {
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
         }
 
         updateToolbarForFragment(fragment);
