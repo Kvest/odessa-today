@@ -75,6 +75,8 @@
     <string name="propose_photo">Предложить фото</string>
     <string name="error_propose_photo_no_permission">Для отправки фото необходимо предоставить доступ к SD-карте</string>
     <string name="error_propose_photo_no_permission_strict">Для отправки фото необходимо предоставить доступ к SD-карте в системных настройках</string>
+    <string name="error_share_no_permission">Для шаринга необходимо предоставить доступ к SD-карте</string>
+    <string name="error_share_no_permission_strict">Для шаринга необходимо предоставить доступ к SD-карте в системных настройках</string>
     <string name="error_uploading_photo">Не удалось отправить фото</string>
     <string name="no_films_label">На выбранную дату нет фильмов</string>
     <string name="no_events_label">Нет событий</string>

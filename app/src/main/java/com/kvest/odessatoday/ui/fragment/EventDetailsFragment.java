@@ -1,9 +1,11 @@
 package com.kvest.odessatoday.ui.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -11,10 +13,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -64,6 +69,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
 
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private static final String VIDEO_ID_PARAM = "v";
+    private static final int WRITE_EXTERNAL_STORAGE_PERMISSION = 2;
 
     private static final String MIN_MAX_PRICES_SEPARATOR = " / ";
     private static final Pattern PRICES_PATTERN = Pattern.compile("(\\d+)");
@@ -185,7 +191,7 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         headerView.findViewById(R.id.action_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CacheImageAsyncTask(Long.toString(getEventId())).execute(eventPoster.getDrawable());
+                onShare();
             }
         });
 
@@ -354,6 +360,39 @@ public class EventDetailsFragment extends BaseFragment implements LoaderManager.
         }
 
         setHasTickets(hasTickets);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == WRITE_EXTERNAL_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                onShare();
+            } else {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    //"never ask again" selected
+                    showErrorSnackbar(getActivity(), R.string.error_share_no_permission_strict);
+                } else {
+                    showErrorSnackbar(getActivity(), R.string.error_share_no_permission);
+                }
+            }
+        }
+    }
+
+    private void onShare() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+
+        //check write external storage permission
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //ask for permission
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_PERMISSION);
+        } else {
+            new CacheImageAsyncTask(Long.toString(getEventId())).execute(eventPoster.getDrawable());
+        }
     }
 
     private void share(String imageFilePath) {

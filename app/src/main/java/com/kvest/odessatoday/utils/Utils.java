@@ -40,8 +40,7 @@ public class Utils {
     public static final int[] COMMENTS_COUNT_PATTERNS = new int[] {R.string.comments_count, R.string.comments_count1, R.string.comments_count2};
     public static final int[] PHOTOS_COUNT_PATTERNS = new int[] {R.string.photos_count, R.string.photos_count1, R.string.photos_count2};
 
-    public static String getDeviceId(Context context)
-    {
+    public static String getDeviceId(Context context) {
         //Serial number
         String deviceId = Build.SERIAL;
         if (!TextUtils.isEmpty(deviceId)) {
